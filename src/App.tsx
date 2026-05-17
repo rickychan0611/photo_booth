@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Camera, Download, Expand, ExternalLink, FolderOpen, Grid2X2, Image, Minimize2, Printer, RefreshCw, Settings, SlidersHorizontal, Sparkles, Square, Trash2 } from 'lucide-react';
-import type { AppSettings, Capture, Gallery, PrintLayout, SavedPhoto } from './types';
-import { createGridPrintImage, createSinglePrintImage } from './template';
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import { Camera, Download, Expand, ExternalLink, FolderOpen, Image, Minimize2, Printer, RefreshCw, Settings, SlidersHorizontal, Sparkles, Trash2 } from 'lucide-react';
+import type { AiPreset, AppSettings, CameraControlSettings, CameraRotation, Capture, Gallery, SavedPhoto, TemplateDesign, TemplateStyleId } from './types';
+import { createGuideTemplateImage, createTemplatedPrintImage, getPrimarySlot, getTemplateStyle, TEMPLATE_STYLES } from './template';
 
-type GuestStep = 'welcome' | 'intro' | 'capture' | 'select' | 'thanks';
+type GuestStep = 'welcome' | 'style' | 'design' | 'intro' | 'capture' | 'select' | 'thanks';
 
 const buttonText = (value: string) => `[ ${value} ]`;
 
@@ -30,15 +30,22 @@ export function App() {
 }
 
 function GuestApp() {
+  const query = new URLSearchParams(window.location.search);
+  const shouldOpenPickerPreview = query.get('preview') === 'picker';
   const { settings } = useSettings();
   const [step, setStep] = useState<GuestStep>('welcome');
   const [countdown, setCountdown] = useState<number | null>(null);
   const [captureMessage, setCaptureMessage] = useState('');
   const [error, setError] = useState('');
   const [captures, setCaptures] = useState<Capture[]>([]);
-  const [selectedCaptureIndex, setSelectedCaptureIndex] = useState(0);
-  const [printLayout, setPrintLayout] = useState<PrintLayout>('single');
+  const [selectedCaptureIndexes, setSelectedCaptureIndexes] = useState<number[]>([]);
+  const [selectedStyleId, setSelectedStyleId] = useState<TemplateStyleId>('style1');
+  const [selectedDesignId, setSelectedDesignId] = useState('');
+  const [printCountdown, setPrintCountdown] = useState<number | null>(null);
+  const [thankYouCountdown, setThankYouCountdown] = useState<number | null>(null);
   const [printedPreview, setPrintedPreview] = useState('');
+  const [printedNumber, setPrintedNumber] = useState('');
+  const [isAiGenerating, setIsAiGenerating] = useState(false);
   const [isFlashing, setIsFlashing] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isBusy, setIsBusy] = useState(false);
@@ -63,45 +70,102 @@ function GuestApp() {
   }, []);
 
   useEffect(() => {
-    if (step !== 'thanks') return undefined;
+    if (step !== 'thanks') {
+      setThankYouCountdown(null);
+      return undefined;
+    }
+    const totalSeconds = Math.ceil((settings?.workflow.thankYouMs ?? 3000) / 1000);
+    setThankYouCountdown(totalSeconds);
+    const countdownTimer = window.setInterval(() => {
+      setThankYouCountdown((current) => (current === null ? current : Math.max(0, current - 1)));
+    }, 1000);
     const timer = window.setTimeout(() => {
       setCaptures([]);
-      setSelectedCaptureIndex(0);
-      if (settings) setPrintLayout(defaultPrintLayout(settings));
+      setSelectedCaptureIndexes([]);
       setPrintedPreview('');
+      setPrintedNumber('');
+      setIsAiGenerating(false);
       setCountdown(null);
       setCaptureMessage('');
       setError('');
       setStep('welcome');
-    }, 3000);
-    return () => window.clearTimeout(timer);
+    }, settings?.workflow.thankYouMs ?? 3000);
+    return () => {
+      window.clearTimeout(timer);
+      window.clearInterval(countdownTimer);
+    };
   }, [settings, step]);
 
-  useEffect(() => {
-    if (!settings || isPrintLayoutVisible(printLayout, settings)) return;
-    setPrintLayout(defaultPrintLayout(settings));
-  }, [printLayout, settings]);
+  const resetGuestSession = () => {
+    setCaptures([]);
+    setSelectedCaptureIndexes([]);
+    setPrintedPreview('');
+    setPrintedNumber('');
+    setIsAiGenerating(false);
+    setCountdown(null);
+    setCaptureMessage('');
+    setError('');
+    setStep('welcome');
+  };
 
   useEffect(() => {
-    return () => {
+    if (!settings || !shouldOpenPickerPreview) return;
+    void openPickerPreview();
+  }, [settings, shouldOpenPickerPreview]);
+
+  useEffect(() => {
+    if (!settings) return undefined;
+    return window.photoBooth.onOpenGuestPickerPreview(() => {
+      void openPickerPreview();
+    });
+  }, [settings]);
+
+  useEffect(() => {
+    if (!settings) return;
+    const firstActive = settings.template.designs.find((design) => design.active);
+    setSelectedStyleId(firstActive?.styleId ?? settings.template.selectedStyleId ?? 'style1');
+    setSelectedDesignId(firstActive?.id ?? settings.template.selectedDesignId ?? '');
+  }, [settings?.template.designs, settings?.template.selectedStyleId, settings?.template.selectedDesignId]);
+
+  useEffect(() => {
+    const releaseCamera = () => {
       sessionRunRef.current += 1;
-      streamRef.current?.getTracks().forEach((track) => track.stop());
-      streamRef.current = null;
+      stopCamera();
+    };
+    window.addEventListener('beforeunload', releaseCamera);
+    window.addEventListener('pagehide', releaseCamera);
+    return () => {
+      window.removeEventListener('beforeunload', releaseCamera);
+      window.removeEventListener('pagehide', releaseCamera);
+      releaseCamera();
     };
   }, []);
 
   const stopCamera = () => {
     streamRef.current?.getTracks().forEach((track) => track.stop());
     streamRef.current = null;
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.srcObject = null;
+      videoRef.current.removeAttribute('src');
+      videoRef.current.load();
+    }
   };
 
   const startCamera = async () => {
     if (!settings) throw new Error('Settings not ready.');
+    stopCamera();
+    const videoSettings: MediaTrackConstraints = {
+      width: { ideal: 3840 },
+      height: { ideal: 2160 },
+      frameRate: { ideal: 30 }
+    };
     const constraints: MediaStreamConstraints = {
-      video: settings.cameraId ? { deviceId: { exact: settings.cameraId } } : { width: 1920, height: 1080 },
+      video: settings.cameraId ? { ...videoSettings, deviceId: { exact: settings.cameraId } } : videoSettings,
       audio: false
     };
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    await applyCameraControls(stream, settings.cameraControls);
     streamRef.current = stream;
     await waitFor(() => videoRef.current);
     if (!videoRef.current) throw new Error('Camera view not ready.');
@@ -112,16 +176,21 @@ function GuestApp() {
   const captureFrame = async () => {
     if (!videoRef.current || !settings) throw new Error('Camera not ready.');
     const video = videoRef.current;
+    const rotation = settings.cameraRotation;
+    const sourceWidth = video.videoWidth || 3840;
+    const sourceHeight = video.videoHeight || 2160;
+    const isSideways = rotation === 90 || rotation === 270;
     const canvas = document.createElement('canvas');
-    canvas.width = video.videoWidth || 1920;
-    canvas.height = video.videoHeight || 1080;
+    canvas.width = isSideways ? sourceHeight : sourceWidth;
+    canvas.height = isSideways ? sourceWidth : sourceHeight;
     const ctx = canvas.getContext('2d');
     if (!ctx) throw new Error('Canvas not ready.');
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.rotate((rotation * Math.PI) / 180);
     if (settings.mirrorPreview) {
-      ctx.translate(canvas.width, 0);
       ctx.scale(-1, 1);
     }
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(video, -sourceWidth / 2, -sourceHeight / 2, sourceWidth, sourceHeight);
     const dataUrl = canvas.toDataURL('image/png');
     setIsFlashing(true);
     window.setTimeout(() => setIsFlashing(false), 180);
@@ -139,16 +208,41 @@ function GuestApp() {
     return true;
   };
 
-  const startSession = async () => {
+  const activeDesigns = settings?.template.designs.filter((design) => design.active) ?? [];
+  const selectedStyle = getTemplateStyle(selectedStyleId);
+  const selectedDesign = activeDesigns.find((design) => design.id === selectedDesignId) ?? null;
+  const selectedPhotoDataUrls = selectedCaptureIndexes
+    .slice(0, selectedStyle.selectCount)
+    .map((index) => captures[index]?.dataUrl)
+    .filter(Boolean) as string[];
+
+  const chooseStyle = (styleId: TemplateStyleId) => {
+    const firstDesign = activeDesigns.find((design) => design.styleId === styleId);
+    setSelectedStyleId(styleId);
+    setSelectedDesignId(firstDesign?.id ?? '');
+    setSelectedCaptureIndexes([]);
+    setStep(firstDesign ? 'design' : 'style');
+  };
+
+  const chooseDesign = (design: TemplateDesign) => {
+    setSelectedStyleId(design.styleId);
+    setSelectedDesignId(design.id);
+    setStep('intro');
+    void startSession(design.styleId, design);
+  };
+
+  const startSession = async (styleId = selectedStyleId, design = selectedDesign) => {
     if (!settings || isBusy) return;
+    const style = getTemplateStyle(styleId);
     const runId = sessionRunRef.current + 1;
     sessionRunRef.current = runId;
     setError('');
     setIsBusy(true);
     setCaptures([]);
-    setSelectedCaptureIndex(0);
-    setPrintLayout(defaultPrintLayout(settings));
+    setSelectedCaptureIndexes([]);
     setPrintedPreview('');
+    setPrintedNumber('');
+    setIsAiGenerating(false);
     setCaptureMessage('');
     setCountdown(null);
 
@@ -160,7 +254,7 @@ function GuestApp() {
       await delay(100);
       await startCamera();
 
-      const shotPlan = settings.workflow.shots.slice(0, 4);
+      const shotPlan = Array.from({ length: style.shotCount }, (_item, index) => settings.workflow.shots[index % settings.workflow.shots.length]);
       const nextCaptures: Capture[] = [];
 
       for (const shot of shotPlan) {
@@ -181,8 +275,15 @@ function GuestApp() {
       }
 
       stopCamera();
-      setSelectedCaptureIndex(0);
-      setStep('select');
+      const defaultIndexes = Array.from({ length: style.selectCount }, (_item, index) => index).filter((index) => index < nextCaptures.length);
+      setSelectedCaptureIndexes(defaultIndexes);
+      if (styleNeedsSelection(style.id)) {
+        setStep('select');
+      } else if (design) {
+        await printCaptures(nextCaptures, defaultIndexes, style.id, design);
+      } else {
+        setStep('select');
+      }
     } catch {
       stopCamera();
       setError('CAMERA NOT READY');
@@ -194,23 +295,115 @@ function GuestApp() {
     }
   };
 
-  const printNow = async () => {
-    if (!settings || captures.length < 4 || printLayout === 'ai' || printLayout === 'future') return;
+  const printCaptures = async (
+    sourceCaptures: Capture[],
+    indexes: number[],
+    styleId: TemplateStyleId,
+    design: TemplateDesign
+  ) => {
+    if (!settings) return;
+    const style = getTemplateStyle(styleId);
+    const photoDataUrls = indexes
+      .slice(0, style.selectCount)
+      .map((index) => sourceCaptures[index]?.dataUrl)
+      .filter(Boolean) as string[];
+    if (photoDataUrls.length < style.selectCount) return;
     setIsBusy(true);
-    try {
-      const dataUrl =
-        printLayout === 'grid'
-          ? await createGridPrintImage(captures.map((capture) => capture.dataUrl))
-          : await createSinglePrintImage(captures[selectedCaptureIndex]?.dataUrl ?? captures[0].dataUrl);
+    setPrintedPreview('');
+    setPrintedNumber('');
+    setIsAiGenerating(design.usesAi);
+    setStep('thanks');
+
+    const printFinal = async () => {
+      const templateDataUrl = await window.photoBooth.getImageDataUrl(templateFramePath(design));
+      const dataUrl = await createTemplatedPrintImage(photoDataUrls, style.id, design, templateDataUrl);
       const saved = await window.photoBooth.saveImage({ dataUrl, kind: 'final', filenamePrefix: 'final' });
       setPrintedPreview(dataUrl);
-      const result = await window.photoBooth.printImage(saved.path);
-      if (!result.ok) setError('PRINT CANCELED');
-      setStep('thanks');
+      setPrintedNumber(photoNumber(saved.name));
+      setIsAiGenerating(false);
+      void window.photoBooth.printImage(saved.path, printerForStyle(settings, style.id)).then((result) => {
+        if (!result.ok) console.warn(result.error || 'Print canceled.');
+      });
+    };
+
+    try {
+      if (design.usesAi) {
+        window.setTimeout(() => {
+          void printFinal();
+        }, 2500);
+      } else {
+        await printFinal();
+      }
     } finally {
       setIsBusy(false);
     }
   };
+
+  const printNow = async () => {
+    if (!settings || !selectedDesign || selectedPhotoDataUrls.length < selectedStyle.selectCount) return;
+    await printCaptures(captures, selectedCaptureIndexes, selectedStyle.id, selectedDesign);
+  };
+
+  const openPickerPreview = async () => {
+    if (!settings) return;
+    try {
+      setError('');
+      setIsBusy(true);
+      stopCamera();
+      const gallery = await window.photoBooth.listGallery();
+      const latestPhotos = gallery.originals.length > 0 ? gallery.originals : gallery.finals;
+      const placeholders = latestPhotos.length >= 4 ? latestPhotos.slice(0, 4) : Array.from({ length: 4 }, () => latestPhotos[0]).filter(Boolean);
+      const previewCaptures =
+        placeholders.length > 0
+          ? await Promise.all(
+              placeholders.map(async (photo, index) => ({
+                dataUrl: await window.photoBooth.getImageDataUrl(photo.path),
+                path: `${photo.path}#preview-${index}`,
+                name: photo.name
+              }))
+            )
+          : createPickerPlaceholderCaptures(settings);
+      setCaptures(previewCaptures);
+      const firstDesign = activeDesigns[0];
+      const style = getTemplateStyle(firstDesign?.styleId ?? 'style1');
+      setSelectedStyleId(style.id);
+      setSelectedDesignId(firstDesign?.id ?? '');
+      setSelectedCaptureIndexes(Array.from({ length: style.selectCount }, (_item, index) => index).filter((index) => index < previewCaptures.length));
+      setPrintedPreview('');
+      setPrintedNumber('');
+      setIsAiGenerating(false);
+      setCountdown(null);
+      setCaptureMessage('');
+      setStep('select');
+    } catch {
+      setError('PREVIEW NOT READY');
+      setStep('welcome');
+    } finally {
+      setIsBusy(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!settings || step !== 'select') {
+      setPrintCountdown(null);
+      return undefined;
+    }
+    const seconds = Math.ceil(settings.workflow.printAutoSelectMs / 1000);
+    if (seconds <= 0) {
+      setPrintCountdown(null);
+      return undefined;
+    }
+    setPrintCountdown(seconds);
+    const timer = window.setInterval(() => {
+      setPrintCountdown((current) => (current === null ? current : Math.max(0, current - 1)));
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [settings, step]);
+
+  useEffect(() => {
+    if (step !== 'select' || printCountdown !== 0 || isBusy || captures.length < 4) return;
+    void printNow();
+  }, [captures.length, isBusy, printCountdown, step]);
 
   if (!settings) return <GuestShell><p className="quiet">LOADING</p></GuestShell>;
 
@@ -231,9 +424,48 @@ function GuestApp() {
         <section className="welcome-screen">
           <div>
             <p className="brand">{settings.eventName || 'AVIEBELLE PHOTO BOOTH'}</p>
-            <button className="booth-button primary" onClick={startSession} disabled={isBusy}>
+            <button className="booth-button primary" onClick={() => setStep('style')} disabled={isBusy}>
               {buttonText('START')}
             </button>
+          </div>
+        </section>
+      )}
+
+      {step === 'style' && (
+        <section className="template-guest-screen">
+          <p className="instruction">CHOOSE A STYLE</p>
+          {activeDesigns.length === 0 && <p className="quiet">ASK ADMIN TO ADD A TEMPLATE</p>}
+          <div className="style-card-grid">
+            {TEMPLATE_STYLES.map((style) => {
+              const count = activeDesigns.filter((design) => design.styleId === style.id).length;
+              return (
+                <button key={style.id} className="style-card" onClick={() => chooseStyle(style.id)} disabled={count === 0}>
+                  <TemplateMini styleId={style.id} />
+                  <span>{style.name.toUpperCase()}</span>
+                  <small>{style.shotCount} SHOTS / CHOOSE {style.selectCount}</small>
+                  <small>{count} DESIGN{count === 1 ? '' : 'S'}</small>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {step === 'design' && (
+        <section className="template-guest-screen">
+          <button className="guest-back-button" onClick={() => setStep('style')}>
+            {buttonText('BACK')}
+          </button>
+          <p className="instruction">CHOOSE A DESIGN</p>
+          <div className="design-card-grid">
+            {activeDesigns
+              .filter((design) => design.styleId === selectedStyleId)
+              .map((design) => (
+                <button key={design.id} className="design-card" onClick={() => chooseDesign(design)}>
+                  <TemplateImagePreview design={design} />
+                  <span>{design.name.toUpperCase()}</span>
+                </button>
+              ))}
           </div>
         </section>
       )}
@@ -246,66 +478,72 @@ function GuestApp() {
 
       {step === 'capture' && (
         <section className="capture-screen">
-          <video ref={videoRef} className={settings.mirrorPreview ? 'mirror' : ''} playsInline muted />
-          <div className="capture-progress">{captures.length + 1 <= 4 ? `${captures.length + 1} / 4` : '4 / 4'}</div>
+          <video ref={videoRef} className={getCameraVideoClass(settings)} playsInline muted />
+          <div className="capture-print-guide" style={slotGuideStyle(getPrimarySlot(selectedStyleId, captures.length))} />
+          <div className="capture-progress">
+            {captures.length + 1 <= selectedStyle.shotCount ? `${captures.length + 1} / ${selectedStyle.shotCount}` : `${selectedStyle.shotCount} / ${selectedStyle.shotCount}`}
+          </div>
           {captureMessage && <div className="capture-message">{captureMessage}</div>}
           {countdown && <div className="countdown">{countdown}</div>}
         </section>
       )}
 
       {step === 'select' && (
-        <section className="selection-screen">
+        <section className={`selection-screen ${getCameraOrientationClass(settings)}`}>
           <p className="instruction">
-            {printLayout === 'grid' ? 'PRINT ALL 4 IMAGES.' : 'PLEASE CHOOSE A PICTURE TO PRINT.'}
+            {selectedStyle.selectCount === 1 ? 'PLEASE CHOOSE A PICTURE TO PRINT.' : `PLEASE CHOOSE ${selectedStyle.selectCount} PICTURES TO PRINT.`}
           </p>
-          <div className="print-mode-row">
-            {settings.printPicker.showSingle && (
-              <PrintModeButton layout="single" current={printLayout} onSelect={setPrintLayout} label="Large">
-                <Square size={28} />
-              </PrintModeButton>
-            )}
-            {settings.printPicker.showGrid && (
-              <PrintModeButton layout="grid" current={printLayout} onSelect={setPrintLayout} label="Grid">
-                <Grid2X2 size={28} />
-              </PrintModeButton>
-            )}
-            {settings.printPicker.showAi && (
-              <PrintModeButton layout="ai" current={printLayout} onSelect={setPrintLayout} label="AI" disabled>
-                <span className="ai-icon">AI</span>
-              </PrintModeButton>
-            )}
-            {settings.printPicker.showFuture && (
-              <PrintModeButton layout="future" current={printLayout} onSelect={setPrintLayout} label="Soon" disabled>
-                <Sparkles size={28} />
-              </PrintModeButton>
-            )}
-          </div>
+          {selectedDesign && (
+            <div className="selected-template-pill">
+              <span>{selectedDesign.name.toUpperCase()}</span>
+              {selectedDesign.usesAi && <strong>AI</strong>}
+            </div>
+          )}
 
-          <div className="selection-grid">
+          <div className={`selection-grid ${getCameraOrientationClass(settings)}`}>
             {captures.map((photo, index) => (
               <button
                 key={photo.path}
-                className={`selection-photo ${selectedCaptureIndex === index || printLayout === 'grid' ? 'selected' : ''}`}
-                onClick={() => setSelectedCaptureIndex(index)}
+                className={`selection-photo ${selectedCaptureIndexes.includes(index) ? 'selected' : ''}`}
+                onClick={() => setSelectedCaptureIndexes(toggleSelectedIndex(selectedCaptureIndexes, index, selectedStyle.selectCount))}
               >
                 <img src={photo.dataUrl} alt={`Captured photo ${index + 1}`} />
               </button>
             ))}
           </div>
-          <button className="booth-button primary" onClick={printNow} disabled={isBusy || captures.length < 4}>
-            {buttonText(isBusy ? 'PRINTING' : 'PRINT NOW')}
+          <button
+            className="booth-button primary selection-print-button"
+            onClick={printNow}
+            disabled={isBusy || selectedPhotoDataUrls.length < selectedStyle.selectCount}
+          >
+            {buttonText(isBusy ? 'PRINTING' : printCountdown && printCountdown > 0 ? `PRINT NOW ${printCountdown}` : 'PRINT NOW')}
           </button>
         </section>
       )}
 
       {step === 'thanks' && (
         <section className="thanks-screen">
-          {printedPreview && (
-            <div className="thanks-preview">
-              <img src={printedPreview} alt="Printed layout preview" />
+          {thankYouCountdown !== null && (
+            <div className="thanks-top-actions">
+              <div className="thanks-countdown">{thankYouCountdown}</div>
+              <button onClick={resetGuestSession}>Restart</button>
             </div>
           )}
-          <p className="brand">THANK YOU!</p>
+          {(printedPreview || isAiGenerating) && (
+            <div className={`thanks-preview ${isAiGenerating ? 'generating' : ''}`}>
+              {printedPreview && <img src={printedPreview} alt="Printed layout preview" />}
+              {isAiGenerating && <span>GENERATING</span>}
+            </div>
+          )}
+          <p className="brand">{settings.workflow.thankYouMessage.toUpperCase()}</p>
+          {printedNumber && (
+            <div className="pickup-number">
+              <span>PHOTO NO.</span>
+              <strong>{printedNumber}</strong>
+              <span>REMEMBER IT TO FIND YOUR PIC</span>
+            </div>
+          )}
+          {isAiGenerating && <p className="ai-wait-message">THIS WILL TAKE A BIT LONGER. PLEASE WAIT NEAR THE PRINTING AREA.</p>}
         </section>
       )}
 
@@ -323,32 +561,43 @@ function GuestShell({ children, flash = false }: { children: React.ReactNode; fl
   );
 }
 
-function PrintModeButton({
-  layout,
-  current,
-  onSelect,
-  label,
-  disabled = false,
-  children
-}: {
-  layout: PrintLayout;
-  current: PrintLayout;
-  onSelect: (layout: PrintLayout) => void;
-  label: string;
-  disabled?: boolean;
-  children: React.ReactNode;
-}) {
+function TemplateMini({ styleId }: { styleId: TemplateStyleId }) {
+  const style = getTemplateStyle(styleId);
   return (
-    <button
-      className={`print-mode-button ${current === layout ? 'active' : ''}`}
-      onClick={() => onSelect(layout)}
-      disabled={disabled}
-      title={label}
-      aria-label={label}
-    >
-      {children}
-    </button>
+    <div className="template-mini">
+      {style.slots.map((slot, index) => (
+        <span
+          key={`${slot.x}-${slot.y}-${index}`}
+          style={{
+            left: `${(slot.x / 2478) * 100}%`,
+            top: `${(slot.y / 3690) * 100}%`,
+            width: `${(slot.width / 2478) * 100}%`,
+            height: `${(slot.height / 3690) * 100}%`
+          }}
+        />
+      ))}
+    </div>
   );
+}
+
+function TemplateImagePreview({ design }: { design: TemplateDesign }) {
+  const [src, setSrc] = useState('');
+  useEffect(() => {
+    let active = true;
+    void window.photoBooth
+      .getImageDataUrl(templatePreviewPath(design))
+      .then((dataUrl) => {
+        if (active) setSrc(dataUrl);
+      })
+      .catch(() => {
+        if (active) setSrc('');
+      });
+    return () => {
+      active = false;
+    };
+  }, [design.previewPath, design.framePath, design.filePath]);
+
+  return <div className="design-preview">{src ? <img src={src} alt={design.name} /> : <TemplateMini styleId={design.styleId} />}</div>;
 }
 
 function AdminApp() {
@@ -358,6 +607,11 @@ function AdminApp() {
   const [printers, setPrinters] = useState<Electron.PrinterInfo[]>([]);
   const [cameras, setCameras] = useState<MediaDeviceInfo[]>([]);
   const [message, setMessage] = useState('');
+  const [gallerySearch, setGallerySearch] = useState('');
+  const [cameraCapabilities, setCameraCapabilities] = useState<CameraCapabilitiesMap>({});
+  const [cameraDefaultControls, setCameraDefaultControls] = useState<CameraControlSettings>({});
+  const [templateStyleId, setTemplateStyleId] = useState<TemplateStyleId>('style1');
+  const [aiPresetDraft, setAiPresetDraft] = useState({ name: '', prompt: '', negativePrompt: '' });
   const cameraPreviewRef = useRef<HTMLVideoElement>(null);
   const [adminStream, setAdminStream] = useState<MediaStream | null>(null);
 
@@ -383,6 +637,10 @@ function AdminApp() {
   }, []);
 
   useEffect(() => {
+    if (tab === 'gallery') void refreshGallery();
+  }, [tab]);
+
+  useEffect(() => {
     if (tab !== 'camera' || !settings) return undefined;
     let stream: MediaStream | null = null;
     const start = async () => {
@@ -391,6 +649,9 @@ function AdminApp() {
           video: settings.cameraId ? { deviceId: { exact: settings.cameraId } } : true,
           audio: false
         });
+        setCameraDefaultControls(getCameraControlSettings(stream));
+        await applyCameraControls(stream, settings.cameraControls);
+        setCameraCapabilities(getCameraCapabilities(stream));
         setAdminStream(stream);
         if (cameraPreviewRef.current) {
           cameraPreviewRef.current.srcObject = stream;
@@ -404,10 +665,17 @@ function AdminApp() {
     return () => {
       stream?.getTracks().forEach((track) => track.stop());
       setAdminStream(null);
+      setCameraCapabilities({});
+      setCameraDefaultControls({});
     };
-  }, [settings, tab]);
+  }, [settings?.cameraId, tab]);
 
   const latestFinal = useMemo(() => gallery.finals[0], [gallery]);
+  const filteredFinals = useMemo(() => {
+    const query = gallerySearch.trim().toLowerCase();
+    if (!query) return gallery.finals;
+    return gallery.finals.filter((photo) => photoNumber(photo.name).includes(query) || photo.name.toLowerCase().includes(query));
+  }, [gallery.finals, gallerySearch]);
 
   if (!settings) return <main className="admin-shell"><p>Loading</p></main>;
 
@@ -416,6 +684,106 @@ function AdminApp() {
     setMessage(text);
     window.setTimeout(() => setMessage(''), 2200);
     return next;
+  };
+
+  const saveCameraControl = async (key: CameraControlKey, value: number) => {
+    const cameraControls = { ...settings.cameraControls, [key]: value };
+    await saveMessage({ cameraControls }, 'Camera control saved.');
+    if (adminStream) void applyCameraControls(adminStream, cameraControls);
+  };
+
+  const resetCameraControls = async () => {
+    const defaults = getManualCameraDefaults(cameraCapabilities);
+    await saveMessage({ cameraControls: defaults }, 'Camera controls reset.');
+    if (adminStream) void applyCameraControls(adminStream, defaults);
+  };
+
+  const restartAdminCameraPreview = async () => {
+    adminStream?.getTracks().forEach((track) => track.stop());
+    setAdminStream(null);
+    setCameraCapabilities({});
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: settings.cameraId ? { deviceId: { exact: settings.cameraId } } : true,
+        audio: false
+      });
+      setCameraDefaultControls(getCameraControlSettings(stream));
+      setCameraCapabilities(getCameraCapabilities(stream));
+      setAdminStream(stream);
+      if (cameraPreviewRef.current) {
+        cameraPreviewRef.current.srcObject = stream;
+        await cameraPreviewRef.current.play();
+      }
+    } catch {
+      setMessage('Camera preview failed.');
+    }
+  };
+
+  const saveTemplateDesign = async (design: TemplateDesign) => {
+    const updated = await window.photoBooth.updateTemplate(design);
+    await saveMessage(
+      {
+        template: {
+          ...settings.template,
+          designs: settings.template.designs.map((item) => (item.id === design.id ? updated : item))
+        }
+      },
+      'Template saved.'
+    );
+  };
+
+  const refreshSettings = async () => {
+    await updateSettings({});
+  };
+
+  const uploadTemplate = async (styleId: TemplateStyleId) => {
+    try {
+      const design = await window.photoBooth.uploadTemplate({ styleId });
+      if (design) {
+        await refreshSettings();
+        setMessage('Template uploaded.');
+      }
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Template upload failed.');
+    }
+  };
+
+  const deleteTemplateDesign = async (design: TemplateDesign) => {
+    await window.photoBooth.deleteTemplate(design.id);
+    await refreshSettings();
+    setMessage('Template deleted.');
+  };
+
+  const updateTemplateAsset = async (design: TemplateDesign, role: 'preview' | 'frame') => {
+    try {
+      const updated = await window.photoBooth.updateTemplateAsset(design.id, role);
+      if (!updated) return;
+      await refreshSettings();
+      setMessage(role === 'preview' ? 'Preview image updated.' : 'Print frame updated.');
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Template asset failed.');
+    }
+  };
+
+  const saveGuide = async (styleId: TemplateStyleId) => {
+    const dataUrl = await createGuideTemplateImage(styleId);
+    const filePath = await window.photoBooth.saveGuideTemplate(styleId, dataUrl);
+    setMessage(`Guide saved: ${filePath}`);
+  };
+
+  const addAiPreset = async () => {
+    const now = new Date().toISOString();
+    const preset: AiPreset = {
+      id: `ai-${Date.now()}`,
+      name: aiPresetDraft.name.trim() || 'AI Preset',
+      prompt: aiPresetDraft.prompt,
+      negativePrompt: aiPresetDraft.negativePrompt,
+      active: true,
+      createdAt: now,
+      updatedAt: now
+    };
+    await saveMessage({ template: { ...settings.template, aiPresets: [...settings.template.aiPresets, preset] } }, 'AI preset saved.');
+    setAiPresetDraft({ name: '', prompt: '', negativePrompt: '' });
   };
 
   return (
@@ -440,8 +808,8 @@ function AdminApp() {
       <section className="admin-panel">
         <header className="admin-header">
           <h1>{tab.toUpperCase()}</h1>
-          {message && <p>{message}</p>}
         </header>
+        {message && <p className="admin-toast">{message}</p>}
 
         {tab === 'event' && (
           <AdminSection>
@@ -480,6 +848,14 @@ function AdminApp() {
               </button>
               <button
                 onClick={async () => {
+                  await window.photoBooth.openGuestPickerPreview();
+                  setMessage('Guest photo picker opened.');
+                }}
+              >
+                Open photo picker
+              </button>
+              <button
+                onClick={async () => {
                   await window.photoBooth.openGuest();
                   await window.photoBooth.setGuestFullscreen(true);
                   setMessage('Guest window opened fullscreen.');
@@ -501,28 +877,55 @@ function AdminApp() {
 
         {tab === 'camera' && (
           <AdminSection>
-            <div className="admin-preview">
-              <video ref={cameraPreviewRef} className={settings.mirrorPreview ? 'mirror' : ''} muted playsInline />
-              {!adminStream && <span>No preview</span>}
+            <div className="camera-admin-layout">
+              <div className="camera-settings-column">
+                <label>
+                  Camera
+                  <select value={settings.cameraId} onChange={(event) => void saveMessage({ cameraId: event.target.value }, 'Camera saved.')}>
+                    <option value="">Default camera</option>
+                    {cameras.map((camera) => (
+                      <option key={camera.deviceId} value={camera.deviceId}>{camera.label || 'Camera'}</option>
+                    ))}
+                  </select>
+                </label>
+                <label className="check-row">
+                  <input
+                    type="checkbox"
+                    checked={settings.mirrorPreview}
+                    onChange={(event) => void saveMessage({ mirrorPreview: event.target.checked }, 'Mirror setting saved.')}
+                  />
+                  Mirror preview
+                </label>
+                <label>
+                  Camera rotation
+                  <select
+                    value={settings.cameraRotation}
+                    onChange={(event) =>
+                      void saveMessage({ cameraRotation: Number(event.target.value) as CameraRotation }, 'Camera rotation saved.')
+                    }
+                  >
+                    <option value={0}>0 degrees</option>
+                    <option value={90}>90 degrees</option>
+                    <option value={180}>180 degrees</option>
+                    <option value={270}>270 degrees</option>
+                  </select>
+                </label>
+                <div className="camera-controls-panel">
+                  <div className="panel-title-row">
+                    <h2>Camera controls</h2>
+                    <button onClick={resetCameraControls}>Default</button>
+                  </div>
+                  <CameraControlPanel capabilities={cameraCapabilities} values={settings.cameraControls} onChange={saveCameraControl} />
+                </div>
+              </div>
+              <div className="camera-preview-column">
+                <div className={`admin-preview ${getCameraOrientationClass(settings)}`}>
+                  <video ref={cameraPreviewRef} className={getCameraVideoClass(settings)} muted playsInline />
+                  {!adminStream && <span>No preview</span>}
+                </div>
+                <button className="admin-action" onClick={refreshCameras}><RefreshCw size={16} />Refresh cameras</button>
+              </div>
             </div>
-            <label>
-              Camera
-              <select value={settings.cameraId} onChange={(event) => void saveMessage({ cameraId: event.target.value }, 'Camera saved.')}>
-                <option value="">Default camera</option>
-                {cameras.map((camera) => (
-                  <option key={camera.deviceId} value={camera.deviceId}>{camera.label || 'Camera'}</option>
-                ))}
-              </select>
-            </label>
-            <label className="check-row">
-              <input
-                type="checkbox"
-                checked={settings.mirrorPreview}
-                onChange={(event) => void saveMessage({ mirrorPreview: event.target.checked }, 'Mirror setting saved.')}
-              />
-              Mirror preview
-            </label>
-            <button className="admin-action" onClick={refreshCameras}><RefreshCw size={16} />Refresh cameras</button>
           </AdminSection>
         )}
 
@@ -537,6 +940,44 @@ function AdminApp() {
                 ))}
               </select>
             </label>
+            <label className="check-row">
+              <input
+                type="checkbox"
+                checked={settings.silentPrint}
+                onChange={(event) => void saveMessage({ silentPrint: event.target.checked }, 'Silent print saved.')}
+              />
+              Silent print
+            </label>
+            <div className="workflow-shot">
+              <h2>Template printers</h2>
+              <div className="workflow-grid">
+                {TEMPLATE_STYLES.map((style) => (
+                  <label key={style.id}>
+                    {style.name} printer
+                    <select
+                      value={settings.stylePrinters[style.id]}
+                      onChange={(event) =>
+                        void saveMessage(
+                          {
+                            stylePrinters: {
+                              ...settings.stylePrinters,
+                              [style.id]: event.target.value
+                            }
+                          },
+                          'Style printer saved.'
+                        )
+                      }
+                    >
+                      <option value="">Default printer</option>
+                      <option value={settings.stylePrinters[style.id]}>{settings.stylePrinters[style.id] || 'Current value'}</option>
+                      {printers.map((printer) => (
+                        <option key={`${style.id}-${printer.name}`} value={printer.name}>{printer.displayName || printer.name}</option>
+                      ))}
+                    </select>
+                  </label>
+                ))}
+              </div>
+            </div>
             <div className="workflow-shot">
               <h2>Print calibration</h2>
               <div className="workflow-grid">
@@ -654,6 +1095,42 @@ function AdminApp() {
                 }
               />
             </label>
+            <label>
+              Auto print seconds
+              <input
+                type="number"
+                min="0"
+                step="1"
+                value={msToSeconds(settings.workflow.printAutoSelectMs)}
+                onChange={(event) =>
+                  void saveMessage(
+                    { workflow: { ...settings.workflow, printAutoSelectMs: secondsToMs(event.target.value) } },
+                    'Workflow saved.'
+                  )
+                }
+              />
+            </label>
+            <label>
+              Thank you message
+              <input
+                value={settings.workflow.thankYouMessage}
+                onChange={(event) =>
+                  void saveMessage({ workflow: { ...settings.workflow, thankYouMessage: event.target.value } }, 'Workflow saved.')
+                }
+              />
+            </label>
+            <label>
+              Thank you seconds
+              <input
+                type="number"
+                min="1"
+                step="0.5"
+                value={msToSeconds(settings.workflow.thankYouMs)}
+                onChange={(event) =>
+                  void saveMessage({ workflow: { ...settings.workflow, thankYouMs: secondsToMs(event.target.value) } }, 'Workflow saved.')
+                }
+              />
+            </label>
 
             <div className="workflow-shots">
               {settings.workflow.shots.slice(0, 4).map((shot, index) => (
@@ -717,104 +1194,177 @@ function AdminApp() {
                 </div>
               ))}
             </div>
-
-            <div className="workflow-shot">
-              <h2>Picture picking screen</h2>
-              <label className="check-row">
-                <input
-                  type="checkbox"
-                  checked={settings.printPicker.showSingle}
-                  onChange={(event) =>
-                    void saveMessage(
-                      {
-                        printPicker: {
-                          ...settings.printPicker,
-                          showSingle: event.target.checked,
-                          showGrid: event.target.checked ? settings.printPicker.showGrid : true
-                        }
-                      },
-                      'Print options saved.'
-                    )
-                  }
-                />
-                Show single image option
-              </label>
-              <label className="check-row">
-                <input
-                  type="checkbox"
-                  checked={settings.printPicker.showGrid}
-                  onChange={(event) =>
-                    void saveMessage(
-                      {
-                        printPicker: {
-                          ...settings.printPicker,
-                          showGrid: event.target.checked,
-                          showSingle: event.target.checked ? settings.printPicker.showSingle : true
-                        }
-                      },
-                      'Print options saved.'
-                    )
-                  }
-                />
-                Show 4 image grid option
-              </label>
-              <label className="check-row">
-                <input
-                  type="checkbox"
-                  checked={settings.printPicker.showAi}
-                  onChange={(event) =>
-                    void saveMessage({ printPicker: { ...settings.printPicker, showAi: event.target.checked } }, 'Print options saved.')
-                  }
-                />
-                Show AI option
-              </label>
-              <label className="check-row">
-                <input
-                  type="checkbox"
-                  checked={settings.printPicker.showFuture}
-                  onChange={(event) =>
-                    void saveMessage({ printPicker: { ...settings.printPicker, showFuture: event.target.checked } }, 'Print options saved.')
-                  }
-                />
-                Show future option
-              </label>
-            </div>
           </AdminSection>
         )}
 
         {tab === 'template' && (
           <AdminSection>
-            <div className="template-preview">
-              <div className="template-photo" />
-              <p>{(settings.template.eventName || settings.eventName).toUpperCase()}</p>
+            <div className="template-manager">
+              <div className="template-style-tabs">
+                {TEMPLATE_STYLES.map((style) => (
+                  <button
+                    key={style.id}
+                    className={templateStyleId === style.id ? 'active' : ''}
+                    onClick={() => setTemplateStyleId(style.id)}
+                  >
+                    {style.name}
+                  </button>
+                ))}
+              </div>
+              <div className="template-style-summary">
+                <TemplateMini styleId={templateStyleId} />
+                <div>
+                  <h2>{getTemplateStyle(templateStyleId).name}</h2>
+                  <p>{getTemplateStyle(templateStyleId).shotCount} shots / choose {getTemplateStyle(templateStyleId).selectCount}</p>
+                  <p>2478 x 3690 PNG. Transparent holes show the photos.</p>
+                  <div className="admin-actions">
+                    <button onClick={() => void saveGuide(templateStyleId)}>Download blank guide</button>
+                    <button onClick={() => void uploadTemplate(templateStyleId)}>Add print frame PNG</button>
+                  </div>
+                </div>
+              </div>
+              <div className="template-design-grid">
+                {settings.template.designs
+                  .filter((design) => design.styleId === templateStyleId)
+                  .map((design) => (
+                    <article className="template-design-admin" key={design.id}>
+                      <TemplateImagePreview design={design} />
+                      <input
+                        value={design.name}
+                        onChange={(event) => void saveTemplateDesign({ ...design, name: event.target.value })}
+                      />
+                      <label className="check-row">
+                        <input
+                          type="checkbox"
+                          checked={design.active}
+                          onChange={(event) => void saveTemplateDesign({ ...design, active: event.target.checked })}
+                        />
+                        Active
+                      </label>
+                      <label className="check-row">
+                        <input
+                          type="checkbox"
+                          checked={design.usesAi}
+                          onChange={(event) => void saveTemplateDesign({ ...design, usesAi: event.target.checked })}
+                        />
+                        AI frame
+                      </label>
+                      {design.usesAi && (
+                        <label>
+                          AI preset
+                          <select
+                            value={design.aiPresetId}
+                            onChange={(event) => void saveTemplateDesign({ ...design, aiPresetId: event.target.value })}
+                          >
+                            <option value="">Choose preset</option>
+                            {settings.template.aiPresets
+                              .filter((preset) => preset.active)
+                              .map((preset) => (
+                                <option key={preset.id} value={preset.id}>{preset.name}</option>
+                              ))}
+                          </select>
+                        </label>
+                      )}
+                      <div className="template-path-note">
+                        <span>Preview: {shortPath(templatePreviewPath(design))}</span>
+                        <span>Print frame: {shortPath(templateFramePath(design))}</span>
+                      </div>
+                      <div className="admin-actions">
+                        <button onClick={() => void updateTemplateAsset(design, 'preview')}>Upload preview</button>
+                        <button onClick={() => void updateTemplateAsset(design, 'frame')}>Upload print frame</button>
+                        <button onClick={() => window.photoBooth.openFile(templateFramePath(design))}>Open frame</button>
+                        <button className="danger" onClick={() => void deleteTemplateDesign(design)}>Delete</button>
+                      </div>
+                    </article>
+                  ))}
+              </div>
+              {settings.template.designs.filter((design) => design.styleId === templateStyleId).length === 0 && (
+                <p className="muted">No designs uploaded for this style yet.</p>
+              )}
             </div>
-            <label>
-              Template event text
-              <input
-                value={settings.template.eventName}
-                onChange={(event) => void saveMessage({ template: { ...settings.template, eventName: event.target.value } }, 'Template saved.')}
-              />
-            </label>
-            <div className="admin-actions">
-              <button onClick={async () => {
-                const logoPath = await window.photoBooth.chooseImage();
-                if (logoPath) await saveMessage({ template: { ...settings.template, logoPath } }, 'Logo saved.');
-              }}>Choose logo</button>
-              <button onClick={async () => {
-                const framePath = await window.photoBooth.chooseImage();
-                if (framePath) await saveMessage({ template: { ...settings.template, framePath } }, 'Frame saved.');
-              }}>Choose frame</button>
+
+            <div className="workflow-shot">
+              <h2>AI Presets</h2>
+              <div className="workflow-grid">
+                <label>
+                  Preset name
+                  <input value={aiPresetDraft.name} onChange={(event) => setAiPresetDraft({ ...aiPresetDraft, name: event.target.value })} />
+                </label>
+                <label>
+                  Prompt
+                  <input value={aiPresetDraft.prompt} onChange={(event) => setAiPresetDraft({ ...aiPresetDraft, prompt: event.target.value })} />
+                </label>
+                <label>
+                  Negative prompt
+                  <input
+                    value={aiPresetDraft.negativePrompt}
+                    onChange={(event) => setAiPresetDraft({ ...aiPresetDraft, negativePrompt: event.target.value })}
+                  />
+                </label>
+              </div>
+              <div className="admin-actions">
+                <button onClick={() => void addAiPreset()}>Add AI preset</button>
+              </div>
+              <div className="ai-preset-list">
+                {settings.template.aiPresets.map((preset) => (
+                  <article key={preset.id}>
+                    <input
+                      value={preset.name}
+                      onChange={(event) => {
+                        const aiPresets = settings.template.aiPresets.map((item) =>
+                          item.id === preset.id ? { ...preset, name: event.target.value, updatedAt: new Date().toISOString() } : item
+                        );
+                        void saveMessage({ template: { ...settings.template, aiPresets } }, 'AI preset saved.');
+                      }}
+                    />
+                    <input
+                      value={preset.prompt}
+                      onChange={(event) => {
+                        const aiPresets = settings.template.aiPresets.map((item) =>
+                          item.id === preset.id ? { ...preset, prompt: event.target.value, updatedAt: new Date().toISOString() } : item
+                        );
+                        void saveMessage({ template: { ...settings.template, aiPresets } }, 'AI preset saved.');
+                      }}
+                    />
+                    <label className="check-row">
+                      <input
+                        type="checkbox"
+                        checked={preset.active}
+                        onChange={(event) => {
+                          const aiPresets = settings.template.aiPresets.map((item) =>
+                            item.id === preset.id ? { ...preset, active: event.target.checked, updatedAt: new Date().toISOString() } : item
+                          );
+                          void saveMessage({ template: { ...settings.template, aiPresets } }, 'AI preset saved.');
+                        }}
+                      />
+                      Active
+                    </label>
+                    <button
+                      className="admin-action danger"
+                      onClick={() => {
+                        const aiPresets = settings.template.aiPresets.filter((item) => item.id !== preset.id);
+                        void saveMessage({ template: { ...settings.template, aiPresets } }, 'AI preset deleted.');
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </article>
+                ))}
+              </div>
             </div>
           </AdminSection>
         )}
 
         {tab === 'gallery' && (
           <AdminSection>
+            <label>
+              Search photo number
+              <input value={gallerySearch} onChange={(event) => setGallerySearch(event.target.value)} placeholder="Example: 12" />
+            </label>
             <div className="admin-actions">
               <button onClick={refreshGallery}><RefreshCw size={16} />Refresh gallery</button>
             </div>
-            <GalleryList title="Finals" photos={gallery.finals} onChanged={refreshGallery} />
-            <GalleryList title="Originals" photos={gallery.originals} onChanged={refreshGallery} />
+            <GalleryList title="Finals" photos={filteredFinals} settings={settings} onChanged={refreshGallery} />
           </AdminSection>
         )}
       </section>
@@ -826,27 +1376,49 @@ function AdminSection({ children }: { children: React.ReactNode }) {
   return <div className="admin-section">{children}</div>;
 }
 
-function GalleryList({ title, photos, onChanged }: { title: string; photos: SavedPhoto[]; onChanged: () => Promise<void> }) {
+function GalleryList({
+  title,
+  photos,
+  settings,
+  onChanged
+}: {
+  title: string;
+  photos: SavedPhoto[];
+  settings: AppSettings;
+  onChanged: () => Promise<void>;
+}) {
   return (
     <div className="gallery-list">
       <h2>{title}</h2>
       {photos.length === 0 && <p className="muted">No photos yet.</p>}
       <div className="gallery-card-grid">
         {photos.map((photo) => (
-          <GalleryCard key={photo.path} photo={photo} onChanged={onChanged} />
+          <GalleryCard key={photo.path} photo={photo} settings={settings} onChanged={onChanged} />
         ))}
       </div>
     </div>
   );
 }
 
-function GalleryCard({ photo, onChanged }: { photo: SavedPhoto; onChanged: () => Promise<void> }) {
+function GalleryCard({
+  photo,
+  settings,
+  onChanged
+}: {
+  photo: SavedPhoto;
+  settings: AppSettings;
+  onChanged: () => Promise<void>;
+}) {
   const [imageSrc, setImageSrc] = useState('');
+  const [orientation, setOrientation] = useState<'portrait' | 'landscape'>(
+    photo.type === 'final' || isPortraitCamera(settings) ? 'portrait' : 'landscape'
+  );
 
   useEffect(() => {
     let active = true;
+    setOrientation(photo.type === 'final' || isPortraitCamera(settings) ? 'portrait' : 'landscape');
     void window.photoBooth
-      .getImageDataUrl(photo.path)
+      .getImageDataUrl(photo.thumbPath ?? photo.path)
       .then((dataUrl) => {
         if (active) setImageSrc(dataUrl);
       })
@@ -856,12 +1428,23 @@ function GalleryCard({ photo, onChanged }: { photo: SavedPhoto; onChanged: () =>
     return () => {
       active = false;
     };
-  }, [photo.path]);
+  }, [photo.path, photo.type, settings.cameraRotation]);
 
   return (
     <article className="gallery-card">
-      <div className="gallery-card-thumb">
-        {imageSrc ? <img src={imageSrc} alt={photo.name} /> : <Image size={34} />}
+      <div className={`gallery-card-thumb ${orientation}`}>
+        {imageSrc ? (
+          <img
+            src={imageSrc}
+            alt={photo.name}
+            onLoad={(event) => {
+              const image = event.currentTarget;
+              setOrientation(image.naturalHeight > image.naturalWidth ? 'portrait' : 'landscape');
+            }}
+          />
+        ) : (
+          <Image size={34} />
+        )}
       </div>
       <div className="gallery-card-footer">
         <div className="gallery-card-text">
@@ -895,6 +1478,55 @@ function GalleryCard({ photo, onChanged }: { photo: SavedPhoto; onChanged: () =>
   );
 }
 
+function CameraControlPanel({
+  capabilities,
+  values,
+  onChange
+}: {
+  capabilities: CameraCapabilitiesMap;
+  values: CameraControlSettings;
+  onChange: (key: CameraControlKey, value: number) => void;
+}) {
+  const controls = CAMERA_CONTROL_FIELDS.filter((field) => capabilities[field.key]);
+  if (controls.length === 0) {
+    return <p className="muted">This camera does not expose image controls to Electron.</p>;
+  }
+
+  return (
+    <div className="camera-control-list">
+      {controls.map((field) => {
+        const capability = capabilities[field.key];
+        if (!capability) return null;
+        const step = capability.step || 1;
+        const value = values[field.key] ?? defaultCameraControlValue(capability);
+        return (
+          <label key={field.key}>
+            {field.label}
+            <div className="range-row">
+              <input
+                type="range"
+                min={capability.min}
+                max={capability.max}
+                step={step}
+                value={value}
+                onChange={(event) => onChange(field.key, Number(event.target.value))}
+              />
+              <input
+                type="number"
+                min={capability.min}
+                max={capability.max}
+                step={step}
+                value={value}
+                onChange={(event) => onChange(field.key, Number(event.target.value))}
+              />
+            </div>
+          </label>
+        );
+      })}
+    </div>
+  );
+}
+
 const delay = (ms: number) => new Promise((resolve) => window.setTimeout(resolve, ms));
 
 const waitFor = async <T,>(getValue: () => T | null, timeoutMs = 2500) => {
@@ -911,12 +1543,144 @@ const msToSeconds = (ms: number) => Number((ms / 1000).toFixed(1));
 
 const secondsToMs = (value: string) => Math.max(0, Math.round(Number(value || 0) * 1000));
 
-const defaultPrintLayout = (settings: AppSettings): PrintLayout =>
-  settings.printPicker.showSingle ? 'single' : settings.printPicker.showGrid ? 'grid' : 'single';
+const photoNumber = (name: string) => name.replace(/\.[^.]+$/, '');
 
-const isPrintLayoutVisible = (layout: PrintLayout, settings: AppSettings) => {
-  if (layout === 'single') return settings.printPicker.showSingle;
-  if (layout === 'grid') return settings.printPicker.showGrid;
-  if (layout === 'ai') return settings.printPicker.showAi;
-  return settings.printPicker.showFuture;
+const templatePreviewPath = (design: TemplateDesign) => design.previewPath || design.filePath || design.framePath;
+
+const templateFramePath = (design: TemplateDesign) => design.framePath || design.filePath || design.previewPath;
+
+const shortPath = (filePath: string) => filePath.split(/[\\/]/).slice(-2).join('/');
+
+const printerForStyle = (settings: AppSettings, styleId: TemplateStyleId) =>
+  settings.stylePrinters[styleId] || settings.defaultPrinter;
+
+type CameraControlKey = keyof CameraControlSettings;
+
+type CameraRangeCapability = {
+  min: number;
+  max: number;
+  step?: number;
 };
+
+type CameraCapabilitiesMap = Partial<Record<CameraControlKey, CameraRangeCapability>>;
+
+const CAMERA_CONTROL_FIELDS: Array<{ key: CameraControlKey; label: string }> = [
+  { key: 'brightness', label: 'Brightness' },
+  { key: 'contrast', label: 'Contrast' },
+  { key: 'saturation', label: 'Saturation' },
+  { key: 'sharpness', label: 'Sharpness' },
+  { key: 'exposureCompensation', label: 'Exposure' },
+  { key: 'zoom', label: 'Zoom' }
+];
+
+const isRangeCapability = (value: unknown): value is CameraRangeCapability => {
+  if (!value || typeof value !== 'object') return false;
+  const candidate = value as Partial<CameraRangeCapability>;
+  return typeof candidate.min === 'number' && typeof candidate.max === 'number';
+};
+
+const getCameraCapabilities = (stream: MediaStream): CameraCapabilitiesMap => {
+  const track = stream.getVideoTracks()[0];
+  if (!track?.getCapabilities) return {};
+  const rawCapabilities = track.getCapabilities() as Record<string, unknown>;
+  return CAMERA_CONTROL_FIELDS.reduce<CameraCapabilitiesMap>((next, field) => {
+    const capability = rawCapabilities[field.key];
+    if (isRangeCapability(capability)) next[field.key] = capability;
+    return next;
+  }, {});
+};
+
+const getCameraControlSettings = (stream: MediaStream | null): CameraControlSettings => {
+  const track = stream?.getVideoTracks()[0];
+  if (!track?.getSettings) return {};
+  const settings = track.getSettings() as Record<string, unknown>;
+  return CAMERA_CONTROL_FIELDS.reduce<CameraControlSettings>((next, field) => {
+    const value = settings[field.key];
+    if (typeof value === 'number') next[field.key] = value;
+    return next;
+  }, {});
+};
+
+const getManualCameraDefaults = (capabilities: CameraCapabilitiesMap): CameraControlSettings =>
+  CAMERA_CONTROL_FIELDS.reduce<CameraControlSettings>((next, field) => {
+    const capability = capabilities[field.key];
+    if (!capability) return next;
+    const requestedValue = field.key === 'zoom' ? 0 : 50;
+    next[field.key] = Math.min(capability.max, Math.max(capability.min, requestedValue));
+    return next;
+  }, {});
+
+const defaultCameraControlValue = (capability: CameraRangeCapability) => (capability.min + capability.max) / 2;
+
+const applyCameraControls = async (stream: MediaStream, controls: CameraControlSettings) => {
+  try {
+    const track = stream.getVideoTracks()[0];
+    if (!track?.applyConstraints || !track.getCapabilities) return;
+    const capabilities = getCameraCapabilities(stream);
+    const advanced = CAMERA_CONTROL_FIELDS.reduce<Record<string, number>>((next, field) => {
+      const value = controls[field.key];
+      const capability = capabilities[field.key];
+      if (typeof value === 'number' && capability) {
+        next[field.key] = Math.min(capability.max, Math.max(capability.min, value));
+      }
+      return next;
+    }, {});
+    if (Object.keys(advanced).length === 0) return;
+    await track.applyConstraints({ advanced: [advanced as MediaTrackConstraintSet] });
+  } catch (error) {
+    console.warn('Camera controls are not supported by this device.', error);
+  }
+};
+
+const toggleSelectedIndex = (current: number[], index: number, maxCount: number) => {
+  if (current.includes(index)) return current.filter((item) => item !== index);
+  return [...current, index].slice(-maxCount);
+};
+
+const styleNeedsSelection = (styleId: TemplateStyleId) => styleId === 'style1' || styleId === 'style2';
+
+const slotGuideStyle = (slot: { width: number; height: number }) =>
+  ({
+    aspectRatio: `${slot.width} / ${slot.height}`,
+    '--slot-aspect': slot.width / slot.height
+  }) as CSSProperties;
+
+const createPickerPlaceholderCaptures = (settings: AppSettings): Capture[] =>
+  Array.from({ length: 4 }, (_item, index) => {
+    const isPortrait = isPortraitCamera(settings);
+    const canvas = document.createElement('canvas');
+    canvas.width = isPortrait ? 900 : 1600;
+    canvas.height = isPortrait ? 1600 : 900;
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(24, 24, canvas.width - 48, canvas.height - 48);
+      ctx.fillStyle = '#fff';
+      ctx.font = '300 54px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(`PHOTO ${index + 1}`, canvas.width / 2, canvas.height / 2);
+    }
+    return {
+      dataUrl: canvas.toDataURL('image/png'),
+      path: `picker-placeholder-${index}`,
+      name: `placeholder-${index + 1}.png`
+    };
+  });
+
+const getCameraVideoClass = (settings: AppSettings) =>
+  [
+    'camera-video',
+    settings.mirrorPreview ? 'mirror' : '',
+    settings.cameraRotation ? `camera-rotate-${settings.cameraRotation}` : ''
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+const isPortraitCamera = (settings: AppSettings) => settings.cameraRotation === 90 || settings.cameraRotation === 270;
+
+const getCameraOrientationClass = (settings: AppSettings) =>
+  isPortraitCamera(settings) ? 'camera-placeholder-portrait' : 'camera-placeholder-landscape';

@@ -5,16 +5,33 @@ const fallbackSettings: AppSettings = {
   eventFolder: 'Browser preview',
   cameraId: '',
   mirrorPreview: true,
+  cameraRotation: 0,
+  cameraControls: {},
   defaultPrinter: '',
+  stylePrinters: {
+    style1: 'DS-RX1',
+    style2: 'DS-RX1',
+    style3: 'DS-RX1',
+    style4: 'DS-RX1-HaflCut'
+  },
+  silentPrint: false,
   adminPassword: '',
   template: {
     eventName: 'AVIEBELLE PHOTO BOOTH',
     logoPath: '',
-    framePath: ''
+    framePath: '',
+    styleVersion: 2,
+    selectedStyleId: 'style1',
+    selectedDesignId: '',
+    aiPresets: [],
+    designs: []
   },
   workflow: {
     introMessage: "Let's take 4 pictures!",
     introMs: 2000,
+    printAutoSelectMs: 20000,
+    thankYouMessage: 'THANK YOU!',
+    thankYouMs: 3000,
     shots: [
       { message: 'Get Ready!', cameraBeforeMessageMs: 3000, messageMs: 2000, cameraBeforeCountdownMs: 3000 },
       { message: 'Smile!', cameraBeforeMessageMs: 3000, messageMs: 2000, cameraBeforeCountdownMs: 3000 },
@@ -38,6 +55,7 @@ const fallbackSettings: AppSettings = {
 
 const settingsKey = 'aviebelle-preview-settings';
 const gallery: Gallery = { originals: [], finals: [] };
+let photoSequence = 0;
 
 export function installMockApi() {
   if (window.photoBooth) return;
@@ -59,6 +77,8 @@ export function installMockApi() {
         }))
       },
       printPicker: { ...fallbackSettings.printPicker, ...(parsed.printPicker ?? {}) },
+      cameraControls: { ...fallbackSettings.cameraControls, ...(parsed.cameraControls ?? {}) },
+      stylePrinters: { ...fallbackSettings.stylePrinters, ...(parsed.stylePrinters ?? {}) },
       printCalibration: { ...fallbackSettings.printCalibration, ...(parsed.printCalibration ?? {}) }
     };
   };
@@ -82,6 +102,8 @@ export function installMockApi() {
           shots: partial.workflow?.shots ?? current.workflow.shots
         },
         printPicker: { ...current.printPicker, ...(partial.printPicker ?? {}) },
+        cameraControls: { ...current.cameraControls, ...(partial.cameraControls ?? {}) },
+        stylePrinters: { ...current.stylePrinters, ...(partial.stylePrinters ?? {}) },
         printCalibration: { ...current.printCalibration, ...(partial.printCalibration ?? {}) }
       });
     },
@@ -96,12 +118,22 @@ export function installMockApi() {
       }
     },
     chooseImage: async () => '',
+    uploadTemplate: async () => null,
+    deleteTemplate: async () => true,
+    updateTemplate: async (design) => design,
+    updateTemplateAsset: async () => null,
+    getImageSize: async () => ({ width: 2478, height: 3690 }),
+    saveGuideTemplate: async (styleId) => `Browser preview - ${styleId}-blank-guide.png`,
     openAdmin: async () => {
       window.open(`${window.location.origin}?window=admin`, '_blank');
       return true;
     },
     openGuest: async () => {
       window.open(window.location.origin, '_blank');
+      return true;
+    },
+    openGuestPickerPreview: async () => {
+      window.open(`${window.location.origin}?preview=picker`, '_blank');
       return true;
     },
     setGuestFullscreen: async (fullscreen: boolean) => {
@@ -115,10 +147,12 @@ export function installMockApi() {
       document.addEventListener('fullscreenchange', listener);
       return () => document.removeEventListener('fullscreenchange', listener);
     },
+    onOpenGuestPickerPreview: () => () => undefined,
     listPrinters: async () => [],
     saveImage: async (request: SaveImageRequest): Promise<SaveImageResult> => {
-      const name = `${request.filenamePrefix ?? request.kind}-${Date.now()}.png`;
-      const saved = { name, path: name, type: request.kind, createdAt: new Date().toISOString() };
+      photoSequence += 1;
+      const name = `${photoSequence}.png`;
+      const saved = { name, path: name, thumbPath: name, type: request.kind, createdAt: new Date().toISOString() };
       if (request.kind === 'original') gallery.originals.unshift(saved);
       if (request.kind === 'final') gallery.finals.unshift(saved);
       return { name, path: name };
