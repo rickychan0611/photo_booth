@@ -4,16 +4,64 @@ import path from 'node:path';
 import os from 'node:os';
 import { exec } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
-import type { AppSettings, Gallery, SaveImageRequest, SaveImageResult, SavedPhoto, TemplateAssetRole, TemplateDesign, TemplateStyleId, TemplateUploadRequest } from './types';
+import type {
+  AiGenerateRequest,
+  AiGenerateResult,
+  AiPreset,
+  AiProvider,
+  AiQueueItem,
+  AppSettings,
+  Gallery,
+  SaveImageRequest,
+  SaveImageResult,
+  SavedPhoto,
+  TemplateAssetRole,
+  TemplateDesign,
+  TemplateStyleId,
+  TemplateUploadRequest
+} from './types';
 
 let guestWindow: BrowserWindow | null = null;
 let adminWindow: BrowserWindow | null = null;
 let lastFinalPath = '';
 
+const PRINT_PREVIEW_WIDTH = 1239;
+const PRINT_PREVIEW_HEIGHT = 1845;
+const STYLE4_HALFCUT_PRINTER = 'DS-RX1-HalfCut';
+const PRINTER_ALIASES = new Map<string, string>([['DS-RX1-HaflCut', STYLE4_HALFCUT_PRINTER]]);
+
 const isDev = Boolean(process.env.VITE_DEV_SERVER_URL);
 
 const defaultEventFolder = () => path.join(app.getPath('pictures'), 'Aviebelle Photo Booth');
 const settingsPath = () => path.join(app.getPath('userData'), 'settings.json');
+
+const defaultAiSettings = (): AppSettings['ai'] => ({
+  provider: 'openai',
+  systemPrompt: 'Create a polished photo booth AI edit. Keep the guest recognizable and preserve a clean print-ready composition.',
+  thinkingLevel: 'low',
+  providers: {
+    openai: {
+      enabled: true,
+      apiKey: '',
+      apiUrl: 'https://api.openai.com/v1/images/edits',
+      model: 'gpt-image-2',
+      size: '1024x1536',
+      quality: 'low'
+    },
+    gemini: {
+      enabled: false,
+      apiKey: '',
+      apiUrl: 'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent',
+      model: 'gemini-3.1-flash-image-preview'
+    },
+    xai: {
+      enabled: false,
+      apiKey: '',
+      apiUrl: 'https://api.x.ai/v1/images/edits',
+      model: 'grok-imagine-image-quality'
+    }
+  }
+});
 
 const defaultSettings = (): AppSettings => ({
   eventName: 'AVIEBELLE PHOTO BOOTH',
@@ -21,16 +69,18 @@ const defaultSettings = (): AppSettings => ({
   cameraId: '',
   mirrorPreview: true,
   cameraRotation: 0,
+  cameraPreviewOverlay: 'none',
   cameraControls: {},
   defaultPrinter: '',
   stylePrinters: {
     style1: 'DS-RX1',
     style2: 'DS-RX1',
     style3: 'DS-RX1',
-    style4: 'DS-RX1-HaflCut'
+    style4: STYLE4_HALFCUT_PRINTER
   },
   silentPrint: false,
   adminPassword: '',
+  ai: defaultAiSettings(),
   template: {
     eventName: 'AVIEBELLE PHOTO BOOTH',
     logoPath: '',
@@ -61,10 +111,10 @@ const defaultSettings = (): AppSettings => ({
     showFuture: true
   },
   printCalibration: {
-    offsetXIn: -0.04,
-    offsetYIn: -0.08,
-    bleedXIn: 0.08,
-    bleedYIn: 0.14
+    leftBleedIn: 0.16,
+    rightBleedIn: 0.16,
+    topBleedIn: 0.08,
+    bottomBleedIn: 0.26
   }
 });
 
@@ -74,6 +124,10 @@ async function ensureEventFolders(eventFolder: string) {
   await fs.mkdir(path.join(eventFolder, 'originals', 'thumbs'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'finals', 'thumbs'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'templates'), { recursive: true });
+  await fs.mkdir(path.join(eventFolder, 'ai-presets'), { recursive: true });
+  await fs.mkdir(path.join(eventFolder, 'ai-queue'), { recursive: true });
+  await fs.mkdir(path.join(eventFolder, 'ai-queue', 'inputs'), { recursive: true });
+  await fs.mkdir(path.join(eventFolder, 'ai-queue', 'results'), { recursive: true });
   for (const styleId of ['style1', 'style2', 'style3', 'style4']) {
     await fs.mkdir(path.join(eventFolder, 'templates', styleId), { recursive: true });
   }
@@ -103,12 +157,14 @@ async function readSettings(): Promise<AppSettings> {
     const merged: AppSettings = {
       ...fallback,
       ...parsed,
+      defaultPrinter: normalizePrinterName(parsed.defaultPrinter ?? fallback.defaultPrinter),
+      ai: normalizeAiSettings(parsed.ai),
       template: {
         ...fallback.template,
         ...(parsed.template ?? {}),
         styleVersion: 2,
         selectedStyleId: normalizeTemplateStyleId(String(parsed.template?.selectedStyleId ?? fallback.template.selectedStyleId), isLegacyTemplateStyle),
-        aiPresets: parsed.template?.aiPresets ?? fallback.template.aiPresets,
+        aiPresets: (parsed.template?.aiPresets ?? fallback.template.aiPresets).map(normalizeAiPreset),
         designs: (parsed.template?.designs ?? fallback.template.designs).map((design) =>
           normalizeTemplateDesign(design, isLegacyTemplateStyle)
         )
@@ -129,14 +185,15 @@ async function readSettings(): Promise<AppSettings> {
         ...fallback.cameraControls,
         ...(parsed.cameraControls ?? {})
       },
-      stylePrinters: {
+      cameraPreviewOverlay: normalizeCameraPreviewOverlay(parsed.cameraPreviewOverlay),
+      stylePrinters: normalizeStylePrinters({
         ...fallback.stylePrinters,
         ...(parsed.stylePrinters ?? {})
-      },
-      printCalibration: {
+      }),
+      printCalibration: normalizePrintCalibration({
         ...fallback.printCalibration,
         ...(parsed.printCalibration ?? {})
-      }
+      })
     };
     if (isLegacyTemplateStyle) await migrateLegacyTemplateFolders(merged.eventFolder);
     await ensureEventFolders(merged.eventFolder);
@@ -149,9 +206,20 @@ async function readSettings(): Promise<AppSettings> {
 
 async function writeSettings(settings: AppSettings): Promise<AppSettings> {
   await fs.mkdir(app.getPath('userData'), { recursive: true });
-  await ensureEventFolders(settings.eventFolder);
-  await fs.writeFile(settingsPath(), `${JSON.stringify(settings, null, 2)}${os.EOL}`, 'utf8');
-  return settings;
+  const normalized = {
+    ...settings,
+    defaultPrinter: normalizePrinterName(settings.defaultPrinter),
+    ai: normalizeAiSettings(settings.ai),
+    template: {
+      ...settings.template,
+      aiPresets: settings.template.aiPresets.map(normalizeAiPreset)
+    },
+    stylePrinters: normalizeStylePrinters(settings.stylePrinters),
+    printCalibration: normalizePrintCalibration(settings.printCalibration)
+  };
+  await ensureEventFolders(normalized.eventFolder);
+  await fs.writeFile(settingsPath(), `${JSON.stringify(normalized, null, 2)}${os.EOL}`, 'utf8');
+  return normalized;
 }
 
 function windowUrl(kind: 'guest' | 'admin', extraQuery = '') {
@@ -214,6 +282,16 @@ async function listGallery(): Promise<Gallery> {
   const settings = await readSettings();
   await ensureEventFolders(settings.eventFolder);
 
+  const readPhotoMetadata = async (filePath: string) => {
+    const metadataPath = filePath.replace(/\.(png|jpe?g)$/i, '.json');
+    try {
+      const raw = await fs.readFile(metadataPath, 'utf8');
+      return JSON.parse(raw) as Partial<Pick<SavedPhoto, 'styleId' | 'designId' | 'printerName'>>;
+    } catch {
+      return {};
+    }
+  };
+
   const readDir = async (folder: string, type: SavedPhoto['type']): Promise<SavedPhoto[]> => {
     const dir = path.join(settings.eventFolder, folder);
     const entries = await fs.readdir(dir, { withFileTypes: true });
@@ -225,12 +303,16 @@ async function listGallery(): Promise<Gallery> {
           const thumbPath = path.join(dir, 'thumbs', entry.name);
           const stat = await fs.stat(filePath);
           const hasThumb = await fileExists(thumbPath);
+          const metadata = type === 'final' ? await readPhotoMetadata(filePath) : {};
           return {
             name: entry.name,
             path: filePath,
             thumbPath: hasThumb ? thumbPath : undefined,
             type,
-            createdAt: stat.birthtime.toISOString()
+            createdAt: stat.birthtime.toISOString(),
+            styleId: metadata.styleId,
+            designId: metadata.designId,
+            printerName: metadata.printerName ? normalizePrinterName(metadata.printerName) : undefined
           };
         })
     );
@@ -314,6 +396,79 @@ const normalizeTemplateDesign = (design: TemplateDesign, migrateLegacy = false):
     framePath: migrateLegacy ? migrateLegacyTemplatePath(framePath, originalStyleId) : framePath
   };
 };
+
+const normalizeAiProvider = (provider: string | undefined): AiProvider => {
+  if (provider === 'gemini' || provider === 'xai') return provider;
+  return 'openai';
+};
+
+const normalizeThinkingLevel = (level: unknown): AppSettings['ai']['thinkingLevel'] => {
+  if (level === 'none' || level === 'medium' || level === 'high') return level;
+  return 'low';
+};
+
+const normalizeAiSettings = (settings?: Partial<AppSettings['ai']>): AppSettings['ai'] => {
+  const fallback = defaultAiSettings();
+  return {
+    ...fallback,
+    ...(settings ?? {}),
+    provider: normalizeAiProvider(settings?.provider),
+    thinkingLevel: normalizeThinkingLevel(settings?.thinkingLevel),
+    providers: {
+      openai: { ...fallback.providers.openai, ...(settings?.providers?.openai ?? {}) },
+      gemini: { ...fallback.providers.gemini, ...(settings?.providers?.gemini ?? {}) },
+      xai: { ...fallback.providers.xai, ...(settings?.providers?.xai ?? {}) }
+    }
+  };
+};
+
+const normalizeAiPreset = (preset: AiPreset): AiPreset => ({
+  ...preset,
+  referenceImages: preset.referenceImages ?? []
+});
+
+const normalizePrinterName = (printerName = '') => PRINTER_ALIASES.get(printerName) ?? printerName;
+
+const normalizeCameraPreviewOverlay = (value: unknown): AppSettings['cameraPreviewOverlay'] => {
+  if (value === 'style1' || value === 'style2' || value === 'style3' || value === 'style4') return value;
+  if (value === 'portrait-tv') return 'style1';
+  if (value === 'landscape') return 'style2';
+  return 'none';
+};
+
+const normalizeStylePrinters = (stylePrinters: AppSettings['stylePrinters']): AppSettings['stylePrinters'] => ({
+  style1: normalizePrinterName(stylePrinters.style1),
+  style2: normalizePrinterName(stylePrinters.style2),
+  style3: normalizePrinterName(stylePrinters.style3),
+  style4: normalizePrinterName(stylePrinters.style4)
+});
+
+const normalizePrintCalibration = (calibration: Partial<AppSettings['printCalibration']>): AppSettings['printCalibration'] => ({
+  leftBleedIn:
+    typeof calibration.leftBleedIn === 'number'
+      ? calibration.leftBleedIn
+      : typeof calibration.offsetXIn === 'number'
+        ? Math.max(0, -calibration.offsetXIn)
+        : 0.16,
+  rightBleedIn:
+    typeof calibration.rightBleedIn === 'number'
+      ? calibration.rightBleedIn
+      : typeof calibration.bleedXIn === 'number' && typeof calibration.offsetXIn === 'number'
+        ? Math.max(0, calibration.bleedXIn + calibration.offsetXIn)
+        : 0.16,
+  topBleedIn:
+    typeof calibration.topBleedIn === 'number'
+      ? calibration.topBleedIn
+      : typeof calibration.offsetYIn === 'number'
+        ? Math.max(0, -calibration.offsetYIn)
+        : 0.08,
+  bottomBleedIn:
+    typeof calibration.bottomBleedIn === 'number'
+      ? calibration.bottomBleedIn
+      : typeof calibration.bleedYIn === 'number' && typeof calibration.offsetYIn === 'number'
+        ? Math.max(0, calibration.bleedYIn + calibration.offsetYIn)
+        : 0.26
+});
 
 const chooseTemplateAsset = async (role: TemplateAssetRole) => {
   const parent = modalParent();
@@ -458,6 +613,366 @@ async function writeThumbnail(sourceBuffer: Buffer, eventFolder: string, folder:
   await fs.writeFile(path.join(eventFolder, folder, 'thumbs', name), thumbnail.toPNG());
 }
 
+async function writePhotoMetadata(filePath: string, request: SaveImageRequest) {
+  if (request.kind !== 'final') return;
+  const metadata = {
+    name: path.basename(filePath),
+    styleId: request.styleId,
+    designId: request.designId,
+    printerName: request.printerName ? normalizePrinterName(request.printerName) : '',
+    createdAt: new Date().toISOString()
+  };
+  await fs.writeFile(filePath.replace(/\.(png|jpe?g)$/i, '.json'), `${JSON.stringify(metadata, null, 2)}${os.EOL}`, 'utf8');
+}
+
+async function saveImageData(request: SaveImageRequest): Promise<SaveImageResult> {
+  const settings = await readSettings();
+  await ensureEventFolders(settings.eventFolder);
+  const folder = request.kind === 'original' ? 'originals' : 'finals';
+  const name = await photoName(settings.eventFolder);
+  const filePath = path.join(settings.eventFolder, folder, name);
+  const buffer = dataUrlToBuffer(request.dataUrl);
+  await fs.writeFile(filePath, buffer);
+  await writeThumbnail(buffer, settings.eventFolder, folder, name);
+  await writePhotoMetadata(filePath, request);
+  if (request.kind === 'final') lastFinalPath = filePath;
+  return { path: filePath, name };
+}
+
+const aiQueuePath = (eventFolder: string) => path.join(eventFolder, 'ai-queue', 'queue.json');
+
+async function readAiQueue(settings?: AppSettings): Promise<AiQueueItem[]> {
+  settings = settings ?? await readSettings();
+  await ensureEventFolders(settings.eventFolder);
+  try {
+    const raw = await fs.readFile(aiQueuePath(settings.eventFolder), 'utf8');
+    return JSON.parse(raw) as AiQueueItem[];
+  } catch {
+    return [];
+  }
+}
+
+async function writeAiQueue(items: AiQueueItem[], settings?: AppSettings) {
+  settings = settings ?? await readSettings();
+  await ensureEventFolders(settings.eventFolder);
+  await fs.writeFile(aiQueuePath(settings.eventFolder), `${JSON.stringify(items, null, 2)}${os.EOL}`, 'utf8');
+}
+
+async function updateAiQueueItem(item: AiQueueItem, settings?: AppSettings) {
+  settings = settings ?? await readSettings();
+  const queue = await readAiQueue(settings);
+  const next = queue.some((queueItem) => queueItem.id === item.id)
+    ? queue.map((queueItem) => (queueItem.id === item.id ? item : queueItem))
+    : [item, ...queue];
+  await writeAiQueue(next, settings);
+  return item;
+}
+
+async function copyAiPresetImage(presetId: string) {
+  const sourcePath = await chooseTemplateAsset('preview');
+  if (!sourcePath) return null;
+  const settings = await readSettings();
+  const presets = settings.template.aiPresets.map(normalizeAiPreset);
+  const preset = presets.find((item) => item.id === presetId);
+  if (!preset) throw new Error('AI preset not found.');
+  const now = new Date().toISOString();
+  const id = `ref-${Date.now()}`;
+  const extension = path.extname(sourcePath).toLowerCase() || '.png';
+  const folder = path.join(settings.eventFolder, 'ai-presets', presetId);
+  await fs.mkdir(folder, { recursive: true });
+  const targetPath = path.join(folder, `${id}${extension}`);
+  await fs.copyFile(sourcePath, targetPath);
+  const referenceImage = { id, path: targetPath, name: path.basename(sourcePath), createdAt: now };
+  return writeSettings({
+    ...settings,
+    template: {
+      ...settings.template,
+      aiPresets: presets.map((item) =>
+        item.id === presetId
+          ? { ...item, referenceImages: [...item.referenceImages, referenceImage], updatedAt: now }
+          : item
+      )
+    }
+  });
+}
+
+async function removeAiPresetImage(presetId: string, imageId: string) {
+  const settings = await readSettings();
+  const presets = settings.template.aiPresets.map(normalizeAiPreset);
+  const preset = presets.find((item) => item.id === presetId);
+  const image = preset?.referenceImages.find((item) => item.id === imageId);
+  if (image) await fs.rm(image.path, { force: true });
+  const now = new Date().toISOString();
+  return writeSettings({
+    ...settings,
+    template: {
+      ...settings.template,
+      aiPresets: presets.map((item) =>
+        item.id === presetId
+          ? { ...item, referenceImages: item.referenceImages.filter((reference) => reference.id !== imageId), updatedAt: now }
+          : item
+      )
+    }
+  });
+}
+
+const dataUrlMimeType = (dataUrl: string) => dataUrl.match(/^data:([^;,]+)/)?.[1] ?? 'image/png';
+
+const fileToInlineImage = async (filePath: string) => {
+  const dataUrl = await imageFileToDataUrl(filePath);
+  return {
+    dataUrl,
+    mimeType: dataUrlMimeType(dataUrl),
+    base64: dataUrl.split(',')[1] ?? ''
+  };
+};
+
+const responseUrlToDataUrl = async (url: string) => {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`AI image download failed: ${response.status}`);
+  const mimeType = response.headers.get('content-type')?.split(';')[0] || 'image/png';
+  const buffer = Buffer.from(await response.arrayBuffer());
+  return `data:${mimeType};base64,${buffer.toString('base64')}`;
+};
+
+const aiPromptText = (settings: AppSettings, preset: AiPreset) =>
+  [
+    settings.ai.systemPrompt,
+    settings.ai.thinkingLevel === 'none'
+      ? ''
+      : `Thinking level: ${settings.ai.thinkingLevel}. Briefly plan the edit before generating, prioritize preserving identity, frame integrity, and print quality.`,
+    preset.prompt
+  ]
+    .filter(Boolean)
+    .join('\n\n');
+
+async function requestOpenAiImage(settings: AppSettings, preset: AiPreset, inputPath: string) {
+  const provider = settings.ai.providers.openai;
+  const input = await fileToInlineImage(inputPath);
+  const references = await Promise.all(preset.referenceImages.map((image) => fileToInlineImage(image.path)));
+  const form = new FormData();
+  form.append('model', provider.model);
+  form.append('prompt', aiPromptText(settings, preset));
+  form.append('size', provider.size || '1024x1536');
+  form.append('quality', provider.quality || 'low');
+  form.append('output_format', 'png');
+  for (const image of [input, ...references]) {
+    form.append('image[]', new Blob([Buffer.from(image.base64, 'base64')], { type: image.mimeType }), 'image.png');
+  }
+  const response = await fetch(provider.apiUrl, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${provider.apiKey}` },
+    body: form
+  });
+  const body = await response.json() as { data?: Array<{ b64_json?: string; url?: string }>; error?: { message?: string } };
+  if (!response.ok) throw new Error(body.error?.message || `OpenAI request failed: ${response.status}`);
+  const image = body.data?.[0];
+  if (image?.b64_json) return `data:image/png;base64,${image.b64_json}`;
+  if (image?.url) return responseUrlToDataUrl(image.url);
+  throw new Error('OpenAI did not return an image.');
+}
+
+async function requestGeminiImage(settings: AppSettings, preset: AiPreset, inputPath: string) {
+  const provider = settings.ai.providers.gemini;
+  const input = await fileToInlineImage(inputPath);
+  const references = await Promise.all(preset.referenceImages.map((image) => fileToInlineImage(image.path)));
+  const apiUrl = provider.apiUrl.includes('{model}')
+    ? provider.apiUrl.replace('{model}', encodeURIComponent(provider.model))
+    : provider.apiUrl;
+  const parts = [
+    { text: aiPromptText(settings, preset) },
+    ...[input, ...references].map((image) => ({
+      inline_data: {
+        mime_type: image.mimeType,
+        data: image.base64
+      }
+    }))
+  ];
+  const response = await fetch(apiUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-goog-api-key': provider.apiKey
+    },
+    body: JSON.stringify({
+      contents: [{ role: 'user', parts }],
+      generationConfig: { responseModalities: ['TEXT', 'IMAGE'] }
+    })
+  });
+  const body = await response.json() as {
+    candidates?: Array<{ content?: { parts?: Array<{ inlineData?: { data?: string; mimeType?: string }; inline_data?: { data?: string; mime_type?: string } }> } }>;
+    error?: { message?: string };
+  };
+  if (!response.ok) throw new Error(body.error?.message || `Gemini request failed: ${response.status}`);
+  const output = body.candidates?.[0]?.content?.parts?.find((part) => part.inlineData?.data || part.inline_data?.data);
+  const inlineData = output?.inlineData;
+  const inlineDataSnake = output?.inline_data;
+  const imageData = inlineData?.data ?? inlineDataSnake?.data;
+  if (!imageData) throw new Error('Gemini did not return an image.');
+  return `data:${inlineData?.mimeType ?? inlineDataSnake?.mime_type ?? 'image/png'};base64,${imageData}`;
+}
+
+async function requestXaiImage(settings: AppSettings, preset: AiPreset, inputPath: string) {
+  if (preset.referenceImages.length > 0) {
+    throw new Error('Grok image edit currently supports the framed input only. Use OpenAI or Gemini for reference images.');
+  }
+  const provider = settings.ai.providers.xai;
+  const input = await fileToInlineImage(inputPath);
+  const response = await fetch(provider.apiUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${provider.apiKey}`
+    },
+    body: JSON.stringify({
+      model: provider.model,
+      prompt: aiPromptText(settings, preset),
+      image: { url: input.dataUrl, type: 'image_url' }
+    })
+  });
+  const body = await response.json() as { data?: Array<{ b64_json?: string; url?: string }>; error?: { message?: string } };
+  if (!response.ok) throw new Error(body.error?.message || `xAI request failed: ${response.status}`);
+  const image = body.data?.[0];
+  if (image?.b64_json) return `data:image/png;base64,${image.b64_json}`;
+  if (image?.url) return responseUrlToDataUrl(image.url);
+  throw new Error('xAI did not return an image.');
+}
+
+async function requestAiImage(settings: AppSettings, preset: AiPreset, providerName: AiProvider, inputPath: string) {
+  const provider = settings.ai.providers[providerName];
+  if (!provider.enabled) throw new Error(`${providerName} is not enabled.`);
+  if (!provider.apiKey.trim()) throw new Error(`${providerName} API key is missing.`);
+  if (!provider.apiUrl.trim()) throw new Error(`${providerName} API URL is missing.`);
+  if (!provider.model.trim()) throw new Error(`${providerName} model is missing.`);
+  if (providerName === 'gemini') return requestGeminiImage(settings, preset, inputPath);
+  if (providerName === 'xai') return requestXaiImage(settings, preset, inputPath);
+  return requestOpenAiImage(settings, preset, inputPath);
+}
+
+async function createAiQueueItem(request: AiGenerateRequest) {
+  const settings = await readSettings();
+  await ensureEventFolders(settings.eventFolder);
+  const now = new Date().toISOString();
+  const id = `ai-job-${Date.now()}`;
+  const inputPath = path.join(settings.eventFolder, 'ai-queue', 'inputs', `${id}.png`);
+  await fs.writeFile(inputPath, dataUrlToBuffer(request.dataUrl));
+  const item: AiQueueItem = {
+    id,
+    status: 'queued',
+    styleId: request.styleId,
+    designId: request.designId,
+    presetId: request.presetId,
+    provider: settings.ai.provider,
+    inputPath,
+    resultPath: '',
+    finalPath: '',
+    printerName: request.printerName ? normalizePrinterName(request.printerName) : '',
+    error: '',
+    createdAt: now,
+    updatedAt: now,
+    retryCount: 0
+  };
+  await updateAiQueueItem(item, settings);
+  return item;
+}
+
+async function processAiQueueItem(itemId: string, isRetry = false): Promise<AiGenerateResult> {
+  const settings = await readSettings();
+  const queue = await readAiQueue(settings);
+  const item = queue.find((queueItem) => queueItem.id === itemId);
+  if (!item) throw new Error('AI queue item not found.');
+  let working: AiQueueItem = {
+    ...item,
+    status: 'generating',
+    error: '',
+    updatedAt: new Date().toISOString(),
+    retryCount: isRetry ? item.retryCount + 1 : item.retryCount
+  };
+  await updateAiQueueItem(working, settings);
+
+  try {
+    const preset = settings.template.aiPresets.map(normalizeAiPreset).find((candidate) => candidate.id === item.presetId);
+    if (!preset) throw new Error('AI preset not found.');
+    working = {
+      ...working,
+      status: 'requested',
+      requestedAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    await updateAiQueueItem(working, settings);
+    const dataUrl = await requestAiImage(settings, preset, working.provider, working.inputPath);
+    const resultPath = path.join(settings.eventFolder, 'ai-queue', 'results', `${working.id}.png`);
+    const buffer = dataUrlToBuffer(dataUrl);
+    await fs.writeFile(resultPath, buffer);
+    working = {
+      ...working,
+      status: 'done',
+      resultPath,
+      updatedAt: new Date().toISOString(),
+      completedAt: new Date().toISOString()
+    };
+    await updateAiQueueItem(working, settings);
+    const saved = await saveImageData({
+      dataUrl,
+      kind: 'final',
+      filenamePrefix: 'final',
+      styleId: working.styleId,
+      designId: working.designId,
+      printerName: working.printerName
+    });
+    working = {
+      ...working,
+      finalPath: saved.path,
+      status: 'done',
+      error: '',
+      updatedAt: new Date().toISOString()
+    };
+    await updateAiQueueItem(working, settings);
+    void printImage(saved.path, working.printerName, settings.silentPrint).then(async (printResult) => {
+      const latestSettings = await readSettings();
+      const currentQueue = await readAiQueue(latestSettings);
+      const currentItem = currentQueue.find((queueItem) => queueItem.id === working.id) ?? working;
+      await updateAiQueueItem(
+        {
+          ...currentItem,
+          status: printResult.ok ? 'printed' : 'print_failed',
+          error: printResult.ok ? '' : printResult.error || 'Print failed.',
+          updatedAt: new Date().toISOString()
+        },
+        latestSettings
+      );
+    });
+    return { item: working, dataUrl, saved, fallback: false };
+  } catch (error) {
+    working = {
+      ...working,
+      status: 'failed',
+      error: error instanceof Error ? error.message : 'AI generation failed.',
+      updatedAt: new Date().toISOString()
+    };
+    await updateAiQueueItem(working, settings);
+    return { item: working, fallback: true };
+  }
+}
+
+async function printAiQueueItem(itemId: string) {
+  const settings = await readSettings();
+  const queue = await readAiQueue(settings);
+  const item = queue.find((queueItem) => queueItem.id === itemId);
+  if (!item) throw new Error('AI queue item not found.');
+  const imagePath = item.finalPath || item.resultPath;
+  if (!imagePath) throw new Error('AI queue item has no result to print.');
+  const printResult = await printImage(imagePath, item.printerName, settings.silentPrint);
+  const updated: AiQueueItem = {
+    ...item,
+    status: printResult.ok ? 'printed' : 'print_failed',
+    error: printResult.ok ? '' : printResult.error || 'Print failed.',
+    updatedAt: new Date().toISOString()
+  };
+  await updateAiQueueItem(updated, settings);
+  return updated;
+}
+
 async function photoName(eventFolder: string) {
   const readNumericNames = async (folder: string) => {
     try {
@@ -475,15 +990,61 @@ async function photoName(eventFolder: string) {
   return `${nextNumber}.png`;
 }
 
+async function listPrintersForPrint() {
+  const win = adminWindow ?? guestWindow;
+  return win ? win.webContents.getPrintersAsync() : [];
+}
+
+const normalizePrinterKey = (value = '') => value.toLowerCase().replace(/[\s_-]+/g, '');
+
+async function resolvePrinterName(requestedPrinter = '', fallbackPrinter = '') {
+  const requested = normalizePrinterName(requestedPrinter.trim());
+  const fallback = normalizePrinterName(fallbackPrinter.trim());
+  const preferred = requested || fallback;
+  if (!preferred) return '';
+
+  const printers = await listPrintersForPrint();
+  if (printers.length === 0) return preferred;
+
+  const findPrinter = (printerName: string) => {
+    const target = normalizePrinterName(printerName);
+    const targetKey = normalizePrinterKey(target);
+    return printers.find((printer) => {
+      const name = printer.name ?? '';
+      const displayName = printer.displayName ?? '';
+      return (
+        name === target ||
+        displayName === target ||
+        normalizePrinterKey(name) === targetKey ||
+        normalizePrinterKey(displayName) === targetKey
+      );
+    });
+  };
+
+  const preferredPrinter = findPrinter(preferred);
+  if (preferredPrinter) return preferredPrinter.name;
+
+  if (fallback && fallback !== preferred) {
+    const fallbackMatch = findPrinter(fallback);
+    if (fallbackMatch) return fallbackMatch.name;
+  }
+
+  return '';
+}
+
 async function printImage(imagePath: string, printerName?: string, silent = false) {
   if (!imagePath) return { ok: false, error: 'No image selected for printing.' };
   const settings = await readSettings();
   const calibration = settings.printCalibration;
+  const resolvedPrinterName = await resolvePrinterName(printerName, settings.defaultPrinter);
+  if (silent && (printerName || settings.defaultPrinter) && !resolvedPrinterName) {
+    return { ok: false, error: `Printer not found: ${printerName || settings.defaultPrinter}` };
+  }
   const imageUrl = pathToFileURL(imagePath).toString();
   const printHtmlPath = path.join(app.getPath('temp'), `aviebelle-print-${Date.now()}.html`);
   const printWindow = new BrowserWindow({
-    width: silent ? 2478 : 520,
-    height: silent ? 3690 : 720,
+    width: silent ? PRINT_PREVIEW_WIDTH : 520,
+    height: silent ? PRINT_PREVIEW_HEIGHT : 720,
     show: false,
     autoHideMenuBar: true,
     title: 'Print Photo',
@@ -511,11 +1072,11 @@ async function printImage(imagePath: string, printerName?: string, silent = fals
           }
           img {
             position: fixed;
-            left: ${calibration.offsetXIn}in;
-            top: ${calibration.offsetYIn}in;
-            width: calc(100% + ${calibration.bleedXIn}in);
-            height: calc(100% + ${calibration.bleedYIn}in);
-            object-fit: cover;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
             display: block;
             margin: 0;
             padding: 0;
@@ -556,7 +1117,7 @@ async function printImage(imagePath: string, printerName?: string, silent = fals
     printWindow.webContents.print(
       {
         silent,
-        deviceName: printerName || undefined,
+        deviceName: resolvedPrinterName || undefined,
         printBackground: true,
         pageSize: { width: 104902, height: 156210 },
         margins: { marginType: 'none' },
@@ -586,6 +1147,15 @@ app.whenReady().then(async () => {
     const next: AppSettings = {
       ...current,
       ...partial,
+      ai: normalizeAiSettings({
+        ...current.ai,
+        ...(partial.ai ?? {}),
+        providers: {
+          openai: { ...current.ai.providers.openai, ...(partial.ai?.providers?.openai ?? {}) },
+          gemini: { ...current.ai.providers.gemini, ...(partial.ai?.providers?.gemini ?? {}) },
+          xai: { ...current.ai.providers.xai, ...(partial.ai?.providers?.xai ?? {}) }
+        }
+      }),
       template: {
         ...current.template,
         ...(partial.template ?? {})
@@ -603,14 +1173,15 @@ app.whenReady().then(async () => {
         ...current.cameraControls,
         ...(partial.cameraControls ?? {})
       },
+      cameraPreviewOverlay: normalizeCameraPreviewOverlay(partial.cameraPreviewOverlay ?? current.cameraPreviewOverlay),
       stylePrinters: {
         ...current.stylePrinters,
         ...(partial.stylePrinters ?? {})
       },
-      printCalibration: {
+      printCalibration: normalizePrintCalibration({
         ...current.printCalibration,
         ...(partial.printCalibration ?? {})
-      }
+      })
     };
     return writeSettings(next);
   });
@@ -633,6 +1204,16 @@ app.whenReady().then(async () => {
   ipcMain.handle('template:update', async (_event, design: TemplateDesign) => updateTemplate(design));
   ipcMain.handle('template:update-asset', async (_event, designId: string, role: TemplateAssetRole) => updateTemplateAsset(designId, role));
   ipcMain.handle('template:delete', async (_event, designId: string) => deleteTemplate(designId));
+  ipcMain.handle('ai:preset-image-upload', async (_event, presetId: string) => copyAiPresetImage(presetId));
+  ipcMain.handle('ai:preset-image-remove', async (_event, presetId: string, imageId: string) => removeAiPresetImage(presetId, imageId));
+  ipcMain.handle('ai:queue-list', async () => readAiQueue());
+  ipcMain.handle('ai:queue-retry', async (_event, itemId: string) => processAiQueueItem(itemId, true));
+  ipcMain.handle('ai:queue-print', async (_event, itemId: string) => printAiQueueItem(itemId));
+  ipcMain.handle('ai:generate-final', async (_event, request: AiGenerateRequest) => {
+    const item = await createAiQueueItem(request);
+    void processAiQueueItem(item.id);
+    return { item, fallback: false };
+  });
   ipcMain.handle('template:save-guide', async (_event, styleId: TemplateStyleId, dataUrl: string) => saveGuideTemplate(styleId, dataUrl));
   ipcMain.handle('window:open-admin', async () => {
     if (adminWindow) {
@@ -668,16 +1249,7 @@ app.whenReady().then(async () => {
     return win ? win.webContents.getPrintersAsync() : [];
   });
   ipcMain.handle('image:save', async (_event, request: SaveImageRequest): Promise<SaveImageResult> => {
-    const settings = await readSettings();
-    await ensureEventFolders(settings.eventFolder);
-    const folder = request.kind === 'original' ? 'originals' : 'finals';
-    const name = await photoName(settings.eventFolder);
-    const filePath = path.join(settings.eventFolder, folder, name);
-    const buffer = dataUrlToBuffer(request.dataUrl);
-    await fs.writeFile(filePath, buffer);
-    await writeThumbnail(buffer, settings.eventFolder, folder, name);
-    if (request.kind === 'final') lastFinalPath = filePath;
-    return { path: filePath, name };
+    return saveImageData(request);
   });
   ipcMain.handle('image:data-url', async (_event, filePath: string) => imageFileToDataUrl(filePath));
   ipcMain.handle('image:size', async (_event, filePath: string) => getImageSize(filePath));
@@ -699,6 +1271,7 @@ app.whenReady().then(async () => {
     await fs.unlink(filePath);
     const thumbPath = path.join(path.dirname(filePath), 'thumbs', path.basename(filePath));
     await fs.rm(thumbPath, { force: true });
+    await fs.rm(filePath.replace(/\.(png|jpe?g)$/i, '.json'), { force: true });
     return true;
   });
   ipcMain.handle('print:image', async (_event, imagePath?: string, printerName?: string) => {

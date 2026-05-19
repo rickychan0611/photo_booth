@@ -1,5 +1,17 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import type { AppSettings, Gallery, TemplateAssetRole, TemplateDesign, TemplateStyleId, TemplateUploadRequest, SaveImageRequest, SaveImageResult } from './types';
+import type {
+  AiGenerateRequest,
+  AiGenerateResult,
+  AiQueueItem,
+  AppSettings,
+  Gallery,
+  TemplateAssetRole,
+  TemplateDesign,
+  TemplateStyleId,
+  TemplateUploadRequest,
+  SaveImageRequest,
+  SaveImageResult
+} from './types';
 
 const api = {
   getSettings: () => ipcRenderer.invoke('settings:get') as Promise<AppSettings>,
@@ -13,6 +25,15 @@ const api = {
   updateTemplate: (design: TemplateDesign) => ipcRenderer.invoke('template:update', design) as Promise<TemplateDesign>,
   updateTemplateAsset: (designId: string, role: TemplateAssetRole) =>
     ipcRenderer.invoke('template:update-asset', designId, role) as Promise<TemplateDesign | null>,
+  uploadAiPresetImage: (presetId: string) =>
+    ipcRenderer.invoke('ai:preset-image-upload', presetId) as Promise<AppSettings>,
+  removeAiPresetImage: (presetId: string, imageId: string) =>
+    ipcRenderer.invoke('ai:preset-image-remove', presetId, imageId) as Promise<AppSettings>,
+  listAiQueue: () => ipcRenderer.invoke('ai:queue-list') as Promise<AiQueueItem[]>,
+  retryAiQueueItem: (itemId: string) => ipcRenderer.invoke('ai:queue-retry', itemId) as Promise<AiGenerateResult>,
+  printAiQueueItem: (itemId: string) => ipcRenderer.invoke('ai:queue-print', itemId) as Promise<AiQueueItem>,
+  generateAiFinal: (request: AiGenerateRequest) =>
+    ipcRenderer.invoke('ai:generate-final', request) as Promise<AiGenerateResult>,
   getImageSize: (filePath: string) => ipcRenderer.invoke('image:size', filePath) as Promise<{ width: number; height: number }>,
   saveGuideTemplate: (styleId: TemplateStyleId, dataUrl: string) =>
     ipcRenderer.invoke('template:save-guide', styleId, dataUrl) as Promise<string>,

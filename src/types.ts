@@ -6,6 +6,7 @@ export type TemplateSlot = {
   width: number;
   height: number;
   sourceIndex: number;
+  cropY?: 'center' | 'top';
 };
 
 export type TemplateStyleDefinition = {
@@ -21,10 +22,56 @@ export type AiPreset = {
   id: string;
   name: string;
   prompt: string;
-  negativePrompt: string;
+  referenceImages: AiReferenceImage[];
   active: boolean;
   createdAt: string;
   updatedAt: string;
+};
+
+export type AiReferenceImage = {
+  id: string;
+  path: string;
+  name: string;
+  createdAt: string;
+};
+
+export type AiProvider = 'openai' | 'gemini' | 'xai';
+
+export type AiProviderConfig = {
+  enabled: boolean;
+  apiKey: string;
+  apiUrl: string;
+  model: string;
+  size?: string;
+  quality?: string;
+};
+
+export type AiSettings = {
+  provider: AiProvider;
+  systemPrompt: string;
+  thinkingLevel: 'none' | 'low' | 'medium' | 'high';
+  providers: Record<AiProvider, AiProviderConfig>;
+};
+
+export type AiQueueStatus = 'queued' | 'generating' | 'requested' | 'done' | 'failed' | 'printed' | 'print_failed';
+
+export type AiQueueItem = {
+  id: string;
+  status: AiQueueStatus;
+  styleId: TemplateStyleId;
+  designId: string;
+  presetId: string;
+  provider: AiProvider;
+  inputPath: string;
+  resultPath: string;
+  finalPath: string;
+  printerName: string;
+  error: string;
+  createdAt: string;
+  updatedAt: string;
+  requestedAt?: string;
+  completedAt?: string;
+  retryCount: number;
 };
 
 export type TemplateDesign = {
@@ -58,11 +105,13 @@ export type AppSettings = {
   cameraId: string;
   mirrorPreview: boolean;
   cameraRotation: CameraRotation;
+  cameraPreviewOverlay: CameraPreviewOverlay;
   cameraControls: CameraControlSettings;
   defaultPrinter: string;
   stylePrinters: StylePrinterSettings;
   silentPrint: boolean;
   adminPassword: string;
+  ai: AiSettings;
   template: TemplateSettings;
   workflow: WorkflowSettings;
   printPicker: PrintPickerSettings;
@@ -77,6 +126,8 @@ export type StylePrinterSettings = {
 };
 
 export type CameraRotation = 0 | 90 | 180 | 270;
+
+export type CameraPreviewOverlay = 'none' | TemplateStyleId;
 
 export type CameraControlSettings = {
   brightness?: number;
@@ -111,10 +162,14 @@ export type PrintPickerSettings = {
 };
 
 export type PrintCalibrationSettings = {
-  offsetXIn: number;
-  offsetYIn: number;
-  bleedXIn: number;
-  bleedYIn: number;
+  leftBleedIn: number;
+  rightBleedIn: number;
+  topBleedIn: number;
+  bottomBleedIn: number;
+  offsetXIn?: number;
+  offsetYIn?: number;
+  bleedXIn?: number;
+  bleedYIn?: number;
 };
 
 export type SavedPhoto = {
@@ -123,6 +178,9 @@ export type SavedPhoto = {
   thumbPath?: string;
   type: 'original' | 'final';
   createdAt: string;
+  styleId?: TemplateStyleId;
+  designId?: string;
+  printerName?: string;
 };
 
 export type Gallery = {
@@ -134,11 +192,29 @@ export type SaveImageRequest = {
   dataUrl: string;
   kind: 'original' | 'final';
   filenamePrefix?: string;
+  styleId?: TemplateStyleId;
+  designId?: string;
+  printerName?: string;
 };
 
 export type SaveImageResult = {
   path: string;
   name: string;
+};
+
+export type AiGenerateRequest = {
+  dataUrl: string;
+  styleId: TemplateStyleId;
+  designId: string;
+  presetId: string;
+  printerName?: string;
+};
+
+export type AiGenerateResult = {
+  item: AiQueueItem;
+  dataUrl?: string;
+  saved?: SaveImageResult;
+  fallback: boolean;
 };
 
 export type Capture = {

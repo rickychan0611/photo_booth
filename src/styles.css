@@ -24,7 +24,8 @@ body,
 
 button,
 input,
-select {
+select,
+textarea {
   font: inherit;
 }
 
@@ -79,6 +80,14 @@ button:disabled {
   font-size: 18px;
   font-weight: 300;
   letter-spacing: 0.22em;
+}
+
+.ai-disclaimer {
+  margin: -20px 0 0;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 13px;
+  font-weight: 300;
+  letter-spacing: 0.12em;
 }
 
 .booth-button {
@@ -174,12 +183,7 @@ button:disabled {
 }
 
 .countdown {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  z-index: 3;
-  font-size: clamp(120px, 22vw, 280px);
+  font-size: clamp(92px, 16vw, 220px);
   font-weight: 200;
   line-height: 1;
 }
@@ -221,17 +225,30 @@ button:disabled {
   z-index: 1;
 }
 
-.capture-print-guide {
+.capture-guide-layer {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 72px;
   width: min(94vw, calc(94vh * var(--slot-aspect, 1.5)));
-  max-height: 94vh;
-  transform: translate(-50%, -50%);
+  max-height: calc(100vh - 92px);
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.capture-guide-layer.full-screen {
+  inset: 0;
+  width: auto;
+  max-height: none;
+  transform: none;
+}
+
+.capture-print-guide {
+  position: absolute;
+  inset: 0;
   border: 1px solid rgba(255, 255, 255, 0.92);
   box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45);
   pointer-events: none;
-  z-index: 2;
+  z-index: 1;
 }
 
 .capture-screen > video.camera-rotate-90,
@@ -254,7 +271,6 @@ button:disabled {
 .capture-message,
 .capture-progress {
   position: absolute;
-  z-index: 3;
   left: 50%;
   transform: translateX(-50%);
   color: #fff;
@@ -264,13 +280,28 @@ button:disabled {
   letter-spacing: 0.16em;
 }
 
+.capture-message,
+.countdown {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 200;
+  letter-spacing: 0.16em;
+  pointer-events: none;
+}
+
 .capture-message {
-  top: 50%;
-  transform: translate(-50%, -50%);
-  font-size: clamp(64px, 9vw, 132px);
+  font-size: clamp(42px, 7vw, 96px);
+  padding: 24px;
 }
 
 .capture-progress {
+  z-index: 4;
   top: 30px;
   font-size: 16px;
 }
@@ -842,13 +873,20 @@ button:disabled {
 }
 
 .admin-section input,
-.admin-section select {
+.admin-section select,
+.admin-section textarea {
   width: 100%;
   background: #000;
   border: 1px solid rgba(255, 255, 255, 0.35);
   color: #fff;
   min-height: 48px;
   padding: 0 14px;
+}
+
+.admin-section textarea {
+  min-height: 96px;
+  padding: 12px 14px;
+  resize: vertical;
 }
 
 .inline-field {
@@ -866,6 +904,28 @@ button:disabled {
 .check-row input {
   width: 18px;
   min-height: 18px;
+}
+
+.segmented-control {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(82px, 1fr));
+  gap: 8px;
+}
+
+.segmented-control button {
+  min-height: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  background: transparent;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 11px;
+}
+
+.segmented-control button.active,
+.segmented-control button:hover {
+  background: #fff;
+  color: #000;
 }
 
 .camera-admin-layout {
@@ -893,6 +953,7 @@ button:disabled {
 }
 
 .admin-preview {
+  position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
   border: 1px solid rgba(255, 255, 255, 0.35);
@@ -911,6 +972,32 @@ button:disabled {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.admin-guest-view-overlay {
+  position: absolute;
+  left: 50%;
+  top: 12%;
+  width: min(94%, calc(80% * var(--slot-aspect, 1.5)));
+  max-height: 78%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.admin-guest-view-overlay.full-screen {
+  inset: 0;
+  width: auto;
+  max-height: none;
+  transform: none;
+}
+
+.admin-guest-view-overlay span {
+  position: absolute;
+  inset: 0;
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.28), 0 0 12px rgba(0, 0, 0, 0.55);
 }
 
 .admin-preview video.camera-rotate-90,
@@ -1096,6 +1183,143 @@ button:disabled {
 .ai-preset-list article {
   grid-template-columns: minmax(120px, 180px) 1fr auto auto;
   align-items: center;
+}
+
+.ai-preset-list .ai-preset-card {
+  grid-template-columns: 1fr;
+  align-items: stretch;
+}
+
+.ai-preset-fields {
+  display: grid;
+  grid-template-columns: minmax(140px, 200px) 1fr;
+  gap: 10px;
+}
+
+.ai-reference-strip {
+  min-height: 92px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.ai-reference-thumb {
+  position: relative;
+  width: 76px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: #000;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.ai-reference-thumb img,
+.ai-queue-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ai-reference-thumb span {
+  position: absolute;
+  left: 5px;
+  bottom: 4px;
+  font-size: 10px;
+  color: #fff;
+  text-shadow: 0 1px 3px #000;
+}
+
+.ai-reference-thumb button {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  width: 24px;
+  height: 24px;
+  min-height: 0;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: rgba(0, 0, 0, 0.72);
+  color: #fff;
+  display: grid;
+  place-items: center;
+}
+
+.ai-queue-list {
+  display: grid;
+  gap: 14px;
+}
+
+.ai-queue-card {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 12px;
+}
+
+.ai-queue-card.status-requested {
+  border-color: rgba(255, 255, 255, 0.48);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.ai-queue-thumb {
+  width: 96px;
+  aspect-ratio: 2 / 3;
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.ai-queue-main {
+  min-width: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.ai-queue-main p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+
+.ai-queue-title-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: #fff;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+}
+
+.ai-queue-title-row strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.queue-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.28);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: queueSpin 820ms linear infinite;
+}
+
+@keyframes queueSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ai-queue-error {
+  color: #ffb4b4 !important;
 }
 
 .gallery-list {
