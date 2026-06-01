@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { Camera, Download, Expand, ExternalLink, FolderOpen, Image, Minimize2, Printer, RefreshCw, Settings, SlidersHorizontal, Sparkles, Trash2, X } from 'lucide-react';
 import type { AiPreset, AiProvider, AiQueueItem, AppSettings, CameraControlSettings, CameraRotation, Capture, FaceAsset, FaceAssetPack, FaceAssetPlacement, Gallery, SavedPhoto, TemplateDesign, TemplateSlot, TemplateStyleId } from './types';
 import { createGuideTemplateImage, createTemplatedPrintImage, getPrimarySlot, getTemplateStyle, PRINT_HEIGHT, PRINT_WIDTH, TEMPLATE_HEIGHT, TEMPLATE_STYLES, TEMPLATE_WIDTH } from './template';
-import { FaceAssetStabilizer, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceDebugInfo, mapFaceResultToDisplay, selectedFaceAssetPack } from './faceAssets';
+import { FaceAssetStabilizer, FaceTracker, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceDebugInfo, mapFaceResultToDisplay, selectedFaceAssetPack } from './faceAssets';
 
 type GuestStep = 'welcome' | 'style' | 'design' | 'intro' | 'capture' | 'select' | 'thanks';
 
@@ -248,6 +248,7 @@ function GuestApp() {
     let busy = false;
     let lastDetectionAt = 0;
     let missedFrames = 0;
+    const tracker = new FaceTracker();
 
     const drawOverlay = async (now: number) => {
       const video = videoRef.current;
@@ -264,6 +265,7 @@ function GuestApp() {
             if (missedFrames > 45) {
               clearFaceAssetCanvas(overlay, overlay.width, overlay.height);
               faceOverlayStabilizerRef.current.reset();
+              tracker.reset();
             }
             return;
           }
@@ -271,7 +273,7 @@ function GuestApp() {
           clearFaceAssetCanvas(overlay, displayWidth, displayHeight);
           const ctx = overlay.getContext('2d');
           if (ctx) {
-            await drawFaceAssets(ctx, displayResult, activeFacePack, overlay.width, overlay.height, faceOverlayStabilizerRef.current);
+            await drawFaceAssets(ctx, displayResult, activeFacePack, overlay.width, overlay.height, faceOverlayStabilizerRef.current, tracker);
             if (showFaceDebug) drawFaceDebugInfo(ctx, displayResult, overlay.width, overlay.height);
           }
         } catch (error) {
@@ -931,6 +933,7 @@ function AdminApp() {
       id: `face-pack-${Date.now()}`,
       name: 'Face Asset Pack',
       active: true,
+      assignPerFace: false,
       assets: [],
       createdAt: now,
       updatedAt: now
@@ -1645,6 +1648,14 @@ function AdminApp() {
                           />
                           Active
                         </label>
+                        <label className="check-row">
+                          <input
+                            type="checkbox"
+                            checked={selectedFaceAssetPack.assignPerFace}
+                            onChange={(event) => void saveFaceAssetPack({ ...selectedFaceAssetPack, assignPerFace: event.target.checked })}
+                          />
+                          Assign per person
+                        </label>
                       </div>
                       <div className="admin-actions">
                         <button onClick={() => void uploadFaceAsset(selectedFaceAssetPack.id)}>Upload PNG asset</button>
@@ -1652,6 +1663,7 @@ function AdminApp() {
                         <button className="danger" onClick={() => void deleteFaceAssetPack(selectedFaceAssetPack.id)}>Delete pack</button>
                       </div>
                       <p className="muted">Use transparent PNGs. Good starting points: glasses centered on eyes, hats above forehead, noses on nose tip, mouths over lips, face around full face.</p>
+                      <p className="muted">Assign per person: when several faces are detected, each person gets a different asset of each kind (e.g. hats, glasses), cycling through every asset of that kind before any repeats.</p>
                     </div>
 
                     <div className="face-asset-list">
@@ -1969,6 +1981,7 @@ function FaceAssetPreviewApp() {
     let busy = false;
     let lastDetectionAt = 0;
     let missedFrames = 0;
+    const tracker = new FaceTracker();
 
     const drawOverlay = async (now: number) => {
       const video = videoRef.current;
@@ -1985,6 +1998,7 @@ function FaceAssetPreviewApp() {
             if (missedFrames > 45) {
               clearFaceAssetCanvas(overlay, overlay.width, overlay.height);
               stabilizerRef.current.reset();
+              tracker.reset();
             }
             return;
           }
@@ -1992,7 +2006,7 @@ function FaceAssetPreviewApp() {
           clearFaceAssetCanvas(overlay, displayWidth, displayHeight);
           const ctx = overlay.getContext('2d');
           if (ctx) {
-            await drawFaceAssets(ctx, displayResult, pack, overlay.width, overlay.height, stabilizerRef.current);
+            await drawFaceAssets(ctx, displayResult, pack, overlay.width, overlay.height, stabilizerRef.current, tracker);
             if (showDebug) drawFaceDebugInfo(ctx, displayResult, overlay.width, overlay.height);
           }
         } catch (error) {

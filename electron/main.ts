@@ -441,6 +441,7 @@ const normalizeFaceAssetPack = (pack: FaceAssetPack): FaceAssetPack => ({
   ...pack,
   name: pack.name?.trim() || 'Face Asset Pack',
   active: pack.active !== false,
+  assignPerFace: pack.assignPerFace === true,
   assets: (pack.assets ?? []).map(normalizeFaceAsset),
   createdAt: pack.createdAt || new Date().toISOString(),
   updatedAt: pack.updatedAt || new Date().toISOString()

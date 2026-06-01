@@ -112,6 +112,7 @@ export type FaceAssetPack = {
   id: string;
   name: string;
   active: boolean;
+  assignPerFace: boolean;
   assets: FaceAsset[];
   createdAt: string;
   updatedAt: string;

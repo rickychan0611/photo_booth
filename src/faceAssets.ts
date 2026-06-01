@@ -1,5 +1,5 @@
 import { FaceLandmarker, FilesetResolver, type FaceLandmarkerResult, type ImageSource, type NormalizedLandmark } from '@mediapipe/tasks-vision';
-import type { AppSettings, CameraRotation, FaceAsset, FaceAssetPack, TemplateDesign } from './types';
+import type { AppSettings, CameraRotation, FaceAsset, FaceAssetPack, FaceAssetPlacement, TemplateDesign } from './types';
 
 let faceLandmarkerPromise: Promise<FaceLandmarker> | null = null;
 const imageCache = new Map<string, Promise<HTMLImageElement>>();
@@ -81,13 +81,114 @@ export class FaceAssetStabilizer {
   }
 }
 
+const hashString = (value: string) => {
+  let hash = 2166136261;
+  for (let i = 0; i < value.length; i += 1) {
+    hash ^= value.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+};
+
+// Deterministic shuffle: the same seed always yields the same order. This keeps
+// per-person assignment perfectly stable across frames (no flicker), unlike a
+// Math.random() shuffle whose result changes every time it runs.
+const seededShuffle = <T,>(items: T[], seed: number): T[] => {
+  const next = items.slice();
+  let state = seed || 1;
+  const random = () => {
+    state = (state + 0x6d2b79f5) | 0;
+    let t = Math.imul(state ^ (state >>> 15), 1 | state);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  for (let i = next.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(random() * (i + 1));
+    [next[i], next[j]] = [next[j], next[i]];
+  }
+  return next;
+};
+
+// Picks one asset of a kind for a given face. Each "round" deals every asset of
+// the kind once (in a deterministic, shuffled order) before any repeat, so all
+// kinds are shown before repeating, and the result is fully stable per face id.
+const pickAssetForFace = (seedBase: string, placement: FaceAssetPlacement, faceId: number, assets: FaceAsset[]) => {
+  const round = Math.floor(faceId / assets.length);
+  const within = faceId % assets.length;
+  const order = seededShuffle(assets, hashString(`${seedBase}:${placement}:${round}`));
+  return order[within];
+};
+
+const groupAssetsByPlacement = (assets: FaceAsset[]) => {
+  const groups = new Map<FaceAssetPlacement, FaceAsset[]>();
+  for (const asset of assets) {
+    const list = groups.get(asset.placement);
+    if (list) list.push(asset);
+    else groups.set(asset.placement, [asset]);
+  }
+  return groups;
+};
+
+type FaceTrack = { id: number; x: number; y: number; lastSeen: number };
+
+// Assigns each detected face a persistent id by matching it to the nearest face
+// from the previous frame. This keeps per-person asset assignment stable even
+// when the detector briefly loses a face or people shift left/right.
+export class FaceTracker {
+  private tracks: FaceTrack[] = [];
+  private nextId = 0;
+  private frame = 0;
+
+  constructor(
+    private readonly threshold = 0.16,
+    private readonly maxAgeFrames = 20
+  ) {}
+
+  track(centroids: Array<{ x: number; y: number }>): number[] {
+    this.frame += 1;
+    this.tracks = this.tracks.filter((track) => this.frame - track.lastSeen <= this.maxAgeFrames);
+    const claimed = new Set<number>();
+    return centroids.map((centroid) => {
+      let matched: FaceTrack | null = null;
+      let bestDist = this.threshold;
+      for (const track of this.tracks) {
+        if (claimed.has(track.id)) continue;
+        const dist = Math.hypot(track.x - centroid.x, track.y - centroid.y);
+        if (dist < bestDist) {
+          bestDist = dist;
+          matched = track;
+        }
+      }
+      if (matched) {
+        matched.x = centroid.x;
+        matched.y = centroid.y;
+        matched.lastSeen = this.frame;
+        claimed.add(matched.id);
+        return matched.id;
+      }
+      const id = this.nextId;
+      this.nextId += 1;
+      this.tracks.push({ id, x: centroid.x, y: centroid.y, lastSeen: this.frame });
+      claimed.add(id);
+      return id;
+    });
+  }
+
+  reset() {
+    this.tracks = [];
+    this.nextId = 0;
+    this.frame = 0;
+  }
+}
+
 export const drawFaceAssets = async (
   ctx: CanvasRenderingContext2D,
   result: FaceLandmarkerResult | null,
   pack: FaceAssetPack | null,
   width: number,
   height: number,
-  stabilizer?: FaceAssetStabilizer
+  stabilizer?: FaceAssetStabilizer,
+  tracker?: FaceTracker
 ) => {
   if (!result || !pack) return;
   const assets = pack.assets
@@ -98,11 +199,34 @@ export const drawFaceAssets = async (
   const faces = result.faceLandmarks
     .slice(0, 6)
     .sort((a, b) => faceBounds(a, width, height).x - faceBounds(b, width, height).x);
+
+  if (pack.assignPerFace) {
+    const groups = groupAssetsByPlacement(assets);
+    // Stable per-person id: tracker matches faces across frames; fall back to
+    // positional index if no tracker is supplied.
+    const faceIds = tracker
+      ? tracker.track(faces.map((landmarks) => faceCentroid(landmarks)))
+      : faces.map((_landmarks, index) => index);
+    for (const [faceIndex, landmarks] of faces.entries()) {
+      const faceId = faceIds[faceIndex];
+      for (const [placement, groupAssets] of groups) {
+        const asset = pickAssetForFace(pack.id, placement, faceId, groupAssets);
+        await drawAsset(ctx, asset, landmarks, width, height, stabilizer, `${faceId}:${asset.id}`);
+      }
+    }
+    return;
+  }
+
   for (const [faceIndex, landmarks] of faces.entries()) {
     for (const asset of assets) {
       await drawAsset(ctx, asset, landmarks, width, height, stabilizer, `${faceIndex}:${asset.id}`);
     }
   }
+};
+
+const faceCentroid = (landmarks: NormalizedLandmark[]) => {
+  const bounds = faceBounds(landmarks, 1, 1);
+  return { x: bounds.x, y: bounds.y };
 };
 
 export const drawFaceDebugInfo = (
