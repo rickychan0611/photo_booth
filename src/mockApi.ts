@@ -1,7 +1,7 @@
 import type { AiQueueItem, AppSettings, Gallery, SaveImageRequest, SaveImageResult } from './types';
 
 const fallbackSettings: AppSettings = {
-  eventName: 'AVIEBELLE PHOTO BOOTH',
+  eventName: 'PHOTO BOOTH',
   eventFolder: 'Browser preview',
   cameraId: '',
   mirrorPreview: true,
@@ -45,7 +45,7 @@ const fallbackSettings: AppSettings = {
     }
   },
   template: {
-    eventName: 'AVIEBELLE PHOTO BOOTH',
+    eventName: 'PHOTO BOOTH',
     logoPath: '',
     framePath: '',
     styleVersion: 2,
@@ -81,7 +81,7 @@ const fallbackSettings: AppSettings = {
   }
 };
 
-const settingsKey = 'aviebelle-preview-settings';
+const settingsKey = 'preview-settings';
 const gallery: Gallery = { originals: [], finals: [] };
 const aiQueue: AiQueueItem[] = [];
 let photoSequence = 0;

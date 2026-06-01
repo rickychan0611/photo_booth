@@ -32,7 +32,7 @@ const PRINTER_ALIASES = new Map<string, string>([['DS-RX1-HaflCut', STYLE4_HALFC
 
 const isDev = Boolean(process.env.VITE_DEV_SERVER_URL);
 
-const defaultEventFolder = () => path.join(app.getPath('pictures'), 'Aviebelle Photo Booth');
+const defaultEventFolder = () => path.join(app.getPath('pictures'), 'Photo Booth');
 const settingsPath = () => path.join(app.getPath('userData'), 'settings.json');
 
 const defaultAiSettings = (): AppSettings['ai'] => ({
@@ -64,7 +64,7 @@ const defaultAiSettings = (): AppSettings['ai'] => ({
 });
 
 const defaultSettings = (): AppSettings => ({
-  eventName: 'AVIEBELLE PHOTO BOOTH',
+  eventName: 'PHOTO BOOTH',
   eventFolder: defaultEventFolder(),
   cameraId: '',
   mirrorPreview: true,
@@ -82,7 +82,7 @@ const defaultSettings = (): AppSettings => ({
   adminPassword: '',
   ai: defaultAiSettings(),
   template: {
-    eventName: 'AVIEBELLE PHOTO BOOTH',
+    eventName: 'PHOTO BOOTH',
     logoPath: '',
     framePath: '',
     styleVersion: 2,
@@ -235,7 +235,7 @@ async function createWindow(kind: 'guest' | 'admin', extraQuery = '') {
     height: kind === 'guest' ? 800 : 760,
     backgroundColor: '#000000',
     autoHideMenuBar: true,
-    title: kind === 'guest' ? 'Aviebelle Photo Booth' : 'Aviebelle Admin',
+    title: kind === 'guest' ? 'Photo Booth' : 'Admin',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -1041,7 +1041,7 @@ async function printImage(imagePath: string, printerName?: string, silent = fals
     return { ok: false, error: `Printer not found: ${printerName || settings.defaultPrinter}` };
   }
   const imageUrl = pathToFileURL(imagePath).toString();
-  const printHtmlPath = path.join(app.getPath('temp'), `aviebelle-print-${Date.now()}.html`);
+  const printHtmlPath = path.join(app.getPath('temp'), `print-${Date.now()}.html`);
   const printWindow = new BrowserWindow({
     width: silent ? PRINT_PREVIEW_WIDTH : 520,
     height: silent ? PRINT_PREVIEW_HEIGHT : 720,
@@ -1139,7 +1139,6 @@ function modalParent() {
 
 app.whenReady().then(async () => {
   await readSettings();
-  await createWindow('admin');
 
   ipcMain.handle('settings:get', readSettings);
   ipcMain.handle('settings:update', async (_event, partial: Partial<AppSettings>) => {
@@ -1285,6 +1284,8 @@ app.whenReady().then(async () => {
     }
     return false;
   });
+
+  await createWindow('admin');
 
   app.on('activate', () => {
     if (!adminWindow) void createWindow('admin');

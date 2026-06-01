@@ -36,6 +36,7 @@ function GuestApp() {
   const [step, setStep] = useState<GuestStep>('welcome');
   const [countdown, setCountdown] = useState<number | null>(null);
   const [captureMessage, setCaptureMessage] = useState('');
+  const [captureMessageFadeMs, setCaptureMessageFadeMs] = useState(2000);
   const [error, setError] = useState('');
   const [captures, setCaptures] = useState<Capture[]>([]);
   const [selectedCaptureIndexes, setSelectedCaptureIndexes] = useState<number[]>([]);
@@ -263,6 +264,7 @@ function GuestApp() {
         await delay(shot.cameraBeforeMessageMs);
         if (sessionRunRef.current !== runId) return;
         setCaptureMessage(shot.message);
+        setCaptureMessageFadeMs(shot.messageMs);
         await delay(shot.messageMs);
         if (sessionRunRef.current !== runId) return;
         setCaptureMessage('');
@@ -437,7 +439,7 @@ function GuestApp() {
       {step === 'welcome' && (
         <section className="welcome-screen">
           <div>
-            <p className="brand">{settings.eventName || 'AVIEBELLE PHOTO BOOTH'}</p>
+            <p className="brand">{settings.eventName || 'PHOTO BOOTH'}</p>
             <button className="booth-button primary" onClick={() => setStep('style')} disabled={isBusy}>
               {buttonText('START')}
             </button>
@@ -499,9 +501,13 @@ function GuestApp() {
           </div>
           <div className={`capture-guide-layer ${liveViewUsesFullScreen(selectedStyleId) ? 'full-screen' : ''}`} style={liveViewStyle(selectedStyleId, getPrimarySlot(selectedStyleId, captures.length))}>
             <div className="capture-print-guide" />
-            {captureMessage && <div className="capture-message">{captureMessage}</div>}
-            {countdown && <div className="countdown">{countdown}</div>}
           </div>
+          {captureMessage && (
+            <div className="capture-message" style={{ '--message-fade-ms': `${captureMessageFadeMs}ms` } as CSSProperties}>
+              {captureMessage}
+            </div>
+          )}
+          {countdown && <div className="countdown">{countdown}</div>}
         </section>
       )}
 
@@ -886,7 +892,7 @@ function AdminApp() {
   return (
     <main className="admin-shell">
       <aside className="admin-sidebar">
-        <p className="admin-title">AVIEBELLE</p>
+        <p className="admin-title">PHOTO BOOTH</p>
         {[
           ['event', 'Event', Settings],
           ['camera', 'Camera', Camera],

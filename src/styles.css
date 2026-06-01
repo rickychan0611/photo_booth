@@ -184,8 +184,8 @@ button:disabled {
 
 .countdown {
   font-size: clamp(92px, 16vw, 220px);
-  font-weight: 200;
   line-height: 1;
+  text-shadow: 0 4px 28px rgba(0, 0, 0, 0.4);
 }
 
 .flash {
@@ -269,22 +269,10 @@ button:disabled {
 }
 
 .capture-message,
-.capture-progress {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #fff;
-  text-align: center;
-  text-transform: uppercase;
-  font-weight: 200;
-  letter-spacing: 0.16em;
-}
-
-.capture-message,
 .countdown {
   position: absolute;
   inset: 0;
-  z-index: 3;
+  z-index: 5;
   display: grid;
   place-items: center;
   color: #fff;
@@ -298,11 +286,53 @@ button:disabled {
 .capture-message {
   font-size: clamp(42px, 7vw, 96px);
   padding: 24px;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+}
+
+.capture-message::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 70% 42% at center,
+    rgba(0, 0, 0, 0.68) 0%,
+    rgba(0, 0, 0, 0.34) 52%,
+    transparent 100%
+  );
+  animation: capture-message-bg var(--message-fade-ms, 2s) ease-in-out forwards;
+}
+
+@keyframes capture-message-bg {
+  0% {
+    opacity: 0;
+  }
+
+  14% {
+    opacity: 1;
+  }
+
+  86% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 .capture-progress {
-  z-index: 4;
+  position: absolute;
+  left: 50%;
   top: 30px;
+  transform: translateX(-50%);
+  z-index: 4;
+  color: #fff;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 200;
+  letter-spacing: 0.16em;
   font-size: 16px;
 }
 
