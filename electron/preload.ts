@@ -51,6 +51,8 @@ const api = {
   openGuestPickerPreview: () => ipcRenderer.invoke('window:open-guest-picker-preview') as Promise<boolean>,
   openFaceAssetPreview: (packId: string) =>
     ipcRenderer.invoke('window:open-face-asset-preview', packId) as Promise<boolean>,
+  capturePage: (rect?: { x: number; y: number; width: number; height: number }) =>
+    ipcRenderer.invoke('window:capture-page', rect) as Promise<string>,
   setGuestFullscreen: (fullscreen: boolean) =>
     ipcRenderer.invoke('guest:set-fullscreen', fullscreen) as Promise<boolean>,
   isGuestFullscreen: () => ipcRenderer.invoke('guest:is-fullscreen') as Promise<boolean>,

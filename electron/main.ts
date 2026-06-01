@@ -1412,6 +1412,23 @@ app.whenReady().then(async () => {
     await createWindow('facePreview', query);
     return true;
   });
+  ipcMain.handle(
+    'window:capture-page',
+    async (event, rect?: { x: number; y: number; width: number; height: number }) => {
+      const win = BrowserWindow.fromWebContents(event.sender);
+      if (!win) throw new Error('Window not found.');
+      const bounds = rect
+        ? {
+            x: Math.max(0, Math.round(rect.x)),
+            y: Math.max(0, Math.round(rect.y)),
+            width: Math.max(1, Math.round(rect.width)),
+            height: Math.max(1, Math.round(rect.height))
+          }
+        : undefined;
+      const image = bounds ? await win.webContents.capturePage(bounds) : await win.webContents.capturePage();
+      return image.toDataURL();
+    }
+  );
   ipcMain.handle('guest:set-fullscreen', (_event, fullscreen: boolean) => setGuestFullscreen(fullscreen));
   ipcMain.handle('guest:is-fullscreen', () => isGuestFullscreen());
   ipcMain.handle('printers:list', async () => {

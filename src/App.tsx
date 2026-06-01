@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { Camera, Download, Expand, ExternalLink, FolderOpen, Image, Minimize2, Printer, RefreshCw, Settings, SlidersHorizontal, Sparkles, Trash2, X } from 'lucide-react';
 import type { AiPreset, AiProvider, AiQueueItem, AppSettings, CameraControlSettings, CameraRotation, Capture, FaceAsset, FaceAssetPack, FaceAssetPlacement, Gallery, SavedPhoto, TemplateDesign, TemplateSlot, TemplateStyleId } from './types';
 import { createGuideTemplateImage, createTemplatedPrintImage, getPrimarySlot, getTemplateStyle, PRINT_HEIGHT, PRINT_WIDTH, TEMPLATE_HEIGHT, TEMPLATE_STYLES, TEMPLATE_WIDTH } from './template';
-import { FaceAssetStabilizer, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceAssetsOnCanvas, drawFaceDebugInfo, mapFaceResultToDisplay, selectedFaceAssetPack } from './faceAssets';
+import { FaceAssetStabilizer, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceDebugInfo, mapFaceResultToDisplay, selectedFaceAssetPack } from './faceAssets';
 
 type GuestStep = 'welcome' | 'style' | 'design' | 'intro' | 'capture' | 'select' | 'thanks';
 
@@ -59,9 +59,11 @@ function GuestApp() {
   const [isFlashing, setIsFlashing] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showFaceDebug, setShowFaceDebug] = useState(true);
+  const [isCapturing, setIsCapturing] = useState(false);
   const [isBusy, setIsBusy] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const faceOverlayCanvasRef = useRef<HTMLCanvasElement>(null);
+  const captureGuideRef = useRef<HTMLDivElement>(null);
   const faceOverlayStabilizerRef = useRef(new FaceAssetStabilizer());
   const streamRef = useRef<MediaStream | null>(null);
   const lastShortcutRef = useRef('');
@@ -186,30 +188,32 @@ function GuestApp() {
     await videoRef.current.play();
   };
 
-  const captureFrame = async (slot: TemplateSlot, useFullLiveView = false, facePack: FaceAssetPack | null = activeFacePack) => {
+  const captureFrame = async (slot: TemplateSlot, useFullLiveView = false) => {
     if (!videoRef.current || !settings) throw new Error('Camera not ready.');
-    const video = videoRef.current;
-    const rotation = settings.cameraRotation;
-    const sourceWidth = video.videoWidth || 3840;
-    const sourceHeight = video.videoHeight || 2160;
-    const isSideways = rotation === 90 || rotation === 270;
-    const canvas = document.createElement('canvas');
-    canvas.width = isSideways ? sourceHeight : sourceWidth;
-    canvas.height = isSideways ? sourceWidth : sourceHeight;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) throw new Error('Canvas not ready.');
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.rotate((rotation * Math.PI) / 180);
-    if (settings.mirrorPreview) {
-      ctx.scale(-1, 1);
+
+    // Take an actual screenshot of the live window (video + face assets exactly
+    // as composited on screen). No programmatic re-rendering or re-detection,
+    // so the photo matches the preview 1:1.
+    setIsCapturing(true);
+    await nextPaint();
+
+    try {
+      let rect: { x: number; y: number; width: number; height: number } | undefined;
+      if (!useFullLiveView && captureGuideRef.current) {
+        const bounds = captureGuideRef.current.getBoundingClientRect();
+        rect = { x: bounds.left, y: bounds.top, width: bounds.width, height: bounds.height };
+      }
+      const screenshot = await window.photoBooth.capturePage(rect);
+      // Cover-crop the screenshot to the slot's exact aspect ratio so it drops
+      // into the print frame without stretching, for every template style.
+      const dataUrl = await coverCropToAspect(screenshot, slot.width / slot.height, slot.cropY);
+      setIsFlashing(true);
+      window.setTimeout(() => setIsFlashing(false), 180);
+      const saved = await window.photoBooth.saveImage({ dataUrl, kind: 'original', filenamePrefix: 'original' });
+      return { dataUrl, ...saved };
+    } finally {
+      setIsCapturing(false);
     }
-    ctx.drawImage(video, -sourceWidth / 2, -sourceHeight / 2, sourceWidth, sourceHeight);
-    await drawFaceAssetsOnCameraCanvas(canvas, facePack);
-    const dataUrl = useFullLiveView ? canvas.toDataURL('image/png') : cropCanvasToSlot(canvas, slot);
-    setIsFlashing(true);
-    window.setTimeout(() => setIsFlashing(false), 180);
-    const saved = await window.photoBooth.saveImage({ dataUrl, kind: 'original', filenamePrefix: 'original' });
-    return { dataUrl, ...saved };
   };
 
   const runCountdown = async (runId: number) => {
@@ -343,8 +347,7 @@ function GuestApp() {
         if (!(await runCountdown(runId))) return;
         const capture = await captureFrame(
           getPrimarySlot(style.id, nextCaptures.length),
-          liveViewUsesFullScreen(style.id),
-          settings && design ? selectedFaceAssetPack(settings, design) : null
+          liveViewUsesFullScreen(style.id)
         );
         nextCaptures.push(capture);
         setCaptures([...nextCaptures]);
@@ -578,16 +581,18 @@ function GuestApp() {
               aria-hidden="true"
             />
           )}
-          {activeFacePack && (
+          {activeFacePack && !isCapturing && (
             <button className="face-debug-toggle" onClick={() => setShowFaceDebug((current) => !current)}>
               {showFaceDebug ? 'Hide debug' : 'Show debug'}
             </button>
           )}
-          <div className="capture-progress">
-            {captures.length + 1 <= selectedStyle.shotCount ? `${captures.length + 1} / ${selectedStyle.shotCount}` : `${selectedStyle.shotCount} / ${selectedStyle.shotCount}`}
-          </div>
-          <div className={`capture-guide-layer ${liveViewUsesFullScreen(selectedStyleId) ? 'full-screen' : ''}`} style={liveViewStyle(selectedStyleId, getPrimarySlot(selectedStyleId, captures.length))}>
-            <div className="capture-print-guide" />
+          {!isCapturing && (
+            <div className="capture-progress">
+              {captures.length + 1 <= selectedStyle.shotCount ? `${captures.length + 1} / ${selectedStyle.shotCount}` : `${selectedStyle.shotCount} / ${selectedStyle.shotCount}`}
+            </div>
+          )}
+          <div ref={captureGuideRef} className={`capture-guide-layer ${liveViewUsesFullScreen(selectedStyleId) ? 'full-screen' : ''}`} style={liveViewStyle(selectedStyleId, getPrimarySlot(selectedStyleId, captures.length))}>
+            {!isCapturing && <div className="capture-print-guide" />}
           </div>
           {captureMessage && (
             <div className="capture-message" style={{ '--message-fade-ms': `${captureMessageFadeMs}ms` } as CSSProperties}>
@@ -2388,16 +2393,6 @@ function CameraControlPanel({
   );
 }
 
-const drawFaceAssetsOnCameraCanvas = async (canvas: HTMLCanvasElement, facePack: FaceAssetPack | null) => {
-  if (!facePack) return;
-  try {
-    const result = await detectFaces(canvas, performance.now());
-    await drawFaceAssetsOnCanvas(canvas, result, facePack);
-  } catch (error) {
-    console.warn('Face assets capture skipped.', error);
-  }
-};
-
 const drawCameraViewToCanvas = (video: HTMLVideoElement, width: number, height: number, settings: AppSettings) => {
   const canvas = document.createElement('canvas');
   canvas.width = width;
@@ -2455,6 +2450,42 @@ const updatePackAsset = (pack: FaceAssetPack, assetId: string, partial: Partial<
 });
 
 const delay = (ms: number) => new Promise((resolve) => window.setTimeout(resolve, ms));
+
+const nextPaint = () =>
+  new Promise<void>((resolve) => {
+    window.requestAnimationFrame(() => window.requestAnimationFrame(() => resolve()));
+  });
+
+const coverCropToAspect = (dataUrl: string, targetAspect: number, cropY: TemplateSlot['cropY'] = 'center') =>
+  new Promise<string>((resolve, reject) => {
+    const image = new window.Image();
+    image.onload = () => {
+      const sourceAspect = image.width / image.height;
+      let cropWidth = image.width;
+      let cropHeight = image.height;
+      let offsetX = 0;
+      let offsetY = 0;
+      if (sourceAspect > targetAspect) {
+        cropWidth = image.height * targetAspect;
+        offsetX = (image.width - cropWidth) / 2;
+      } else {
+        cropHeight = image.width / targetAspect;
+        offsetY = cropY === 'top' ? 0 : (image.height - cropHeight) / 2;
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(cropWidth));
+      canvas.height = Math.max(1, Math.round(cropHeight));
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        reject(new Error('Canvas not ready.'));
+        return;
+      }
+      ctx.drawImage(image, offsetX, offsetY, cropWidth, cropHeight, 0, 0, canvas.width, canvas.height);
+      resolve(canvas.toDataURL('image/png'));
+    };
+    image.onerror = () => reject(new Error('Could not load captured image.'));
+    image.src = dataUrl;
+  });
 
 const waitFor = async <T,>(getValue: () => T | null, timeoutMs = 2500) => {
   const start = Date.now();
@@ -2587,31 +2618,6 @@ const slotGuideStyle = (slot: Pick<TemplateSlot, 'width' | 'height' | 'cropY'>) 
     aspectRatio: `${slot.width} / ${slot.height}`,
     '--slot-aspect': slot.width / slot.height
   }) as CSSProperties;
-
-const cropCanvasToSlot = (sourceCanvas: HTMLCanvasElement, slot: Pick<TemplateSlot, 'width' | 'height' | 'cropY'>) => {
-  const targetAspect = slot.width / slot.height;
-  const sourceAspect = sourceCanvas.width / sourceCanvas.height;
-  let cropWidth = sourceCanvas.width;
-  let cropHeight = sourceCanvas.height;
-  let cropX = 0;
-  let cropY = 0;
-
-  if (sourceAspect > targetAspect) {
-    cropWidth = sourceCanvas.height * targetAspect;
-    cropX = (sourceCanvas.width - cropWidth) / 2;
-  } else {
-    cropHeight = sourceCanvas.width / targetAspect;
-    cropY = slot.cropY === 'top' ? 0 : (sourceCanvas.height - cropHeight) / 2;
-  }
-
-  const canvas = document.createElement('canvas');
-  canvas.width = Math.round(cropWidth);
-  canvas.height = Math.round(cropHeight);
-  const ctx = canvas.getContext('2d');
-  if (!ctx) throw new Error('Canvas not ready.');
-  ctx.drawImage(sourceCanvas, cropX, cropY, cropWidth, cropHeight, 0, 0, canvas.width, canvas.height);
-  return canvas.toDataURL('image/png');
-};
 
 const createPickerPlaceholderCaptures = (settings: AppSettings): Capture[] =>
   Array.from({ length: 4 }, (_item, index) => {

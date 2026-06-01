@@ -260,8 +260,7 @@ button:disabled {
   position: absolute;
   left: 50%;
   top: 72px;
-  width: min(94vw, calc(94vh * var(--slot-aspect, 1.5)));
-  max-height: calc(100vh - 92px);
+  width: min(94vw, calc((100vh - 92px) * var(--slot-aspect, 1.5)));
   transform: translateX(-50%);
   z-index: 2;
 }

@@ -317,6 +317,7 @@ export function installMockApi() {
       window.open(`${window.location.origin}?window=facePreview&packId=${encodeURIComponent(packId)}`, '_blank');
       return true;
     },
+    capturePage: async () => '',
     setGuestFullscreen: async (fullscreen: boolean) => {
       if (fullscreen && !document.fullscreenElement) await document.documentElement.requestFullscreen();
       if (!fullscreen && document.fullscreenElement) await document.exitFullscreen();

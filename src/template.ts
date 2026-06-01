@@ -12,13 +12,32 @@ const DEFAULT_PRINT_CALIBRATION: PrintCalibrationSettings = {
   bottomBleedIn: 0.26
 };
 
-const safeSlot = (slot: TemplateSlot, insetX = 60, insetY = 60): TemplateSlot => ({
-  ...slot,
-  x: slot.x + insetX,
-  y: slot.y + insetY,
-  width: slot.width - insetX * 2,
-  height: slot.height - insetY * 2
-});
+// Shrinks every photo area by this factor (10% smaller in each dimension) to
+// give thicker borders. Width and height scale equally, so the aspect ratio is
+// preserved — that keeps the live-view guide and capture crop perfectly aligned
+// with the final print.
+const PHOTO_AREA_SCALE = 0.9;
+
+const shrinkSlot = (slot: TemplateSlot, scale = PHOTO_AREA_SCALE): TemplateSlot => {
+  const width = slot.width * scale;
+  const height = slot.height * scale;
+  return {
+    ...slot,
+    x: slot.x + (slot.width - width) / 2,
+    y: slot.y + (slot.height - height) / 2,
+    width,
+    height
+  };
+};
+
+const safeSlot = (slot: TemplateSlot, insetX = 60, insetY = 60): TemplateSlot =>
+  shrinkSlot({
+    ...slot,
+    x: slot.x + insetX,
+    y: slot.y + insetY,
+    width: slot.width - insetX * 2,
+    height: slot.height - insetY * 2
+  });
 
 export const TEMPLATE_STYLES: TemplateStyleDefinition[] = [
   {
