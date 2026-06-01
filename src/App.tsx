@@ -1657,20 +1657,20 @@ function AdminApp() {
                           <article className="face-asset-card" key={asset.id}>
                             <FaceAssetThumb asset={asset} />
                             <div className="face-asset-fields">
-                              <input
-                                value={asset.name}
-                                onChange={(event) =>
-                                  void saveFaceAssetPack({
-                                    ...selectedFaceAssetPack,
-                                    assets: selectedFaceAssetPack.assets.map((item) =>
-                                      item.id === asset.id ? { ...item, name: event.target.value, updatedAt: new Date().toISOString() } : item
-                                    )
-                                  })
-                                }
-                              />
-                              <div className="face-asset-controls-column">
+                              <div className="face-asset-header">
+                                <input
+                                  value={asset.name}
+                                  onChange={(event) =>
+                                    void saveFaceAssetPack({
+                                      ...selectedFaceAssetPack,
+                                      assets: selectedFaceAssetPack.assets.map((item) =>
+                                        item.id === asset.id ? { ...item, name: event.target.value, updatedAt: new Date().toISOString() } : item
+                                      )
+                                    })
+                                  }
+                                />
                                 <label>
-                                  Placement
+                                  <span>Placement</span>
                                   <select
                                     value={asset.placement}
                                     onChange={(event) =>
@@ -1689,6 +1689,16 @@ function AdminApp() {
                                     ))}
                                   </select>
                                 </label>
+                                <label className="check-row face-asset-active">
+                                  <input
+                                    type="checkbox"
+                                    checked={asset.active}
+                                    onChange={(event) => void saveFaceAssetPack(updatePackAsset(selectedFaceAssetPack, asset.id, { active: event.target.checked }))}
+                                  />
+                                  Active
+                                </label>
+                              </div>
+                              <div className="face-asset-controls-grid">
                                 <FaceAssetNumberField label="Scale" value={asset.scale} step="0.05" onChange={(value) => saveFaceAssetPack(updatePackAsset(selectedFaceAssetPack, asset.id, { scale: value }))} />
                                 <FaceAssetNumberField label="X offset" value={asset.xOffset} step="0.02" onChange={(value) => saveFaceAssetPack(updatePackAsset(selectedFaceAssetPack, asset.id, { xOffset: value }))} />
                                 <FaceAssetNumberField label="Y offset" value={asset.yOffset} step="0.02" onChange={(value) => saveFaceAssetPack(updatePackAsset(selectedFaceAssetPack, asset.id, { yOffset: value }))} />
@@ -1696,16 +1706,8 @@ function AdminApp() {
                                 <FaceAssetNumberField label="Opacity" value={asset.opacity} step="0.05" min="0" max="1" onChange={(value) => saveFaceAssetPack(updatePackAsset(selectedFaceAssetPack, asset.id, { opacity: value }))} />
                                 <FaceAssetNumberField label="Order" value={asset.order} step="1" onChange={(value) => saveFaceAssetPack(updatePackAsset(selectedFaceAssetPack, asset.id, { order: value }))} />
                               </div>
-                              <label className="check-row">
-                                <input
-                                  type="checkbox"
-                                  checked={asset.active}
-                                  onChange={(event) => void saveFaceAssetPack(updatePackAsset(selectedFaceAssetPack, asset.id, { active: event.target.checked }))}
-                                />
-                                Active
-                              </label>
-                              <div className="admin-actions">
-                                <button onClick={() => window.photoBooth.openFile(asset.path)}>Open asset</button>
+                              <div className="admin-actions face-asset-actions">
+                                <button onClick={() => window.photoBooth.openFile(asset.path)}>Open</button>
                                 <button className="danger" onClick={() => void removeFaceAsset(selectedFaceAssetPack.id, asset.id)}>Remove</button>
                               </div>
                             </div>
@@ -2127,7 +2129,7 @@ function FaceAssetThumb({ asset }: { asset: FaceAsset }) {
 
   return (
     <div className="face-asset-thumb">
-      {src ? <img src={src} alt={asset.name} /> : <Image size={24} />}
+      {src ? <img src={src} alt={asset.name} /> : <Image size={18} />}
       <span>{asset.placement}</span>
     </div>
   );
