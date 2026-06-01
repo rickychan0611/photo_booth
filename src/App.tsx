@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { Camera, Download, Expand, ExternalLink, FolderOpen, Image, Minimize2, Printer, RefreshCw, Settings, SlidersHorizontal, Sparkles, Trash2, X } from 'lucide-react';
-import type { AiPreset, AiProvider, AiQueueItem, AppSettings, CameraControlSettings, CameraRotation, Capture, Gallery, SavedPhoto, TemplateDesign, TemplateSlot, TemplateStyleId } from './types';
+import type { AiPreset, AiProvider, AiQueueItem, AppSettings, CameraControlSettings, CameraRotation, Capture, FaceAsset, FaceAssetPack, FaceAssetPlacement, Gallery, SavedPhoto, TemplateDesign, TemplateSlot, TemplateStyleId } from './types';
 import { createGuideTemplateImage, createTemplatedPrintImage, getPrimarySlot, getTemplateStyle, PRINT_HEIGHT, PRINT_WIDTH, TEMPLATE_HEIGHT, TEMPLATE_STYLES, TEMPLATE_WIDTH } from './template';
+import { FaceAssetStabilizer, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceAssetsOnCanvas, drawFaceDebugInfo, mapFaceResultToDisplay, selectedFaceAssetPack } from './faceAssets';
 
 type GuestStep = 'welcome' | 'style' | 'design' | 'intro' | 'capture' | 'select' | 'thanks';
 
@@ -14,19 +15,27 @@ function useSettings() {
     void window.photoBooth.getSettings().then(setSettings);
   }, []);
 
+  const refreshSettings = async () => {
+    const next = await window.photoBooth.getSettings();
+    setSettings(next);
+    return next;
+  };
+
   const updateSettings = async (partial: Partial<AppSettings>) => {
     const next = await window.photoBooth.updateSettings(partial);
     setSettings(next);
     return next;
   };
 
-  return { settings, updateSettings };
+  return { settings, updateSettings, refreshSettings };
 }
 
 export function App() {
   const query = new URLSearchParams(window.location.search);
-  const windowKind = query.get('window') === 'admin' ? 'admin' : 'guest';
-  return windowKind === 'admin' ? <AdminApp /> : <GuestApp />;
+  const windowKind = query.get('window');
+  if (windowKind === 'admin') return <AdminApp />;
+  if (windowKind === 'facePreview') return <FaceAssetPreviewApp />;
+  return <GuestApp />;
 }
 
 function GuestApp() {
@@ -49,8 +58,11 @@ function GuestApp() {
   const [isAiGenerating, setIsAiGenerating] = useState(false);
   const [isFlashing, setIsFlashing] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showFaceDebug, setShowFaceDebug] = useState(true);
   const [isBusy, setIsBusy] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const faceOverlayCanvasRef = useRef<HTMLCanvasElement>(null);
+  const faceOverlayStabilizerRef = useRef(new FaceAssetStabilizer());
   const streamRef = useRef<MediaStream | null>(null);
   const lastShortcutRef = useRef('');
   const sessionRunRef = useRef(0);
@@ -174,7 +186,7 @@ function GuestApp() {
     await videoRef.current.play();
   };
 
-  const captureFrame = async (slot: TemplateSlot, useFullLiveView = false) => {
+  const captureFrame = async (slot: TemplateSlot, useFullLiveView = false, facePack: FaceAssetPack | null = activeFacePack) => {
     if (!videoRef.current || !settings) throw new Error('Camera not ready.');
     const video = videoRef.current;
     const rotation = settings.cameraRotation;
@@ -192,6 +204,7 @@ function GuestApp() {
       ctx.scale(-1, 1);
     }
     ctx.drawImage(video, -sourceWidth / 2, -sourceHeight / 2, sourceWidth, sourceHeight);
+    await drawFaceAssetsOnCameraCanvas(canvas, facePack);
     const dataUrl = useFullLiveView ? canvas.toDataURL('image/png') : cropCanvasToSlot(canvas, slot);
     setIsFlashing(true);
     window.setTimeout(() => setIsFlashing(false), 180);
@@ -212,10 +225,68 @@ function GuestApp() {
   const activeDesigns = settings?.template.designs.filter((design) => design.active) ?? [];
   const selectedStyle = getTemplateStyle(selectedStyleId);
   const selectedDesign = activeDesigns.find((design) => design.id === selectedDesignId) ?? null;
+  const activeFacePack = settings && selectedDesign ? selectedFaceAssetPack(settings, selectedDesign) : null;
   const selectedPhotoDataUrls = selectedCaptureIndexes
     .slice(0, selectedStyle.selectCount)
     .map((index) => captures[index]?.dataUrl)
     .filter(Boolean) as string[];
+
+  useEffect(() => {
+    const canvas = faceOverlayCanvasRef.current;
+    if (!settings || !canvas || step !== 'capture' || !activeFacePack) {
+      if (canvas) clearFaceAssetCanvas(canvas, canvas.width, canvas.height);
+      faceOverlayStabilizerRef.current.reset();
+      return undefined;
+    }
+
+    let animationFrame = 0;
+    let canceled = false;
+    let busy = false;
+    let lastDetectionAt = 0;
+    let missedFrames = 0;
+
+    const drawOverlay = async (now: number) => {
+      const video = videoRef.current;
+      const overlay = faceOverlayCanvasRef.current;
+      if (!canceled && video && overlay && video.videoWidth > 0 && video.videoHeight > 0 && !busy && now - lastDetectionAt > 66) {
+        busy = true;
+        lastDetectionAt = now;
+        try {
+          const displayWidth = Math.max(1, Math.round(overlay.clientWidth));
+          const displayHeight = Math.max(1, Math.round(overlay.clientHeight));
+          const displayResult = await detectDisplayedFaces(video, displayWidth, displayHeight, settings, now);
+          if (displayResult.faceLandmarks.length === 0) {
+            missedFrames += 1;
+            if (missedFrames > 45) {
+              clearFaceAssetCanvas(overlay, overlay.width, overlay.height);
+              faceOverlayStabilizerRef.current.reset();
+            }
+            return;
+          }
+          missedFrames = 0;
+          clearFaceAssetCanvas(overlay, displayWidth, displayHeight);
+          const ctx = overlay.getContext('2d');
+          if (ctx) {
+            await drawFaceAssets(ctx, displayResult, activeFacePack, overlay.width, overlay.height, faceOverlayStabilizerRef.current);
+            if (showFaceDebug) drawFaceDebugInfo(ctx, displayResult, overlay.width, overlay.height);
+          }
+        } catch (error) {
+          console.warn('Face assets preview skipped.', error);
+        } finally {
+          busy = false;
+        }
+      }
+      if (!canceled) animationFrame = window.requestAnimationFrame(drawOverlay);
+    };
+
+    animationFrame = window.requestAnimationFrame(drawOverlay);
+    return () => {
+      canceled = true;
+      window.cancelAnimationFrame(animationFrame);
+      clearFaceAssetCanvas(canvas, canvas.width, canvas.height);
+      faceOverlayStabilizerRef.current.reset();
+    };
+  }, [activeFacePack, settings?.cameraRotation, settings?.mirrorPreview, showFaceDebug, step]);
 
   const chooseStyle = (styleId: TemplateStyleId) => {
     const firstDesign = activeDesigns.find((design) => design.styleId === styleId);
@@ -270,7 +341,11 @@ function GuestApp() {
         setCaptureMessage('');
         await delay(shot.cameraBeforeCountdownMs);
         if (!(await runCountdown(runId))) return;
-        const capture = await captureFrame(getPrimarySlot(style.id, nextCaptures.length), liveViewUsesFullScreen(style.id));
+        const capture = await captureFrame(
+          getPrimarySlot(style.id, nextCaptures.length),
+          liveViewUsesFullScreen(style.id),
+          settings && design ? selectedFaceAssetPack(settings, design) : null
+        );
         nextCaptures.push(capture);
         setCaptures([...nextCaptures]);
         await delay(350);
@@ -496,6 +571,18 @@ function GuestApp() {
       {step === 'capture' && (
         <section className="capture-screen">
           <video ref={videoRef} className={getCameraVideoClass(settings)} playsInline muted />
+          {activeFacePack && (
+            <canvas
+              ref={faceOverlayCanvasRef}
+              className="face-overlay-canvas"
+              aria-hidden="true"
+            />
+          )}
+          {activeFacePack && (
+            <button className="face-debug-toggle" onClick={() => setShowFaceDebug((current) => !current)}>
+              {showFaceDebug ? 'Hide debug' : 'Show debug'}
+            </button>
+          )}
           <div className="capture-progress">
             {captures.length + 1 <= selectedStyle.shotCount ? `${captures.length + 1} / ${selectedStyle.shotCount}` : `${selectedStyle.shotCount} / ${selectedStyle.shotCount}`}
           </div>
@@ -650,6 +737,7 @@ function AdminApp() {
   const [cameraCapabilities, setCameraCapabilities] = useState<CameraCapabilitiesMap>({});
   const [cameraDefaultControls, setCameraDefaultControls] = useState<CameraControlSettings>({});
   const [templateStyleId, setTemplateStyleId] = useState<TemplateStyleId>('style1');
+  const [selectedFaceAssetPackId, setSelectedFaceAssetPackId] = useState('');
   const [aiPresetDraft, setAiPresetDraft] = useState({ name: '', prompt: '' });
   const cameraPreviewRef = useRef<HTMLVideoElement>(null);
   const [adminStream, setAdminStream] = useState<MediaStream | null>(null);
@@ -681,6 +769,15 @@ function AdminApp() {
     if (tab === 'gallery') void refreshGallery();
     if (tab === 'aiQueue') void refreshAiQueue();
   }, [tab]);
+
+  useEffect(() => {
+    if (!settings) return;
+    const packs = settings.template.faceAssetPacks;
+    if (packs.length > 0 && !packs.some((pack) => pack.id === selectedFaceAssetPackId)) {
+      setSelectedFaceAssetPackId(packs[0].id);
+    }
+    if (packs.length === 0 && selectedFaceAssetPackId) setSelectedFaceAssetPackId('');
+  }, [settings?.template.faceAssetPacks, selectedFaceAssetPackId]);
 
   useEffect(() => {
     if (tab !== 'aiQueue') return undefined;
@@ -719,6 +816,8 @@ function AdminApp() {
       setCameraDefaultControls({});
     };
   }, [settings?.cameraId, tab]);
+
+  const selectedFaceAssetPack = settings?.template.faceAssetPacks.find((pack) => pack.id === selectedFaceAssetPackId) ?? null;
 
   const latestFinal = useMemo(() => gallery.finals[0], [gallery]);
   const filteredFinals = useMemo(() => {
@@ -821,6 +920,51 @@ function AdminApp() {
     setMessage(`Guide saved: ${filePath}`);
   };
 
+  const addFaceAssetPack = async () => {
+    const now = new Date().toISOString();
+    const pack: FaceAssetPack = {
+      id: `face-pack-${Date.now()}`,
+      name: 'Face Asset Pack',
+      active: true,
+      assets: [],
+      createdAt: now,
+      updatedAt: now
+    };
+    const next = await window.photoBooth.updateFaceAssetPack(pack);
+    await updateSettings(next);
+    setSelectedFaceAssetPackId(pack.id);
+    setMessage('Face asset pack saved.');
+  };
+
+  const saveFaceAssetPack = async (pack: FaceAssetPack) => {
+    const next = await window.photoBooth.updateFaceAssetPack({ ...pack, updatedAt: new Date().toISOString() });
+    await updateSettings(next);
+    setMessage('Face asset pack saved.');
+  };
+
+  const deleteFaceAssetPack = async (packId: string) => {
+    const next = await window.photoBooth.deleteFaceAssetPack(packId);
+    await updateSettings(next);
+    setSelectedFaceAssetPackId(next.template.faceAssetPacks[0]?.id ?? '');
+    setMessage('Face asset pack deleted.');
+  };
+
+  const uploadFaceAsset = async (packId: string) => {
+    try {
+      const next = await window.photoBooth.uploadFaceAsset(packId);
+      await updateSettings(next);
+      setMessage('Face asset uploaded.');
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Face asset upload failed.');
+    }
+  };
+
+  const removeFaceAsset = async (packId: string, assetId: string) => {
+    const next = await window.photoBooth.removeFaceAsset(packId, assetId);
+    await updateSettings(next);
+    setMessage('Face asset removed.');
+  };
+
   const addAiPreset = async () => {
     const now = new Date().toISOString();
     const preset: AiPreset = {
@@ -899,6 +1043,7 @@ function AdminApp() {
           ['printer', 'Printer', Printer],
           ['workflow', 'Workflow', SlidersHorizontal],
           ['template', 'Template', Image],
+          ['faceAssets', 'Face Assets', Sparkles],
           ['aiPresets', 'AI Presets', Sparkles],
           ['aiQueue', 'AI Queue', RefreshCw],
           ['gallery', 'Gallery', FolderOpen]
@@ -1408,6 +1553,30 @@ function AdminApp() {
                           </select>
                         </label>
                       )}
+                      <label className="check-row">
+                        <input
+                          type="checkbox"
+                          checked={design.faceTrackingEnabled}
+                          onChange={(event) => void saveTemplateDesign({ ...design, faceTrackingEnabled: event.target.checked })}
+                        />
+                        Face assets
+                      </label>
+                      {design.faceTrackingEnabled && (
+                        <label>
+                          Asset pack
+                          <select
+                            value={design.faceAssetPackId}
+                            onChange={(event) => void saveTemplateDesign({ ...design, faceAssetPackId: event.target.value })}
+                          >
+                            <option value="">Choose asset pack</option>
+                            {settings.template.faceAssetPacks
+                              .filter((pack) => pack.active)
+                              .map((pack) => (
+                                <option key={pack.id} value={pack.id}>{pack.name}</option>
+                              ))}
+                          </select>
+                        </label>
+                      )}
                       <div className="template-path-note">
                         <span>Preview: {shortPath(templatePreviewPath(design))}</span>
                         <span>Print frame: {shortPath(templateFramePath(design))}</span>
@@ -1426,6 +1595,128 @@ function AdminApp() {
               )}
             </div>
 
+          </AdminSection>
+        )}
+
+        {tab === 'faceAssets' && (
+          <AdminSection>
+            <div className="face-assets-layout">
+              <div className="face-pack-list">
+                <div className="admin-actions">
+                  <button onClick={() => void addFaceAssetPack()}>Add pack</button>
+                </div>
+                {settings.template.faceAssetPacks.map((pack) => (
+                  <button
+                    key={pack.id}
+                    className={pack.id === selectedFaceAssetPackId ? 'active' : ''}
+                    onClick={() => setSelectedFaceAssetPackId(pack.id)}
+                  >
+                    <span>{pack.name}</span>
+                    <small>{pack.assets.length} asset{pack.assets.length === 1 ? '' : 's'}</small>
+                  </button>
+                ))}
+                {settings.template.faceAssetPacks.length === 0 && <p className="muted">No face asset packs yet.</p>}
+              </div>
+
+              <div className="face-pack-editor">
+                {!selectedFaceAssetPack && <p className="muted">Create a pack, then upload transparent PNG assets.</p>}
+                {selectedFaceAssetPack && (
+                  <>
+                    <div className="workflow-shot">
+                      <h2>Pack Settings</h2>
+                      <div className="workflow-grid">
+                        <label>
+                          Pack name
+                          <input
+                            value={selectedFaceAssetPack.name}
+                            onChange={(event) => void saveFaceAssetPack({ ...selectedFaceAssetPack, name: event.target.value })}
+                          />
+                        </label>
+                        <label className="check-row">
+                          <input
+                            type="checkbox"
+                            checked={selectedFaceAssetPack.active}
+                            onChange={(event) => void saveFaceAssetPack({ ...selectedFaceAssetPack, active: event.target.checked })}
+                          />
+                          Active
+                        </label>
+                      </div>
+                      <div className="admin-actions">
+                        <button onClick={() => void uploadFaceAsset(selectedFaceAssetPack.id)}>Upload PNG asset</button>
+                        <button onClick={() => void window.photoBooth.openFaceAssetPreview(selectedFaceAssetPack.id)}>Open preview window</button>
+                        <button className="danger" onClick={() => void deleteFaceAssetPack(selectedFaceAssetPack.id)}>Delete pack</button>
+                      </div>
+                      <p className="muted">Use transparent PNGs. Good starting points: glasses centered on eyes, hats above forehead, noses on nose tip, mouths over lips, face around full face.</p>
+                    </div>
+
+                    <div className="face-asset-list">
+                      {selectedFaceAssetPack.assets
+                        .slice()
+                        .sort((a, b) => a.order - b.order)
+                        .map((asset) => (
+                          <article className="face-asset-card" key={asset.id}>
+                            <FaceAssetThumb asset={asset} />
+                            <div className="face-asset-fields">
+                              <input
+                                value={asset.name}
+                                onChange={(event) =>
+                                  void saveFaceAssetPack({
+                                    ...selectedFaceAssetPack,
+                                    assets: selectedFaceAssetPack.assets.map((item) =>
+                                      item.id === asset.id ? { ...item, name: event.target.value, updatedAt: new Date().toISOString() } : item
+                                    )
+                                  })
+                                }
+                              />
+                              <div className="face-asset-controls-column">
+                                <label>
+                                  Placement
+                                  <select
+                                    value={asset.placement}
+                                    onChange={(event) =>
+                                      void saveFaceAssetPack({
+                                        ...selectedFaceAssetPack,
+                                        assets: selectedFaceAssetPack.assets.map((item) =>
+                                          item.id === asset.id
+                                            ? { ...item, placement: event.target.value as FaceAssetPlacement, updatedAt: new Date().toISOString() }
+                                            : item
+                                        )
+                                      })
+                                    }
+                                  >
+                                    {FACE_ASSET_PLACEMENTS.map((placement) => (
+                                      <option key={placement} value={placement}>{placement}</option>
+                                    ))}
+                                  </select>
+                                </label>
+                                <FaceAssetNumberField label="Scale" value={asset.scale} step="0.05" onChange={(value) => saveFaceAssetPack(updatePackAsset(selectedFaceAssetPack, asset.id, { scale: value }))} />
+                                <FaceAssetNumberField label="X offset" value={asset.xOffset} step="0.02" onChange={(value) => saveFaceAssetPack(updatePackAsset(selectedFaceAssetPack, asset.id, { xOffset: value }))} />
+                                <FaceAssetNumberField label="Y offset" value={asset.yOffset} step="0.02" onChange={(value) => saveFaceAssetPack(updatePackAsset(selectedFaceAssetPack, asset.id, { yOffset: value }))} />
+                                <FaceAssetNumberField label="Rotation" value={asset.rotation} step="1" onChange={(value) => saveFaceAssetPack(updatePackAsset(selectedFaceAssetPack, asset.id, { rotation: value }))} />
+                                <FaceAssetNumberField label="Opacity" value={asset.opacity} step="0.05" min="0" max="1" onChange={(value) => saveFaceAssetPack(updatePackAsset(selectedFaceAssetPack, asset.id, { opacity: value }))} />
+                                <FaceAssetNumberField label="Order" value={asset.order} step="1" onChange={(value) => saveFaceAssetPack(updatePackAsset(selectedFaceAssetPack, asset.id, { order: value }))} />
+                              </div>
+                              <label className="check-row">
+                                <input
+                                  type="checkbox"
+                                  checked={asset.active}
+                                  onChange={(event) => void saveFaceAssetPack(updatePackAsset(selectedFaceAssetPack, asset.id, { active: event.target.checked }))}
+                                />
+                                Active
+                              </label>
+                              <div className="admin-actions">
+                                <button onClick={() => window.photoBooth.openFile(asset.path)}>Open asset</button>
+                                <button className="danger" onClick={() => void removeFaceAsset(selectedFaceAssetPack.id, asset.id)}>Remove</button>
+                              </div>
+                            </div>
+                          </article>
+                        ))}
+                      {selectedFaceAssetPack.assets.length === 0 && <p className="muted">Upload a transparent PNG to start calibrating.</p>}
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
           </AdminSection>
         )}
 
@@ -1615,6 +1906,128 @@ function AdminSection({ children }: { children: React.ReactNode }) {
   return <div className="admin-section">{children}</div>;
 }
 
+function FaceAssetPreviewApp() {
+  const query = new URLSearchParams(window.location.search);
+  const packId = query.get('packId') ?? '';
+  const { settings, refreshSettings } = useSettings();
+  const [error, setError] = useState('');
+  const [showDebug, setShowDebug] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const overlayRef = useRef<HTMLCanvasElement>(null);
+  const stabilizerRef = useRef(new FaceAssetStabilizer());
+
+  const pack = settings?.template.faceAssetPacks.find((candidate) => candidate.id === packId) ?? null;
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      void refreshSettings();
+    }, 350);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!settings) return undefined;
+    let stream: MediaStream | null = null;
+    const start = async () => {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: settings.cameraId ? { deviceId: { exact: settings.cameraId } } : true,
+          audio: false
+        });
+        await applyCameraControls(stream, settings.cameraControls);
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          await videoRef.current.play();
+        }
+      } catch {
+        setError('Camera preview failed.');
+      }
+    };
+    void start();
+    return () => {
+      stream?.getTracks().forEach((track) => track.stop());
+    };
+  }, [settings?.cameraId]);
+
+  useEffect(() => {
+    const canvas = overlayRef.current;
+    if (!settings || !canvas || !pack?.active) {
+      if (canvas) clearFaceAssetCanvas(canvas, canvas.width, canvas.height);
+      stabilizerRef.current.reset();
+      return undefined;
+    }
+
+    let animationFrame = 0;
+    let canceled = false;
+    let busy = false;
+    let lastDetectionAt = 0;
+    let missedFrames = 0;
+
+    const drawOverlay = async (now: number) => {
+      const video = videoRef.current;
+      const overlay = overlayRef.current;
+      if (!canceled && video && overlay && video.videoWidth > 0 && video.videoHeight > 0 && !busy && now - lastDetectionAt > 66) {
+        busy = true;
+        lastDetectionAt = now;
+        try {
+          const displayWidth = Math.max(1, Math.round(overlay.clientWidth));
+          const displayHeight = Math.max(1, Math.round(overlay.clientHeight));
+          const displayResult = await detectDisplayedFaces(video, displayWidth, displayHeight, settings, now);
+          if (displayResult.faceLandmarks.length === 0) {
+            missedFrames += 1;
+            if (missedFrames > 45) {
+              clearFaceAssetCanvas(overlay, overlay.width, overlay.height);
+              stabilizerRef.current.reset();
+            }
+            return;
+          }
+          missedFrames = 0;
+          clearFaceAssetCanvas(overlay, displayWidth, displayHeight);
+          const ctx = overlay.getContext('2d');
+          if (ctx) {
+            await drawFaceAssets(ctx, displayResult, pack, overlay.width, overlay.height, stabilizerRef.current);
+            if (showDebug) drawFaceDebugInfo(ctx, displayResult, overlay.width, overlay.height);
+          }
+        } catch (error) {
+          console.warn('Face assets preview skipped.', error);
+        } finally {
+          busy = false;
+        }
+      }
+      if (!canceled) animationFrame = window.requestAnimationFrame(drawOverlay);
+    };
+
+    animationFrame = window.requestAnimationFrame(drawOverlay);
+    return () => {
+      canceled = true;
+      window.cancelAnimationFrame(animationFrame);
+      clearFaceAssetCanvas(canvas, canvas.width, canvas.height);
+      stabilizerRef.current.reset();
+    };
+  }, [pack, settings, showDebug]);
+
+  if (!settings) return <main className="face-preview-window"><p className="quiet">LOADING</p></main>;
+
+  return (
+    <main className="face-preview-window">
+      <div className="face-preview-header">
+        <strong>{pack?.name ?? 'FACE ASSET PREVIEW'}</strong>
+        <div className="face-preview-header-actions">
+          <span>{pack ? `${pack.assets.length} ASSET${pack.assets.length === 1 ? '' : 'S'}` : 'NO PACK SELECTED'}</span>
+          <button onClick={() => setShowDebug((current) => !current)}>
+            {showDebug ? 'Hide debug' : 'Show debug'}
+          </button>
+        </div>
+      </div>
+      <div className={`face-preview-stage ${getCameraOrientationClass(settings)}`}>
+        <video ref={videoRef} className={getCameraVideoClass(settings)} muted playsInline />
+        <canvas ref={overlayRef} className="face-preview-overlay" aria-hidden="true" />
+        {error && <p className="guest-error">{error}</p>}
+      </div>
+    </main>
+  );
+}
+
 function DraftTextarea({
   value,
   placeholder,
@@ -1692,6 +2105,61 @@ function AiReferenceThumb({ path, label, onRemove }: { path: string; label: stri
         <X size={13} />
       </button>
     </div>
+  );
+}
+
+function FaceAssetThumb({ asset }: { asset: FaceAsset }) {
+  const [src, setSrc] = useState('');
+  useEffect(() => {
+    let active = true;
+    void window.photoBooth
+      .getImageDataUrl(asset.path)
+      .then((dataUrl) => {
+        if (active) setSrc(dataUrl);
+      })
+      .catch(() => {
+        if (active) setSrc('');
+      });
+    return () => {
+      active = false;
+    };
+  }, [asset.path]);
+
+  return (
+    <div className="face-asset-thumb">
+      {src ? <img src={src} alt={asset.name} /> : <Image size={24} />}
+      <span>{asset.placement}</span>
+    </div>
+  );
+}
+
+function FaceAssetNumberField({
+  label,
+  value,
+  step,
+  min,
+  max,
+  onChange
+}: {
+  label: string;
+  value: number;
+  step: string;
+  min?: string;
+  max?: string;
+  onChange: (value: number) => Promise<unknown>;
+}) {
+  return (
+    <label>
+      <span>{label}</span>
+      <input
+        type="number"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={(event) => void onChange(Number(event.target.value))}
+      />
+    </label>
   );
 }
 
@@ -1917,6 +2385,72 @@ function CameraControlPanel({
     </div>
   );
 }
+
+const drawFaceAssetsOnCameraCanvas = async (canvas: HTMLCanvasElement, facePack: FaceAssetPack | null) => {
+  if (!facePack) return;
+  try {
+    const result = await detectFaces(canvas, performance.now());
+    await drawFaceAssetsOnCanvas(canvas, result, facePack);
+  } catch (error) {
+    console.warn('Face assets capture skipped.', error);
+  }
+};
+
+const drawCameraViewToCanvas = (video: HTMLVideoElement, width: number, height: number, settings: AppSettings) => {
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return canvas;
+  const sourceWidth = video.videoWidth || width;
+  const sourceHeight = video.videoHeight || height;
+  const rotation = settings.cameraRotation;
+  const isSideways = rotation === 90 || rotation === 270;
+  const visualWidth = isSideways ? sourceHeight : sourceWidth;
+  const visualHeight = isSideways ? sourceWidth : sourceHeight;
+  const scale = Math.max(width / visualWidth, height / visualHeight);
+  const drawWidth = sourceWidth * scale;
+  const drawHeight = sourceHeight * scale;
+
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, width, height);
+  ctx.translate(width / 2, height / 2);
+  ctx.rotate((rotation * Math.PI) / 180);
+  if (settings.mirrorPreview) ctx.scale(-1, 1);
+  ctx.drawImage(video, -drawWidth / 2, -drawHeight / 2, drawWidth, drawHeight);
+  return canvas;
+};
+
+const detectDisplayedFaces = async (
+  video: HTMLVideoElement,
+  displayWidth: number,
+  displayHeight: number,
+  settings: AppSettings,
+  timestamp: number
+) => {
+  const detectionCanvas = drawCameraViewToCanvas(video, displayWidth, displayHeight, settings);
+  const uprightResult = await detectFaces(detectionCanvas, timestamp);
+  if (uprightResult.faceLandmarks.length > 0) return uprightResult;
+
+  const rawResult = await detectFaces(video, timestamp + 0.1);
+  return mapFaceResultToDisplay(
+    rawResult,
+    video.videoWidth,
+    video.videoHeight,
+    displayWidth,
+    displayHeight,
+    { mirror: settings.mirrorPreview, rotation: settings.cameraRotation }
+  );
+};
+
+const FACE_ASSET_PLACEMENTS: FaceAssetPlacement[] = ['glasses', 'hat', 'nose', 'mouth', 'face'];
+
+const updatePackAsset = (pack: FaceAssetPack, assetId: string, partial: Partial<FaceAsset>): FaceAssetPack => ({
+  ...pack,
+  assets: pack.assets.map((asset) =>
+    asset.id === assetId ? { ...asset, ...partial, updatedAt: new Date().toISOString() } : asset
+  )
+});
 
 const delay = (ms: number) => new Promise((resolve) => window.setTimeout(resolve, ms));
 

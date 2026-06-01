@@ -225,6 +225,37 @@ button:disabled {
   z-index: 1;
 }
 
+.face-overlay-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.face-debug-toggle {
+  position: absolute;
+  right: 28px;
+  bottom: 28px;
+  z-index: 6;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: rgba(0, 0, 0, 0.72);
+  color: #fff;
+  padding: 9px 12px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.face-debug-toggle:hover,
+.face-debug-toggle:focus-visible {
+  background: #fff;
+  color: #000;
+  outline: none;
+}
+
 .capture-guide-layer {
   position: absolute;
   left: 50%;
@@ -252,7 +283,9 @@ button:disabled {
 }
 
 .capture-screen > video.camera-rotate-90,
-.capture-screen > video.camera-rotate-270 {
+.capture-screen > video.camera-rotate-270,
+.capture-screen > canvas.camera-rotate-90,
+.capture-screen > canvas.camera-rotate-270 {
   inset: auto;
   left: 50%;
   top: 50%;
@@ -260,11 +293,13 @@ button:disabled {
   height: 100vw;
 }
 
-.capture-screen > video.camera-rotate-90 {
+.capture-screen > video.camera-rotate-90,
+.capture-screen > canvas.camera-rotate-90 {
   transform: translate(-50%, -50%) rotate(90deg) scaleX(var(--camera-scale-x));
 }
 
-.capture-screen > video.camera-rotate-270 {
+.capture-screen > video.camera-rotate-270,
+.capture-screen > canvas.camera-rotate-270 {
   transform: translate(-50%, -50%) rotate(270deg) scaleX(var(--camera-scale-x));
 }
 
@@ -1004,6 +1039,16 @@ button:disabled {
   object-fit: cover;
 }
 
+.admin-face-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  z-index: 3;
+}
+
 .admin-guest-view-overlay {
   position: absolute;
   left: 50%;
@@ -1031,7 +1076,9 @@ button:disabled {
 }
 
 .admin-preview video.camera-rotate-90,
-.admin-preview video.camera-rotate-270 {
+.admin-preview video.camera-rotate-270,
+.admin-preview canvas.camera-rotate-90,
+.admin-preview canvas.camera-rotate-270 {
   width: 177.777%;
   height: 56.25%;
 }
@@ -1138,9 +1185,210 @@ button:disabled {
 .template-manager,
 .template-style-summary,
 .template-design-grid,
-.ai-preset-list {
+.ai-preset-list,
+.face-assets-layout,
+.face-pack-editor,
+.face-asset-list {
   display: grid;
   gap: 16px;
+}
+
+.face-assets-layout {
+  grid-template-columns: 220px minmax(0, 1fr);
+  align-items: start;
+}
+
+.face-pack-list {
+  display: grid;
+  gap: 10px;
+}
+
+.face-pack-list button {
+  min-height: 54px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: transparent;
+  color: #fff;
+  padding: 10px;
+  display: grid;
+  gap: 4px;
+  text-align: left;
+}
+
+.face-pack-list button.active,
+.face-pack-list button:hover {
+  background: #fff;
+  color: #000;
+}
+
+.face-pack-list button small {
+  opacity: 0.65;
+}
+
+.face-asset-card {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 12px;
+}
+
+.face-asset-thumb {
+  position: relative;
+  width: 96px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: #000;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.face-asset-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.face-asset-thumb span {
+  position: absolute;
+  left: 6px;
+  bottom: 5px;
+  padding: 3px 5px;
+  background: rgba(0, 0, 0, 0.72);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.face-asset-fields {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) 150px;
+  gap: 10px;
+  align-items: start;
+}
+
+.face-asset-fields > input,
+.face-asset-fields > .check-row,
+.face-asset-fields > .admin-actions {
+  grid-column: 1;
+}
+
+.face-asset-controls-column {
+  grid-column: 2;
+  grid-row: 1 / span 4;
+  display: grid;
+  gap: 6px;
+}
+
+.face-asset-controls-column label {
+  gap: 4px;
+  font-size: 10px;
+}
+
+.face-asset-controls-column input,
+.face-asset-controls-column select {
+  min-height: 30px;
+  padding: 0 7px;
+  font-size: 12px;
+}
+
+.face-preview-window {
+  height: 100vh;
+  min-height: 100vh;
+  background: #000;
+  color: #fff;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 12px;
+  padding: 18px;
+}
+
+.face-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  color: rgba(255, 255, 255, 0.78);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.face-preview-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.face-preview-header-actions button {
+  min-height: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: transparent;
+  color: #fff;
+  padding: 6px 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 10px;
+}
+
+.face-preview-header-actions button:hover,
+.face-preview-header-actions button:focus-visible {
+  background: #fff;
+  color: #000;
+  outline: none;
+}
+
+.face-preview-stage {
+  position: relative;
+  justify-self: center;
+  align-self: start;
+  width: min(100%, 1120px);
+  height: auto;
+  aspect-ratio: 16 / 9;
+  max-height: calc(100vh - 78px);
+  min-height: 0;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: #000;
+  overflow: hidden;
+}
+
+.face-preview-stage.camera-placeholder-portrait {
+  justify-self: center;
+  width: min(430px, 100%);
+  aspect-ratio: 9 / 16;
+}
+
+.face-preview-stage video,
+.face-preview-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.face-preview-overlay {
+  pointer-events: none;
+  z-index: 2;
+}
+
+.face-preview-stage > video.camera-rotate-90,
+.face-preview-stage > video.camera-rotate-270 {
+  inset: auto;
+  left: 50%;
+  top: 50%;
+  width: 177.777%;
+  height: 56.25%;
+}
+
+.face-preview-stage > video.camera-rotate-90 {
+  transform: translate(-50%, -50%) rotate(90deg) scaleX(var(--camera-scale-x));
+}
+
+.face-preview-stage > video.camera-rotate-270 {
+  transform: translate(-50%, -50%) rotate(270deg) scaleX(var(--camera-scale-x));
 }
 
 .template-style-tabs {
@@ -1531,6 +1779,19 @@ button:disabled {
 
   .camera-admin-layout {
     grid-template-columns: 1fr;
+  }
+
+  .face-assets-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .face-asset-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .face-asset-controls-column {
+    grid-column: 1;
+    grid-row: auto;
   }
 }
 

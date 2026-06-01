@@ -84,6 +84,35 @@ export type TemplateDesign = {
   active: boolean;
   usesAi: boolean;
   aiPresetId: string;
+  faceTrackingEnabled: boolean;
+  faceAssetPackId: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type FaceAssetPlacement = 'glasses' | 'hat' | 'nose' | 'mouth' | 'face';
+
+export type FaceAsset = {
+  id: string;
+  name: string;
+  path: string;
+  placement: FaceAssetPlacement;
+  scale: number;
+  xOffset: number;
+  yOffset: number;
+  rotation: number;
+  opacity: number;
+  active: boolean;
+  order: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type FaceAssetPack = {
+  id: string;
+  name: string;
+  active: boolean;
+  assets: FaceAsset[];
   createdAt: string;
   updatedAt: string;
 };
@@ -96,6 +125,7 @@ export type TemplateSettings = {
   selectedStyleId: TemplateStyleId;
   selectedDesignId: string;
   aiPresets: AiPreset[];
+  faceAssetPacks: FaceAssetPack[];
   designs: TemplateDesign[];
 };
 

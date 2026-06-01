@@ -11,6 +11,9 @@ import type {
   AiProvider,
   AiQueueItem,
   AppSettings,
+  FaceAsset,
+  FaceAssetPack,
+  FaceAssetPlacement,
   Gallery,
   SaveImageRequest,
   SaveImageResult,
@@ -23,6 +26,7 @@ import type {
 
 let guestWindow: BrowserWindow | null = null;
 let adminWindow: BrowserWindow | null = null;
+let facePreviewWindow: BrowserWindow | null = null;
 let lastFinalPath = '';
 
 const PRINT_PREVIEW_WIDTH = 1239;
@@ -89,6 +93,7 @@ const defaultSettings = (): AppSettings => ({
     selectedStyleId: 'style1',
     selectedDesignId: '',
     aiPresets: [],
+    faceAssetPacks: [],
     designs: []
   },
   workflow: {
@@ -124,6 +129,7 @@ async function ensureEventFolders(eventFolder: string) {
   await fs.mkdir(path.join(eventFolder, 'originals', 'thumbs'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'finals', 'thumbs'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'templates'), { recursive: true });
+  await fs.mkdir(path.join(eventFolder, 'face-assets'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'ai-presets'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'ai-queue'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'ai-queue', 'inputs'), { recursive: true });
@@ -165,6 +171,7 @@ async function readSettings(): Promise<AppSettings> {
         styleVersion: 2,
         selectedStyleId: normalizeTemplateStyleId(String(parsed.template?.selectedStyleId ?? fallback.template.selectedStyleId), isLegacyTemplateStyle),
         aiPresets: (parsed.template?.aiPresets ?? fallback.template.aiPresets).map(normalizeAiPreset),
+        faceAssetPacks: (parsed.template?.faceAssetPacks ?? fallback.template.faceAssetPacks).map(normalizeFaceAssetPack),
         designs: (parsed.template?.designs ?? fallback.template.designs).map((design) =>
           normalizeTemplateDesign(design, isLegacyTemplateStyle)
         )
@@ -212,7 +219,9 @@ async function writeSettings(settings: AppSettings): Promise<AppSettings> {
     ai: normalizeAiSettings(settings.ai),
     template: {
       ...settings.template,
-      aiPresets: settings.template.aiPresets.map(normalizeAiPreset)
+      aiPresets: settings.template.aiPresets.map(normalizeAiPreset),
+      faceAssetPacks: settings.template.faceAssetPacks.map(normalizeFaceAssetPack),
+      designs: settings.template.designs.map((design) => normalizeTemplateDesign(design))
     },
     stylePrinters: normalizeStylePrinters(settings.stylePrinters),
     printCalibration: normalizePrintCalibration(settings.printCalibration)
@@ -222,20 +231,22 @@ async function writeSettings(settings: AppSettings): Promise<AppSettings> {
   return normalized;
 }
 
-function windowUrl(kind: 'guest' | 'admin', extraQuery = '') {
+type AppWindowKind = 'guest' | 'admin' | 'facePreview';
+
+function windowUrl(kind: AppWindowKind, extraQuery = '') {
   const query = `window=${kind}${extraQuery ? `&${extraQuery}` : ''}`;
   return isDev
     ? `${process.env.VITE_DEV_SERVER_URL}?${query}`
     : `file://${path.join(__dirname, '..', 'dist', 'index.html')}?${query}`;
 }
 
-async function createWindow(kind: 'guest' | 'admin', extraQuery = '') {
+async function createWindow(kind: AppWindowKind, extraQuery = '') {
   const win = new BrowserWindow({
-    width: kind === 'guest' ? 1280 : 1120,
-    height: kind === 'guest' ? 800 : 760,
+    width: kind === 'guest' ? 1280 : kind === 'facePreview' ? 980 : 1120,
+    height: kind === 'guest' ? 800 : kind === 'facePreview' ? 680 : 760,
     backgroundColor: '#000000',
     autoHideMenuBar: true,
-    title: kind === 'guest' ? 'Photo Booth' : 'Admin',
+    title: kind === 'guest' ? 'Photo Booth' : kind === 'facePreview' ? 'Face Asset Preview' : 'Admin',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -246,14 +257,17 @@ async function createWindow(kind: 'guest' | 'admin', extraQuery = '') {
   await win.loadURL(windowUrl(kind, extraQuery));
   if (kind === 'guest') guestWindow = win;
   if (kind === 'admin') adminWindow = win;
+  if (kind === 'facePreview') facePreviewWindow = win;
   if (kind === 'guest') {
     win.on('enter-full-screen', notifyGuestFullscreen);
     win.on('leave-full-screen', notifyGuestFullscreen);
   }
   win.on('closed', () => {
     if (kind === 'guest') guestWindow = null;
+    if (kind === 'facePreview') facePreviewWindow = null;
     if (kind === 'admin') {
       adminWindow = null;
+      facePreviewWindow?.close();
       guestWindow?.close();
       if (process.platform !== 'darwin') app.quit();
     }
@@ -393,9 +407,44 @@ const normalizeTemplateDesign = (design: TemplateDesign, migrateLegacy = false):
     ...design,
     styleId,
     previewPath: migrateLegacy ? migrateLegacyTemplatePath(previewPath, originalStyleId) : previewPath,
-    framePath: migrateLegacy ? migrateLegacyTemplatePath(framePath, originalStyleId) : framePath
+    framePath: migrateLegacy ? migrateLegacyTemplatePath(framePath, originalStyleId) : framePath,
+    faceTrackingEnabled: Boolean(design.faceTrackingEnabled),
+    faceAssetPackId: design.faceAssetPackId ?? ''
   };
 };
+
+const normalizeFaceAssetPlacement = (placement: unknown): FaceAssetPlacement => {
+  if (placement === 'hat' || placement === 'nose' || placement === 'mouth' || placement === 'face') return placement;
+  return 'glasses';
+};
+
+const finiteNumber = (value: unknown, fallback: number) =>
+  typeof value === 'number' && Number.isFinite(value) ? value : fallback;
+
+const normalizeFaceAsset = (asset: FaceAsset): FaceAsset => ({
+  ...asset,
+  name: asset.name?.trim() || 'Face asset',
+  path: asset.path ?? '',
+  placement: normalizeFaceAssetPlacement(asset.placement),
+  scale: finiteNumber(asset.scale, 1),
+  xOffset: finiteNumber(asset.xOffset, 0),
+  yOffset: finiteNumber(asset.yOffset, 0),
+  rotation: finiteNumber(asset.rotation, 0),
+  opacity: Math.min(1, Math.max(0, finiteNumber(asset.opacity, 1))),
+  active: asset.active !== false,
+  order: finiteNumber(asset.order, 0),
+  createdAt: asset.createdAt || new Date().toISOString(),
+  updatedAt: asset.updatedAt || new Date().toISOString()
+});
+
+const normalizeFaceAssetPack = (pack: FaceAssetPack): FaceAssetPack => ({
+  ...pack,
+  name: pack.name?.trim() || 'Face Asset Pack',
+  active: pack.active !== false,
+  assets: (pack.assets ?? []).map(normalizeFaceAsset),
+  createdAt: pack.createdAt || new Date().toISOString(),
+  updatedAt: pack.updatedAt || new Date().toISOString()
+});
 
 const normalizeAiProvider = (provider: string | undefined): AiProvider => {
   if (provider === 'gemini' || provider === 'xai') return provider;
@@ -519,6 +568,8 @@ async function uploadTemplate(request: TemplateUploadRequest): Promise<TemplateD
     active: true,
     usesAi: false,
     aiPresetId: '',
+    faceTrackingEnabled: false,
+    faceAssetPackId: '',
     createdAt: now,
     updatedAt: now
   };
@@ -710,6 +761,111 @@ async function removeAiPresetImage(presetId: string, imageId: string) {
       aiPresets: presets.map((item) =>
         item.id === presetId
           ? { ...item, referenceImages: item.referenceImages.filter((reference) => reference.id !== imageId), updatedAt: now }
+          : item
+      )
+    }
+  });
+}
+
+const chooseFaceAssetImage = async () => {
+  const parent = modalParent();
+  const options = {
+    properties: ['openFile'] as Array<'openFile'>,
+    filters: [{ name: 'Transparent PNG Face Asset', extensions: ['png'] }]
+  };
+  const result = parent ? await dialog.showOpenDialog(parent, options) : await dialog.showOpenDialog(options);
+  return result.canceled ? '' : result.filePaths[0] ?? '';
+};
+
+async function updateFaceAssetPack(pack: FaceAssetPack) {
+  const settings = await readSettings();
+  const now = new Date().toISOString();
+  const normalized = normalizeFaceAssetPack({ ...pack, updatedAt: now });
+  const packs = settings.template.faceAssetPacks.map(normalizeFaceAssetPack);
+  const nextPacks = packs.some((item) => item.id === normalized.id)
+    ? packs.map((item) => (item.id === normalized.id ? normalized : item))
+    : [...packs, normalized];
+  return writeSettings({
+    ...settings,
+    template: {
+      ...settings.template,
+      faceAssetPacks: nextPacks
+    }
+  });
+}
+
+async function deleteFaceAssetPack(packId: string) {
+  const settings = await readSettings();
+  const packs = settings.template.faceAssetPacks.map(normalizeFaceAssetPack);
+  const pack = packs.find((item) => item.id === packId);
+  if (pack) await fs.rm(path.join(settings.eventFolder, 'face-assets', packId), { force: true, recursive: true });
+  return writeSettings({
+    ...settings,
+    template: {
+      ...settings.template,
+      faceAssetPacks: packs.filter((item) => item.id !== packId),
+      designs: settings.template.designs.map((design) =>
+        design.faceAssetPackId === packId
+          ? normalizeTemplateDesign({ ...design, faceTrackingEnabled: false, faceAssetPackId: '', updatedAt: new Date().toISOString() })
+          : normalizeTemplateDesign(design)
+      )
+    }
+  });
+}
+
+async function uploadFaceAsset(packId: string) {
+  const sourcePath = await chooseFaceAssetImage();
+  if (!sourcePath) return readSettings();
+  const settings = await readSettings();
+  const packs = settings.template.faceAssetPacks.map(normalizeFaceAssetPack);
+  const pack = packs.find((item) => item.id === packId);
+  if (!pack) throw new Error('Face asset pack not found.');
+  const now = new Date().toISOString();
+  const id = `face-asset-${Date.now()}`;
+  const folder = path.join(settings.eventFolder, 'face-assets', packId);
+  await fs.mkdir(folder, { recursive: true });
+  const targetPath = path.join(folder, `${id}.png`);
+  await fs.copyFile(sourcePath, targetPath);
+  const asset: FaceAsset = {
+    id,
+    name: path.parse(sourcePath).name || 'Face asset',
+    path: targetPath,
+    placement: 'glasses',
+    scale: 1,
+    xOffset: 0,
+    yOffset: 0,
+    rotation: 0,
+    opacity: 1,
+    active: true,
+    order: pack.assets.length,
+    createdAt: now,
+    updatedAt: now
+  };
+  return writeSettings({
+    ...settings,
+    template: {
+      ...settings.template,
+      faceAssetPacks: packs.map((item) =>
+        item.id === packId ? { ...item, assets: [...item.assets, asset], updatedAt: now } : item
+      )
+    }
+  });
+}
+
+async function removeFaceAsset(packId: string, assetId: string) {
+  const settings = await readSettings();
+  const packs = settings.template.faceAssetPacks.map(normalizeFaceAssetPack);
+  const pack = packs.find((item) => item.id === packId);
+  const asset = pack?.assets.find((item) => item.id === assetId);
+  if (asset) await fs.rm(asset.path, { force: true });
+  const now = new Date().toISOString();
+  return writeSettings({
+    ...settings,
+    template: {
+      ...settings.template,
+      faceAssetPacks: packs.map((item) =>
+        item.id === packId
+          ? { ...item, assets: item.assets.filter((candidate) => candidate.id !== assetId), updatedAt: now }
           : item
       )
     }
@@ -1203,6 +1359,10 @@ app.whenReady().then(async () => {
   ipcMain.handle('template:update', async (_event, design: TemplateDesign) => updateTemplate(design));
   ipcMain.handle('template:update-asset', async (_event, designId: string, role: TemplateAssetRole) => updateTemplateAsset(designId, role));
   ipcMain.handle('template:delete', async (_event, designId: string) => deleteTemplate(designId));
+  ipcMain.handle('face-asset-pack:update', async (_event, pack: FaceAssetPack) => updateFaceAssetPack(pack));
+  ipcMain.handle('face-asset-pack:delete', async (_event, packId: string) => deleteFaceAssetPack(packId));
+  ipcMain.handle('face-asset:upload', async (_event, packId: string) => uploadFaceAsset(packId));
+  ipcMain.handle('face-asset:remove', async (_event, packId: string, assetId: string) => removeFaceAsset(packId, assetId));
   ipcMain.handle('ai:preset-image-upload', async (_event, presetId: string) => copyAiPresetImage(presetId));
   ipcMain.handle('ai:preset-image-remove', async (_event, presetId: string, imageId: string) => removeAiPresetImage(presetId, imageId));
   ipcMain.handle('ai:queue-list', async () => readAiQueue());
@@ -1239,6 +1399,17 @@ app.whenReady().then(async () => {
       return true;
     }
     await createWindow('guest', 'preview=picker');
+    return true;
+  });
+  ipcMain.handle('window:open-face-asset-preview', async (_event, packId: string) => {
+    const query = `packId=${encodeURIComponent(packId)}`;
+    if (facePreviewWindow) {
+      await facePreviewWindow.loadURL(windowUrl('facePreview', query));
+      facePreviewWindow.show();
+      facePreviewWindow.focus();
+      return true;
+    }
+    await createWindow('facePreview', query);
     return true;
   });
   ipcMain.handle('guest:set-fullscreen', (_event, fullscreen: boolean) => setGuestFullscreen(fullscreen));

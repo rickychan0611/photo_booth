@@ -55,5 +55,8 @@
     "typescript": "^5.9.3",
     "vite": "^7.2.6",
     "wait-on": "^9.0.3"
+  },
+  "dependencies": {
+    "@mediapipe/tasks-vision": "^0.10.35"
   }
 }

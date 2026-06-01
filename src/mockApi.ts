@@ -52,6 +52,7 @@ const fallbackSettings: AppSettings = {
     selectedStyleId: 'style1',
     selectedDesignId: '',
     aiPresets: [],
+    faceAssetPacks: [],
     designs: []
   },
   workflow: {
@@ -153,7 +154,16 @@ export function installMockApi() {
           xai: { ...fallbackSettings.ai.providers.xai, ...(parsed.ai?.providers?.xai ?? {}) }
         }
       },
-      template: { ...fallbackSettings.template, ...(parsed.template ?? {}) },
+      template: {
+        ...fallbackSettings.template,
+        ...(parsed.template ?? {}),
+        faceAssetPacks: parsed.template?.faceAssetPacks ?? fallbackSettings.template.faceAssetPacks,
+        designs: (parsed.template?.designs ?? fallbackSettings.template.designs).map((design) => ({
+          ...design,
+          faceTrackingEnabled: Boolean(design.faceTrackingEnabled),
+          faceAssetPackId: design.faceAssetPackId ?? ''
+        }))
+      },
       workflow: {
         ...fallbackSettings.workflow,
         ...(parsed.workflow ?? {}),
@@ -228,6 +238,28 @@ export function installMockApi() {
     deleteTemplate: async () => true,
     updateTemplate: async (design) => design,
     updateTemplateAsset: async () => null,
+    uploadFaceAsset: async () => readSettings(),
+    removeFaceAsset: async () => readSettings(),
+    deleteFaceAssetPack: async (packId: string) => {
+      const current = readSettings();
+      return writeSettings({
+        ...current,
+        template: {
+          ...current.template,
+          faceAssetPacks: current.template.faceAssetPacks.filter((pack) => pack.id !== packId),
+          designs: current.template.designs.map((design) =>
+            design.faceAssetPackId === packId ? { ...design, faceTrackingEnabled: false, faceAssetPackId: '' } : design
+          )
+        }
+      });
+    },
+    updateFaceAssetPack: async (pack) => {
+      const current = readSettings();
+      const packs = current.template.faceAssetPacks.some((item) => item.id === pack.id)
+        ? current.template.faceAssetPacks.map((item) => (item.id === pack.id ? pack : item))
+        : [...current.template.faceAssetPacks, pack];
+      return writeSettings({ ...current, template: { ...current.template, faceAssetPacks: packs } });
+    },
     uploadAiPresetImage: async () => readSettings(),
     removeAiPresetImage: async () => readSettings(),
     listAiQueue: async () => aiQueue,
@@ -279,6 +311,10 @@ export function installMockApi() {
     },
     openGuestPickerPreview: async () => {
       window.open(`${window.location.origin}?preview=picker`, '_blank');
+      return true;
+    },
+    openFaceAssetPreview: async (packId: string) => {
+      window.open(`${window.location.origin}?window=facePreview&packId=${encodeURIComponent(packId)}`, '_blank');
       return true;
     },
     setGuestFullscreen: async (fullscreen: boolean) => {

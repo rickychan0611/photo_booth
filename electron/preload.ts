@@ -4,6 +4,7 @@ import type {
   AiGenerateResult,
   AiQueueItem,
   AppSettings,
+  FaceAssetPack,
   Gallery,
   TemplateAssetRole,
   TemplateDesign,
@@ -25,6 +26,14 @@ const api = {
   updateTemplate: (design: TemplateDesign) => ipcRenderer.invoke('template:update', design) as Promise<TemplateDesign>,
   updateTemplateAsset: (designId: string, role: TemplateAssetRole) =>
     ipcRenderer.invoke('template:update-asset', designId, role) as Promise<TemplateDesign | null>,
+  uploadFaceAsset: (packId: string) =>
+    ipcRenderer.invoke('face-asset:upload', packId) as Promise<AppSettings>,
+  removeFaceAsset: (packId: string, assetId: string) =>
+    ipcRenderer.invoke('face-asset:remove', packId, assetId) as Promise<AppSettings>,
+  deleteFaceAssetPack: (packId: string) =>
+    ipcRenderer.invoke('face-asset-pack:delete', packId) as Promise<AppSettings>,
+  updateFaceAssetPack: (pack: FaceAssetPack) =>
+    ipcRenderer.invoke('face-asset-pack:update', pack) as Promise<AppSettings>,
   uploadAiPresetImage: (presetId: string) =>
     ipcRenderer.invoke('ai:preset-image-upload', presetId) as Promise<AppSettings>,
   removeAiPresetImage: (presetId: string, imageId: string) =>
@@ -40,6 +49,8 @@ const api = {
   openAdmin: () => ipcRenderer.invoke('window:open-admin') as Promise<boolean>,
   openGuest: () => ipcRenderer.invoke('window:open-guest') as Promise<boolean>,
   openGuestPickerPreview: () => ipcRenderer.invoke('window:open-guest-picker-preview') as Promise<boolean>,
+  openFaceAssetPreview: (packId: string) =>
+    ipcRenderer.invoke('window:open-face-asset-preview', packId) as Promise<boolean>,
   setGuestFullscreen: (fullscreen: boolean) =>
     ipcRenderer.invoke('guest:set-fullscreen', fullscreen) as Promise<boolean>,
   isGuestFullscreen: () => ipcRenderer.invoke('guest:is-fullscreen') as Promise<boolean>,
