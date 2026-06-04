@@ -3,7 +3,7 @@ import QRCode from 'qrcode';
 import { Camera, Download, Expand, ExternalLink, FolderOpen, Globe, Image, Minimize2, Printer, RefreshCw, Settings, SlidersHorizontal, Sparkles, Trash2, X } from 'lucide-react';
 import type { AiPreset, AiProvider, AiQueueItem, AppSettings, AudioCue, BoothSession, CameraControlSettings, CameraRotation, Capture, FaceAsset, FaceAssetPack, FaceAssetPlacement, Gallery, GalleryUploadStatus, QueueSnapshot, SavedPhoto, TemplateDesign, TemplateSlot, TemplateStyleId } from './types';
 import { createGuideTemplateImage, createTemplatedPrintImage, getPrimarySlot, getTemplateStyle, PRINT_HEIGHT, PRINT_WIDTH, TEMPLATE_HEIGHT, TEMPLATE_STYLES, TEMPLATE_WIDTH } from './template';
-import { FaceAssetStabilizer, FaceTracker, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceDebugInfo, mapFaceResultToDisplay, resetFaceLandmarker, selectedFaceAssetPack } from './faceAssets';
+import { FaceAssetStabilizer, FaceTracker, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceDebugInfo, resetFaceLandmarker, selectedFaceAssetPack } from './faceAssets';
 import { playAudioCue, stopAllAudio, stopAudioChannel, stopAudioCue } from './audio';
 import { createBoothGallerySession, createQueueRealtimeClient, fetchQueueSnapshot, isRealtimeConfigured, isWebQueueConfigured, publicWebUrl, validateBoothCode } from './webBackend';
 
@@ -3141,19 +3141,14 @@ const detectDisplayedFaces = async (
   settings: AppSettings,
   timestamp: number
 ) => {
+  // Always detect on the upright (rotation + mirror corrected) canvas. This is
+  // the exact coordinate space the overlay draws in, AND it keeps MediaPipe's
+  // VIDEO-mode tracker fed with a single, consistently-oriented frame. Feeding a
+  // second, differently-oriented source (e.g. the raw video) corrupts the
+  // tracker's internal state, which previously caused assets to stop following
+  // the face after tracking was briefly lost.
   const detectionCanvas = drawCameraViewToCanvas(video, displayWidth, displayHeight, settings);
-  const uprightResult = await detectFaces(detectionCanvas, timestamp);
-  if (uprightResult.faceLandmarks.length > 0) return uprightResult;
-
-  const rawResult = await detectFaces(video, timestamp + 0.1);
-  return mapFaceResultToDisplay(
-    rawResult,
-    video.videoWidth,
-    video.videoHeight,
-    displayWidth,
-    displayHeight,
-    { mirror: settings.mirrorPreview, rotation: settings.cameraRotation }
-  );
+  return detectFaces(detectionCanvas, timestamp);
 };
 
 const FACE_ASSET_PLACEMENTS: FaceAssetPlacement[] = ['glasses', 'hat', 'nose', 'mouth', 'face'];
