@@ -2,8 +2,9 @@ import { app, BrowserWindow, dialog, ipcMain, nativeImage, shell } from 'electro
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
-import { exec } from 'node:child_process';
+import { exec, execFile } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
+import crypto from 'node:crypto';
 import type {
   AiGenerateRequest,
   AiGenerateResult,
@@ -11,10 +12,14 @@ import type {
   AiProvider,
   AiQueueItem,
   AppSettings,
+  BackgroundGalleryUploadRequest,
+  BackgroundGalleryUploadResult,
   FaceAsset,
   FaceAssetPack,
   FaceAssetPlacement,
   Gallery,
+  GalleryUploadStatus,
+  HostVoiceGenerateResult,
   SaveImageRequest,
   SaveImageResult,
   SavedPhoto,
@@ -28,6 +33,7 @@ let guestWindow: BrowserWindow | null = null;
 let adminWindow: BrowserWindow | null = null;
 let facePreviewWindow: BrowserWindow | null = null;
 let lastFinalPath = '';
+let galleryUploadStatus: GalleryUploadStatus = { state: 'idle', message: 'No active upload.', active: 0 };
 
 const PRINT_PREVIEW_WIDTH = 1239;
 const PRINT_PREVIEW_HEIGHT = 1845;
@@ -35,6 +41,7 @@ const STYLE4_HALFCUT_PRINTER = 'DS-RX1-HalfCut';
 const PRINTER_ALIASES = new Map<string, string>([['DS-RX1-HaflCut', STYLE4_HALFCUT_PRINTER]]);
 
 const isDev = Boolean(process.env.VITE_DEV_SERVER_URL);
+app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
 
 const defaultEventFolder = () => path.join(app.getPath('pictures'), 'Photo Booth');
 const settingsPath = () => path.join(app.getPath('userData'), 'settings.json');
@@ -67,9 +74,67 @@ const defaultAiSettings = (): AppSettings['ai'] => ({
   }
 });
 
+const defaultAudioCue = (
+  id: string,
+  label: string,
+  text: string,
+  channel: AppSettings['audio']['cues'][string]['channel'] = 'voice',
+  mode: AppSettings['audio']['cues'][string]['mode'] = channel === 'voice' ? 'host' : 'off',
+  loop = false
+): AppSettings['audio']['cues'][string] => ({
+  id,
+  label,
+  mode,
+  channel,
+  text,
+  filePath: '',
+  loop,
+  volume: 1,
+  enabled: true,
+  updatedAt: ''
+});
+
+const defaultAudioSettings = (): AppSettings['audio'] => ({
+  enabled: true,
+  masterVolume: 0.85,
+  voiceVolume: 1,
+  musicVolume: 0.35,
+  sfxVolume: 0.8,
+  enableHostVoice: true,
+  voiceEngine: 'kokoro',
+  voiceName: 'af_heart',
+  speed: 1.08,
+  volume: 1,
+  welcomeRepeatSeconds: 10,
+  cues: {
+    welcome: defaultAudioCue('welcome', 'Welcome idle loop', 'Welcome. Touch start to begin.', 'voice', 'host', true),
+    style: defaultAudioCue('style', 'Choose style screen', 'Please choose a style.'),
+    design: defaultAudioCue('design', 'Choose design screen', 'Please choose a design.'),
+    intro: defaultAudioCue('intro', 'Intro screen', "Let's take pictures."),
+    select: defaultAudioCue('select', 'Photo selection screen', 'Please choose your favorite pictures to print.'),
+    thanks: defaultAudioCue('thanks', 'Finish screen', 'Thank you. Please pick up your print.'),
+    shot0: defaultAudioCue('shot0', 'Picture 1 message', 'Get ready!'),
+    shot1: defaultAudioCue('shot1', 'Picture 2 message', 'Smile!'),
+    shot2: defaultAudioCue('shot2', 'Picture 3 message', 'Switch it up!'),
+    shot3: defaultAudioCue('shot3', 'Picture 4 message', 'Final pose!'),
+    countdown3: defaultAudioCue('countdown3', 'Countdown 3', '3'),
+    countdown2: defaultAudioCue('countdown2', 'Countdown 2', '2'),
+    countdown1: defaultAudioCue('countdown1', 'Countdown 1', '1'),
+    button: defaultAudioCue('button', 'Button press sound', '', 'sfx', 'off'),
+    shutter: defaultAudioCue('shutter', 'Camera shutter sound', '', 'sfx', 'off'),
+    backgroundMusic: defaultAudioCue('backgroundMusic', 'Background music loop', '', 'music', 'off', true)
+  }
+});
+
 const defaultSettings = (): AppSettings => ({
   eventName: 'PHOTO BOOTH',
   eventFolder: defaultEventFolder(),
+  webApiBaseUrl: 'http://localhost:3000',
+  supabaseUrl: '',
+  supabasePublishableKey: '',
+  eventId: '',
+  boothSecret: '',
+  staffControlQueueMode: false,
   cameraId: '',
   mirrorPreview: true,
   cameraRotation: 0,
@@ -85,6 +150,7 @@ const defaultSettings = (): AppSettings => ({
   silentPrint: false,
   adminPassword: '',
   ai: defaultAiSettings(),
+  audio: defaultAudioSettings(),
   template: {
     eventName: 'PHOTO BOOTH',
     logoPath: '',
@@ -130,6 +196,7 @@ async function ensureEventFolders(eventFolder: string) {
   await fs.mkdir(path.join(eventFolder, 'finals', 'thumbs'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'templates'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'face-assets'), { recursive: true });
+  await fs.mkdir(path.join(eventFolder, 'audio'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'ai-presets'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'ai-queue'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'ai-queue', 'inputs'), { recursive: true });
@@ -165,6 +232,7 @@ async function readSettings(): Promise<AppSettings> {
       ...parsed,
       defaultPrinter: normalizePrinterName(parsed.defaultPrinter ?? fallback.defaultPrinter),
       ai: normalizeAiSettings(parsed.ai),
+      audio: normalizeAudioSettings(parsed.audio),
       template: {
         ...fallback.template,
         ...(parsed.template ?? {}),
@@ -217,6 +285,7 @@ async function writeSettings(settings: AppSettings): Promise<AppSettings> {
     ...settings,
     defaultPrinter: normalizePrinterName(settings.defaultPrinter),
     ai: normalizeAiSettings(settings.ai),
+    audio: normalizeAudioSettings(settings.audio),
     template: {
       ...settings.template,
       aiPresets: settings.template.aiPresets.map(normalizeAiPreset),
@@ -241,18 +310,23 @@ function windowUrl(kind: AppWindowKind, extraQuery = '') {
 }
 
 async function createWindow(kind: AppWindowKind, extraQuery = '') {
+  const isGuestWindow = kind === 'guest';
   const win = new BrowserWindow({
-    width: kind === 'guest' ? 1280 : kind === 'facePreview' ? 980 : 1120,
-    height: kind === 'guest' ? 800 : kind === 'facePreview' ? 680 : 760,
+    width: isGuestWindow ? 720 : kind === 'facePreview' ? 980 : 1120,
+    height: isGuestWindow ? 1280 : kind === 'facePreview' ? 680 : 760,
     backgroundColor: '#000000',
     autoHideMenuBar: true,
-    title: kind === 'guest' ? 'Photo Booth' : kind === 'facePreview' ? 'Face Asset Preview' : 'Admin',
+    title: isGuestWindow ? 'Photo Booth' : kind === 'facePreview' ? 'Face Asset Preview' : 'Admin',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false
     }
   });
+
+  if (isGuestWindow) {
+    win.setAspectRatio(9 / 16);
+  }
 
   await win.loadURL(windowUrl(kind, extraQuery));
   if (kind === 'guest') guestWindow = win;
@@ -300,7 +374,7 @@ async function listGallery(): Promise<Gallery> {
     const metadataPath = filePath.replace(/\.(png|jpe?g)$/i, '.json');
     try {
       const raw = await fs.readFile(metadataPath, 'utf8');
-      return JSON.parse(raw) as Partial<Pick<SavedPhoto, 'styleId' | 'designId' | 'printerName'>>;
+      return JSON.parse(raw) as Partial<Pick<SavedPhoto, 'styleId' | 'designId' | 'printerName' | 'galleryUrl'>>;
     } catch {
       return {};
     }
@@ -326,7 +400,8 @@ async function listGallery(): Promise<Gallery> {
             createdAt: stat.birthtime.toISOString(),
             styleId: metadata.styleId,
             designId: metadata.designId,
-            printerName: metadata.printerName ? normalizePrinterName(metadata.printerName) : undefined
+            printerName: metadata.printerName ? normalizePrinterName(metadata.printerName) : undefined,
+            galleryUrl: metadata.galleryUrl
           };
         })
     );
@@ -359,6 +434,133 @@ async function imageFileToDataUrl(filePath: string): Promise<string> {
   const extension = path.extname(filePath).toLowerCase();
   const mimeType = extension === '.jpg' || extension === '.jpeg' ? 'image/jpeg' : 'image/png';
   return `data:${mimeType};base64,${buffer.toString('base64')}`;
+}
+
+async function audioFileToDataUrl(filePath: string): Promise<string> {
+  const buffer = await fs.readFile(filePath);
+  const extension = path.extname(filePath).toLowerCase();
+  const mimeType =
+    extension === '.wav'
+      ? 'audio/wav'
+      : extension === '.m4a'
+        ? 'audio/mp4'
+        : extension === '.ogg'
+          ? 'audio/ogg'
+          : 'audio/mpeg';
+  return `data:${mimeType};base64,${buffer.toString('base64')}`;
+}
+
+const execFileAsync = (
+  file: string,
+  args: string[],
+  options: { input?: string; cwd?: string } = {}
+): Promise<void> =>
+  new Promise((resolve, reject) => {
+    const child = execFile(file, args, { cwd: options.cwd, windowsHide: true }, (error) => {
+      if (error) reject(error);
+      else resolve();
+    });
+    if (options.input) {
+      child.stdin?.write(options.input);
+      child.stdin?.end();
+    }
+  });
+
+const appResourcePath = (...parts: string[]) =>
+  isDev ? path.join(app.getAppPath(), ...parts) : path.join(process.resourcesPath, ...parts);
+
+const eventTtsPath = (settings: AppSettings, ...parts: string[]) => path.join(settings.eventFolder, 'audio', 'tts', ...parts);
+
+const hostVoiceHash = (settings: AppSettings, cue: AppSettings['audio']['cues'][string], text: string) =>
+  crypto
+    .createHash('sha1')
+    .update(JSON.stringify({
+      engine: settings.audio.voiceEngine,
+      voiceName: settings.audio.voiceName,
+      speed: settings.audio.speed,
+      text,
+      cueId: cue.id
+    }))
+    .digest('hex')
+    .slice(0, 14);
+
+const hostVoiceOutputPath = (settings: AppSettings, cue: AppSettings['audio']['cues'][string], text: string) =>
+  path.join(
+    settings.eventFolder,
+    'audio',
+    'generated',
+    settings.audio.voiceEngine,
+    safeTemplateName(settings.audio.voiceName || 'voice'),
+    `${safeAudioCueId(cue.id)}-${hostVoiceHash(settings, cue, text)}.wav`
+  );
+
+const resolveTtsExecutable = async (settings: AppSettings) => {
+  const engine = settings.audio.voiceEngine;
+  const executableName = engine === 'kokoro' ? 'kokoro-tts.exe' : 'piper.exe';
+  const candidates = [
+    eventTtsPath(settings, engine, executableName),
+    eventTtsPath(settings, engine, '.venv', 'Scripts', executableName),
+    appResourcePath('tts', engine, executableName),
+    appResourcePath('tts', engine, '.venv', 'Scripts', executableName),
+    appResourcePath('extraResources', 'tts', engine, '.venv', 'Scripts', executableName),
+    appResourcePath('extraResources', 'tts', engine, executableName)
+  ];
+  for (const candidate of candidates) {
+    if (await fileExists(candidate)) return candidate;
+  }
+  throw new Error(`${engine} executable not found. Place ${executableName} under resources/tts/${engine}/ or ${eventTtsPath(settings, engine)}.`);
+};
+
+const resolvePiperModel = async (settings: AppSettings) => {
+  const voice = settings.audio.voiceName || 'en_US-lessac-medium';
+  const candidates = [
+    eventTtsPath(settings, 'piper', 'voices', `${voice}.onnx`),
+    appResourcePath('tts', 'piper', 'voices', `${voice}.onnx`),
+    appResourcePath('extraResources', 'tts', 'piper', 'voices', `${voice}.onnx`)
+  ];
+  for (const candidate of candidates) {
+    if (await fileExists(candidate)) return candidate;
+  }
+  throw new Error(`Piper voice model not found: ${voice}.onnx`);
+};
+
+const resolveKokoroWorkingDir = async (settings: AppSettings) => {
+  const candidates = [
+    eventTtsPath(settings, 'kokoro'),
+    appResourcePath('tts', 'kokoro'),
+    appResourcePath('extraResources', 'tts', 'kokoro')
+  ];
+  for (const candidate of candidates) {
+    if (
+      (await fileExists(candidate)) &&
+      (await fileExists(path.join(candidate, 'kokoro-v1.0.onnx'))) &&
+      (await fileExists(path.join(candidate, 'voices-v1.0.bin')))
+    ) return candidate;
+  }
+  throw new Error('Kokoro model files not found. Put kokoro-v1.0.onnx and voices-v1.0.bin in resources/tts/kokoro or eventFolder/audio/tts/kokoro.');
+};
+
+async function synthesizeHostVoice(settings: AppSettings, text: string, outputPath: string) {
+  await fs.mkdir(path.dirname(outputPath), { recursive: true });
+  const executable = await resolveTtsExecutable(settings);
+  if (settings.audio.voiceEngine === 'piper') {
+    const modelPath = await resolvePiperModel(settings);
+    const lengthScale = String(Math.max(0.35, Math.min(2.5, 1 / Math.max(0.1, settings.audio.speed))));
+    await execFileAsync(executable, ['--model', modelPath, '--output_file', outputPath, '--length_scale', lengthScale], { input: text });
+    return;
+  }
+
+  const workingDir = await resolveKokoroWorkingDir(settings);
+  const inputPath = path.join(path.dirname(outputPath), `${safeAudioCueId(path.basename(outputPath, '.wav'))}.txt`);
+  await fs.writeFile(inputPath, text, 'utf8');
+  await execFileAsync(executable, [
+    inputPath,
+    outputPath,
+    '--voice',
+    settings.audio.voiceName || 'af_heart',
+    '--speed',
+    String(settings.audio.speed)
+  ], { cwd: workingDir });
 }
 
 async function getImageSize(filePath: string) {
@@ -469,6 +671,57 @@ const normalizeAiSettings = (settings?: Partial<AppSettings['ai']>): AppSettings
       gemini: { ...fallback.providers.gemini, ...(settings?.providers?.gemini ?? {}) },
       xai: { ...fallback.providers.xai, ...(settings?.providers?.xai ?? {}) }
     }
+  };
+};
+
+const normalizeAudioCue = (
+  cue: Partial<AppSettings['audio']['cues'][string]> | undefined,
+  fallback: AppSettings['audio']['cues'][string]
+): AppSettings['audio']['cues'][string] => {
+  const rawMode = cue ? String((cue as { mode?: unknown }).mode ?? '') : '';
+  const legacyMode = rawMode === 'tts' ? 'host' : rawMode;
+  const mode = legacyMode === 'mp3' || legacyMode === 'host' || legacyMode === 'off' ? legacyMode : fallback.mode;
+  const channel = cue?.channel === 'music' || cue?.channel === 'sfx' || cue?.channel === 'voice' ? cue.channel : fallback.channel;
+  return {
+    ...fallback,
+    ...(cue ?? {}),
+    id: fallback.id,
+    label: cue?.label || fallback.label,
+    mode,
+    channel,
+    text: cue?.text ?? fallback.text,
+    filePath: cue?.filePath ?? '',
+    loop: cue?.loop ?? fallback.loop,
+    volume: Math.min(1, Math.max(0, finiteNumber(cue?.volume, fallback.volume))),
+    enabled: cue?.enabled !== false,
+    updatedAt: cue?.updatedAt ?? ''
+  };
+};
+
+const normalizeAudioSettings = (settings?: Partial<AppSettings['audio']>): AppSettings['audio'] => {
+  const fallback = defaultAudioSettings();
+  const legacy = settings as Partial<AppSettings['audio']> & { ttsVoiceName?: string; ttsRate?: number };
+  const cues = Object.fromEntries(
+    Object.entries(fallback.cues).map(([id, cue]) => [id, normalizeAudioCue(settings?.cues?.[id], cue)])
+  );
+  Object.entries(settings?.cues ?? {}).forEach(([id, cue]) => {
+    if (!cues[id]) cues[id] = normalizeAudioCue(cue, defaultAudioCue(id, cue.label || id, cue.text || ''));
+  });
+  return {
+    ...fallback,
+    ...(settings ?? {}),
+    enabled: settings?.enabled !== false,
+    masterVolume: Math.min(1, Math.max(0, finiteNumber(settings?.masterVolume, fallback.masterVolume))),
+    voiceVolume: Math.min(1, Math.max(0, finiteNumber(settings?.voiceVolume, fallback.voiceVolume))),
+    musicVolume: Math.min(1, Math.max(0, finiteNumber(settings?.musicVolume, fallback.musicVolume))),
+    sfxVolume: Math.min(1, Math.max(0, finiteNumber(settings?.sfxVolume, fallback.sfxVolume))),
+    enableHostVoice: settings?.enableHostVoice !== false,
+    voiceEngine: settings?.voiceEngine === 'piper' ? 'piper' : 'kokoro',
+    voiceName: settings?.voiceName ?? legacy.ttsVoiceName ?? fallback.voiceName,
+    speed: Math.min(2, Math.max(0.5, finiteNumber(settings?.speed ?? legacy.ttsRate, fallback.speed))),
+    volume: Math.min(1, Math.max(0, finiteNumber(settings?.volume, fallback.volume))),
+    welcomeRepeatSeconds: Math.min(60, Math.max(3, finiteNumber(settings?.welcomeRepeatSeconds, fallback.welcomeRepeatSeconds))),
+    cues
   };
 };
 
@@ -672,9 +925,166 @@ async function writePhotoMetadata(filePath: string, request: SaveImageRequest) {
     styleId: request.styleId,
     designId: request.designId,
     printerName: request.printerName ? normalizePrinterName(request.printerName) : '',
+    galleryUrl: request.galleryUrl ?? '',
     createdAt: new Date().toISOString()
   };
   await fs.writeFile(filePath.replace(/\.(png|jpe?g)$/i, '.json'), `${JSON.stringify(metadata, null, 2)}${os.EOL}`, 'utf8');
+}
+
+async function updatePhotoGalleryUrl(filePath: string, galleryUrl: string) {
+  if (!filePath || !galleryUrl) return false;
+  const metadataPath = filePath.replace(/\.(png|jpe?g)$/i, '.json');
+  let metadata: Record<string, unknown> = {};
+  try {
+    metadata = JSON.parse(await fs.readFile(metadataPath, 'utf8')) as Record<string, unknown>;
+  } catch {
+    metadata = { name: path.basename(filePath), createdAt: new Date().toISOString() };
+  }
+  metadata.galleryUrl = galleryUrl;
+  await fs.writeFile(metadataPath, `${JSON.stringify(metadata, null, 2)}${os.EOL}`, 'utf8');
+  return true;
+}
+
+const trimTrailingSlash = (value: string) => value.replace(/\/+$/, '');
+
+function webApiUrl(settings: AppSettings, apiPath: string) {
+  return `${trimTrailingSlash(settings.webApiBaseUrl || 'http://localhost:3000')}${apiPath}`;
+}
+
+function publicWebUrl(settings: AppSettings, galleryPath: string) {
+  if (/^https?:\/\//i.test(galleryPath)) return galleryPath;
+  return `${trimTrailingSlash(settings.webApiBaseUrl || 'http://localhost:3000')}${galleryPath.startsWith('/') ? galleryPath : `/${galleryPath}`}`;
+}
+
+async function parseJsonResponse<T>(response: Response): Promise<T> {
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    const message = typeof body === 'object' && body && 'error' in body ? String((body as { error?: unknown }).error) : '';
+    throw new Error(message || `Request failed: ${response.status}`);
+  }
+  return body as T;
+}
+
+function setGalleryUploadStatus(partial: Partial<GalleryUploadStatus>) {
+  galleryUploadStatus = { ...galleryUploadStatus, ...partial };
+  adminWindow?.webContents.send('gallery:upload-status', galleryUploadStatus);
+  guestWindow?.webContents.send('gallery:upload-status', galleryUploadStatus);
+  console.log(`[gallery-upload] ${galleryUploadStatus.state}: ${galleryUploadStatus.message}`);
+}
+
+function compressedJpegFromFile(filePath: string, maxLongEdge: number, quality: number) {
+  const image = nativeImage.createFromPath(filePath);
+  if (image.isEmpty()) throw new Error(`Could not read final photo: ${filePath}`);
+  const size = image.getSize();
+  const longEdge = Math.max(size.width, size.height, 1);
+  const scale = Math.min(1, maxLongEdge / longEdge);
+  const resized = image.resize({
+    width: Math.max(1, Math.round(size.width * scale)),
+    height: Math.max(1, Math.round(size.height * scale)),
+    quality: 'good',
+  });
+  const resizedSize = resized.getSize();
+  return {
+    buffer: resized.toJPEG(quality),
+    width: resizedSize.width,
+    height: resizedSize.height,
+  };
+}
+
+async function uploadGalleryBuffer(
+  settings: AppSettings,
+  request: BackgroundGalleryUploadRequest,
+  asset: {
+    kind: 'layout' | 'thumbnail';
+    filename: string;
+    contentType: string;
+    buffer: Buffer;
+    width: number;
+    height: number;
+  }
+) {
+  const formData = new FormData();
+  formData.set('eventId', settings.eventId);
+  formData.set('ticketId', request.ticketId);
+  formData.set('kind', asset.kind);
+  formData.set('filename', asset.filename);
+  formData.set('width', String(asset.width));
+  formData.set('height', String(asset.height));
+  formData.set('file', new Blob([new Uint8Array(asset.buffer)], { type: asset.contentType }), asset.filename);
+
+  console.log(`[gallery-upload] POST ${asset.kind} ${asset.filename} ${asset.buffer.byteLength} bytes`);
+  const response = await fetch(webApiUrl(settings, '/api/uploads/direct'), {
+    method: 'POST',
+    headers: {
+      'x-booth-secret': settings.boothSecret,
+    },
+    body: formData,
+  });
+
+  return parseJsonResponse<{ asset: unknown }>(response);
+}
+
+async function completeBackgroundBoothSession(settings: AppSettings, ticketId: string) {
+  const response = await fetch(webApiUrl(settings, '/api/booth/complete-session'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ eventId: settings.eventId, ticketId }),
+  });
+  return parseJsonResponse<{ ticket: unknown }>(response);
+}
+
+async function uploadFinalPhotoInBackground(
+  request: BackgroundGalleryUploadRequest
+): Promise<BackgroundGalleryUploadResult> {
+  galleryUploadStatus.active += 1;
+  setGalleryUploadStatus({ state: 'uploading', message: `Uploading ${path.basename(request.finalPath)}...`, lastError: undefined });
+  try {
+    const settings = await readSettings();
+    if (!settings.webApiBaseUrl || !settings.eventId || !settings.boothSecret) {
+      throw new Error('Web API, event ID, or booth secret is missing.');
+    }
+
+    const baseName = path.basename(request.finalPath).replace(/\.[^.]+$/, '');
+    const layout = compressedJpegFromFile(request.finalPath, 2200, 88);
+    const thumbnail = compressedJpegFromFile(request.finalPath, 720, 78);
+
+    await uploadGalleryBuffer(settings, request, {
+      kind: 'layout',
+      filename: `${baseName}.jpg`,
+      contentType: 'image/jpeg',
+      ...layout,
+    });
+    await uploadGalleryBuffer(settings, request, {
+      kind: 'thumbnail',
+      filename: `${baseName}-thumbnail.jpg`,
+      contentType: 'image/jpeg',
+      ...thumbnail,
+    });
+
+    await completeBackgroundBoothSession(settings, request.ticketId);
+    const onlineGalleryUrl = publicWebUrl(settings, request.galleryUrl);
+    await updatePhotoGalleryUrl(request.finalPath, onlineGalleryUrl);
+    galleryUploadStatus.active = Math.max(0, galleryUploadStatus.active - 1);
+    setGalleryUploadStatus({
+      state: galleryUploadStatus.active > 0 ? 'uploading' : 'done',
+      message: `Uploaded ${path.basename(request.finalPath)}.`,
+      lastGalleryUrl: onlineGalleryUrl,
+      lastError: undefined,
+    });
+    return { ok: true, galleryUrl: onlineGalleryUrl };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Gallery upload failed.';
+    galleryUploadStatus.active = Math.max(0, galleryUploadStatus.active - 1);
+    setGalleryUploadStatus({
+      state: galleryUploadStatus.active > 0 ? 'uploading' : 'failed',
+      message,
+      lastError: message,
+    });
+    return {
+      ok: false,
+      error: message,
+    };
+  }
 }
 
 async function saveImageData(request: SaveImageRequest): Promise<SaveImageResult> {
@@ -777,6 +1187,120 @@ const chooseFaceAssetImage = async () => {
   const result = parent ? await dialog.showOpenDialog(parent, options) : await dialog.showOpenDialog(options);
   return result.canceled ? '' : result.filePaths[0] ?? '';
 };
+
+const chooseAudioFile = async () => {
+  const parent = modalParent();
+  const options = {
+    properties: ['openFile'] as Array<'openFile'>,
+    filters: [{ name: 'Audio Files', extensions: ['mp3', 'wav', 'm4a', 'ogg'] }]
+  };
+  const result = parent ? await dialog.showOpenDialog(parent, options) : await dialog.showOpenDialog(options);
+  return result.canceled ? '' : result.filePaths[0] ?? '';
+};
+
+const safeAudioCueId = (value: string) =>
+  value
+    .trim()
+    .replace(/[^a-z0-9-_]/gi, '-')
+    .replace(/-+/g, '-')
+    .toLowerCase() || 'cue';
+
+async function uploadAudioCue(cueId: string) {
+  const sourcePath = await chooseAudioFile();
+  if (!sourcePath) return readSettings();
+  const settings = await readSettings();
+  const audio = normalizeAudioSettings(settings.audio);
+  const cue = audio.cues[cueId] ?? defaultAudioCue(cueId, cueId, '');
+  const now = new Date().toISOString();
+  const extension = path.extname(sourcePath).toLowerCase() || '.mp3';
+  const targetPath = path.join(settings.eventFolder, 'audio', `${safeAudioCueId(cueId)}-${Date.now()}${extension}`);
+  await ensureEventFolders(settings.eventFolder);
+  await fs.copyFile(sourcePath, targetPath);
+  return writeSettings({
+    ...settings,
+    audio: normalizeAudioSettings({
+      ...audio,
+      cues: {
+        ...audio.cues,
+        [cueId]: {
+          ...cue,
+          mode: 'mp3',
+          filePath: targetPath,
+          updatedAt: now
+        }
+      }
+    })
+  });
+}
+
+async function removeAudioCue(cueId: string) {
+  const settings = await readSettings();
+  const audio = normalizeAudioSettings(settings.audio);
+  const cue = audio.cues[cueId];
+  if (cue?.filePath) await fs.rm(cue.filePath, { force: true });
+  return writeSettings({
+    ...settings,
+    audio: normalizeAudioSettings({
+      ...audio,
+      cues: {
+        ...audio.cues,
+        [cueId]: {
+          ...(cue ?? defaultAudioCue(cueId, cueId, '')),
+          mode: 'off',
+          filePath: '',
+          updatedAt: new Date().toISOString()
+        }
+      }
+    })
+  });
+}
+
+async function generateHostVoiceCue(cueId: string): Promise<HostVoiceGenerateResult> {
+  const settings = await readSettings();
+  const audio = normalizeAudioSettings(settings.audio);
+  const cue = audio.cues[cueId];
+  if (!cue) return { ok: false, settings, error: 'Audio cue not found.' };
+  const text = cue.text.trim();
+  if (!text) return { ok: false, settings, error: 'Cue text is empty.' };
+  if (!audio.enableHostVoice) return { ok: false, settings, error: 'Host voice is disabled.' };
+  try {
+    const generatedPath = hostVoiceOutputPath({ ...settings, audio }, cue, text);
+    if (!(await fileExists(generatedPath))) await synthesizeHostVoice({ ...settings, audio }, text, generatedPath);
+    const nextSettings = await writeSettings({
+      ...settings,
+      audio: normalizeAudioSettings({
+        ...audio,
+        cues: {
+          ...audio.cues,
+          [cueId]: {
+            ...cue,
+            mode: 'host',
+            filePath: generatedPath,
+            updatedAt: new Date().toISOString()
+          }
+        }
+      })
+    });
+    return { ok: true, settings: nextSettings, generatedPath };
+  } catch (error) {
+    return { ok: false, settings, error: error instanceof Error ? error.message : 'Host voice generation failed.' };
+  }
+}
+
+async function generateAllHostVoiceCues(): Promise<HostVoiceGenerateResult> {
+  let settings = await readSettings();
+  const audio = normalizeAudioSettings(settings.audio);
+  const voiceCueIds = Object.values(audio.cues)
+    .filter((cue) => cue.channel === 'voice' && cue.enabled && cue.text.trim())
+    .map((cue) => cue.id);
+  if (voiceCueIds.length === 0) return { ok: false, settings, error: 'No enabled voice cues with text.' };
+  for (const cueId of voiceCueIds) {
+    const result = await generateHostVoiceCue(cueId);
+    settings = result.settings;
+    if (!result.ok) return result;
+  }
+  return { ok: true, settings };
+}
 
 async function updateFaceAssetPack(pack: FaceAssetPack) {
   const settings = await readSettings();
@@ -1312,6 +1836,14 @@ app.whenReady().then(async () => {
           xai: { ...current.ai.providers.xai, ...(partial.ai?.providers?.xai ?? {}) }
         }
       }),
+      audio: normalizeAudioSettings({
+        ...current.audio,
+        ...(partial.audio ?? {}),
+        cues: {
+          ...current.audio.cues,
+          ...(partial.audio?.cues ?? {})
+        }
+      }),
       template: {
         ...current.template,
         ...(partial.template ?? {})
@@ -1356,6 +1888,10 @@ app.whenReady().then(async () => {
     const result = parent ? await dialog.showOpenDialog(parent, options) : await dialog.showOpenDialog(options);
     return result.canceled ? '' : result.filePaths[0];
   });
+  ipcMain.handle('audio:upload-cue', async (_event, cueId: string) => uploadAudioCue(cueId));
+  ipcMain.handle('audio:remove-cue', async (_event, cueId: string) => removeAudioCue(cueId));
+  ipcMain.handle('audio:generate-host-cue', async (_event, cueId: string) => generateHostVoiceCue(cueId));
+  ipcMain.handle('audio:generate-all-host-cues', async () => generateAllHostVoiceCues());
   ipcMain.handle('template:upload', async (_event, request: TemplateUploadRequest) => uploadTemplate(request));
   ipcMain.handle('template:update', async (_event, design: TemplateDesign) => updateTemplate(design));
   ipcMain.handle('template:update-asset', async (_event, designId: string, role: TemplateAssetRole) => updateTemplateAsset(designId, role));
@@ -1439,12 +1975,26 @@ app.whenReady().then(async () => {
   ipcMain.handle('image:save', async (_event, request: SaveImageRequest): Promise<SaveImageResult> => {
     return saveImageData(request);
   });
+  ipcMain.handle('image:update-gallery-url', async (_event, filePath: string, galleryUrl: string) => {
+    return updatePhotoGalleryUrl(filePath, galleryUrl);
+  });
   ipcMain.handle('image:data-url', async (_event, filePath: string) => imageFileToDataUrl(filePath));
+  ipcMain.handle('audio:data-url', async (_event, filePath: string) => audioFileToDataUrl(filePath));
   ipcMain.handle('image:size', async (_event, filePath: string) => getImageSize(filePath));
   ipcMain.handle('gallery:list', listGallery);
+  ipcMain.handle('gallery:upload-final', async (_event, request: BackgroundGalleryUploadRequest) => {
+    void uploadFinalPhotoInBackground(request);
+    return { ok: true, galleryUrl: request.galleryUrl };
+  });
+  ipcMain.handle('gallery:upload-status', () => galleryUploadStatus);
   ipcMain.handle('file:open', async (_event, filePath: string) => {
     if (!filePath) return false;
     await shell.openPath(filePath);
+    return true;
+  });
+  ipcMain.handle('url:open', async (_event, url: string) => {
+    if (!url || !/^https?:\/\//i.test(url)) return false;
+    await shell.openExternal(url);
     return true;
   });
   ipcMain.handle('file:export', async (_event, filePath: string) => {

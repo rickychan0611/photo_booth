@@ -49,6 +49,18 @@ export const detectFaces = async (source: ImageSource, timestamp = performance.n
   return landmarker.detectForVideo(source, timestamp);
 };
 
+export const resetFaceLandmarker = async () => {
+  const current = faceLandmarkerPromise;
+  faceLandmarkerPromise = null;
+  if (!current) return;
+  try {
+    const landmarker = await current;
+    landmarker.close();
+  } catch (error) {
+    console.warn('MediaPipe face landmarker reset skipped.', error);
+  }
+};
+
 export const clearFaceAssetCanvas = (canvas: HTMLCanvasElement, width: number, height: number) => {
   if (canvas.width !== width) canvas.width = width;
   if (canvas.height !== height) canvas.height = height;

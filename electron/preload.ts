@@ -4,8 +4,12 @@ import type {
   AiGenerateResult,
   AiQueueItem,
   AppSettings,
+  BackgroundGalleryUploadRequest,
+  BackgroundGalleryUploadResult,
   FaceAssetPack,
   Gallery,
+  GalleryUploadStatus,
+  HostVoiceGenerateResult,
   TemplateAssetRole,
   TemplateDesign,
   TemplateStyleId,
@@ -20,6 +24,14 @@ const api = {
     ipcRenderer.invoke('settings:update', settings) as Promise<AppSettings>,
   chooseFolder: () => ipcRenderer.invoke('dialog:choose-folder') as Promise<string>,
   chooseImage: () => ipcRenderer.invoke('dialog:choose-image') as Promise<string>,
+  uploadAudioCue: (cueId: string) =>
+    ipcRenderer.invoke('audio:upload-cue', cueId) as Promise<AppSettings>,
+  removeAudioCue: (cueId: string) =>
+    ipcRenderer.invoke('audio:remove-cue', cueId) as Promise<AppSettings>,
+  generateHostVoiceCue: (cueId: string) =>
+    ipcRenderer.invoke('audio:generate-host-cue', cueId) as Promise<HostVoiceGenerateResult>,
+  generateAllHostVoiceCues: () =>
+    ipcRenderer.invoke('audio:generate-all-host-cues') as Promise<HostVoiceGenerateResult>,
   uploadTemplate: (request: TemplateUploadRequest) =>
     ipcRenderer.invoke('template:upload', request) as Promise<TemplateDesign | null>,
   deleteTemplate: (designId: string) => ipcRenderer.invoke('template:delete', designId) as Promise<boolean>,
@@ -72,9 +84,23 @@ const api = {
   },
   listPrinters: () => ipcRenderer.invoke('printers:list') as Promise<Electron.PrinterInfo[]>,
   saveImage: (request: SaveImageRequest) => ipcRenderer.invoke('image:save', request) as Promise<SaveImageResult>,
+  updatePhotoGalleryUrl: (filePath: string, galleryUrl: string) =>
+    ipcRenderer.invoke('image:update-gallery-url', filePath, galleryUrl) as Promise<boolean>,
   getImageDataUrl: (filePath: string) => ipcRenderer.invoke('image:data-url', filePath) as Promise<string>,
+  getAudioDataUrl: (filePath: string) => ipcRenderer.invoke('audio:data-url', filePath) as Promise<string>,
   listGallery: () => ipcRenderer.invoke('gallery:list') as Promise<Gallery>,
+  uploadFinalGallery: (request: BackgroundGalleryUploadRequest) =>
+    ipcRenderer.invoke('gallery:upload-final', request) as Promise<BackgroundGalleryUploadResult>,
+  getGalleryUploadStatus: () => ipcRenderer.invoke('gallery:upload-status') as Promise<GalleryUploadStatus>,
+  onGalleryUploadStatus: (callback: (status: GalleryUploadStatus) => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, status: GalleryUploadStatus) => callback(status);
+    ipcRenderer.on('gallery:upload-status', listener);
+    return () => {
+      ipcRenderer.removeListener('gallery:upload-status', listener);
+    };
+  },
   openFile: (filePath: string) => ipcRenderer.invoke('file:open', filePath) as Promise<boolean>,
+  openUrl: (url: string) => ipcRenderer.invoke('url:open', url) as Promise<boolean>,
   exportFile: (filePath: string) => ipcRenderer.invoke('file:export', filePath) as Promise<string>,
   deleteFile: (filePath: string) => ipcRenderer.invoke('file:delete', filePath) as Promise<boolean>,
   printImage: (imagePath?: string, printerName?: string) =>

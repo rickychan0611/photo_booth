@@ -133,6 +133,12 @@ export type TemplateSettings = {
 export type AppSettings = {
   eventName: string;
   eventFolder: string;
+  webApiBaseUrl: string;
+  supabaseUrl: string;
+  supabasePublishableKey: string;
+  eventId: string;
+  boothSecret: string;
+  staffControlQueueMode: boolean;
   cameraId: string;
   mirrorPreview: boolean;
   cameraRotation: CameraRotation;
@@ -143,10 +149,50 @@ export type AppSettings = {
   silentPrint: boolean;
   adminPassword: string;
   ai: AiSettings;
+  audio: AudioSettings;
   template: TemplateSettings;
   workflow: WorkflowSettings;
   printPicker: PrintPickerSettings;
   printCalibration: PrintCalibrationSettings;
+};
+
+export type AudioCueMode = 'off' | 'mp3' | 'host';
+
+export type AudioChannel = 'voice' | 'music' | 'sfx';
+
+export type AudioCue = {
+  id: string;
+  label: string;
+  mode: AudioCueMode;
+  channel: AudioChannel;
+  text: string;
+  filePath: string;
+  loop: boolean;
+  volume: number;
+  enabled: boolean;
+  updatedAt: string;
+};
+
+export type AudioSettings = {
+  enabled: boolean;
+  masterVolume: number;
+  voiceVolume: number;
+  musicVolume: number;
+  sfxVolume: number;
+  enableHostVoice: boolean;
+  voiceEngine: 'kokoro' | 'piper';
+  voiceName: string;
+  speed: number;
+  volume: number;
+  welcomeRepeatSeconds: number;
+  cues: Record<string, AudioCue>;
+};
+
+export type HostVoiceGenerateResult = {
+  ok: boolean;
+  settings: AppSettings;
+  generatedPath?: string;
+  error?: string;
 };
 
 export type StylePrinterSettings = {
@@ -212,6 +258,7 @@ export type SavedPhoto = {
   styleId?: TemplateStyleId;
   designId?: string;
   printerName?: string;
+  galleryUrl?: string;
 };
 
 export type Gallery = {
@@ -226,11 +273,41 @@ export type SaveImageRequest = {
   styleId?: TemplateStyleId;
   designId?: string;
   printerName?: string;
+  galleryUrl?: string;
 };
 
 export type SaveImageResult = {
   path: string;
   name: string;
+};
+
+export type WebPhotoAssetUpload = {
+  kind: 'original' | 'layout' | 'thumbnail';
+  filename: string;
+  contentType: string;
+  dataUrl: string;
+  width?: number;
+  height?: number;
+};
+
+export type BackgroundGalleryUploadRequest = {
+  ticketId: string;
+  galleryUrl: string;
+  finalPath: string;
+};
+
+export type BackgroundGalleryUploadResult = {
+  ok: boolean;
+  galleryUrl?: string;
+  error?: string;
+};
+
+export type GalleryUploadStatus = {
+  state: 'idle' | 'uploading' | 'done' | 'failed';
+  message: string;
+  active: number;
+  lastGalleryUrl?: string;
+  lastError?: string;
 };
 
 export type AiGenerateRequest = {

@@ -1,10 +1,13 @@
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
-import { Camera, Download, Expand, ExternalLink, FolderOpen, Image, Minimize2, Printer, RefreshCw, Settings, SlidersHorizontal, Sparkles, Trash2, X } from 'lucide-react';
-import type { AiPreset, AiProvider, AiQueueItem, AppSettings, CameraControlSettings, CameraRotation, Capture, FaceAsset, FaceAssetPack, FaceAssetPlacement, Gallery, SavedPhoto, TemplateDesign, TemplateSlot, TemplateStyleId } from './types';
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import QRCode from 'qrcode';
+import { Camera, Download, Expand, ExternalLink, FolderOpen, Globe, Image, Minimize2, Printer, RefreshCw, Settings, SlidersHorizontal, Sparkles, Trash2, X } from 'lucide-react';
+import type { AiPreset, AiProvider, AiQueueItem, AppSettings, AudioCue, BoothSession, CameraControlSettings, CameraRotation, Capture, FaceAsset, FaceAssetPack, FaceAssetPlacement, Gallery, GalleryUploadStatus, QueueSnapshot, SavedPhoto, TemplateDesign, TemplateSlot, TemplateStyleId } from './types';
 import { createGuideTemplateImage, createTemplatedPrintImage, getPrimarySlot, getTemplateStyle, PRINT_HEIGHT, PRINT_WIDTH, TEMPLATE_HEIGHT, TEMPLATE_STYLES, TEMPLATE_WIDTH } from './template';
-import { FaceAssetStabilizer, FaceTracker, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceDebugInfo, mapFaceResultToDisplay, selectedFaceAssetPack } from './faceAssets';
+import { FaceAssetStabilizer, FaceTracker, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceDebugInfo, mapFaceResultToDisplay, resetFaceLandmarker, selectedFaceAssetPack } from './faceAssets';
+import { playAudioCue, stopAllAudio, stopAudioChannel, stopAudioCue } from './audio';
+import { createBoothGallerySession, createQueueRealtimeClient, fetchQueueSnapshot, isRealtimeConfigured, isWebQueueConfigured, publicWebUrl, validateBoothCode } from './webBackend';
 
-type GuestStep = 'welcome' | 'style' | 'design' | 'intro' | 'capture' | 'select' | 'thanks';
+type GuestStep = 'queue' | 'welcome' | 'style' | 'design' | 'intro' | 'capture' | 'select' | 'thanks';
 
 const buttonText = (value: string) => `[ ${value} ]`;
 
@@ -61,6 +64,13 @@ function GuestApp() {
   const [showFaceDebug, setShowFaceDebug] = useState(true);
   const [isCapturing, setIsCapturing] = useState(false);
   const [isBusy, setIsBusy] = useState(false);
+  const [queueSnapshot, setQueueSnapshot] = useState<QueueSnapshot | null>(null);
+  const [queueCode, setQueueCode] = useState('');
+  const [queueMessage, setQueueMessage] = useState('');
+  const [boothSession, setBoothSession] = useState<BoothSession | null>(null);
+  const [uploadMessage, setUploadMessage] = useState('');
+  const [galleryQrDataUrl, setGalleryQrDataUrl] = useState('');
+  const [sessionGalleryUrl, setSessionGalleryUrl] = useState('');
   const videoRef = useRef<HTMLVideoElement>(null);
   const faceOverlayCanvasRef = useRef<HTMLCanvasElement>(null);
   const captureGuideRef = useRef<HTMLDivElement>(null);
@@ -68,6 +78,7 @@ function GuestApp() {
   const streamRef = useRef<MediaStream | null>(null);
   const lastShortcutRef = useRef('');
   const sessionRunRef = useRef(0);
+  const queueModeEnabled = Boolean(settings?.staffControlQueueMode);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -83,6 +94,91 @@ function GuestApp() {
     void window.photoBooth.isGuestFullscreen().then(setIsFullscreen);
     return window.photoBooth.onGuestFullscreenChanged(setIsFullscreen);
   }, []);
+
+  useEffect(() => {
+    if (!settings) return;
+    setStep(settings.staffControlQueueMode ? 'queue' : 'welcome');
+  }, [settings?.staffControlQueueMode]);
+
+  const refreshQueueSnapshot = useCallback(
+    async (nextSettings = settings) => {
+      if (!nextSettings || !nextSettings.staffControlQueueMode || !isWebQueueConfigured(nextSettings)) return null;
+      const snapshot = await fetchQueueSnapshot(nextSettings);
+      setQueueSnapshot(snapshot);
+      return snapshot;
+    },
+    [settings]
+  );
+
+  useEffect(() => {
+    if (!settings?.staffControlQueueMode || !isWebQueueConfigured(settings)) return undefined;
+
+    void refreshQueueSnapshot(settings).catch((error) => {
+      setQueueMessage(error instanceof Error ? error.message : 'Queue is not connected.');
+    });
+
+    const interval = window.setInterval(() => {
+      void refreshQueueSnapshot(settings).catch(() => undefined);
+    }, 12000);
+
+    if (!isRealtimeConfigured(settings)) {
+      return () => window.clearInterval(interval);
+    }
+
+    const supabase = createQueueRealtimeClient(settings);
+    const channel = supabase
+      ?.channel(`electron-booth-${settings.eventId}`)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'events', filter: `id=eq.${settings.eventId}` },
+        () => void refreshQueueSnapshot(settings)
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'tickets', filter: `event_id=eq.${settings.eventId}` },
+        () => void refreshQueueSnapshot(settings)
+      )
+      .subscribe();
+
+    return () => {
+      window.clearInterval(interval);
+      if (channel) void supabase?.removeChannel(channel);
+    };
+  }, [
+    refreshQueueSnapshot,
+    settings?.eventId,
+    settings?.staffControlQueueMode,
+    settings?.supabasePublishableKey,
+    settings?.supabaseUrl,
+    settings?.webApiBaseUrl
+  ]);
+
+  useEffect(() => {
+    if (!settings) return undefined;
+    if (!settings.audio.enabled) {
+      stopAllAudio();
+      return undefined;
+    }
+    if (step !== 'capture') {
+      void playAudioCue(settings, 'backgroundMusic');
+    }
+    return () => undefined;
+  }, [settings?.audio, step]);
+
+  useEffect(() => {
+    if (!settings) return;
+    const cueByStep: Partial<Record<GuestStep, string>> = {
+      welcome: 'welcome',
+      style: 'style',
+      design: 'design',
+      intro: 'intro',
+      select: 'select',
+      thanks: 'thanks'
+    };
+    if (step !== 'welcome') stopAudioCue('welcome');
+    const cueId = cueByStep[step];
+    if (cueId) void playAudioCue(settings, cueId);
+  }, [settings?.audio, step]);
 
   useEffect(() => {
     if (step !== 'thanks') {
@@ -103,13 +199,19 @@ function GuestApp() {
       setCountdown(null);
       setCaptureMessage('');
       setError('');
-      setStep('welcome');
+      setQueueCode('');
+      setQueueMessage('');
+      setBoothSession(null);
+      setUploadMessage('');
+      setGalleryQrDataUrl('');
+      setSessionGalleryUrl('');
+      setStep(queueModeEnabled ? 'queue' : 'welcome');
     }, settings?.workflow.thankYouMs ?? 3000);
     return () => {
       window.clearTimeout(timer);
       window.clearInterval(countdownTimer);
     };
-  }, [settings, step]);
+  }, [queueModeEnabled, settings, step]);
 
   const resetGuestSession = () => {
     setCaptures([]);
@@ -120,7 +222,13 @@ function GuestApp() {
     setCountdown(null);
     setCaptureMessage('');
     setError('');
-    setStep('welcome');
+    setQueueCode('');
+    setQueueMessage('');
+    setBoothSession(null);
+    setUploadMessage('');
+    setGalleryQrDataUrl('');
+    setSessionGalleryUrl('');
+    setStep(queueModeEnabled ? 'queue' : 'welcome');
   };
 
   useEffect(() => {
@@ -152,6 +260,7 @@ function GuestApp() {
     return () => {
       window.removeEventListener('beforeunload', releaseCamera);
       window.removeEventListener('pagehide', releaseCamera);
+      stopAllAudio();
       releaseCamera();
     };
   }, []);
@@ -220,6 +329,7 @@ function GuestApp() {
     for (const value of [3, 2, 1]) {
       if (sessionRunRef.current !== runId) return false;
       setCountdown(value);
+      if (settings) void playAudioCue(settings, `countdown${value}`, String(value));
       await delay(1000);
     }
     setCountdown(null);
@@ -248,6 +358,7 @@ function GuestApp() {
     let busy = false;
     let lastDetectionAt = 0;
     let missedFrames = 0;
+    let didResetLandmarker = false;
     const tracker = new FaceTracker();
 
     const drawOverlay = async (now: number) => {
@@ -262,14 +373,20 @@ function GuestApp() {
           const displayResult = await detectDisplayedFaces(video, displayWidth, displayHeight, settings, now);
           if (displayResult.faceLandmarks.length === 0) {
             missedFrames += 1;
-            if (missedFrames > 45) {
-              clearFaceAssetCanvas(overlay, overlay.width, overlay.height);
+            if (missedFrames > 2) clearFaceAssetCanvas(overlay, overlay.width, overlay.height);
+            if (missedFrames > 8) {
               faceOverlayStabilizerRef.current.reset();
               tracker.reset();
+            }
+            if (missedFrames > 18 && !didResetLandmarker) {
+              didResetLandmarker = true;
+              await resetFaceLandmarker();
+              lastDetectionAt = 0;
             }
             return;
           }
           missedFrames = 0;
+          didResetLandmarker = false;
           clearFaceAssetCanvas(overlay, displayWidth, displayHeight);
           const ctx = overlay.getContext('2d');
           if (ctx) {
@@ -295,6 +412,7 @@ function GuestApp() {
   }, [activeFacePack, settings?.cameraRotation, settings?.mirrorPreview, showFaceDebug, step]);
 
   const chooseStyle = (styleId: TemplateStyleId) => {
+    if (settings) void playAudioCue(settings, 'button');
     const firstDesign = activeDesigns.find((design) => design.styleId === styleId);
     setSelectedStyleId(styleId);
     setSelectedDesignId(firstDesign?.id ?? '');
@@ -303,10 +421,49 @@ function GuestApp() {
   };
 
   const chooseDesign = (design: TemplateDesign) => {
+    if (settings) void playAudioCue(settings, 'button');
     setSelectedStyleId(design.styleId);
     setSelectedDesignId(design.id);
     setStep('intro');
     void startSession(design.styleId, design);
+  };
+
+  const startUnqueuedFlow = () => {
+    if (!settings) return;
+    void playAudioCue(settings, 'button');
+    setStep('style');
+  };
+
+  const appendQueueDigit = (digit: string) => {
+    setQueueMessage('');
+    setQueueCode((current) => `${current}${digit}`.slice(0, 4));
+  };
+
+  const backspaceQueueCode = () => {
+    setQueueMessage('');
+    setQueueCode((current) => current.slice(0, -1));
+  };
+
+  const submitQueueCode = async () => {
+    if (!settings || queueCode.length !== 4 || isBusy) return;
+    setIsBusy(true);
+    setQueueMessage('');
+    try {
+      const result = await validateBoothCode(settings, queueCode);
+      const galleryUrl = publicWebUrl(settings, result.galleryUrl);
+      setBoothSession(result);
+      setSessionGalleryUrl(galleryUrl);
+      setGalleryQrDataUrl(await createGalleryQrCode(galleryUrl));
+      setQueueCode('');
+      setQueueMessage(`Code accepted for queue #${result.ticket.queue_number}.`);
+      void playAudioCue(settings, 'button');
+      setStep('welcome');
+      await refreshQueueSnapshot(settings);
+    } catch (error) {
+      setQueueMessage(error instanceof Error ? error.message : 'Code is not ready.');
+    } finally {
+      setIsBusy(false);
+    }
   };
 
   const startSession = async (styleId = selectedStyleId, design = selectedDesign) => {
@@ -341,6 +498,7 @@ function GuestApp() {
         await delay(shot.cameraBeforeMessageMs);
         if (sessionRunRef.current !== runId) return;
         setCaptureMessage(shot.message);
+        void playAudioCue(settings, `shot${nextCaptures.length}`, shot.message);
         setCaptureMessageFadeMs(shot.messageMs);
         await delay(shot.messageMs);
         if (sessionRunRef.current !== runId) return;
@@ -351,6 +509,7 @@ function GuestApp() {
           getPrimarySlot(style.id, nextCaptures.length),
           liveViewUsesFullScreen(style.id)
         );
+        void playAudioCue(settings, 'shutter');
         nextCaptures.push(capture);
         setCaptures([...nextCaptures]);
         await delay(350);
@@ -391,6 +550,7 @@ function GuestApp() {
       .filter(Boolean) as string[];
     if (photoDataUrls.length < style.selectCount) return;
     setIsBusy(true);
+    stopAudioChannel('voice');
     setPrintedPreview('');
     setPrintedNumber('');
     setIsAiGenerating(design.usesAi);
@@ -398,7 +558,33 @@ function GuestApp() {
 
     const printFinal = async () => {
       const templateDataUrl = await window.photoBooth.getImageDataUrl(templateFramePath(design));
-      const dataUrl = await createTemplatedPrintImage(photoDataUrls, style.id, design, templateDataUrl);
+      let uploadSession = boothSession;
+      let uploadGalleryUrl = sessionGalleryUrl;
+      let uploadQrDataUrl = galleryQrDataUrl;
+
+      if (!uploadSession && isWebQueueConfigured(settings) && settings.boothSecret.trim()) {
+        try {
+          console.log('[gallery-upload] creating gallery session for final photo');
+          setUploadMessage('Creating online gallery...');
+          uploadSession = await createBoothGallerySession(settings);
+          uploadGalleryUrl = publicWebUrl(settings, uploadSession.galleryUrl);
+          uploadQrDataUrl = await createGalleryQrCode(uploadGalleryUrl);
+          setBoothSession(uploadSession);
+          setSessionGalleryUrl(uploadGalleryUrl);
+          setGalleryQrDataUrl(uploadQrDataUrl);
+        } catch (error) {
+          const message = error instanceof Error ? error.message : 'Could not create online gallery.';
+          setUploadMessage(`Gallery upload skipped: ${message}`);
+        }
+      } else if (uploadSession && uploadGalleryUrl && !uploadQrDataUrl) {
+        uploadQrDataUrl = await createGalleryQrCode(uploadGalleryUrl);
+        setGalleryQrDataUrl(uploadQrDataUrl);
+      }
+
+      let dataUrl = await createTemplatedPrintImage(photoDataUrls, style.id, design, templateDataUrl);
+      if (uploadGalleryUrl && uploadQrDataUrl) {
+        dataUrl = await addQrToPrintDataUrl(dataUrl, uploadQrDataUrl);
+      }
       const printerName = printerForStyle(settings, style.id);
       if (design.usesAi && design.aiPresetId) {
         await window.photoBooth.generateAiFinal({
@@ -423,6 +609,16 @@ function GuestApp() {
       setPrintedPreview(dataUrl);
       setPrintedNumber(photoNumber(saved.name));
       setIsAiGenerating(false);
+      console.log('[gallery-upload] final photo saved', { path: saved.path, hasUploadSession: Boolean(uploadSession) });
+      if (uploadSession) {
+        console.log('[gallery-upload] starting background upload', { ticketId: uploadSession.ticket.id, galleryUrl: uploadSession.galleryUrl });
+        void startBackgroundGalleryUpload(settings, uploadSession, saved.path);
+      } else if (isWebQueueConfigured(settings) && !settings.boothSecret.trim()) {
+        setUploadMessage('Gallery upload skipped: Booth secret is missing.');
+        console.warn('[gallery-upload] skipped because booth secret is missing');
+      } else {
+        console.warn('[gallery-upload] skipped because web API or event ID is missing');
+      }
       void window.photoBooth.printImage(saved.path, printerName).then((result) => {
         if (!result.ok) console.warn(result.error || 'Print canceled.');
       });
@@ -438,6 +634,24 @@ function GuestApp() {
   const printNow = async () => {
     if (!settings || !selectedDesign || selectedPhotoDataUrls.length < selectedStyle.selectCount) return;
     await printCaptures(captures, selectedCaptureIndexes, selectedStyle.id, selectedDesign);
+  };
+
+  const startBackgroundGalleryUpload = async (
+    currentSettings: AppSettings,
+    session: BoothSession,
+    finalPath: string
+  ) => {
+    try {
+      setUploadMessage('Gallery upload is running in background...');
+      await window.photoBooth.uploadFinalGallery({
+        ticketId: session.ticket.id,
+        galleryUrl: session.galleryUrl,
+        finalPath
+      });
+      await refreshQueueSnapshot(currentSettings);
+    } catch (error) {
+      setUploadMessage(error instanceof Error ? `Upload failed: ${error.message}` : 'Upload failed.');
+    }
   };
 
   const openPickerPreview = async () => {
@@ -504,7 +718,7 @@ function GuestApp() {
   if (!settings) return <GuestShell><p className="quiet">LOADING</p></GuestShell>;
 
   return (
-    <GuestShell flash={isFlashing}>
+    <GuestShell flash={isFlashing} compactTop={step === 'queue'}>
       {!isFullscreen && step !== 'capture' && (
         <button
           className="fullscreen-button"
@@ -516,11 +730,31 @@ function GuestApp() {
         </button>
       )}
 
+      {step === 'queue' && (
+        <QueueEntryScreen
+          settings={settings}
+          snapshot={queueSnapshot}
+          code={queueCode}
+          message={queueMessage}
+          isBusy={isBusy}
+          onDigit={appendQueueDigit}
+          onBackspace={backspaceQueueCode}
+          onClear={() => setQueueCode('')}
+          onSubmit={submitQueueCode}
+        />
+      )}
+
       {step === 'welcome' && (
         <section className="welcome-screen">
           <div>
             <p className="brand">{settings.eventName || 'PHOTO BOOTH'}</p>
-            <button className="booth-button primary" onClick={() => setStep('style')} disabled={isBusy}>
+            <button
+              className="booth-button primary"
+              onClick={() => {
+                startUnqueuedFlow();
+              }}
+              disabled={isBusy}
+            >
               {buttonText('START')}
             </button>
           </div>
@@ -549,7 +783,13 @@ function GuestApp() {
 
       {step === 'design' && (
         <section className="template-guest-screen">
-          <button className="guest-back-button" onClick={() => setStep('style')}>
+          <button
+            className="guest-back-button"
+            onClick={() => {
+              void playAudioCue(settings, 'button');
+              setStep('style');
+            }}
+          >
             {buttonText('BACK')}
           </button>
           <p className="instruction">CHOOSE A DESIGN</p>
@@ -623,7 +863,10 @@ function GuestApp() {
                 key={photo.path}
                 className={`selection-photo ${selectedCaptureIndexes.includes(index) ? 'selected' : ''}`}
                 style={slotGuideStyle(getPrimarySlot(selectedStyleId, Math.min(index, selectedStyle.selectCount - 1)))}
-                onClick={() => setSelectedCaptureIndexes(toggleSelectedIndex(selectedCaptureIndexes, index, selectedStyle.selectCount))}
+                onClick={() => {
+                  void playAudioCue(settings, 'button');
+                  setSelectedCaptureIndexes(toggleSelectedIndex(selectedCaptureIndexes, index, selectedStyle.selectCount));
+                }}
               >
                 <img src={photo.dataUrl} alt={`Captured photo ${index + 1}`} />
               </button>
@@ -631,7 +874,10 @@ function GuestApp() {
           </div>
           <button
             className="booth-button primary selection-print-button"
-            onClick={printNow}
+            onClick={() => {
+              void playAudioCue(settings, 'button');
+              void printNow();
+            }}
             disabled={isBusy || selectedPhotoDataUrls.length < selectedStyle.selectCount}
           >
             {buttonText(isBusy ? 'PRINTING' : printCountdown && printCountdown > 0 ? `PRINT NOW ${printCountdown}` : 'PRINT NOW')}
@@ -644,7 +890,14 @@ function GuestApp() {
           {thankYouCountdown !== null && (
             <div className="thanks-top-actions">
               <div className="thanks-countdown">{thankYouCountdown}</div>
-              <button onClick={resetGuestSession}>Restart</button>
+              <button
+                onClick={() => {
+                  void playAudioCue(settings, 'button');
+                  resetGuestSession();
+                }}
+              >
+                Restart
+              </button>
             </div>
           )}
           {(printedPreview || isAiGenerating) && (
@@ -661,6 +914,14 @@ function GuestApp() {
               <span>REMEMBER IT TO FIND YOUR PIC</span>
             </div>
           )}
+          {galleryQrDataUrl && (
+            <div className="gallery-qr-card">
+              <img src={galleryQrDataUrl} alt="Gallery QR code" />
+              <span>Scan for gallery</span>
+            </div>
+          )}
+          {sessionGalleryUrl && <p className="gallery-url-text">{sessionGalleryUrl}</p>}
+          {uploadMessage && <p className="queue-message">{uploadMessage}</p>}
           {(isAiGenerating || selectedDesign?.usesAi) && <p className="ai-disclaimer">AI can make mistake, don't be serious :)</p>}
           {isAiGenerating && <p className="ai-wait-message">THIS WILL TAKE A BIT LONGER. PLEASE WAIT OUTSIDE NEAR THE PRINTING AREA.</p>}
         </section>
@@ -671,9 +932,73 @@ function GuestApp() {
   );
 }
 
-function GuestShell({ children, flash = false }: { children: React.ReactNode; flash?: boolean }) {
+function QueueEntryScreen({
+  settings,
+  snapshot,
+  code,
+  message,
+  isBusy,
+  onDigit,
+  onBackspace,
+  onClear,
+  onSubmit
+}: {
+  settings: AppSettings;
+  snapshot: QueueSnapshot | null;
+  code: string;
+  message: string;
+  isBusy: boolean;
+  onDigit: (digit: string) => void;
+  onBackspace: () => void;
+  onClear: () => void;
+  onSubmit: () => void;
+}) {
+  const configured = isWebQueueConfigured(settings);
+  const currentNumber = snapshot?.event.current_queue_number;
+
   return (
-    <main className="guest-shell">
+    <section className="queue-screen">
+      <div className="queue-status-panel">
+        <p className="queue-list-title">Now serving</p>
+        <div className="queue-current-number">{currentNumber ? `#${currentNumber}` : '-'}</div>
+        {!configured && <p className="queue-message">Queue not connected</p>}
+      </div>
+
+      <div className="queue-keypad-panel">
+        <p className="instruction">ENTER YOUR 4-DIGIT CODE</p>
+        <div className="queue-code-display">{code.padEnd(4, '_')}</div>
+        <div className="queue-keypad">
+          {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((digit) => (
+            <button key={digit} onClick={() => onDigit(digit)} disabled={isBusy || !configured}>
+              {digit}
+            </button>
+          ))}
+          <button onClick={onClear} disabled={isBusy || !code}>Clear</button>
+          <button onClick={() => onDigit('0')} disabled={isBusy || !configured}>
+            0
+          </button>
+          <button onClick={onBackspace} disabled={isBusy || !code}>Back</button>
+        </div>
+        <button className="booth-button primary" onClick={onSubmit} disabled={isBusy || code.length !== 4 || !configured}>
+          {buttonText(isBusy ? 'CHECKING' : 'START')}
+        </button>
+        {message && <p className="queue-message">{message}</p>}
+      </div>
+    </section>
+  );
+}
+
+function GuestShell({
+  children,
+  flash = false,
+  compactTop = false
+}: {
+  children: React.ReactNode;
+  flash?: boolean;
+  compactTop?: boolean;
+}) {
+  return (
+    <main className={`guest-shell ${compactTop ? 'compact-top' : ''}`}>
       {children}
       <div className={`flash ${flash ? 'active' : ''}`} />
     </main>
@@ -746,6 +1071,11 @@ function AdminApp() {
   const [templateStyleId, setTemplateStyleId] = useState<TemplateStyleId>('style1');
   const [selectedFaceAssetPackId, setSelectedFaceAssetPackId] = useState('');
   const [aiPresetDraft, setAiPresetDraft] = useState({ name: '', prompt: '' });
+  const [galleryUploadStatus, setGalleryUploadStatus] = useState<GalleryUploadStatus>({
+    state: 'idle',
+    message: 'No active upload.',
+    active: 0
+  });
   const cameraPreviewRef = useRef<HTMLVideoElement>(null);
   const [adminStream, setAdminStream] = useState<MediaStream | null>(null);
 
@@ -770,6 +1100,11 @@ function AdminApp() {
     void refreshAiQueue();
     void refreshPrinters();
     void refreshCameras();
+    void window.photoBooth.getGalleryUploadStatus().then(setGalleryUploadStatus);
+    return window.photoBooth.onGalleryUploadStatus((status) => {
+      setGalleryUploadStatus(status);
+      if (status.state === 'done' || status.state === 'failed') void refreshGallery();
+    });
   }, []);
 
   useEffect(() => {
@@ -840,6 +1175,59 @@ function AdminApp() {
     setMessage(text);
     window.setTimeout(() => setMessage(''), 2200);
     return next;
+  };
+
+  const saveAudioSettings = async (audio: AppSettings['audio'], text = 'Audio saved.') => {
+    const next = await saveMessage({ audio }, text);
+    return next.audio;
+  };
+
+  const saveAudioCue = async (cue: AudioCue, text = 'Audio cue saved.') => {
+    await saveAudioSettings(
+      {
+        ...settings.audio,
+        cues: {
+          ...settings.audio.cues,
+          [cue.id]: { ...cue, updatedAt: new Date().toISOString() }
+        }
+      },
+      text
+    );
+  };
+
+  const uploadAudioCue = async (cueId: string) => {
+    try {
+      const next = await window.photoBooth.uploadAudioCue(cueId);
+      await updateSettings(next);
+      setMessage('Audio file uploaded.');
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Audio upload failed.');
+    }
+  };
+
+  const removeAudioCue = async (cueId: string) => {
+    const next = await window.photoBooth.removeAudioCue(cueId);
+    await updateSettings(next);
+    setMessage('Audio file removed.');
+  };
+
+  const generateHostVoiceCue = async (cueId: string, playAfterGenerate = false) => {
+    setMessage('Generating host voice...');
+    const result = await window.photoBooth.generateHostVoiceCue(cueId);
+    await updateSettings(result.settings);
+    if (!result.ok) {
+      setMessage(result.error ?? 'Host voice generation failed.');
+      return;
+    }
+    setMessage('Host voice generated.');
+    if (playAfterGenerate) void playAudioCue(result.settings, cueId);
+  };
+
+  const generateAllHostVoiceCues = async () => {
+    setMessage('Generating all host voice lines...');
+    const result = await window.photoBooth.generateAllHostVoiceCues();
+    await updateSettings(result.settings);
+    setMessage(result.ok ? 'All host voice lines generated.' : result.error ?? 'Host voice generation failed.');
   };
 
   const saveCameraControl = async (key: CameraControlKey, value: number) => {
@@ -1045,6 +1433,11 @@ function AdminApp() {
     <main className="admin-shell">
       <aside className="admin-sidebar">
         <p className="admin-title">PHOTO BOOTH</p>
+        <div className={`upload-status-pill ${galleryUploadStatus.state}`}>
+          <span />
+          <strong>{galleryUploadStatus.state === 'uploading' ? `Uploading ${galleryUploadStatus.active}` : galleryUploadStatus.state}</strong>
+          <small>{galleryUploadStatus.message}</small>
+        </div>
         {[
           ['event', 'Event', Settings],
           ['camera', 'Camera', Camera],
@@ -1098,6 +1491,55 @@ function AdminApp() {
                 value={settings.adminPassword}
                 placeholder="Optional for later"
                 onChange={(event) => void saveMessage({ adminPassword: event.target.value }, 'Password saved.')}
+              />
+            </label>
+            <label className="check-row">
+              <input
+                type="checkbox"
+                checked={settings.staffControlQueueMode}
+                onChange={(event) => void saveMessage({ staffControlQueueMode: event.target.checked }, 'Queue mode saved.')}
+              />
+              Staff control queue mode
+            </label>
+            <label>
+              Web API base URL
+              <input
+                value={settings.webApiBaseUrl}
+                placeholder="http://localhost:3000"
+                onChange={(event) => void saveMessage({ webApiBaseUrl: event.target.value }, 'Web API URL saved.')}
+              />
+            </label>
+            <label>
+              Supabase URL
+              <input
+                value={settings.supabaseUrl}
+                placeholder="https://your-project.supabase.co"
+                onChange={(event) => void saveMessage({ supabaseUrl: event.target.value }, 'Supabase URL saved.')}
+              />
+            </label>
+            <label>
+              Supabase publishable key
+              <input
+                value={settings.supabasePublishableKey}
+                placeholder="sb_publishable_..."
+                onChange={(event) => void saveMessage({ supabasePublishableKey: event.target.value }, 'Supabase key saved.')}
+              />
+            </label>
+            <label>
+              Event ID
+              <input
+                value={settings.eventId}
+                placeholder="Supabase event UUID"
+                onChange={(event) => void saveMessage({ eventId: event.target.value }, 'Event ID saved.')}
+              />
+            </label>
+            <label>
+              Booth secret
+              <input
+                type="password"
+                value={settings.boothSecret}
+                placeholder="Matches BOOTH_SHARED_SECRET"
+                onChange={(event) => void saveMessage({ boothSecret: event.target.value }, 'Booth secret saved.')}
               />
             </label>
             <div className="admin-actions">
@@ -1428,6 +1870,124 @@ function AdminApp() {
               />
             </label>
 
+            <div className="workflow-shot audio-settings-panel">
+              <div className="panel-title-row">
+                <h2>Voice, music, and sound effects</h2>
+                <label className="check-row compact-check">
+                  <input
+                    type="checkbox"
+                    checked={settings.audio.enabled}
+                    onChange={(event) =>
+                      void saveAudioSettings({ ...settings.audio, enabled: event.target.checked })
+                    }
+                  />
+                  Audio enabled
+                </label>
+              </div>
+              <div className="workflow-grid audio-global-grid">
+                {[
+                  ['masterVolume', 'Master volume'],
+                  ['voiceVolume', 'Voice volume'],
+                  ['musicVolume', 'Music volume'],
+                  ['sfxVolume', 'SFX volume'],
+                  ['speed', 'Host speed'],
+                  ['volume', 'Host volume'],
+                  ['welcomeRepeatSeconds', 'Welcome repeat seconds']
+                ].map(([key, label]) => (
+                  <label key={key}>
+                    {label}
+                    <input
+                      type="number"
+                      min={key === 'speed' ? 0.5 : key === 'welcomeRepeatSeconds' ? 3 : 0}
+                      max={key === 'speed' ? 2 : key === 'welcomeRepeatSeconds' ? 60 : 1}
+                      step={key === 'welcomeRepeatSeconds' ? 1 : 0.05}
+                      value={settings.audio[key as keyof AppSettings['audio']] as number}
+                      onChange={(event) =>
+                        void saveAudioSettings({
+                          ...settings.audio,
+                          [key]: Number(event.target.value)
+                        })
+                      }
+                    />
+                  </label>
+                ))}
+                <label>
+                  Voice engine
+                  <select
+                    value={settings.audio.voiceEngine}
+                    onChange={(event) =>
+                      void saveAudioSettings({ ...settings.audio, voiceEngine: event.target.value as AppSettings['audio']['voiceEngine'] })
+                    }
+                  >
+                    <option value="kokoro">Kokoro</option>
+                    <option value="piper">Piper</option>
+                  </select>
+                </label>
+                <label>
+                  Voice name
+                  <input
+                    value={settings.audio.voiceName}
+                    placeholder={settings.audio.voiceEngine === 'kokoro' ? 'af_heart' : 'en_US-lessac-medium'}
+                    onChange={(event) =>
+                      void saveAudioSettings({ ...settings.audio, voiceName: event.target.value })
+                    }
+                  />
+                </label>
+              </div>
+              <div className="admin-actions">
+                <label className="check-row compact-check">
+                  <input
+                    type="checkbox"
+                    checked={settings.audio.enableHostVoice}
+                    onChange={(event) =>
+                      void saveAudioSettings({ ...settings.audio, enableHostVoice: event.target.checked })
+                    }
+                  />
+                  Enable host voice
+                </label>
+                <button onClick={() => void generateAllHostVoiceCues()}>Generate all host lines</button>
+              </div>
+              <p className="muted">
+                Host voice is generated offline into cached WAV files. Bundle Kokoro or Piper under resources/tts, or place tools in the event folder under audio/tts.
+              </p>
+            </div>
+
+            <div className="audio-cue-group">
+              <h2>Screen voice</h2>
+              <div className="audio-cue-grid">
+                {['welcome', 'style', 'design', 'intro', 'select', 'thanks'].map((cueId) => (
+                  <AudioCueCard
+                    key={cueId}
+                    cue={settings.audio.cues[cueId]}
+                    settings={settings}
+                    onSave={saveAudioCue}
+                    onUpload={uploadAudioCue}
+                    onRemove={removeAudioCue}
+                    onGenerate={generateHostVoiceCue}
+                    onTest={(cue) => cue.mode === 'host' && !cue.filePath ? generateHostVoiceCue(cue.id, true) : playAudioCue(settings, cue.id)}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <div className="audio-cue-group">
+              <h2>Countdown, music, and SFX</h2>
+              <div className="audio-cue-grid">
+                {['countdown3', 'countdown2', 'countdown1', 'button', 'shutter', 'backgroundMusic'].map((cueId) => (
+                  <AudioCueCard
+                    key={cueId}
+                    cue={settings.audio.cues[cueId]}
+                    settings={settings}
+                    onSave={saveAudioCue}
+                    onUpload={uploadAudioCue}
+                    onRemove={removeAudioCue}
+                    onGenerate={generateHostVoiceCue}
+                    onTest={(cue) => cue.mode === 'host' && !cue.filePath ? generateHostVoiceCue(cue.id, true) : playAudioCue(settings, cue.id)}
+                  />
+                ))}
+              </div>
+            </div>
+
             <div className="workflow-shots">
               {settings.workflow.shots.slice(0, 4).map((shot, index) => (
                 <div className="workflow-shot" key={index}>
@@ -1487,6 +2047,15 @@ function AdminApp() {
                       />
                     </label>
                   </div>
+                  <AudioCueCard
+                    cue={settings.audio.cues[`shot${index}`]}
+                    settings={settings}
+                    onSave={saveAudioCue}
+                    onUpload={uploadAudioCue}
+                    onRemove={removeAudioCue}
+                    onGenerate={generateHostVoiceCue}
+                    onTest={(cue) => cue.mode === 'host' && !cue.filePath ? generateHostVoiceCue(cue.id, true) : playAudioCue(settings, cue.id, shot.message)}
+                  />
                 </div>
               ))}
             </div>
@@ -1921,6 +2490,83 @@ function AdminApp() {
   );
 }
 
+function AudioCueCard({
+  cue,
+  settings,
+  onSave,
+  onUpload,
+  onRemove,
+  onGenerate,
+  onTest
+}: {
+  cue?: AudioCue;
+  settings: AppSettings;
+  onSave: (cue: AudioCue) => Promise<void>;
+  onUpload: (cueId: string) => Promise<void>;
+  onRemove: (cueId: string) => Promise<void>;
+  onGenerate: (cueId: string, playAfterGenerate?: boolean) => Promise<void>;
+  onTest: (cue: AudioCue) => void;
+}) {
+  if (!cue) return null;
+  const fileName = cue.filePath.split(/[\\/]/).pop() || '';
+  return (
+    <div className="audio-cue-card">
+      <div className="audio-cue-head">
+        <label className="check-row compact-check">
+          <input
+            type="checkbox"
+            checked={cue.enabled}
+            onChange={(event) => void onSave({ ...cue, enabled: event.target.checked })}
+          />
+          {cue.label}
+        </label>
+        <button type="button" onClick={() => onTest(cue)}>Test</button>
+      </div>
+      <div className="audio-cue-controls">
+        <label>
+          Mode
+          <select value={cue.mode} onChange={(event) => void onSave({ ...cue, mode: event.target.value as AudioCue['mode'] })}>
+            <option value="off">Off</option>
+            <option value="mp3">MP3</option>
+            {cue.channel === 'voice' && <option value="host">Host voice</option>}
+          </select>
+        </label>
+        <label>
+          Volume
+          <input
+            type="number"
+            min="0"
+            max="1"
+            step="0.05"
+            value={cue.volume}
+            onChange={(event) => void onSave({ ...cue, volume: Number(event.target.value) })}
+          />
+        </label>
+        <label className="check-row compact-check">
+          <input
+            type="checkbox"
+            checked={cue.loop}
+            onChange={(event) => void onSave({ ...cue, loop: event.target.checked })}
+          />
+          Loop
+        </label>
+      </div>
+      {cue.channel === 'voice' && (
+        <label>
+          Spoken text
+          <input value={cue.text} onChange={(event) => void onSave({ ...cue, text: event.target.value })} />
+        </label>
+      )}
+      <div className="audio-file-row">
+        <button type="button" onClick={() => void onUpload(cue.id)}>Upload MP3</button>
+        {cue.channel === 'voice' && <button type="button" onClick={() => void onGenerate(cue.id)}>Generate</button>}
+        <button type="button" onClick={() => void onRemove(cue.id)} disabled={!cue.filePath}>Clear</button>
+        <span title={cue.filePath}>{fileName || (cue.mode === 'mp3' ? 'No file' : settings.audio.enabled ? 'No file' : 'Audio off')}</span>
+      </div>
+    </div>
+  );
+}
+
 function AdminSection({ children }: { children: React.ReactNode }) {
   return <div className="admin-section">{children}</div>;
 }
@@ -1981,6 +2627,7 @@ function FaceAssetPreviewApp() {
     let busy = false;
     let lastDetectionAt = 0;
     let missedFrames = 0;
+    let didResetLandmarker = false;
     const tracker = new FaceTracker();
 
     const drawOverlay = async (now: number) => {
@@ -1995,14 +2642,20 @@ function FaceAssetPreviewApp() {
           const displayResult = await detectDisplayedFaces(video, displayWidth, displayHeight, settings, now);
           if (displayResult.faceLandmarks.length === 0) {
             missedFrames += 1;
-            if (missedFrames > 45) {
-              clearFaceAssetCanvas(overlay, overlay.width, overlay.height);
+            if (missedFrames > 2) clearFaceAssetCanvas(overlay, overlay.width, overlay.height);
+            if (missedFrames > 8) {
               stabilizerRef.current.reset();
               tracker.reset();
+            }
+            if (missedFrames > 18 && !didResetLandmarker) {
+              didResetLandmarker = true;
+              await resetFaceLandmarker();
+              lastDetectionAt = 0;
             }
             return;
           }
           missedFrames = 0;
+          didResetLandmarker = false;
           clearFaceAssetCanvas(overlay, displayWidth, displayHeight);
           const ctx = overlay.getContext('2d');
           if (ctx) {
@@ -2332,6 +2985,16 @@ function GalleryCard({
             <ExternalLink size={15} />
           </button>
           <button
+            title={photo.galleryUrl ? 'Open online gallery' : 'Online gallery not uploaded yet'}
+            aria-label={photo.galleryUrl ? `Open online gallery for ${photo.name}` : `Online gallery not uploaded yet for ${photo.name}`}
+            disabled={!photo.galleryUrl}
+            onClick={() => {
+              if (photo.galleryUrl) void window.photoBooth.openUrl(photo.galleryUrl);
+            }}
+          >
+            <Globe size={15} />
+          </button>
+          <button
             title={photo.printerName ? `Print to ${photo.printerName}` : 'Print'}
             aria-label={`Print ${photo.name}`}
             onClick={() => window.photoBooth.printImage(photo.path, photo.printerName || settings.defaultPrinter)}
@@ -2430,6 +3093,45 @@ const drawCameraViewToCanvas = (video: HTMLVideoElement, width: number, height: 
   if (settings.mirrorPreview) ctx.scale(-1, 1);
   ctx.drawImage(video, -drawWidth / 2, -drawHeight / 2, drawWidth, drawHeight);
   return canvas;
+};
+
+const loadDataUrlImage = (dataUrl: string) =>
+  new Promise<HTMLImageElement>((resolve, reject) => {
+    const image = new window.Image();
+    image.onload = () => resolve(image);
+    image.onerror = () => reject(new Error('Could not load image for upload.'));
+    image.src = dataUrl;
+  });
+
+const createGalleryQrCode = (galleryUrl: string) =>
+  QRCode.toDataURL(galleryUrl, {
+    errorCorrectionLevel: 'M',
+    margin: 1,
+    scale: 8,
+    color: {
+      dark: '#000000',
+      light: '#ffffff'
+    }
+  });
+
+const addQrToPrintDataUrl = async (printDataUrl: string, qrDataUrl: string) => {
+  const [printImage, qrImage] = await Promise.all([loadDataUrlImage(printDataUrl), loadDataUrlImage(qrDataUrl)]);
+  const canvas = document.createElement('canvas');
+  canvas.width = printImage.naturalWidth;
+  canvas.height = printImage.naturalHeight;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('Could not add gallery QR code.');
+  ctx.drawImage(printImage, 0, 0);
+
+  const qrSize = Math.max(110, Math.round(Math.min(canvas.width, canvas.height) * 0.06));
+  const margin = Math.round(qrSize * 0.28);
+  const x = canvas.width - qrSize - margin;
+  const y = canvas.height - qrSize - margin;
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(x - 8, y - 8, qrSize + 16, qrSize + 16);
+  ctx.drawImage(qrImage, x, y, qrSize, qrSize);
+
+  return canvas.toDataURL('image/png');
 };
 
 const detectDisplayedFaces = async (

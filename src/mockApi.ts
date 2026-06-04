@@ -3,6 +3,12 @@ import type { AiQueueItem, AppSettings, Gallery, SaveImageRequest, SaveImageResu
 const fallbackSettings: AppSettings = {
   eventName: 'PHOTO BOOTH',
   eventFolder: 'Browser preview',
+  webApiBaseUrl: 'http://localhost:3000',
+  supabaseUrl: '',
+  supabasePublishableKey: '',
+  eventId: '',
+  boothSecret: '',
+  staffControlQueueMode: false,
   cameraId: '',
   mirrorPreview: true,
   cameraRotation: 0,
@@ -42,6 +48,37 @@ const fallbackSettings: AppSettings = {
         apiUrl: 'https://api.x.ai/v1/images/edits',
         model: 'grok-imagine-image-quality'
       }
+    }
+  },
+  audio: {
+    enabled: true,
+    masterVolume: 0.85,
+    voiceVolume: 1,
+    musicVolume: 0.35,
+    sfxVolume: 0.8,
+    enableHostVoice: true,
+    voiceEngine: 'kokoro',
+    voiceName: 'af_heart',
+    speed: 1.08,
+    volume: 1,
+    welcomeRepeatSeconds: 10,
+    cues: {
+      welcome: { id: 'welcome', label: 'Welcome idle loop', mode: 'host', channel: 'voice', text: 'Welcome. Touch start to begin.', filePath: '', loop: true, volume: 1, enabled: true, updatedAt: '' },
+      style: { id: 'style', label: 'Choose style screen', mode: 'host', channel: 'voice', text: 'Please choose a style.', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      design: { id: 'design', label: 'Choose design screen', mode: 'host', channel: 'voice', text: 'Please choose a design.', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      intro: { id: 'intro', label: 'Intro screen', mode: 'host', channel: 'voice', text: "Let's take pictures.", filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      select: { id: 'select', label: 'Photo selection screen', mode: 'host', channel: 'voice', text: 'Please choose your favorite pictures to print.', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      thanks: { id: 'thanks', label: 'Finish screen', mode: 'host', channel: 'voice', text: 'Thank you. Please pick up your print.', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      shot0: { id: 'shot0', label: 'Picture 1 message', mode: 'host', channel: 'voice', text: 'Get ready!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      shot1: { id: 'shot1', label: 'Picture 2 message', mode: 'host', channel: 'voice', text: 'Smile!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      shot2: { id: 'shot2', label: 'Picture 3 message', mode: 'host', channel: 'voice', text: 'Switch it up!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      shot3: { id: 'shot3', label: 'Picture 4 message', mode: 'host', channel: 'voice', text: 'Final pose!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      countdown3: { id: 'countdown3', label: 'Countdown 3', mode: 'host', channel: 'voice', text: '3', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      countdown2: { id: 'countdown2', label: 'Countdown 2', mode: 'host', channel: 'voice', text: '2', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      countdown1: { id: 'countdown1', label: 'Countdown 1', mode: 'host', channel: 'voice', text: '1', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      button: { id: 'button', label: 'Button press sound', mode: 'off', channel: 'sfx', text: '', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      shutter: { id: 'shutter', label: 'Camera shutter sound', mode: 'off', channel: 'sfx', text: '', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      backgroundMusic: { id: 'backgroundMusic', label: 'Background music loop', mode: 'off', channel: 'music', text: '', filePath: '', loop: true, volume: 1, enabled: true, updatedAt: '' }
     }
   },
   template: {
@@ -154,6 +191,14 @@ export function installMockApi() {
           xai: { ...fallbackSettings.ai.providers.xai, ...(parsed.ai?.providers?.xai ?? {}) }
         }
       },
+      audio: {
+        ...fallbackSettings.audio,
+        ...(parsed.audio ?? {}),
+        cues: {
+          ...fallbackSettings.audio.cues,
+          ...(parsed.audio?.cues ?? {})
+        }
+      },
       template: {
         ...fallbackSettings.template,
         ...(parsed.template ?? {}),
@@ -208,6 +253,14 @@ export function installMockApi() {
             xai: { ...current.ai.providers.xai, ...(partial.ai?.providers?.xai ?? {}) }
           }
         },
+        audio: {
+          ...current.audio,
+          ...(partial.audio ?? {}),
+          cues: {
+            ...current.audio.cues,
+            ...(partial.audio?.cues ?? {})
+          }
+        },
         workflow: {
           ...current.workflow,
           ...(partial.workflow ?? {}),
@@ -234,6 +287,10 @@ export function installMockApi() {
       }
     },
     chooseImage: async () => '',
+    uploadAudioCue: async () => readSettings(),
+    removeAudioCue: async () => readSettings(),
+    generateHostVoiceCue: async () => ({ ok: false, settings: readSettings(), error: 'Host voice generation is only available in Electron.' }),
+    generateAllHostVoiceCues: async () => ({ ok: false, settings: readSettings(), error: 'Host voice generation is only available in Electron.' }),
     uploadTemplate: async () => null,
     deleteTemplate: async () => true,
     updateTemplate: async (design) => design,
@@ -348,9 +405,24 @@ export function installMockApi() {
       if (request.kind === 'final') gallery.finals.unshift(saved);
       return { name, path: name };
     },
+    updatePhotoGalleryUrl: async (filePath: string, galleryUrl: string) => {
+      const photo = gallery.finals.find((item) => item.path === filePath);
+      if (photo) photo.galleryUrl = galleryUrl;
+      return true;
+    },
     getImageDataUrl: async () => '',
+    getAudioDataUrl: async () => '',
     listGallery: async () => gallery,
+    uploadFinalGallery: async (request) => {
+      const photo = gallery.finals.find((item) => item.path === request.finalPath);
+      const galleryUrl = `http://localhost:3000${request.galleryUrl}`;
+      if (photo) photo.galleryUrl = galleryUrl;
+      return { ok: true, galleryUrl };
+    },
+    getGalleryUploadStatus: async () => ({ state: 'idle', message: 'No active upload.', active: 0 } as const),
+    onGalleryUploadStatus: () => () => undefined,
     openFile: async () => true,
+    openUrl: async () => true,
     exportFile: async (filePath: string) => filePath,
     deleteFile: async () => true,
     printImage: async () => ({ ok: true }),

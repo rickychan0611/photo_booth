@@ -38,6 +38,7 @@ pnpm-debug.log*
 .env.development.local
 .env.test.local
 .env.production.local
+.venv/
 
 # OS files
 .DS_Store
@@ -72,3 +73,6 @@ temp/
 # Local event output (if event folder is inside the project)
 originals/
 finals/
+
+# Local TTS resources
+resources/tts/kokoro/

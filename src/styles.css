@@ -49,6 +49,11 @@ button:disabled {
   padding: 56px;
 }
 
+.guest-shell.compact-top {
+  align-items: start;
+  padding-top: 42px;
+}
+
 .welcome-screen,
 .photo-screen,
 .ready-screen {
@@ -122,6 +127,160 @@ button:disabled {
   flex-wrap: wrap;
 }
 
+.queue-screen {
+  width: min(400px, 100%);
+  min-height: min(50vh, 640px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  gap: 38px;
+  margin-top: 0;
+}
+
+.queue-status-panel,
+.queue-side-panel,
+.queue-keypad-panel {
+  background: transparent;
+}
+
+.queue-status-panel {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 6px;
+  padding: 0;
+  text-align: center;
+}
+
+.queue-eyebrow,
+.queue-list-title {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 16px;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.queue-current-number {
+  font-size: clamp(64px, 10vh, 96px);
+  font-weight: 200;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+}
+
+.queue-refresh-button {
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  background: transparent;
+  color: #fff;
+  padding: 10px 18px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.queue-side-panel {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  padding: 22px;
+}
+
+.queue-list-note {
+  margin: 6px 0 0;
+  color: rgba(255, 255, 255, 0.56);
+  font-size: 12px;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.queue-number-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 12px;
+}
+
+.queue-number-list span,
+.queue-number-list small {
+  border: 1px solid rgba(255, 255, 255, 0.44);
+  padding: 10px 14px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.queue-number-list.missed span {
+  border-color: rgba(255, 228, 92, 0.72);
+  color: #ffe45c;
+}
+
+.queue-keypad-panel {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 0;
+  text-align: center;
+}
+
+.queue-keypad-panel .instruction {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+}
+
+.queue-code-display {
+  min-width: 160px;
+  padding: 0 0 4px;
+  font-size: 32px;
+  font-weight: 200;
+  letter-spacing: 0.26em;
+}
+
+.queue-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 50px);
+  gap: 6px;
+}
+
+.queue-keypad button {
+  min-height: 40px;
+  border: 0;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.queue-keypad button:hover:not(:disabled),
+.queue-keypad button:focus-visible,
+.queue-refresh-button:hover:not(:disabled),
+.queue-refresh-button:focus-visible {
+  background: #fff;
+  color: #000;
+  outline: none;
+}
+
+.queue-keypad-panel .booth-button {
+  width: 162px;
+  min-width: 0;
+  min-height: 40px;
+  padding: 0;
+  border: 0;
+  background: #fff;
+  color: #000;
+  font-size: 12px;
+}
+
+.queue-message {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .camera-frame,
 .preview-frame,
 .final-frame {
@@ -185,7 +344,6 @@ button:disabled {
 .countdown {
   font-size: clamp(92px, 16vw, 220px);
   line-height: 1;
-  text-shadow: 0 4px 28px rgba(0, 0, 0, 0.4);
 }
 
 .flash {
@@ -317,28 +475,22 @@ button:disabled {
   pointer-events: none;
 }
 
+.capture-message,
+.countdown {
+  text-shadow:
+    0 0 12px rgba(0, 0, 0, 0.95),
+    0 0 28px rgba(0, 0, 0, 0.85),
+    0 0 48px rgba(0, 0, 0, 0.7),
+    0 2px 6px rgba(0, 0, 0, 0.9);
+}
+
 .capture-message {
   font-size: clamp(42px, 7vw, 96px);
   padding: 24px;
-  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+  animation: capture-message-fade var(--message-fade-ms, 2s) ease-in-out forwards;
 }
 
-.capture-message::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse 70% 42% at center,
-    rgba(0, 0, 0, 0.68) 0%,
-    rgba(0, 0, 0, 0.34) 52%,
-    transparent 100%
-  );
-  animation: capture-message-bg var(--message-fade-ms, 2s) ease-in-out forwards;
-}
-
-@keyframes capture-message-bg {
+@keyframes capture-message-fade {
   0% {
     opacity: 0;
   }
@@ -719,6 +871,43 @@ button:disabled {
   letter-spacing: 0.18em;
 }
 
+.gallery-qr-card {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: end;
+  justify-self: start;
+  width: min(150px, 18vw);
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  margin: 0 0 clamp(18px, 4vh, 46px) min(105px, 8vw);
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.gallery-qr-card img {
+  width: 100%;
+  aspect-ratio: 1;
+  display: block;
+  background: #fff;
+}
+
+.gallery-url-text {
+  grid-column: 1 / -1;
+  justify-self: center;
+  max-width: min(640px, 90vw);
+  margin: 0;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
 .thanks-preview {
   grid-column: 1;
   grid-row: 1;
@@ -843,10 +1032,61 @@ button:disabled {
 }
 
 .admin-title {
-  margin: 0 0 34px;
+  margin: 0 0 14px;
   font-size: 18px;
   letter-spacing: 0.22em;
   font-weight: 300;
+}
+
+.upload-status-pill {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 3px 8px;
+  align-items: center;
+  margin-bottom: 26px;
+  padding: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.upload-status-pill > span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.upload-status-pill.uploading > span {
+  background: #ffe45c;
+}
+
+.upload-status-pill.done > span {
+  background: #8dffb0;
+}
+
+.upload-status-pill.failed > span {
+  background: #ff6b6b;
+}
+
+.upload-status-pill strong,
+.upload-status-pill small {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.upload-status-pill strong {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.upload-status-pill small {
+  grid-column: 1 / -1;
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 9px;
 }
 
 .admin-sidebar button,
@@ -1112,6 +1352,99 @@ button:disabled {
   display: grid;
   grid-template-columns: repeat(3, minmax(120px, 1fr));
   gap: 14px;
+}
+
+.audio-settings-panel {
+  gap: 12px;
+}
+
+.audio-global-grid {
+  grid-template-columns: repeat(4, minmax(108px, 1fr));
+  gap: 10px;
+}
+
+.compact-check {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.audio-cue-group {
+  display: grid;
+  gap: 10px;
+}
+
+.audio-cue-group h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.audio-cue-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(190px, 1fr));
+  gap: 10px;
+}
+
+.audio-cue-card {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.audio-cue-card label {
+  gap: 4px;
+  font-size: 10px;
+}
+
+.audio-cue-head,
+.audio-file-row,
+.audio-cue-controls {
+  display: grid;
+  gap: 6px;
+  align-items: end;
+}
+
+.audio-cue-head {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.audio-cue-controls {
+  grid-template-columns: minmax(72px, 1fr) 68px auto;
+}
+
+.audio-file-row {
+  grid-template-columns: repeat(3, auto) minmax(0, 1fr);
+  align-items: center;
+}
+
+.audio-file-row span {
+  min-width: 0;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.audio-cue-card input,
+.audio-cue-card select,
+.audio-global-grid input,
+.audio-global-grid select {
+  min-height: 32px;
+  padding: 0 8px;
+  font-size: 12px;
+}
+
+.audio-cue-card button {
+  min-height: 30px;
+  padding: 5px 9px;
+  font-size: 10px;
 }
 
 .camera-control-list {
@@ -1773,6 +2106,12 @@ button:disabled {
   outline: none;
 }
 
+.gallery-card-actions button:disabled {
+  border-color: rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.28);
+  opacity: 1;
+}
+
 .gallery-card-actions .danger:hover,
 .gallery-card-actions .danger:focus-visible {
   background: #fff;
@@ -1887,6 +2226,15 @@ button:disabled {
     min-width: min(340px, 74vw);
     min-height: 74px;
     font-size: clamp(18px, 2.7vw, 24px);
+  }
+
+  .queue-keypad-panel .booth-button.primary {
+    width: 162px;
+    min-width: 0;
+    min-height: 40px;
+    padding: 0;
+    font-size: 12px;
+    line-height: 1.1;
   }
 
   .fullscreen-button {

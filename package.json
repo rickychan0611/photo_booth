@@ -23,6 +23,15 @@
       "dist-electron/**/*",
       "package.json"
     ],
+    "extraResources": [
+      {
+        "from": "resources/tts",
+        "to": "tts",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
     "asar": true,
     "win": {
       "signAndEditExecutable": false,
@@ -42,6 +51,7 @@
   },
   "devDependencies": {
     "@types/node": "^25.8.0",
+    "@types/qrcode": "^1.5.6",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
@@ -57,6 +67,8 @@
     "wait-on": "^9.0.3"
   },
   "dependencies": {
-    "@mediapipe/tasks-vision": "^0.10.35"
+    "@mediapipe/tasks-vision": "^0.10.35",
+    "@supabase/supabase-js": "^2.107.0",
+    "qrcode": "^1.5.4"
   }
 }
