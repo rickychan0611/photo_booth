@@ -86,6 +86,7 @@ export type TemplateDesign = {
   aiPresetId: string;
   faceTrackingEnabled: boolean;
   faceAssetPackId: string;
+  videoRecordingEnabled: boolean;
   createdAt: string;
   updatedAt: string;
 };
@@ -364,6 +365,22 @@ export type BackgroundGalleryUploadResult = {
   ok: boolean;
   galleryUrl?: string;
   error?: string;
+};
+
+export type SaveVideoRequest = {
+  data: ArrayBuffer | Uint8Array;
+  baseName?: string;
+  ticketId?: string;
+};
+
+export type SaveVideoResult = {
+  path: string;
+  name: string;
+};
+
+export type BackgroundVideoUploadRequest = {
+  ticketId: string;
+  videoPath: string;
 };
 
 export type GalleryUploadStatus = {

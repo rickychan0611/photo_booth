@@ -3,7 +3,7 @@ import QRCode from 'qrcode';
 import { Camera, Download, Expand, ExternalLink, FolderOpen, Globe, Image, Minimize2, Printer, RefreshCw, Settings, SlidersHorizontal, Sparkles, Trash2, X } from 'lucide-react';
 import type { AiPreset, AiProvider, AiQueueItem, AppSettings, AudioCue, BoothSession, CameraControlSettings, CameraRotation, Capture, FaceAsset, FaceAssetPack, FaceAssetPlacement, Gallery, GalleryUploadStatus, QueueSnapshot, SavedPhoto, TemplateDesign, TemplateSlot, TemplateStyleId } from './types';
 import { createGuideTemplateImage, createTemplatedPrintImage, getPrimarySlot, getTemplateStyle, PRINT_HEIGHT, PRINT_WIDTH, TEMPLATE_HEIGHT, TEMPLATE_STYLES, TEMPLATE_WIDTH } from './template';
-import { FaceAssetStabilizer, FaceTracker, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceDebugInfo, resetFaceLandmarker, selectedFaceAssetPack } from './faceAssets';
+import { FaceAssetStabilizer, FaceTracker, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceDebugInfo, selectedFaceAssetPack } from './faceAssets';
 import { playAudioCue, stopAllAudio, stopAudioChannel, stopAudioCue } from './audio';
 import { createBoothGallerySession, createQueueRealtimeClient, fetchQueueSnapshot, isRealtimeConfigured, isWebQueueConfigured, publicWebUrl, validateBoothCode } from './webBackend';
 
@@ -76,6 +76,13 @@ function GuestApp() {
   const captureGuideRef = useRef<HTMLDivElement>(null);
   const faceOverlayStabilizerRef = useRef(new FaceAssetStabilizer());
   const streamRef = useRef<MediaStream | null>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const recordedChunksRef = useRef<Blob[]>([]);
+  const recordStreamRef = useRef<MediaStream | null>(null);
+  const pendingVideoSaveRef = useRef<Promise<string | null> | null>(null);
+  const pendingVideoPathRef = useRef<string | null>(null);
+  const pendingVideoTicketIdRef = useRef<string | null>(null);
+  const isUploadingSessionVideoRef = useRef(false);
   const lastShortcutRef = useRef('');
   const sessionRunRef = useRef(0);
   const queueModeEnabled = Boolean(settings?.staffControlQueueMode);
@@ -253,6 +260,16 @@ function GuestApp() {
   useEffect(() => {
     const releaseCamera = () => {
       sessionRunRef.current += 1;
+      if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+        try {
+          mediaRecorderRef.current.stop();
+        } catch {
+          // ignore
+        }
+      }
+      mediaRecorderRef.current = null;
+      recordStreamRef.current?.getTracks().forEach((track) => track.stop());
+      recordStreamRef.current = null;
       stopCamera();
     };
     window.addEventListener('beforeunload', releaseCamera);
@@ -295,6 +312,129 @@ function GuestApp() {
     if (!videoRef.current) throw new Error('Camera view not ready.');
     videoRef.current.srcObject = stream;
     await videoRef.current.play();
+  };
+
+  const pickRecorderMimeType = () => {
+    const candidates = [
+      'video/webm;codecs=vp8,opus',
+      'video/webm;codecs=vp9,opus',
+      'video/webm;codecs=h264,opus',
+      'video/webm'
+    ];
+    if (typeof MediaRecorder === 'undefined') return '';
+    return candidates.find((type) => MediaRecorder.isTypeSupported(type)) ?? '';
+  };
+
+  const stopRecordingTracks = () => {
+    recordStreamRef.current?.getTracks().forEach((track) => track.stop());
+    recordStreamRef.current = null;
+  };
+
+  // Captures the full on-screen composite (camera + face-asset overlays +
+  // countdown/messages) of the booth window plus microphone audio, mirroring the
+  // way stills are screenshotted, so the saved video matches what the guest sees.
+  const startSessionRecording = async () => {
+    if (mediaRecorderRef.current || typeof MediaRecorder === 'undefined') return;
+    try {
+      const displayStream = await navigator.mediaDevices.getDisplayMedia({
+        video: {
+          frameRate: { ideal: 10, max: 10 },
+          width: { ideal: 1280, max: 1920 },
+          height: { ideal: 720, max: 1080 }
+        },
+        audio: false
+      });
+      const tracks = [...displayStream.getVideoTracks()];
+      try {
+        const micStream = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true,
+            sampleRate: 48000
+          },
+          video: false
+        });
+        tracks.push(...micStream.getAudioTracks());
+      } catch (audioError) {
+        console.warn('Microphone unavailable for session recording.', audioError);
+      }
+      const merged = new MediaStream(tracks);
+      recordStreamRef.current = merged;
+      recordedChunksRef.current = [];
+      const mimeType = pickRecorderMimeType();
+      const recorder = new MediaRecorder(merged, {
+        ...(mimeType ? { mimeType } : {}),
+        videoBitsPerSecond: 1_800_000,
+        audioBitsPerSecond: 128_000
+      });
+      recorder.ondataavailable = (event) => {
+        if (event.data && event.data.size > 0) recordedChunksRef.current.push(event.data);
+      };
+      mediaRecorderRef.current = recorder;
+      recorder.start(2000);
+      console.log('[video] session recording started', { mimeType: recorder.mimeType, tracks: merged.getTracks().map((t) => t.kind) });
+    } catch (error) {
+      console.warn('[video] could not start session recording.', error);
+      stopRecordingTracks();
+      mediaRecorderRef.current = null;
+    }
+  };
+
+  // Stops recording immediately and saves/transcodes in the background, so the
+  // guest flow can move to selection/final output without waiting on ffmpeg.
+  const stopSessionRecording = () => {
+    const recorder = mediaRecorderRef.current;
+    if (!recorder) return;
+    mediaRecorderRef.current = null;
+    pendingVideoSaveRef.current = new Promise<void>((resolve) => {
+        recorder.onstop = () => resolve();
+        if (recorder.state !== 'inactive') recorder.stop();
+        else resolve();
+      })
+      .then(async () => {
+      stopRecordingTracks();
+      const chunks = recordedChunksRef.current;
+      recordedChunksRef.current = [];
+        if (chunks.length === 0) return null;
+      const blob = new Blob(chunks, { type: recorder.mimeType || 'video/webm' });
+      const buffer = await blob.arrayBuffer();
+      console.log('[video] stopping recording, saving', { bytes: buffer.byteLength });
+      const saved = await window.photoBooth.saveSessionVideo({ data: buffer });
+      pendingVideoPathRef.current = saved.path;
+      console.log('[video] saved locally at', saved.path);
+        void flushSessionVideoUpload();
+        return saved.path;
+      })
+      .catch((error) => {
+        console.warn('[video] could not finalize session recording.', error);
+        stopRecordingTracks();
+        return null;
+      });
+  };
+
+  const flushSessionVideoUpload = async (ticketId?: string) => {
+    if (ticketId) pendingVideoTicketIdRef.current = ticketId;
+    const uploadTicketId = pendingVideoTicketIdRef.current;
+    if (!uploadTicketId || isUploadingSessionVideoRef.current) return;
+    isUploadingSessionVideoRef.current = true;
+    const videoPath = pendingVideoPathRef.current ?? (pendingVideoSaveRef.current ? await pendingVideoSaveRef.current : null);
+    if (!videoPath) {
+      isUploadingSessionVideoRef.current = false;
+      return;
+    }
+    try {
+      console.log('[video] starting background upload', { ticketId: uploadTicketId, videoPath });
+      await window.photoBooth.uploadSessionVideo({ ticketId: uploadTicketId, videoPath });
+      pendingVideoPathRef.current = null;
+      pendingVideoSaveRef.current = null;
+      pendingVideoTicketIdRef.current = null;
+      console.log('[video] background upload queued');
+    } catch (error) {
+      console.warn('Could not upload session video.', error);
+    } finally {
+      isUploadingSessionVideoRef.current = false;
+    }
   };
 
   const captureFrame = async (slot: TemplateSlot, useFullLiveView = false) => {
@@ -358,37 +498,34 @@ function GuestApp() {
     let busy = false;
     let lastDetectionAt = 0;
     let missedFrames = 0;
-    let didResetLandmarker = false;
     const tracker = new FaceTracker();
 
-    const drawOverlay = async (now: number) => {
+    const drawOverlay = (now: number) => {
+      if (!canceled) animationFrame = window.requestAnimationFrame(drawOverlay);
       const video = videoRef.current;
       const overlay = faceOverlayCanvasRef.current;
       if (!canceled && video && overlay && video.videoWidth > 0 && video.videoHeight > 0 && !busy && now - lastDetectionAt > 66) {
         busy = true;
         lastDetectionAt = now;
-        try {
+        void (async () => {
+          try {
           const displayWidth = Math.max(1, Math.round(overlay.clientWidth));
           const displayHeight = Math.max(1, Math.round(overlay.clientHeight));
           const displayResult = await detectDisplayedFaces(video, displayWidth, displayHeight, settings, now);
+          clearFaceAssetCanvas(overlay, displayWidth, displayHeight);
+          const ctx = overlay.getContext('2d');
           if (displayResult.faceLandmarks.length === 0) {
             missedFrames += 1;
-            if (missedFrames > 2) clearFaceAssetCanvas(overlay, overlay.width, overlay.height);
-            if (missedFrames > 8) {
+            if (ctx) {
+              await drawFaceAssets(ctx, displayResult, activeFacePack, overlay.width, overlay.height, faceOverlayStabilizerRef.current, tracker);
+            }
+            if (missedFrames > 60) {
               faceOverlayStabilizerRef.current.reset();
               tracker.reset();
-            }
-            if (missedFrames > 18 && !didResetLandmarker) {
-              didResetLandmarker = true;
-              await resetFaceLandmarker();
-              lastDetectionAt = 0;
             }
             return;
           }
           missedFrames = 0;
-          didResetLandmarker = false;
-          clearFaceAssetCanvas(overlay, displayWidth, displayHeight);
-          const ctx = overlay.getContext('2d');
           if (ctx) {
             await drawFaceAssets(ctx, displayResult, activeFacePack, overlay.width, overlay.height, faceOverlayStabilizerRef.current, tracker);
             if (showFaceDebug) drawFaceDebugInfo(ctx, displayResult, overlay.width, overlay.height);
@@ -398,8 +535,8 @@ function GuestApp() {
         } finally {
           busy = false;
         }
+        })();
       }
-      if (!canceled) animationFrame = window.requestAnimationFrame(drawOverlay);
     };
 
     animationFrame = window.requestAnimationFrame(drawOverlay);
@@ -488,6 +625,9 @@ function GuestApp() {
       setStep('capture');
       await delay(100);
       await startCamera();
+      if (design?.videoRecordingEnabled) {
+        await startSessionRecording();
+      }
 
       const shotPlan = Array.from({ length: style.shotCount }, (_item, index) => settings.workflow.shots[index % settings.workflow.shots.length]);
       const nextCaptures: Capture[] = [];
@@ -515,6 +655,7 @@ function GuestApp() {
         await delay(350);
       }
 
+      stopSessionRecording();
       stopCamera();
       const defaultIndexes = Array.from({ length: style.selectCount }, (_item, index) => index).filter((index) => index < nextCaptures.length);
       setSelectedCaptureIndexes(defaultIndexes);
@@ -526,6 +667,7 @@ function GuestApp() {
         setStep('select');
       }
     } catch {
+      stopSessionRecording();
       stopCamera();
       setError('CAMERA NOT READY');
       setStep('welcome');
@@ -596,6 +738,7 @@ function GuestApp() {
         });
         setPrintedPreview(dataUrl);
         setIsAiGenerating(false);
+        if (uploadSession) void flushSessionVideoUpload(uploadSession.ticket.id);
         return;
       }
       const saved = await window.photoBooth.saveImage({
@@ -648,6 +791,7 @@ function GuestApp() {
         galleryUrl: session.galleryUrl,
         finalPath
       });
+      void flushSessionVideoUpload(session.ticket.id);
       await refreshQueueSnapshot(currentSettings);
     } catch (error) {
       setUploadMessage(error instanceof Error ? `Upload failed: ${error.message}` : 'Upload failed.');
@@ -2154,6 +2298,14 @@ function AdminApp() {
                           </select>
                         </label>
                       )}
+                      <label className="check-row">
+                        <input
+                          type="checkbox"
+                          checked={design.videoRecordingEnabled}
+                          onChange={(event) => void saveTemplateDesign({ ...design, videoRecordingEnabled: event.target.checked })}
+                        />
+                        Record session video
+                      </label>
                       <div className="template-path-note">
                         <span>Preview: {shortPath(templatePreviewPath(design))}</span>
                         <span>Print frame: {shortPath(templateFramePath(design))}</span>
@@ -2627,37 +2779,34 @@ function FaceAssetPreviewApp() {
     let busy = false;
     let lastDetectionAt = 0;
     let missedFrames = 0;
-    let didResetLandmarker = false;
     const tracker = new FaceTracker();
 
-    const drawOverlay = async (now: number) => {
+    const drawOverlay = (now: number) => {
+      if (!canceled) animationFrame = window.requestAnimationFrame(drawOverlay);
       const video = videoRef.current;
       const overlay = overlayRef.current;
       if (!canceled && video && overlay && video.videoWidth > 0 && video.videoHeight > 0 && !busy && now - lastDetectionAt > 66) {
         busy = true;
         lastDetectionAt = now;
-        try {
+        void (async () => {
+          try {
           const displayWidth = Math.max(1, Math.round(overlay.clientWidth));
           const displayHeight = Math.max(1, Math.round(overlay.clientHeight));
           const displayResult = await detectDisplayedFaces(video, displayWidth, displayHeight, settings, now);
+          clearFaceAssetCanvas(overlay, displayWidth, displayHeight);
+          const ctx = overlay.getContext('2d');
           if (displayResult.faceLandmarks.length === 0) {
             missedFrames += 1;
-            if (missedFrames > 2) clearFaceAssetCanvas(overlay, overlay.width, overlay.height);
-            if (missedFrames > 8) {
+            if (ctx) {
+              await drawFaceAssets(ctx, displayResult, pack, overlay.width, overlay.height, stabilizerRef.current, tracker);
+            }
+            if (missedFrames > 60) {
               stabilizerRef.current.reset();
               tracker.reset();
-            }
-            if (missedFrames > 18 && !didResetLandmarker) {
-              didResetLandmarker = true;
-              await resetFaceLandmarker();
-              lastDetectionAt = 0;
             }
             return;
           }
           missedFrames = 0;
-          didResetLandmarker = false;
-          clearFaceAssetCanvas(overlay, displayWidth, displayHeight);
-          const ctx = overlay.getContext('2d');
           if (ctx) {
             await drawFaceAssets(ctx, displayResult, pack, overlay.width, overlay.height, stabilizerRef.current, tracker);
             if (showDebug) drawFaceDebugInfo(ctx, displayResult, overlay.width, overlay.height);
@@ -2667,8 +2816,8 @@ function FaceAssetPreviewApp() {
         } finally {
           busy = false;
         }
+        })();
       }
-      if (!canceled) animationFrame = window.requestAnimationFrame(drawOverlay);
     };
 
     animationFrame = window.requestAnimationFrame(drawOverlay);

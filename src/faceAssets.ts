@@ -141,49 +141,87 @@ const groupAssetsByPlacement = (assets: FaceAsset[]) => {
   return groups;
 };
 
-type FaceTrack = { id: number; x: number; y: number; lastSeen: number };
+type FaceTrack = {
+  id: number;
+  x: number;
+  y: number;
+  landmarks: NormalizedLandmark[];
+  lastSeen: number;
+  seenStreak: number;
+  visible: boolean;
+};
+
+type VisibleFace = {
+  id: number;
+  landmarks: NormalizedLandmark[];
+  detected: boolean;
+};
 
 // Assigns each detected face a persistent id by matching it to the nearest face
-// from the previous frame. This keeps per-person asset assignment stable even
-// when the detector briefly loses a face or people shift left/right.
+// from the previous frame. It also keeps the last landmarks alive for a short
+// hold window when detection drops, so assets do not freeze/disappear from a
+// single missed MediaPipe frame and can reconnect cleanly when the face returns.
 export class FaceTracker {
   private tracks: FaceTrack[] = [];
   private nextId = 0;
   private frame = 0;
 
   constructor(
-    private readonly threshold = 0.16,
-    private readonly maxAgeFrames = 20
+    private readonly threshold = 0.24,
+    private readonly appearFrames = 1,
+    private readonly holdFrames = 18
   ) {}
 
-  track(centroids: Array<{ x: number; y: number }>): number[] {
+  update(detectedFaces: NormalizedLandmark[][]): VisibleFace[] {
     this.frame += 1;
-    this.tracks = this.tracks.filter((track) => this.frame - track.lastSeen <= this.maxAgeFrames);
+    this.tracks = this.tracks.filter((track) => this.frame - track.lastSeen <= this.holdFrames);
     const claimed = new Set<number>();
-    return centroids.map((centroid) => {
+    const detected = detectedFaces.map((landmarks) => ({ landmarks, centroid: faceCentroid(landmarks) }));
+
+    for (const face of detected) {
       let matched: FaceTrack | null = null;
       let bestDist = this.threshold;
       for (const track of this.tracks) {
         if (claimed.has(track.id)) continue;
-        const dist = Math.hypot(track.x - centroid.x, track.y - centroid.y);
+        const dist = Math.hypot(track.x - face.centroid.x, track.y - face.centroid.y);
         if (dist < bestDist) {
           bestDist = dist;
           matched = track;
         }
       }
       if (matched) {
-        matched.x = centroid.x;
-        matched.y = centroid.y;
+        matched.x = face.centroid.x;
+        matched.y = face.centroid.y;
+        matched.landmarks = face.landmarks;
         matched.lastSeen = this.frame;
+        matched.seenStreak += 1;
+        matched.visible = matched.visible || matched.seenStreak >= this.appearFrames;
         claimed.add(matched.id);
-        return matched.id;
+        continue;
       }
+
       const id = this.nextId;
       this.nextId += 1;
-      this.tracks.push({ id, x: centroid.x, y: centroid.y, lastSeen: this.frame });
+      this.tracks.push({
+        id,
+        x: face.centroid.x,
+        y: face.centroid.y,
+        landmarks: face.landmarks,
+        lastSeen: this.frame,
+        seenStreak: 1,
+        visible: this.appearFrames <= 1
+      });
       claimed.add(id);
-      return id;
-    });
+    }
+
+    return this.tracks
+      .filter((track) => track.visible)
+      .sort((a, b) => a.x - b.x)
+      .map((track) => ({
+        id: track.id,
+        landmarks: track.landmarks,
+        detected: track.lastSeen === this.frame
+      }));
   }
 
   reset() {
@@ -208,30 +246,29 @@ export const drawFaceAssets = async (
     .sort((a, b) => a.order - b.order);
   if (assets.length === 0) return;
 
-  const faces = result.faceLandmarks
+  const detectedFaces = result.faceLandmarks
     .slice(0, 6)
     .sort((a, b) => faceBounds(a, width, height).x - faceBounds(b, width, height).x);
+  const faces = tracker
+    ? tracker.update(detectedFaces)
+    : detectedFaces.map((landmarks, index) => ({ id: index, landmarks, detected: true }));
 
   if (pack.assignPerFace) {
     const groups = groupAssetsByPlacement(assets);
-    // Stable per-person id: tracker matches faces across frames; fall back to
-    // positional index if no tracker is supplied.
-    const faceIds = tracker
-      ? tracker.track(faces.map((landmarks) => faceCentroid(landmarks)))
-      : faces.map((_landmarks, index) => index);
-    for (const [faceIndex, landmarks] of faces.entries()) {
-      const faceId = faceIds[faceIndex];
+    // Stable per-person id: tracker matches faces across frames and holds brief
+    // detection gaps; fall back to positional index if no tracker is supplied.
+    for (const face of faces) {
       for (const [placement, groupAssets] of groups) {
-        const asset = pickAssetForFace(pack.id, placement, faceId, groupAssets);
-        await drawAsset(ctx, asset, landmarks, width, height, stabilizer, `${faceId}:${asset.id}`);
+        const asset = pickAssetForFace(pack.id, placement, face.id, groupAssets);
+        await drawAsset(ctx, asset, face.landmarks, width, height, stabilizer, `${face.id}:${asset.id}`);
       }
     }
     return;
   }
 
-  for (const [faceIndex, landmarks] of faces.entries()) {
+  for (const face of faces) {
     for (const asset of assets) {
-      await drawAsset(ctx, asset, landmarks, width, height, stabilizer, `${faceIndex}:${asset.id}`);
+      await drawAsset(ctx, asset, face.landmarks, width, height, stabilizer, `${face.id}:${asset.id}`);
     }
   }
 };

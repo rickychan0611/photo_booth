@@ -206,7 +206,8 @@ export function installMockApi() {
         designs: (parsed.template?.designs ?? fallbackSettings.template.designs).map((design) => ({
           ...design,
           faceTrackingEnabled: Boolean(design.faceTrackingEnabled),
-          faceAssetPackId: design.faceAssetPackId ?? ''
+          faceAssetPackId: design.faceAssetPackId ?? '',
+          videoRecordingEnabled: Boolean(design.videoRecordingEnabled)
         }))
       },
       workflow: {
@@ -421,6 +422,8 @@ export function installMockApi() {
     },
     getGalleryUploadStatus: async () => ({ state: 'idle', message: 'No active upload.', active: 0 } as const),
     onGalleryUploadStatus: () => () => undefined,
+    saveSessionVideo: async () => ({ path: '', name: '' }),
+    uploadSessionVideo: async () => ({ ok: true }),
     openFile: async () => true,
     openUrl: async () => true,
     exportFile: async (filePath: string) => filePath,

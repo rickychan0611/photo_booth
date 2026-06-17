@@ -1,10 +1,11 @@
-import { app, BrowserWindow, dialog, ipcMain, nativeImage, shell } from 'electron';
+import { app, BrowserWindow, desktopCapturer, dialog, ipcMain, nativeImage, session, shell } from 'electron';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
-import { exec, execFile } from 'node:child_process';
+import { exec, execFile, spawn } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import crypto from 'node:crypto';
+import ffmpegStatic from 'ffmpeg-static';
 import type {
   AiGenerateRequest,
   AiGenerateResult,
@@ -14,6 +15,7 @@ import type {
   AppSettings,
   BackgroundGalleryUploadRequest,
   BackgroundGalleryUploadResult,
+  BackgroundVideoUploadRequest,
   FaceAsset,
   FaceAssetPack,
   FaceAssetPlacement,
@@ -22,6 +24,8 @@ import type {
   HostVoiceGenerateResult,
   SaveImageRequest,
   SaveImageResult,
+  SaveVideoRequest,
+  SaveVideoResult,
   SavedPhoto,
   TemplateAssetRole,
   TemplateDesign,
@@ -194,6 +198,7 @@ async function ensureEventFolders(eventFolder: string) {
   await fs.mkdir(path.join(eventFolder, 'finals'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'originals', 'thumbs'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'finals', 'thumbs'), { recursive: true });
+  await fs.mkdir(path.join(eventFolder, 'videos'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'templates'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'face-assets'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'audio'), { recursive: true });
@@ -611,7 +616,8 @@ const normalizeTemplateDesign = (design: TemplateDesign, migrateLegacy = false):
     previewPath: migrateLegacy ? migrateLegacyTemplatePath(previewPath, originalStyleId) : previewPath,
     framePath: migrateLegacy ? migrateLegacyTemplatePath(framePath, originalStyleId) : framePath,
     faceTrackingEnabled: Boolean(design.faceTrackingEnabled),
-    faceAssetPackId: design.faceAssetPackId ?? ''
+    faceAssetPackId: design.faceAssetPackId ?? '',
+    videoRecordingEnabled: Boolean(design.videoRecordingEnabled)
   };
 };
 
@@ -824,6 +830,7 @@ async function uploadTemplate(request: TemplateUploadRequest): Promise<TemplateD
     aiPresetId: '',
     faceTrackingEnabled: false,
     faceAssetPackId: '',
+    videoRecordingEnabled: false,
     createdAt: now,
     updatedAt: now
   };
@@ -993,9 +1000,9 @@ function compressedJpegFromFile(filePath: string, maxLongEdge: number, quality: 
 
 async function uploadGalleryBuffer(
   settings: AppSettings,
-  request: BackgroundGalleryUploadRequest,
+  ticketId: string,
   asset: {
-    kind: 'layout' | 'thumbnail';
+    kind: 'layout' | 'thumbnail' | 'video';
     filename: string;
     contentType: string;
     buffer: Buffer;
@@ -1005,7 +1012,7 @@ async function uploadGalleryBuffer(
 ) {
   const formData = new FormData();
   formData.set('eventId', settings.eventId);
-  formData.set('ticketId', request.ticketId);
+  formData.set('ticketId', ticketId);
   formData.set('kind', asset.kind);
   formData.set('filename', asset.filename);
   formData.set('width', String(asset.width));
@@ -1048,13 +1055,13 @@ async function uploadFinalPhotoInBackground(
     const layout = compressedJpegFromFile(request.finalPath, 2200, 88);
     const thumbnail = compressedJpegFromFile(request.finalPath, 720, 78);
 
-    await uploadGalleryBuffer(settings, request, {
+    await uploadGalleryBuffer(settings, request.ticketId, {
       kind: 'layout',
       filename: `${baseName}.jpg`,
       contentType: 'image/jpeg',
       ...layout,
     });
-    await uploadGalleryBuffer(settings, request, {
+    await uploadGalleryBuffer(settings, request.ticketId, {
       kind: 'thumbnail',
       filename: `${baseName}-thumbnail.jpg`,
       contentType: 'image/jpeg',
@@ -1084,6 +1091,132 @@ async function uploadFinalPhotoInBackground(
       ok: false,
       error: message,
     };
+  }
+}
+
+const VIDEO_MAX_LONG_EDGE = 1280;
+const VIDEO_CRF = 26;
+
+const resolveFfmpegPath = () => {
+  if (!ffmpegStatic) return '';
+  // When packaged, ffmpeg-static lives inside app.asar but the binary must be
+  // run from the unpacked copy (configured via electron-builder asarUnpack).
+  return ffmpegStatic.replace('app.asar', 'app.asar.unpacked');
+};
+
+function transcodeToMp4(inputPath: string, outputPath: string) {
+  return new Promise<void>((resolve, reject) => {
+    const ffmpegPath = resolveFfmpegPath();
+    if (!ffmpegPath) {
+      reject(new Error('ffmpeg binary not available.'));
+      return;
+    }
+    // Downscale the longer edge to VIDEO_MAX_LONG_EDGE (keeping aspect, even
+    // dimensions) and encode H.264/AAC with faststart for broad playback.
+    const scaleFilter =
+      `scale='if(gt(a,1),min(${VIDEO_MAX_LONG_EDGE},iw),-2)':'if(gt(a,1),-2,min(${VIDEO_MAX_LONG_EDGE},ih))'`;
+    const args = [
+      '-y',
+      '-i', inputPath,
+      '-vf', scaleFilter,
+      '-c:v', 'libx264',
+      '-preset', 'veryfast',
+      '-crf', String(VIDEO_CRF),
+      '-pix_fmt', 'yuv420p',
+      '-c:a', 'aac',
+      '-b:a', '128k',
+      '-movflags', '+faststart',
+      outputPath
+    ];
+    const child = spawn(ffmpegPath, args, { windowsHide: true });
+    let stderr = '';
+    child.stderr?.on('data', (chunk) => {
+      stderr += String(chunk);
+    });
+    child.on('error', reject);
+    child.on('close', (code) => {
+      if (code === 0) resolve();
+      else reject(new Error(`ffmpeg exited with code ${code}: ${stderr.slice(-500)}`));
+    });
+  });
+}
+
+async function nextVideoName(eventFolder: string) {
+  try {
+    const entries = await fs.readdir(path.join(eventFolder, 'videos'), { withFileTypes: true });
+    const numbers = entries
+      .filter((entry) => entry.isFile() && /^\d+\.mp4$/i.test(entry.name))
+      .map((entry) => Number.parseInt(path.parse(entry.name).name, 10))
+      .filter((value) => Number.isFinite(value));
+    const nextNumber = numbers.length > 0 ? Math.max(...numbers) + 1 : 1;
+    return String(nextNumber);
+  } catch {
+    return String(Date.now());
+  }
+}
+
+async function saveSessionVideoData(request: SaveVideoRequest): Promise<SaveVideoResult> {
+  const settings = await readSettings();
+  await ensureEventFolders(settings.eventFolder);
+  const videosFolder = path.join(settings.eventFolder, 'videos');
+  const safeBase = request.baseName?.trim().replace(/[^\w-]+/g, '') || (await nextVideoName(settings.eventFolder));
+  const webmPath = path.join(videosFolder, `${safeBase}.webm`);
+  const mp4Path = path.join(videosFolder, `${safeBase}.mp4`);
+  const buffer = Buffer.from(request.data instanceof Uint8Array ? request.data : new Uint8Array(request.data));
+  console.log(`[video] received recording ${buffer.byteLength} bytes -> ${webmPath}`);
+  await fs.writeFile(webmPath, buffer);
+  try {
+    console.log(`[video] transcoding ${path.basename(webmPath)} -> ${path.basename(mp4Path)} (ffmpeg: ${resolveFfmpegPath() || 'MISSING'})`);
+    await transcodeToMp4(webmPath, mp4Path);
+    await fs.rm(webmPath, { force: true });
+    console.log(`[video] saved ${mp4Path}`);
+    return { path: mp4Path, name: path.basename(mp4Path) };
+  } catch (error) {
+    // Keep the raw webm if transcoding fails so the recording is not lost.
+    console.warn('[video] transcode failed; keeping raw webm.', error);
+    return { path: webmPath, name: path.basename(webmPath) };
+  }
+}
+
+async function uploadSessionVideoInBackground(
+  request: BackgroundVideoUploadRequest
+): Promise<BackgroundGalleryUploadResult> {
+  galleryUploadStatus.active += 1;
+  setGalleryUploadStatus({ state: 'uploading', message: `Uploading ${path.basename(request.videoPath)}...`, lastError: undefined });
+  try {
+    const settings = await readSettings();
+    if (!settings.webApiBaseUrl || !settings.eventId || !settings.boothSecret) {
+      throw new Error('Web API, event ID, or booth secret is missing.');
+    }
+    const buffer = await fs.readFile(request.videoPath);
+    const isMp4 = /\.mp4$/i.test(request.videoPath);
+    console.log(`[video-upload] POST video ${path.basename(request.videoPath)} ${buffer.byteLength} bytes`);
+    await uploadGalleryBuffer(settings, request.ticketId, {
+      kind: 'video',
+      filename: path.basename(request.videoPath),
+      contentType: isMp4 ? 'video/mp4' : 'video/webm',
+      buffer,
+      width: 0,
+      height: 0,
+    });
+    console.log(`[video-upload] uploaded ${path.basename(request.videoPath)}`);
+    galleryUploadStatus.active = Math.max(0, galleryUploadStatus.active - 1);
+    setGalleryUploadStatus({
+      state: galleryUploadStatus.active > 0 ? 'uploading' : 'done',
+      message: `Uploaded ${path.basename(request.videoPath)}.`,
+      lastError: undefined,
+    });
+    return { ok: true };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Video upload failed.';
+    console.warn('[video-upload] failed', message);
+    galleryUploadStatus.active = Math.max(0, galleryUploadStatus.active - 1);
+    setGalleryUploadStatus({
+      state: galleryUploadStatus.active > 0 ? 'uploading' : 'failed',
+      message,
+      lastError: message,
+    });
+    return { ok: false, error: message };
   }
 }
 
@@ -1821,6 +1954,30 @@ function modalParent() {
 app.whenReady().then(async () => {
   await readSettings();
 
+  // Allow the guest renderer to capture its own window (composite video) and
+  // microphone via getDisplayMedia/getUserMedia without showing a picker.
+  session.defaultSession.setDisplayMediaRequestHandler(
+    (_request, callback) => {
+      desktopCapturer
+        .getSources({ types: ['window', 'screen'] })
+        .then((sources) => {
+          const guestTitle = guestWindow?.getTitle();
+          const match =
+            (guestTitle ? sources.find((source) => source.name === guestTitle) : undefined) ?? sources[0];
+          callback(match ? { video: match } : {});
+        })
+        .catch(() => callback({}));
+    },
+    { useSystemPicker: false }
+  );
+  session.defaultSession.setPermissionRequestHandler((_webContents, permission, callback) => {
+    if (permission === 'media' || permission === 'display-capture') {
+      callback(true);
+      return;
+    }
+    callback(true);
+  });
+
   ipcMain.handle('settings:get', readSettings);
   ipcMain.handle('settings:update', async (_event, partial: Partial<AppSettings>) => {
     const current = await readSettings();
@@ -1985,6 +2142,13 @@ app.whenReady().then(async () => {
   ipcMain.handle('gallery:upload-final', async (_event, request: BackgroundGalleryUploadRequest) => {
     void uploadFinalPhotoInBackground(request);
     return { ok: true, galleryUrl: request.galleryUrl };
+  });
+  ipcMain.handle('video:save-and-transcode', async (_event, request: SaveVideoRequest): Promise<SaveVideoResult> => {
+    return saveSessionVideoData(request);
+  });
+  ipcMain.handle('gallery:upload-video', async (_event, request: BackgroundVideoUploadRequest) => {
+    void uploadSessionVideoInBackground(request);
+    return { ok: true };
   });
   ipcMain.handle('gallery:upload-status', () => galleryUploadStatus);
   ipcMain.handle('file:open', async (_event, filePath: string) => {

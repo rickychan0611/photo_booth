@@ -6,6 +6,7 @@ import type {
   AppSettings,
   BackgroundGalleryUploadRequest,
   BackgroundGalleryUploadResult,
+  BackgroundVideoUploadRequest,
   FaceAssetPack,
   Gallery,
   GalleryUploadStatus,
@@ -15,7 +16,9 @@ import type {
   TemplateStyleId,
   TemplateUploadRequest,
   SaveImageRequest,
-  SaveImageResult
+  SaveImageResult,
+  SaveVideoRequest,
+  SaveVideoResult
 } from './types';
 
 const api = {
@@ -91,6 +94,10 @@ const api = {
   listGallery: () => ipcRenderer.invoke('gallery:list') as Promise<Gallery>,
   uploadFinalGallery: (request: BackgroundGalleryUploadRequest) =>
     ipcRenderer.invoke('gallery:upload-final', request) as Promise<BackgroundGalleryUploadResult>,
+  saveSessionVideo: (request: SaveVideoRequest) =>
+    ipcRenderer.invoke('video:save-and-transcode', request) as Promise<SaveVideoResult>,
+  uploadSessionVideo: (request: BackgroundVideoUploadRequest) =>
+    ipcRenderer.invoke('gallery:upload-video', request) as Promise<BackgroundGalleryUploadResult>,
   getGalleryUploadStatus: () => ipcRenderer.invoke('gallery:upload-status') as Promise<GalleryUploadStatus>,
   onGalleryUploadStatus: (callback: (status: GalleryUploadStatus) => void) => {
     const listener = (_event: Electron.IpcRendererEvent, status: GalleryUploadStatus) => callback(status);
