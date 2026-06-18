@@ -980,7 +980,7 @@ function GuestApp() {
           />
           <div className="welcome-live-scrim" aria-hidden="true" />
           <div className="welcome-brand-stack">
-            <img className="welcome-logo" src="/vibo-logo.png" alt="Vibo Booth" />
+            <img className="welcome-logo" src={`${import.meta.env.BASE_URL}vibo-logo.png`} alt="Vibo Booth" />
             <p className="welcome-site">vibobooth.com</p>
             <button
               className="booth-button primary welcome-start-button"
