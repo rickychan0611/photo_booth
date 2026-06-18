@@ -12,6 +12,7 @@ import type {
   AiPreset,
   AiProvider,
   AiQueueItem,
+  AudioCue,
   AppSettings,
   BackgroundGalleryUploadRequest,
   BackgroundGalleryUploadResult,
@@ -29,6 +30,7 @@ import type {
   SavedPhoto,
   TemplateAssetRole,
   TemplateDesign,
+  TemplateLayout,
   TemplateStyleId,
   TemplateUploadRequest
 } from './types';
@@ -41,6 +43,10 @@ let galleryUploadStatus: GalleryUploadStatus = { state: 'idle', message: 'No act
 
 const PRINT_PREVIEW_WIDTH = 1239;
 const PRINT_PREVIEW_HEIGHT = 1845;
+const TEMPLATE_WIDTH = 2478;
+const TEMPLATE_HEIGHT = 3690;
+const LANDSCAPE_TEMPLATE_WIDTH = TEMPLATE_HEIGHT;
+const LANDSCAPE_TEMPLATE_HEIGHT = TEMPLATE_WIDTH;
 const STYLE4_HALFCUT_PRINTER = 'DS-RX1-HalfCut';
 const PRINTER_ALIASES = new Map<string, string>([['DS-RX1-HaflCut', STYLE4_HALFCUT_PRINTER]]);
 
@@ -130,6 +136,66 @@ const defaultAudioSettings = (): AppSettings['audio'] => ({
   }
 });
 
+const defaultWorkflowShots = (): AppSettings['workflow']['shots'] => [
+  { message: 'Get Ready!', cameraBeforeMessageMs: 3000, messageMs: 2000, cameraBeforeCountdownMs: 3000 },
+  { message: 'Smile!', cameraBeforeMessageMs: 3000, messageMs: 2000, cameraBeforeCountdownMs: 3000 },
+  { message: 'Switch It Up!', cameraBeforeMessageMs: 3000, messageMs: 2000, cameraBeforeCountdownMs: 3000 },
+  { message: 'Final Pose!', cameraBeforeMessageMs: 3000, messageMs: 2000, cameraBeforeCountdownMs: 3000 }
+];
+
+const defaultTemplateShotAudioCue = (scopeId: string, index: number, text: string): AppSettings['audio']['cues'][string] => ({
+  id: `${scopeId}-shot-${index}`,
+  label: `Picture ${index + 1} voice`,
+  mode: 'host',
+  channel: 'voice',
+  text,
+  filePath: '',
+  loop: false,
+  volume: 1,
+  enabled: true,
+  updatedAt: ''
+});
+
+const defaultTemplateScreenCue = (
+  scopeId: string,
+  cueId: 'intro' | 'select' | 'thanks',
+  label: string,
+  text: string
+): AppSettings['audio']['cues'][string] => ({
+  id: `${scopeId}-${cueId}`,
+  label,
+  mode: 'host',
+  channel: 'voice',
+  text,
+  filePath: '',
+  loop: false,
+  volume: 1,
+  enabled: true,
+  updatedAt: ''
+});
+
+const defaultTemplateWorkflow = (shotCount = 1): TemplateLayout['workflowDefaults'] => ({
+  introMessage: `Let's take ${shotCount} picture${shotCount === 1 ? '' : 's'}!`,
+  introMs: 2000,
+  printAutoSelectMs: 20000,
+  thankYouMessage: 'THANK YOU!',
+  thankYouMs: 3000,
+  screenCues: {
+    intro: defaultTemplateScreenCue('template', 'intro', 'Intro screen voice', "Let's take pictures."),
+    select: defaultTemplateScreenCue('template', 'select', 'Photo selection voice', 'Please choose your favorite pictures to print.'),
+    thanks: defaultTemplateScreenCue('template', 'thanks', 'Finish screen voice', 'Thank you. Please pick up your print.')
+  },
+  shots: Array.from({ length: Math.max(1, shotCount) }, (_item, index) => {
+    const shot = { ...(defaultWorkflowShots()[index] ?? defaultWorkflowShots()[defaultWorkflowShots().length - 1]) };
+    return { ...shot, audioCue: defaultTemplateShotAudioCue('template', index, shot.message) };
+  })
+});
+
+const templateDimensions = (orientation: TemplateLayout['orientation']) =>
+  orientation === 'landscape'
+    ? { width: LANDSCAPE_TEMPLATE_WIDTH, height: LANDSCAPE_TEMPLATE_HEIGHT }
+    : { width: TEMPLATE_WIDTH, height: TEMPLATE_HEIGHT };
+
 const defaultSettings = (): AppSettings => ({
   eventName: 'PHOTO BOOTH',
   eventFolder: defaultEventFolder(),
@@ -151,6 +217,7 @@ const defaultSettings = (): AppSettings => ({
     style3: 'DS-RX1',
     style4: STYLE4_HALFCUT_PRINTER
   },
+  printerEnabled: true,
   silentPrint: false,
   adminPassword: '',
   ai: defaultAiSettings(),
@@ -159,9 +226,11 @@ const defaultSettings = (): AppSettings => ({
     eventName: 'PHOTO BOOTH',
     logoPath: '',
     framePath: '',
-    styleVersion: 2,
+    styleVersion: 3,
+    selectedTemplateId: '',
     selectedStyleId: 'style1',
     selectedDesignId: '',
+    layouts: [],
     aiPresets: [],
     faceAssetPacks: [],
     designs: []
@@ -172,12 +241,7 @@ const defaultSettings = (): AppSettings => ({
     printAutoSelectMs: 20000,
     thankYouMessage: 'THANK YOU!',
     thankYouMs: 3000,
-    shots: [
-      { message: 'Get Ready!', cameraBeforeMessageMs: 3000, messageMs: 2000, cameraBeforeCountdownMs: 3000 },
-      { message: 'Smile!', cameraBeforeMessageMs: 3000, messageMs: 2000, cameraBeforeCountdownMs: 3000 },
-      { message: 'Switch It Up!', cameraBeforeMessageMs: 3000, messageMs: 2000, cameraBeforeCountdownMs: 3000 },
-      { message: 'Final Pose!', cameraBeforeMessageMs: 3000, messageMs: 2000, cameraBeforeCountdownMs: 3000 }
-    ]
+    shots: defaultWorkflowShots()
   },
   printPicker: {
     showSingle: true,
@@ -200,6 +264,7 @@ async function ensureEventFolders(eventFolder: string) {
   await fs.mkdir(path.join(eventFolder, 'finals', 'thumbs'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'videos'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'templates'), { recursive: true });
+  await fs.mkdir(path.join(eventFolder, 'templates', 'custom'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'face-assets'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'audio'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'ai-presets'), { recursive: true });
@@ -231,7 +296,7 @@ async function readSettings(): Promise<AppSettings> {
   try {
     const raw = await fs.readFile(settingsPath(), 'utf8');
     const parsed = JSON.parse(raw) as Partial<AppSettings>;
-    const isLegacyTemplateStyle = parsed.template?.styleVersion !== 2;
+    const isLegacyTemplateStyle = (parsed.template?.styleVersion ?? 0) < 2;
     const merged: AppSettings = {
       ...fallback,
       ...parsed,
@@ -241,8 +306,10 @@ async function readSettings(): Promise<AppSettings> {
       template: {
         ...fallback.template,
         ...(parsed.template ?? {}),
-        styleVersion: 2,
+        styleVersion: 3,
+        selectedTemplateId: String(parsed.template?.selectedTemplateId ?? ''),
         selectedStyleId: normalizeTemplateStyleId(String(parsed.template?.selectedStyleId ?? fallback.template.selectedStyleId), isLegacyTemplateStyle),
+        layouts: (parsed.template?.layouts ?? []).map((layout) => normalizeTemplateLayout(layout)),
         aiPresets: (parsed.template?.aiPresets ?? fallback.template.aiPresets).map(normalizeAiPreset),
         faceAssetPacks: (parsed.template?.faceAssetPacks ?? fallback.template.faceAssetPacks).map(normalizeFaceAssetPack),
         designs: (parsed.template?.designs ?? fallback.template.designs).map((design) =>
@@ -270,6 +337,7 @@ async function readSettings(): Promise<AppSettings> {
         ...fallback.stylePrinters,
         ...(parsed.stylePrinters ?? {})
       }),
+      printerEnabled: parsed.printerEnabled !== false,
       printCalibration: normalizePrintCalibration({
         ...fallback.printCalibration,
         ...(parsed.printCalibration ?? {})
@@ -293,11 +361,14 @@ async function writeSettings(settings: AppSettings): Promise<AppSettings> {
     audio: normalizeAudioSettings(settings.audio),
     template: {
       ...settings.template,
+      styleVersion: 3,
+      layouts: (settings.template.layouts ?? []).map(normalizeTemplateLayout),
       aiPresets: settings.template.aiPresets.map(normalizeAiPreset),
       faceAssetPacks: settings.template.faceAssetPacks.map(normalizeFaceAssetPack),
       designs: settings.template.designs.map((design) => normalizeTemplateDesign(design))
     },
     stylePrinters: normalizeStylePrinters(settings.stylePrinters),
+    printerEnabled: settings.printerEnabled !== false,
     printCalibration: normalizePrintCalibration(settings.printCalibration)
   };
   await ensureEventFolders(normalized.eventFolder);
@@ -379,7 +450,7 @@ async function listGallery(): Promise<Gallery> {
     const metadataPath = filePath.replace(/\.(png|jpe?g)$/i, '.json');
     try {
       const raw = await fs.readFile(metadataPath, 'utf8');
-      return JSON.parse(raw) as Partial<Pick<SavedPhoto, 'styleId' | 'designId' | 'printerName' | 'galleryUrl'>>;
+      return JSON.parse(raw) as Partial<Pick<SavedPhoto, 'templateId' | 'styleId' | 'designId' | 'printerName' | 'galleryUrl' | 'phoneNumber'>>;
     } catch {
       return {};
     }
@@ -403,10 +474,12 @@ async function listGallery(): Promise<Gallery> {
             thumbPath: hasThumb ? thumbPath : undefined,
             type,
             createdAt: stat.birthtime.toISOString(),
+            templateId: metadata.templateId,
             styleId: metadata.styleId,
             designId: metadata.designId,
             printerName: metadata.printerName ? normalizePrinterName(metadata.printerName) : undefined,
-            galleryUrl: metadata.galleryUrl
+            galleryUrl: metadata.galleryUrl,
+            phoneNumber: metadata.phoneNumber
           };
         })
     );
@@ -610,14 +683,112 @@ const normalizeTemplateDesign = (design: TemplateDesign, migrateLegacy = false):
   const legacyPath = design.filePath ?? '';
   const previewPath = design.previewPath || legacyPath;
   const framePath = design.framePath || legacyPath;
+  const templateId = design.templateId || styleId;
   return {
     ...design,
+    templateId,
     styleId,
     previewPath: migrateLegacy ? migrateLegacyTemplatePath(previewPath, originalStyleId) : previewPath,
     framePath: migrateLegacy ? migrateLegacyTemplatePath(framePath, originalStyleId) : framePath,
     faceTrackingEnabled: Boolean(design.faceTrackingEnabled),
     faceAssetPackId: design.faceAssetPackId ?? '',
-    videoRecordingEnabled: Boolean(design.videoRecordingEnabled)
+    videoRecordingEnabled: Boolean(design.videoRecordingEnabled),
+    workflowOverrideEnabled: Boolean(design.workflowOverrideEnabled),
+    workflowOverride: design.workflowOverride
+      ? normalizeTemplateWorkflow(design.workflowOverride, Math.max(1, design.workflowOverride.shots?.length ?? 1))
+      : undefined
+  };
+};
+
+const normalizeRotation = (value: unknown): 0 | 90 | 180 | 270 =>
+  value === 90 || value === 180 || value === 270 ? value : 0;
+
+const normalizeTemplateWorkflow = (
+  workflow: Partial<TemplateLayout['workflowDefaults']> | undefined,
+  shotCount: number
+): TemplateLayout['workflowDefaults'] => {
+  const fallback = defaultTemplateWorkflow(shotCount);
+  const sourceShots = workflow?.shots ?? [];
+  const screenCues = {
+    intro: normalizeAudioCue(
+      {
+        ...defaultTemplateScreenCue('template', 'intro', 'Intro screen voice', workflow?.introMessage ?? fallback.introMessage),
+        ...(workflow?.screenCues?.intro ?? {})
+      },
+      defaultTemplateScreenCue('template', 'intro', 'Intro screen voice', workflow?.introMessage ?? fallback.introMessage)
+    ),
+    select: normalizeAudioCue(
+      {
+        ...defaultTemplateScreenCue('template', 'select', 'Photo selection voice', 'Please choose your favorite pictures to print.'),
+        ...(workflow?.screenCues?.select ?? {})
+      },
+      defaultTemplateScreenCue('template', 'select', 'Photo selection voice', 'Please choose your favorite pictures to print.')
+    ),
+    thanks: normalizeAudioCue(
+      {
+        ...defaultTemplateScreenCue('template', 'thanks', 'Finish screen voice', workflow?.thankYouMessage ?? fallback.thankYouMessage),
+        ...(workflow?.screenCues?.thanks ?? {})
+      },
+      defaultTemplateScreenCue('template', 'thanks', 'Finish screen voice', workflow?.thankYouMessage ?? fallback.thankYouMessage)
+    )
+  };
+  return {
+    ...fallback,
+    ...(workflow ?? {}),
+    introMessage: workflow?.introMessage ?? fallback.introMessage,
+    thankYouMessage: workflow?.thankYouMessage ?? fallback.thankYouMessage,
+    introMs: finiteNumber(workflow?.introMs, fallback.introMs),
+    printAutoSelectMs: finiteNumber(workflow?.printAutoSelectMs, fallback.printAutoSelectMs),
+    thankYouMs: finiteNumber(workflow?.thankYouMs, fallback.thankYouMs),
+    screenCues,
+    shots: Array.from({ length: Math.max(1, shotCount) }, (_item, index) => {
+      const fallbackShot = fallback.shots[Math.min(index, fallback.shots.length - 1)];
+      const sourceShot = sourceShots[index] ?? {};
+      const sourceCue = sourceShot.audioCue;
+      const message = sourceShot.message ?? fallbackShot.message;
+      return {
+        ...fallbackShot,
+        ...sourceShot,
+        audioCue: normalizeAudioCue(
+          {
+            ...defaultTemplateShotAudioCue('template', index, message),
+            ...(sourceCue ?? {}),
+            label: sourceCue?.label || `Picture ${index + 1} voice`,
+            channel: 'voice',
+            text: sourceCue?.text ?? message
+          },
+          defaultTemplateShotAudioCue('template', index, message)
+        )
+      };
+    })
+  };
+};
+
+const normalizeTemplateLayout = (layout: TemplateLayout): TemplateLayout => {
+  const orientation = layout.orientation === 'landscape' ? 'landscape' : 'portrait';
+  const dimensions = templateDimensions(orientation);
+  const photoWindows = (layout.photoWindows ?? []).map((slot, index) => ({
+    x: finiteNumber(slot.x, dimensions.width * 0.1),
+    y: finiteNumber(slot.y, dimensions.height * 0.1),
+    width: Math.max(40, finiteNumber(slot.width, dimensions.width / 3)),
+    height: Math.max(40, finiteNumber(slot.height, dimensions.height / 3)),
+    sourceIndex: index,
+    cropY: slot.cropY === 'top' ? 'top' as const : 'center' as const,
+    rotation: normalizeRotation(slot.rotation)
+  }));
+  const shotCount = Math.max(1, photoWindows.length);
+  return {
+    ...layout,
+    id: layout.id || `template-${Date.now()}`,
+    name: layout.name?.trim() || 'Template',
+    orientation,
+    paperWidth: dimensions.width,
+    paperHeight: dimensions.height,
+    photoWindows,
+    workflowDefaults: normalizeTemplateWorkflow(layout.workflowDefaults, shotCount),
+    printerName: normalizePrinterName(layout.printerName ?? ''),
+    createdAt: layout.createdAt || new Date().toISOString(),
+    updatedAt: layout.updatedAt || new Date().toISOString()
   };
 };
 
@@ -793,11 +964,12 @@ const chooseTemplateAsset = async (role: TemplateAssetRole) => {
   return result.canceled ? '' : result.filePaths[0] ?? '';
 };
 
-const copyTemplateAsset = async (sourcePath: string, designFolder: string, role: TemplateAssetRole) => {
+const copyTemplateAsset = async (sourcePath: string, designFolder: string, role: TemplateAssetRole, layout?: TemplateLayout) => {
   if (role === 'frame') {
     const size = await getImageSize(sourcePath);
-    if (size.width !== 2478 || size.height !== 3690) {
-      throw new Error(`Print frame must be 2478 x 3690. This file is ${size.width} x ${size.height}.`);
+    const expected = templateDimensions(layout?.orientation ?? 'portrait');
+    if (size.width !== expected.width || size.height !== expected.height) {
+      throw new Error(`Print frame must be ${expected.width} x ${expected.height}. This file is ${size.width} x ${size.height}.`);
     }
   }
   const extension = role === 'frame' ? '.png' : path.extname(sourcePath).toLowerCase() || '.png';
@@ -812,16 +984,18 @@ async function uploadTemplate(request: TemplateUploadRequest): Promise<TemplateD
 
   const settings = await readSettings();
   await ensureEventFolders(settings.eventFolder);
+  const layout = settings.template.layouts.map(normalizeTemplateLayout).find((item) => item.id === request.templateId);
+  if (!layout) throw new Error('Template layout not found.');
   const now = new Date().toISOString();
-  const id = `${request.styleId}-${Date.now()}`;
+  const id = `design-${Date.now()}`;
   const name = request.name?.trim() || path.parse(frameSourcePath).name || 'Template';
-  const designFolder = path.join(settings.eventFolder, 'templates', request.styleId, `${id}-${safeTemplateName(name)}`);
+  const designFolder = path.join(settings.eventFolder, 'templates', 'custom', request.templateId, `${id}-${safeTemplateName(name)}`);
   await fs.mkdir(designFolder, { recursive: true });
-  const framePath = await copyTemplateAsset(frameSourcePath, designFolder, 'frame');
+  const framePath = await copyTemplateAsset(frameSourcePath, designFolder, 'frame', layout);
 
   const design: TemplateDesign = {
     id,
-    styleId: request.styleId,
+    templateId: request.templateId,
     name,
     previewPath: framePath,
     framePath,
@@ -838,7 +1012,7 @@ async function uploadTemplate(request: TemplateUploadRequest): Promise<TemplateD
     ...settings,
     template: {
       ...settings.template,
-      selectedStyleId: request.styleId,
+      selectedTemplateId: request.templateId,
       selectedDesignId: design.id,
       designs: [...settings.template.designs.map((item) => normalizeTemplateDesign(item)), design]
     }
@@ -864,11 +1038,13 @@ async function updateTemplateAsset(designId: string, role: TemplateAssetRole) {
   const designs = settings.template.designs.map((item) => normalizeTemplateDesign(item));
   const design = designs.find((item) => item.id === designId);
   if (!design) return null;
+  const layout = settings.template.layouts.map(normalizeTemplateLayout).find((item) => item.id === design.templateId);
+  if (!layout) throw new Error('Template layout not found.');
   const sourcePath = await chooseTemplateAsset(role);
   if (!sourcePath) return null;
   const designFolder = path.dirname(design.framePath || design.previewPath);
   await fs.mkdir(designFolder, { recursive: true });
-  const assetPath = await copyTemplateAsset(sourcePath, designFolder, role);
+  const assetPath = await copyTemplateAsset(sourcePath, designFolder, role, layout);
   const updated = normalizeTemplateDesign({
     ...design,
     previewPath: role === 'preview' ? assetPath : design.previewPath || assetPath,
@@ -901,13 +1077,227 @@ async function deleteTemplate(designId: string) {
   return true;
 }
 
-async function saveGuideTemplate(styleId: TemplateStyleId, dataUrl: string) {
+async function updateTemplateLayout(layout: TemplateLayout) {
+  const settings = await readSettings();
+  const now = new Date().toISOString();
+  const normalized = normalizeTemplateLayout({
+    ...layout,
+    updatedAt: now,
+    createdAt: layout.createdAt || now
+  });
+  const layouts = settings.template.layouts.map(normalizeTemplateLayout);
+  const nextLayouts = layouts.some((item) => item.id === normalized.id)
+    ? layouts.map((item) => (item.id === normalized.id ? normalized : item))
+    : [...layouts, normalized];
+  return writeSettings({
+    ...settings,
+    template: {
+      ...settings.template,
+      selectedTemplateId: normalized.id,
+      layouts: nextLayouts
+    }
+  });
+}
+
+async function deleteTemplateLayout(templateId: string) {
+  const settings = await readSettings();
+  const designs = settings.template.designs.map((item) => normalizeTemplateDesign(item));
+  const removedDesigns = designs.filter((item) => item.templateId === templateId);
+  await fs.rm(path.join(settings.eventFolder, 'templates', 'custom', templateId), { force: true, recursive: true });
+  for (const design of removedDesigns) {
+    const folder = path.dirname(design.framePath || design.previewPath);
+    if (folder) await fs.rm(folder, { force: true, recursive: true }).catch(() => undefined);
+  }
+  return writeSettings({
+    ...settings,
+    template: {
+      ...settings.template,
+      selectedTemplateId: settings.template.selectedTemplateId === templateId ? '' : settings.template.selectedTemplateId,
+      selectedDesignId: removedDesigns.some((design) => design.id === settings.template.selectedDesignId) ? '' : settings.template.selectedDesignId,
+      layouts: settings.template.layouts.map(normalizeTemplateLayout).filter((item) => item.id !== templateId),
+      designs: designs.filter((item) => item.templateId !== templateId)
+    }
+  });
+}
+
+async function saveGuideTemplate(templateId: string, dataUrl: string) {
   const settings = await readSettings();
   await ensureEventFolders(settings.eventFolder);
-  const filePath = path.join(settings.eventFolder, 'templates', `${styleId}-blank-guide.png`);
+  const layout = settings.template.layouts.map(normalizeTemplateLayout).find((item) => item.id === templateId);
+  if (!layout) throw new Error('Template layout not found.');
+  const filePath = path.join(settings.eventFolder, 'templates', `${safeTemplateName(layout.name)}-blank-guide.png`);
   await fs.writeFile(filePath, dataUrlToBuffer(dataUrl));
   await shell.showItemInFolder(filePath);
   return filePath;
+}
+
+type PortableTemplateDesign = Omit<TemplateDesign, 'id' | 'templateId' | 'previewPath' | 'framePath' | 'filePath' | 'styleId'> & {
+  originalId?: string;
+  previewName?: string;
+  frameName?: string;
+  previewDataUrl: string;
+  frameDataUrl: string;
+};
+
+type PortableTemplatePackage = {
+  version: 1;
+  exportedAt: string;
+  template: Omit<TemplateLayout, 'id'> & { originalId?: string };
+  designs: PortableTemplateDesign[];
+};
+
+const stripWorkflowAudioPaths = (workflow: TemplateLayout['workflowDefaults']): TemplateLayout['workflowDefaults'] => ({
+  ...workflow,
+  screenCues: Object.fromEntries(
+    Object.entries(workflow.screenCues ?? {}).map(([key, cue]) => [key, cue ? { ...cue, filePath: '' } : cue])
+  ) as TemplateLayout['workflowDefaults']['screenCues'],
+  shots: workflow.shots.map((shot) => ({
+    ...shot,
+    audioCue: shot.audioCue ? { ...shot.audioCue, filePath: '' } : undefined
+  }))
+});
+
+async function exportTemplatePackage(templateId: string) {
+  const settings = await readSettings();
+  const layout = settings.template.layouts.map(normalizeTemplateLayout).find((item) => item.id === templateId);
+  if (!layout) throw new Error('Template layout not found.');
+  const designs = settings.template.designs.map((item) => normalizeTemplateDesign(item)).filter((item) => item.templateId === templateId);
+  const portableDesigns = await Promise.all(
+    designs.map(async (design) => {
+      const {
+        id,
+        templateId: _templateId,
+        styleId: _styleId,
+        previewPath,
+        framePath,
+        filePath: _filePath,
+        ...rest
+      } = design;
+      return {
+        ...rest,
+        workflowOverride: rest.workflowOverride ? stripWorkflowAudioPaths(rest.workflowOverride) : undefined,
+        originalId: id,
+        previewName: path.basename(previewPath || framePath),
+        frameName: path.basename(framePath || previewPath),
+        previewDataUrl: await imageFileToDataUrl(previewPath || framePath),
+        frameDataUrl: await imageFileToDataUrl(framePath || previewPath)
+      };
+    })
+  );
+  const { id: originalId, ...template } = { ...layout, workflowDefaults: stripWorkflowAudioPaths(layout.workflowDefaults) };
+  const portable: PortableTemplatePackage = {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    template: { ...template, originalId },
+    designs: portableDesigns
+  };
+  const parent = modalParent();
+  const result = parent
+    ? await dialog.showSaveDialog(parent, {
+        defaultPath: `${safeTemplateName(layout.name)}.json`,
+        filters: [{ name: 'Photo Booth Template', extensions: ['json'] }]
+      })
+    : await dialog.showSaveDialog({
+        defaultPath: `${safeTemplateName(layout.name)}.json`,
+        filters: [{ name: 'Photo Booth Template', extensions: ['json'] }]
+      });
+  if (result.canceled || !result.filePath) return { ok: false };
+  await fs.writeFile(result.filePath, JSON.stringify(portable, null, 2), 'utf8');
+  return { ok: true, filePath: result.filePath };
+}
+
+const assertDataUrl = (value: unknown, label: string) => {
+  if (typeof value !== 'string' || !value.startsWith('data:image/')) throw new Error(`${label} is missing image data.`);
+  return value;
+};
+
+async function writeImportedAsset(dataUrl: string, folder: string, filename: string, layout: TemplateLayout, role: TemplateAssetRole) {
+  await fs.mkdir(folder, { recursive: true });
+  const filePath = path.join(folder, filename);
+  await fs.writeFile(filePath, dataUrlToBuffer(dataUrl));
+  if (role === 'frame') {
+    const size = await getImageSize(filePath);
+    if (size.width !== layout.paperWidth || size.height !== layout.paperHeight) {
+      await fs.rm(filePath, { force: true }).catch(() => undefined);
+      throw new Error(`Imported print frame must be ${layout.paperWidth} x ${layout.paperHeight}. This file is ${size.width} x ${size.height}.`);
+    }
+  }
+  return filePath;
+}
+
+async function importTemplatePackage() {
+  const parent = modalParent();
+  const result = parent
+    ? await dialog.showOpenDialog(parent, {
+        properties: ['openFile'],
+        filters: [{ name: 'Photo Booth Template', extensions: ['json'] }]
+      })
+    : await dialog.showOpenDialog({
+        properties: ['openFile'],
+        filters: [{ name: 'Photo Booth Template', extensions: ['json'] }]
+      });
+  if (result.canceled || !result.filePaths[0]) return readSettings();
+
+  const raw = await fs.readFile(result.filePaths[0], 'utf8');
+  const parsed = JSON.parse(raw) as Partial<PortableTemplatePackage>;
+  if (parsed.version !== 1 || !parsed.template || !Array.isArray(parsed.designs)) {
+    throw new Error('Template JSON is not a supported Photo Booth template export.');
+  }
+
+  const settings = await readSettings();
+  await ensureEventFolders(settings.eventFolder);
+  const now = new Date().toISOString();
+  const templateId = `template-${Date.now()}`;
+  const layout = normalizeTemplateLayout({
+    ...(parsed.template as TemplateLayout),
+    id: templateId,
+    name: `${parsed.template.name || 'Imported Template'}`,
+    createdAt: now,
+    updatedAt: now
+  });
+  const folder = path.join(settings.eventFolder, 'templates', 'custom', templateId);
+  const importedDesigns: TemplateDesign[] = [];
+  const activeAiPresetIds = new Set(settings.template.aiPresets.map((preset) => preset.id));
+  const activeFacePackIds = new Set(settings.template.faceAssetPacks.map((pack) => pack.id));
+
+  for (const [index, design] of parsed.designs.entries()) {
+    const designId = `design-${Date.now()}-${index}`;
+    const designName = design.name?.trim() || `Design ${index + 1}`;
+    const designFolder = path.join(folder, `${designId}-${safeTemplateName(designName)}`);
+    const frameDataUrl = assertDataUrl(design.frameDataUrl, 'Print frame');
+    const previewDataUrl = assertDataUrl(design.previewDataUrl || design.frameDataUrl, 'Preview');
+    const framePath = await writeImportedAsset(frameDataUrl, designFolder, 'frame.png', layout, 'frame');
+    const previewPath = await writeImportedAsset(previewDataUrl, designFolder, 'preview.png', layout, 'preview');
+    const hasAiPreset = Boolean(design.aiPresetId && activeAiPresetIds.has(design.aiPresetId));
+    const hasFacePack = Boolean(design.faceAssetPackId && activeFacePackIds.has(design.faceAssetPackId));
+    importedDesigns.push(normalizeTemplateDesign({
+      ...design,
+      id: designId,
+      templateId,
+      name: designName,
+      previewPath,
+      framePath,
+      active: design.active !== false,
+      usesAi: Boolean(design.usesAi && hasAiPreset),
+      aiPresetId: hasAiPreset ? design.aiPresetId : '',
+      faceTrackingEnabled: Boolean(design.faceTrackingEnabled && hasFacePack),
+      faceAssetPackId: hasFacePack ? design.faceAssetPackId : '',
+      videoRecordingEnabled: Boolean(design.videoRecordingEnabled),
+      createdAt: now,
+      updatedAt: now
+    } as TemplateDesign));
+  }
+
+  return writeSettings({
+    ...settings,
+    template: {
+      ...settings.template,
+      selectedTemplateId: templateId,
+      selectedDesignId: importedDesigns[0]?.id ?? settings.template.selectedDesignId,
+      layouts: [...settings.template.layouts.map(normalizeTemplateLayout), layout],
+      designs: [...settings.template.designs.map((item) => normalizeTemplateDesign(item)), ...importedDesigns]
+    }
+  });
 }
 
 async function writeThumbnail(sourceBuffer: Buffer, eventFolder: string, folder: 'originals' | 'finals', name: string) {
@@ -929,17 +1319,19 @@ async function writePhotoMetadata(filePath: string, request: SaveImageRequest) {
   if (request.kind !== 'final') return;
   const metadata = {
     name: path.basename(filePath),
+    templateId: request.templateId ?? '',
     styleId: request.styleId,
     designId: request.designId,
     printerName: request.printerName ? normalizePrinterName(request.printerName) : '',
     galleryUrl: request.galleryUrl ?? '',
+    phoneNumber: request.phoneNumber ?? '',
     createdAt: new Date().toISOString()
   };
   await fs.writeFile(filePath.replace(/\.(png|jpe?g)$/i, '.json'), `${JSON.stringify(metadata, null, 2)}${os.EOL}`, 'utf8');
 }
 
-async function updatePhotoGalleryUrl(filePath: string, galleryUrl: string) {
-  if (!filePath || !galleryUrl) return false;
+async function updatePhotoMetadata(filePath: string, partial: Record<string, unknown>) {
+  if (!filePath) return false;
   const metadataPath = filePath.replace(/\.(png|jpe?g)$/i, '.json');
   let metadata: Record<string, unknown> = {};
   try {
@@ -947,9 +1339,19 @@ async function updatePhotoGalleryUrl(filePath: string, galleryUrl: string) {
   } catch {
     metadata = { name: path.basename(filePath), createdAt: new Date().toISOString() };
   }
-  metadata.galleryUrl = galleryUrl;
+  metadata = { ...metadata, ...partial };
   await fs.writeFile(metadataPath, `${JSON.stringify(metadata, null, 2)}${os.EOL}`, 'utf8');
   return true;
+}
+
+async function updatePhotoGalleryUrl(filePath: string, galleryUrl: string) {
+  if (!filePath || !galleryUrl) return false;
+  return updatePhotoMetadata(filePath, { galleryUrl });
+}
+
+async function updatePhotoPhoneNumber(filePath: string, phoneNumber: string) {
+  if (!filePath || !phoneNumber) return false;
+  return updatePhotoMetadata(filePath, { phoneNumber });
 }
 
 const trimTrailingSlash = (value: string) => value.replace(/\/+$/, '');
@@ -1031,11 +1433,16 @@ async function uploadGalleryBuffer(
   return parseJsonResponse<{ asset: unknown }>(response);
 }
 
-async function completeBackgroundBoothSession(settings: AppSettings, ticketId: string) {
+async function completeBackgroundBoothSession(
+  settings: AppSettings,
+  ticketId: string,
+  phoneNumber?: string,
+  marketingConsent?: boolean
+) {
   const response = await fetch(webApiUrl(settings, '/api/booth/complete-session'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ eventId: settings.eventId, ticketId }),
+    body: JSON.stringify({ eventId: settings.eventId, ticketId, phoneNumber, marketingConsent }),
   });
   return parseJsonResponse<{ ticket: unknown }>(response);
 }
@@ -1068,9 +1475,12 @@ async function uploadFinalPhotoInBackground(
       ...thumbnail,
     });
 
-    await completeBackgroundBoothSession(settings, request.ticketId);
+    await completeBackgroundBoothSession(settings, request.ticketId, request.phoneNumber, request.marketingConsent);
     const onlineGalleryUrl = publicWebUrl(settings, request.galleryUrl);
-    await updatePhotoGalleryUrl(request.finalPath, onlineGalleryUrl);
+    await updatePhotoMetadata(request.finalPath, {
+      galleryUrl: onlineGalleryUrl,
+      phoneNumber: request.phoneNumber ?? ''
+    });
     galleryUploadStatus.active = Math.max(0, galleryUploadStatus.active - 1);
     setGalleryUploadStatus({
       state: galleryUploadStatus.active > 0 ? 'uploading' : 'done',
@@ -1388,6 +1798,69 @@ async function removeAudioCue(cueId: string) {
   });
 }
 
+async function uploadStandaloneAudioCue(cue: AudioCue): Promise<AudioCue | null> {
+  const sourcePath = await chooseAudioFile();
+  if (!sourcePath) return null;
+  const settings = await readSettings();
+  await ensureEventFolders(settings.eventFolder);
+  const now = new Date().toISOString();
+  const extension = path.extname(sourcePath).toLowerCase() || '.mp3';
+  const targetPath = path.join(settings.eventFolder, 'audio', 'template-cues', `${safeAudioCueId(cue.id)}-${Date.now()}${extension}`);
+  await fs.mkdir(path.dirname(targetPath), { recursive: true });
+  await fs.copyFile(sourcePath, targetPath);
+  return normalizeAudioCue(
+    {
+      ...cue,
+      mode: 'mp3',
+      filePath: targetPath,
+      updatedAt: now
+    },
+    defaultAudioCue(cue.id, cue.label || cue.id, cue.text || '')
+  );
+}
+
+async function clearStandaloneAudioCue(cue: AudioCue): Promise<AudioCue> {
+  if (cue.filePath) await fs.rm(cue.filePath, { force: true }).catch(() => undefined);
+  return normalizeAudioCue(
+    {
+      ...cue,
+      mode: 'off',
+      filePath: '',
+      updatedAt: new Date().toISOString()
+    },
+    defaultAudioCue(cue.id, cue.label || cue.id, cue.text || '')
+  );
+}
+
+async function generateStandaloneHostVoiceCue(cue: AudioCue): Promise<HostVoiceGenerateResult> {
+  const settings = await readSettings();
+  const audio = normalizeAudioSettings(settings.audio);
+  const normalizedCue = normalizeAudioCue(cue, defaultAudioCue(cue.id, cue.label || cue.id, cue.text || ''));
+  const text = normalizedCue.text.trim();
+  if (!text) return { ok: false, settings, cue: normalizedCue, error: 'Cue text is empty.' };
+  if (!audio.enableHostVoice) return { ok: false, settings, cue: normalizedCue, error: 'Host voice is disabled.' };
+  try {
+    const generatedPath = hostVoiceOutputPath({ ...settings, audio }, normalizedCue, text);
+    if (!(await fileExists(generatedPath))) await synthesizeHostVoice({ ...settings, audio }, text, generatedPath);
+    return {
+      ok: true,
+      settings,
+      generatedPath,
+      cue: normalizeAudioCue(
+        {
+          ...normalizedCue,
+          mode: 'host',
+          filePath: generatedPath,
+          updatedAt: new Date().toISOString()
+        },
+        normalizedCue
+      )
+    };
+  } catch (error) {
+    return { ok: false, settings, cue: normalizedCue, error: error instanceof Error ? error.message : 'Host voice generation failed.' };
+  }
+}
+
 async function generateHostVoiceCue(cueId: string): Promise<HostVoiceGenerateResult> {
   const settings = await readSettings();
   const audio = normalizeAudioSettings(settings.audio);
@@ -1673,6 +2146,7 @@ async function createAiQueueItem(request: AiGenerateRequest) {
   const item: AiQueueItem = {
     id,
     status: 'queued',
+    templateId: request.templateId,
     styleId: request.styleId,
     designId: request.designId,
     presetId: request.presetId,
@@ -1730,6 +2204,7 @@ async function processAiQueueItem(itemId: string, isRetry = false): Promise<AiGe
       dataUrl,
       kind: 'final',
       filenamePrefix: 'final',
+      templateId: working.templateId,
       styleId: working.styleId,
       designId: working.designId,
       printerName: working.printerName
@@ -1742,6 +2217,7 @@ async function processAiQueueItem(itemId: string, isRetry = false): Promise<AiGe
       updatedAt: new Date().toISOString()
     };
     await updateAiQueueItem(working, settings);
+    if (!settings.printerEnabled) return { item: working, dataUrl, saved, fallback: false };
     void printImage(saved.path, working.printerName, settings.silentPrint).then(async (printResult) => {
       const latestSettings = await readSettings();
       const currentQueue = await readAiQueue(latestSettings);
@@ -1849,16 +2325,21 @@ async function resolvePrinterName(requestedPrinter = '', fallbackPrinter = '') {
 async function printImage(imagePath: string, printerName?: string, silent = false) {
   if (!imagePath) return { ok: false, error: 'No image selected for printing.' };
   const settings = await readSettings();
+  if (!settings.printerEnabled) return { ok: true };
   const calibration = settings.printCalibration;
   const resolvedPrinterName = await resolvePrinterName(printerName, settings.defaultPrinter);
   if (silent && (printerName || settings.defaultPrinter) && !resolvedPrinterName) {
     return { ok: false, error: `Printer not found: ${printerName || settings.defaultPrinter}` };
   }
+  const printImage = nativeImage.createFromPath(imagePath);
+  const printSize = printImage.getSize();
+  const isLandscape = printSize.width > printSize.height;
+  const pageSize = isLandscape ? '6.15in 4.13in' : '4.13in 6.15in';
   const imageUrl = pathToFileURL(imagePath).toString();
   const printHtmlPath = path.join(app.getPath('temp'), `print-${Date.now()}.html`);
   const printWindow = new BrowserWindow({
-    width: silent ? PRINT_PREVIEW_WIDTH : 520,
-    height: silent ? PRINT_PREVIEW_HEIGHT : 720,
+    width: silent ? (isLandscape ? PRINT_PREVIEW_HEIGHT : PRINT_PREVIEW_WIDTH) : 720,
+    height: silent ? (isLandscape ? PRINT_PREVIEW_WIDTH : PRINT_PREVIEW_HEIGHT) : 520,
     show: false,
     autoHideMenuBar: true,
     title: 'Print Photo',
@@ -1870,7 +2351,7 @@ async function printImage(imagePath: string, printerName?: string, silent = fals
     <html>
       <head>
         <style>
-          @page { size: 4.13in 6.15in; margin: 0; }
+          @page { size: ${pageSize}; margin: 0; }
           * { box-sizing: border-box; }
           html, body {
             margin: 0;
@@ -2003,7 +2484,9 @@ app.whenReady().then(async () => {
       }),
       template: {
         ...current.template,
-        ...(partial.template ?? {})
+        ...(partial.template ?? {}),
+        layouts: (partial.template?.layouts ?? current.template.layouts).map(normalizeTemplateLayout),
+        designs: (partial.template?.designs ?? current.template.designs).map((design) => normalizeTemplateDesign(design))
       },
       workflow: {
         ...current.workflow,
@@ -2047,10 +2530,17 @@ app.whenReady().then(async () => {
   });
   ipcMain.handle('audio:upload-cue', async (_event, cueId: string) => uploadAudioCue(cueId));
   ipcMain.handle('audio:remove-cue', async (_event, cueId: string) => removeAudioCue(cueId));
+  ipcMain.handle('audio:upload-template-cue', async (_event, cue: AudioCue) => uploadStandaloneAudioCue(cue));
+  ipcMain.handle('audio:remove-template-cue', async (_event, cue: AudioCue) => clearStandaloneAudioCue(cue));
   ipcMain.handle('audio:generate-host-cue', async (_event, cueId: string) => generateHostVoiceCue(cueId));
+  ipcMain.handle('audio:generate-template-host-cue', async (_event, cue: AudioCue) => generateStandaloneHostVoiceCue(cue));
   ipcMain.handle('audio:generate-all-host-cues', async () => generateAllHostVoiceCues());
   ipcMain.handle('template:upload', async (_event, request: TemplateUploadRequest) => uploadTemplate(request));
   ipcMain.handle('template:update', async (_event, design: TemplateDesign) => updateTemplate(design));
+  ipcMain.handle('template-layout:update', async (_event, layout: TemplateLayout) => updateTemplateLayout(layout));
+  ipcMain.handle('template-layout:delete', async (_event, templateId: string) => deleteTemplateLayout(templateId));
+  ipcMain.handle('template-layout:export', async (_event, templateId: string) => exportTemplatePackage(templateId));
+  ipcMain.handle('template-layout:import', async () => importTemplatePackage());
   ipcMain.handle('template:update-asset', async (_event, designId: string, role: TemplateAssetRole) => updateTemplateAsset(designId, role));
   ipcMain.handle('template:delete', async (_event, designId: string) => deleteTemplate(designId));
   ipcMain.handle('face-asset-pack:update', async (_event, pack: FaceAssetPack) => updateFaceAssetPack(pack));
@@ -2067,7 +2557,7 @@ app.whenReady().then(async () => {
     void processAiQueueItem(item.id);
     return { item, fallback: false };
   });
-  ipcMain.handle('template:save-guide', async (_event, styleId: TemplateStyleId, dataUrl: string) => saveGuideTemplate(styleId, dataUrl));
+  ipcMain.handle('template:save-guide', async (_event, templateId: string, dataUrl: string) => saveGuideTemplate(templateId, dataUrl));
   ipcMain.handle('window:open-admin', async () => {
     if (adminWindow) {
       adminWindow.focus();
@@ -2134,6 +2624,9 @@ app.whenReady().then(async () => {
   });
   ipcMain.handle('image:update-gallery-url', async (_event, filePath: string, galleryUrl: string) => {
     return updatePhotoGalleryUrl(filePath, galleryUrl);
+  });
+  ipcMain.handle('image:update-phone-number', async (_event, filePath: string, phoneNumber: string) => {
+    return updatePhotoPhoneNumber(filePath, phoneNumber);
   });
   ipcMain.handle('image:data-url', async (_event, filePath: string) => imageFileToDataUrl(filePath));
   ipcMain.handle('audio:data-url', async (_event, filePath: string) => audioFileToDataUrl(filePath));

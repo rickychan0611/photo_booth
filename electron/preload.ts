@@ -4,6 +4,7 @@ import type {
   AiGenerateResult,
   AiQueueItem,
   AppSettings,
+  AudioCue,
   BackgroundGalleryUploadRequest,
   BackgroundGalleryUploadResult,
   BackgroundVideoUploadRequest,
@@ -13,7 +14,8 @@ import type {
   HostVoiceGenerateResult,
   TemplateAssetRole,
   TemplateDesign,
-  TemplateStyleId,
+  TemplateExportResult,
+  TemplateLayout,
   TemplateUploadRequest,
   SaveImageRequest,
   SaveImageResult,
@@ -31,14 +33,27 @@ const api = {
     ipcRenderer.invoke('audio:upload-cue', cueId) as Promise<AppSettings>,
   removeAudioCue: (cueId: string) =>
     ipcRenderer.invoke('audio:remove-cue', cueId) as Promise<AppSettings>,
+  uploadTemplateAudioCue: (cue: AudioCue) =>
+    ipcRenderer.invoke('audio:upload-template-cue', cue) as Promise<AudioCue | null>,
+  removeTemplateAudioCue: (cue: AudioCue) =>
+    ipcRenderer.invoke('audio:remove-template-cue', cue) as Promise<AudioCue>,
   generateHostVoiceCue: (cueId: string) =>
     ipcRenderer.invoke('audio:generate-host-cue', cueId) as Promise<HostVoiceGenerateResult>,
+  generateTemplateHostVoiceCue: (cue: AudioCue) =>
+    ipcRenderer.invoke('audio:generate-template-host-cue', cue) as Promise<HostVoiceGenerateResult>,
   generateAllHostVoiceCues: () =>
     ipcRenderer.invoke('audio:generate-all-host-cues') as Promise<HostVoiceGenerateResult>,
   uploadTemplate: (request: TemplateUploadRequest) =>
     ipcRenderer.invoke('template:upload', request) as Promise<TemplateDesign | null>,
   deleteTemplate: (designId: string) => ipcRenderer.invoke('template:delete', designId) as Promise<boolean>,
   updateTemplate: (design: TemplateDesign) => ipcRenderer.invoke('template:update', design) as Promise<TemplateDesign>,
+  updateTemplateLayout: (layout: TemplateLayout) =>
+    ipcRenderer.invoke('template-layout:update', layout) as Promise<AppSettings>,
+  deleteTemplateLayout: (templateId: string) =>
+    ipcRenderer.invoke('template-layout:delete', templateId) as Promise<AppSettings>,
+  exportTemplate: (templateId: string) =>
+    ipcRenderer.invoke('template-layout:export', templateId) as Promise<TemplateExportResult>,
+  importTemplate: () => ipcRenderer.invoke('template-layout:import') as Promise<AppSettings>,
   updateTemplateAsset: (designId: string, role: TemplateAssetRole) =>
     ipcRenderer.invoke('template:update-asset', designId, role) as Promise<TemplateDesign | null>,
   uploadFaceAsset: (packId: string) =>
@@ -59,8 +74,8 @@ const api = {
   generateAiFinal: (request: AiGenerateRequest) =>
     ipcRenderer.invoke('ai:generate-final', request) as Promise<AiGenerateResult>,
   getImageSize: (filePath: string) => ipcRenderer.invoke('image:size', filePath) as Promise<{ width: number; height: number }>,
-  saveGuideTemplate: (styleId: TemplateStyleId, dataUrl: string) =>
-    ipcRenderer.invoke('template:save-guide', styleId, dataUrl) as Promise<string>,
+  saveGuideTemplate: (templateId: string, dataUrl: string) =>
+    ipcRenderer.invoke('template:save-guide', templateId, dataUrl) as Promise<string>,
   openAdmin: () => ipcRenderer.invoke('window:open-admin') as Promise<boolean>,
   openGuest: () => ipcRenderer.invoke('window:open-guest') as Promise<boolean>,
   openGuestPickerPreview: () => ipcRenderer.invoke('window:open-guest-picker-preview') as Promise<boolean>,
@@ -89,6 +104,8 @@ const api = {
   saveImage: (request: SaveImageRequest) => ipcRenderer.invoke('image:save', request) as Promise<SaveImageResult>,
   updatePhotoGalleryUrl: (filePath: string, galleryUrl: string) =>
     ipcRenderer.invoke('image:update-gallery-url', filePath, galleryUrl) as Promise<boolean>,
+  updatePhotoPhoneNumber: (filePath: string, phoneNumber: string) =>
+    ipcRenderer.invoke('image:update-phone-number', filePath, phoneNumber) as Promise<boolean>,
   getImageDataUrl: (filePath: string) => ipcRenderer.invoke('image:data-url', filePath) as Promise<string>,
   getAudioDataUrl: (filePath: string) => ipcRenderer.invoke('audio:data-url', filePath) as Promise<string>,
   listGallery: () => ipcRenderer.invoke('gallery:list') as Promise<Gallery>,

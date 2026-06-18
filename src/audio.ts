@@ -51,8 +51,8 @@ export const stopAllAudio = () => {
   [...activeAudio.keys()].forEach(stopAudioCue);
 };
 
-export const playAudioCue = async (settings: AppSettings, cueId: string, fallbackText = '') => {
-  const cue = settings.audio.cues[cueId];
+export const playAudioCueObject = async (settings: AppSettings, cue: AudioCue | undefined, fallbackText = '') => {
+  const cueId = cue?.id ?? '';
   if (!settings.audio.enabled || !cue?.enabled || cue.mode === 'off') {
     if (cue?.channel === 'voice') stopAudioChannel('voice');
     else stopAudioCue(cueId);
@@ -107,3 +107,6 @@ export const playAudioCue = async (settings: AppSettings, cueId: string, fallbac
     return;
   }
 };
+
+export const playAudioCue = async (settings: AppSettings, cueId: string, fallbackText = '') =>
+  playAudioCueObject(settings, settings.audio.cues[cueId], fallbackText);

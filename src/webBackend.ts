@@ -55,11 +55,16 @@ export async function createBoothGallerySession(settings: AppSettings): Promise<
   };
 }
 
-export async function completeBoothSession(settings: AppSettings, ticketId: string) {
+export async function completeBoothSession(
+  settings: AppSettings,
+  ticketId: string,
+  phoneNumber?: string,
+  marketingConsent?: boolean
+) {
   const response = await fetch(webApiUrl(settings, '/api/booth/complete-session'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ eventId: settings.eventId, ticketId })
+    body: JSON.stringify({ eventId: settings.eventId, ticketId, phoneNumber, marketingConsent })
   });
 
   return parseResponse<{ ticket: BoothSession['ticket'] }>(response);

@@ -1,5 +1,7 @@
 export type TemplateStyleId = 'style1' | 'style2' | 'style3' | 'style4';
 
+export type TemplateOrientation = 'portrait' | 'landscape';
+
 export type TemplateSlot = {
   x: number;
   y: number;
@@ -7,6 +9,7 @@ export type TemplateSlot = {
   height: number;
   sourceIndex: number;
   cropY?: 'center' | 'top';
+  rotation?: 0 | 90 | 180 | 270;
 };
 
 export type TemplateStyleDefinition = {
@@ -16,6 +19,31 @@ export type TemplateStyleDefinition = {
   selectCount: number;
   printCopies: number;
   slots: TemplateSlot[];
+};
+
+export type TemplatePhotoWindow = TemplateSlot;
+
+export type TemplateWorkflowSettings = {
+  introMessage: string;
+  introMs: number;
+  printAutoSelectMs: number;
+  thankYouMessage: string;
+  thankYouMs: number;
+  screenCues?: Partial<Record<'intro' | 'select' | 'thanks', AudioCue>>;
+  shots: WorkflowShotSettings[];
+};
+
+export type TemplateLayout = {
+  id: string;
+  name: string;
+  orientation: TemplateOrientation;
+  paperWidth: number;
+  paperHeight: number;
+  photoWindows: TemplatePhotoWindow[];
+  workflowDefaults: TemplateWorkflowSettings;
+  printerName: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type AiPreset = {
@@ -58,7 +86,8 @@ export type AiQueueStatus = 'queued' | 'generating' | 'requested' | 'done' | 'fa
 export type AiQueueItem = {
   id: string;
   status: AiQueueStatus;
-  styleId: TemplateStyleId;
+  templateId: string;
+  styleId?: TemplateStyleId;
   designId: string;
   presetId: string;
   provider: AiProvider;
@@ -76,7 +105,8 @@ export type AiQueueItem = {
 
 export type TemplateDesign = {
   id: string;
-  styleId: TemplateStyleId;
+  templateId: string;
+  styleId?: TemplateStyleId;
   name: string;
   filePath?: string;
   previewPath: string;
@@ -87,6 +117,8 @@ export type TemplateDesign = {
   faceTrackingEnabled: boolean;
   faceAssetPackId: string;
   videoRecordingEnabled: boolean;
+  workflowOverrideEnabled?: boolean;
+  workflowOverride?: TemplateWorkflowSettings;
   createdAt: string;
   updatedAt: string;
 };
@@ -124,8 +156,10 @@ export type TemplateSettings = {
   logoPath: string;
   framePath: string;
   styleVersion: number;
-  selectedStyleId: TemplateStyleId;
+  selectedTemplateId: string;
+  selectedStyleId?: TemplateStyleId;
   selectedDesignId: string;
+  layouts: TemplateLayout[];
   aiPresets: AiPreset[];
   faceAssetPacks: FaceAssetPack[];
   designs: TemplateDesign[];
@@ -147,6 +181,7 @@ export type AppSettings = {
   cameraControls: CameraControlSettings;
   defaultPrinter: string;
   stylePrinters: StylePrinterSettings;
+  printerEnabled: boolean;
   silentPrint: boolean;
   adminPassword: string;
   ai: AiSettings;
@@ -193,6 +228,7 @@ export type HostVoiceGenerateResult = {
   ok: boolean;
   settings: AppSettings;
   generatedPath?: string;
+  cue?: AudioCue;
   error?: string;
 };
 
@@ -221,6 +257,7 @@ export type WorkflowShotSettings = {
   cameraBeforeMessageMs: number;
   messageMs: number;
   cameraBeforeCountdownMs: number;
+  audioCue?: AudioCue;
 };
 
 export type WorkflowSettings = {
@@ -256,10 +293,12 @@ export type SavedPhoto = {
   thumbPath?: string;
   type: 'original' | 'final';
   createdAt: string;
+  templateId?: string;
   styleId?: TemplateStyleId;
   designId?: string;
   printerName?: string;
   galleryUrl?: string;
+  phoneNumber?: string;
 };
 
 export type Gallery = {
@@ -271,10 +310,12 @@ export type SaveImageRequest = {
   dataUrl: string;
   kind: 'original' | 'final';
   filenamePrefix?: string;
+  templateId?: string;
   styleId?: TemplateStyleId;
   designId?: string;
   printerName?: string;
   galleryUrl?: string;
+  phoneNumber?: string;
 };
 
 export type SaveImageResult = {
@@ -284,7 +325,8 @@ export type SaveImageResult = {
 
 export type AiGenerateRequest = {
   dataUrl: string;
-  styleId: TemplateStyleId;
+  templateId: string;
+  styleId?: TemplateStyleId;
   designId: string;
   presetId: string;
   printerName?: string;
@@ -313,6 +355,7 @@ export type QueueTicket = {
   payment_status: 'paid' | 'pending' | 'refunded' | 'failed';
   payment_method: string;
   gallery_token_lookup?: string;
+  marketing_consent?: boolean | null;
 };
 
 export type QueueEvent = {
@@ -359,6 +402,8 @@ export type BackgroundGalleryUploadRequest = {
   ticketId: string;
   galleryUrl: string;
   finalPath: string;
+  phoneNumber?: string;
+  marketingConsent?: boolean;
 };
 
 export type BackgroundGalleryUploadResult = {
@@ -394,8 +439,14 @@ export type GalleryUploadStatus = {
 export type PrintLayout = 'single' | 'grid' | 'ai' | 'future';
 
 export type TemplateUploadRequest = {
-  styleId: TemplateStyleId;
+  templateId: string;
   name?: string;
 };
 
 export type TemplateAssetRole = 'preview' | 'frame';
+
+export type TemplateExportResult = {
+  ok: boolean;
+  filePath?: string;
+  error?: string;
+};

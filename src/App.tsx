@@ -1,15 +1,24 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import QRCode from 'qrcode';
-import { Camera, Download, Expand, ExternalLink, FolderOpen, Globe, Image, Minimize2, Printer, RefreshCw, Settings, SlidersHorizontal, Sparkles, Trash2, X } from 'lucide-react';
-import type { AiPreset, AiProvider, AiQueueItem, AppSettings, AudioCue, BoothSession, CameraControlSettings, CameraRotation, Capture, FaceAsset, FaceAssetPack, FaceAssetPlacement, Gallery, GalleryUploadStatus, QueueSnapshot, SavedPhoto, TemplateDesign, TemplateSlot, TemplateStyleId } from './types';
-import { createGuideTemplateImage, createTemplatedPrintImage, getPrimarySlot, getTemplateStyle, PRINT_HEIGHT, PRINT_WIDTH, TEMPLATE_HEIGHT, TEMPLATE_STYLES, TEMPLATE_WIDTH } from './template';
+import { Camera, Copy, Download, Expand, ExternalLink, FolderOpen, Globe, Image, Minimize2, Printer, RefreshCw, RotateCw, Settings, SlidersHorizontal, Sparkles, Trash2, X } from 'lucide-react';
+import type { AiPreset, AiProvider, AiQueueItem, AppSettings, AudioCue, BoothSession, CameraControlSettings, CameraRotation, Capture, FaceAsset, FaceAssetPack, FaceAssetPlacement, Gallery, GalleryUploadStatus, QueueSnapshot, SavedPhoto, TemplateDesign, TemplateLayout, TemplateSlot, TemplateWorkflowSettings } from './types';
+import { createBlankTemplateLayout, createGuideTemplateImage, createTemplatedPrintImage, defaultTemplateScreenCue, defaultTemplateShotAudioCue, getPrimarySlot, normalizeTemplateLayoutForClient, normalizeTemplateWorkflow, templateDimensions } from './template';
 import { FaceAssetStabilizer, FaceTracker, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceDebugInfo, selectedFaceAssetPack } from './faceAssets';
-import { playAudioCue, stopAllAudio, stopAudioChannel, stopAudioCue } from './audio';
+import { playAudioCue, playAudioCueObject, stopAllAudio, stopAudioChannel, stopAudioCue } from './audio';
 import { createBoothGallerySession, createQueueRealtimeClient, fetchQueueSnapshot, isRealtimeConfigured, isWebQueueConfigured, publicWebUrl, validateBoothCode } from './webBackend';
 
 type GuestStep = 'queue' | 'welcome' | 'style' | 'design' | 'intro' | 'capture' | 'select' | 'thanks';
 
 const buttonText = (value: string) => `[ ${value} ]`;
+const PHONE_MAX_DIGITS = 15;
+
+function formatPhoneNumber(value: string) {
+  const digits = value.replace(/\D/g, '').slice(0, PHONE_MAX_DIGITS);
+  if (digits.length <= 3) return digits;
+  if (digits.length <= 6) return `${digits.slice(0, 3)} ${digits.slice(3)}`;
+  if (digits.length <= 10) return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6)}`;
+  return `+${digits.slice(0, digits.length - 10)} ${digits.slice(-10, -7)} ${digits.slice(-7, -4)} ${digits.slice(-4)}`;
+}
 
 function useSettings() {
   const [settings, setSettings] = useState<AppSettings | null>(null);
@@ -52,9 +61,8 @@ function GuestApp() {
   const [error, setError] = useState('');
   const [captures, setCaptures] = useState<Capture[]>([]);
   const [selectedCaptureIndexes, setSelectedCaptureIndexes] = useState<number[]>([]);
-  const [selectedStyleId, setSelectedStyleId] = useState<TemplateStyleId>('style1');
+  const [selectedTemplateId, setSelectedTemplateId] = useState('');
   const [selectedDesignId, setSelectedDesignId] = useState('');
-  const [printCountdown, setPrintCountdown] = useState<number | null>(null);
   const [thankYouCountdown, setThankYouCountdown] = useState<number | null>(null);
   const [printedPreview, setPrintedPreview] = useState('');
   const [printedNumber, setPrintedNumber] = useState('');
@@ -71,6 +79,11 @@ function GuestApp() {
   const [uploadMessage, setUploadMessage] = useState('');
   const [galleryQrDataUrl, setGalleryQrDataUrl] = useState('');
   const [sessionGalleryUrl, setSessionGalleryUrl] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneSubmitted, setPhoneSubmitted] = useState(false);
+  const [phoneEntryMessage, setPhoneEntryMessage] = useState('');
+  const [galleryConsent, setGalleryConsent] = useState(true);
+  const [marketingConsent, setMarketingConsent] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const faceOverlayCanvasRef = useRef<HTMLCanvasElement>(null);
   const captureGuideRef = useRef<HTMLDivElement>(null);
@@ -83,9 +96,16 @@ function GuestApp() {
   const pendingVideoPathRef = useRef<string | null>(null);
   const pendingVideoTicketIdRef = useRef<string | null>(null);
   const isUploadingSessionVideoRef = useRef(false);
+  const pendingGalleryUploadRef = useRef<{ settings: AppSettings; session: BoothSession | null; finalPath: string } | null>(null);
   const lastShortcutRef = useRef('');
   const sessionRunRef = useRef(0);
   const queueModeEnabled = Boolean(settings?.staffControlQueueMode);
+  const templateLayouts = settings?.template.layouts.map(normalizeTemplateLayoutForClient) ?? [];
+  const activeTemplateIds = new Set(templateLayouts.map((layout) => layout.id));
+  const activeDesigns = settings?.template.designs.filter((design) => design.active && activeTemplateIds.has(design.templateId)) ?? [];
+  const selectedTemplate = templateLayouts.find((layout) => layout.id === selectedTemplateId) ?? templateLayouts[0] ?? null;
+  const selectedDesign = activeDesigns.find((design) => design.id === selectedDesignId) ?? null;
+  const selectedWorkflow = selectedTemplate ? workflowForDesign(selectedTemplate, selectedDesign) : null;
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -177,48 +197,55 @@ function GuestApp() {
     const cueByStep: Partial<Record<GuestStep, string>> = {
       welcome: 'welcome',
       style: 'style',
-      design: 'design',
-      intro: 'intro',
-      select: 'select',
-      thanks: 'thanks'
+      design: 'design'
     };
     if (step !== 'welcome') stopAudioCue('welcome');
     const cueId = cueByStep[step];
     if (cueId) void playAudioCue(settings, cueId);
-  }, [settings?.audio, step]);
+    if (step === 'intro') void playAudioCueObject(settings, selectedWorkflow?.screenCues?.intro, selectedWorkflow?.introMessage);
+    if (step === 'select') void playAudioCueObject(settings, selectedWorkflow?.screenCues?.select);
+    if (step === 'thanks') void playAudioCueObject(settings, selectedWorkflow?.screenCues?.thanks, selectedWorkflow?.thankYouMessage);
+  }, [selectedWorkflow, settings?.audio, step]);
 
   useEffect(() => {
-    if (step !== 'thanks') {
+    if (step !== 'thanks' || !phoneSubmitted) {
       setThankYouCountdown(null);
       return undefined;
     }
-    const totalSeconds = Math.ceil((settings?.workflow.thankYouMs ?? 3000) / 1000);
-    setThankYouCountdown(totalSeconds);
-    const countdownTimer = window.setInterval(() => {
+    const totalMs = selectedWorkflow?.thankYouMs ?? settings?.workflow.thankYouMs ?? 3000;
+    const seconds = Math.max(1, Math.ceil(totalMs / 1000));
+    setThankYouCountdown(seconds);
+    const timer = window.setInterval(() => {
       setThankYouCountdown((current) => (current === null ? current : Math.max(0, current - 1)));
     }, 1000);
-    const timer = window.setTimeout(() => {
-      setCaptures([]);
-      setSelectedCaptureIndexes([]);
-      setPrintedPreview('');
-      setPrintedNumber('');
-      setIsAiGenerating(false);
-      setCountdown(null);
-      setCaptureMessage('');
-      setError('');
-      setQueueCode('');
-      setQueueMessage('');
-      setBoothSession(null);
-      setUploadMessage('');
-      setGalleryQrDataUrl('');
-      setSessionGalleryUrl('');
-      setStep(queueModeEnabled ? 'queue' : 'welcome');
-    }, settings?.workflow.thankYouMs ?? 3000);
-    return () => {
-      window.clearTimeout(timer);
-      window.clearInterval(countdownTimer);
-    };
-  }, [queueModeEnabled, settings, step]);
+    return () => window.clearInterval(timer);
+  }, [phoneSubmitted, selectedWorkflow?.thankYouMs, settings?.workflow.thankYouMs, step]);
+
+  useEffect(() => {
+    if (step !== 'thanks' || thankYouCountdown !== 0) return;
+    setCaptures([]);
+    setSelectedCaptureIndexes([]);
+    setPrintedPreview('');
+    setPrintedNumber('');
+    setIsAiGenerating(false);
+    setCountdown(null);
+    setCaptureMessage('');
+    setError('');
+    setQueueCode('');
+    setQueueMessage('');
+    setBoothSession(null);
+    setUploadMessage('');
+    setGalleryQrDataUrl('');
+    setSessionGalleryUrl('');
+    setPhoneNumber('');
+    setPhoneSubmitted(false);
+    setPhoneEntryMessage('');
+    setGalleryConsent(true);
+    setMarketingConsent(true);
+    pendingGalleryUploadRef.current = null;
+    setThankYouCountdown(null);
+    setStep(queueModeEnabled ? 'queue' : 'welcome');
+  }, [queueModeEnabled, step, thankYouCountdown]);
 
   const resetGuestSession = () => {
     setCaptures([]);
@@ -235,6 +262,13 @@ function GuestApp() {
     setUploadMessage('');
     setGalleryQrDataUrl('');
     setSessionGalleryUrl('');
+    setPhoneNumber('');
+    setPhoneSubmitted(false);
+    setPhoneEntryMessage('');
+    setGalleryConsent(true);
+    setMarketingConsent(true);
+    setThankYouCountdown(null);
+    pendingGalleryUploadRef.current = null;
     setStep(queueModeEnabled ? 'queue' : 'welcome');
   };
 
@@ -252,10 +286,11 @@ function GuestApp() {
 
   useEffect(() => {
     if (!settings) return;
-    const firstActive = settings.template.designs.find((design) => design.active);
-    setSelectedStyleId(firstActive?.styleId ?? settings.template.selectedStyleId ?? 'style1');
+    const activeTemplateIds = new Set(settings.template.layouts.map((layout) => layout.id));
+    const firstActive = settings.template.designs.find((design) => design.active && activeTemplateIds.has(design.templateId));
+    setSelectedTemplateId(firstActive?.templateId ?? settings.template.selectedTemplateId ?? '');
     setSelectedDesignId(firstActive?.id ?? settings.template.selectedDesignId ?? '');
-  }, [settings?.template.designs, settings?.template.selectedStyleId, settings?.template.selectedDesignId]);
+  }, [settings?.template.designs, settings?.template.layouts, settings?.template.selectedTemplateId, settings?.template.selectedDesignId]);
 
   useEffect(() => {
     const releaseCamera = () => {
@@ -313,6 +348,18 @@ function GuestApp() {
     videoRef.current.srcObject = stream;
     await videoRef.current.play();
   };
+
+  useEffect(() => {
+    if (!settings || step !== 'welcome') return undefined;
+    let active = true;
+    void startCamera().catch((error) => {
+      if (active) console.warn('Welcome camera preview unavailable.', error);
+    });
+    return () => {
+      active = false;
+      stopCamera();
+    };
+  }, [settings, step]);
 
   const pickRecorderMimeType = () => {
     const candidates = [
@@ -476,14 +523,7 @@ function GuestApp() {
     return true;
   };
 
-  const activeDesigns = settings?.template.designs.filter((design) => design.active) ?? [];
-  const selectedStyle = getTemplateStyle(selectedStyleId);
-  const selectedDesign = activeDesigns.find((design) => design.id === selectedDesignId) ?? null;
   const activeFacePack = settings && selectedDesign ? selectedFaceAssetPack(settings, selectedDesign) : null;
-  const selectedPhotoDataUrls = selectedCaptureIndexes
-    .slice(0, selectedStyle.selectCount)
-    .map((index) => captures[index]?.dataUrl)
-    .filter(Boolean) as string[];
 
   useEffect(() => {
     const canvas = faceOverlayCanvasRef.current;
@@ -548,10 +588,10 @@ function GuestApp() {
     };
   }, [activeFacePack, settings?.cameraRotation, settings?.mirrorPreview, showFaceDebug, step]);
 
-  const chooseStyle = (styleId: TemplateStyleId) => {
+  const chooseTemplate = (templateId: string) => {
     if (settings) void playAudioCue(settings, 'button');
-    const firstDesign = activeDesigns.find((design) => design.styleId === styleId);
-    setSelectedStyleId(styleId);
+    const firstDesign = activeDesigns.find((design) => design.templateId === templateId);
+    setSelectedTemplateId(templateId);
     setSelectedDesignId(firstDesign?.id ?? '');
     setSelectedCaptureIndexes([]);
     setStep(firstDesign ? 'design' : 'style');
@@ -559,10 +599,10 @@ function GuestApp() {
 
   const chooseDesign = (design: TemplateDesign) => {
     if (settings) void playAudioCue(settings, 'button');
-    setSelectedStyleId(design.styleId);
+    setSelectedTemplateId(design.templateId);
     setSelectedDesignId(design.id);
     setStep('intro');
-    void startSession(design.styleId, design);
+    void startSession(design.templateId, design);
   };
 
   const startUnqueuedFlow = () => {
@@ -603,9 +643,11 @@ function GuestApp() {
     }
   };
 
-  const startSession = async (styleId = selectedStyleId, design = selectedDesign) => {
+  const startSession = async (templateId = selectedTemplateId, design = selectedDesign) => {
     if (!settings || isBusy) return;
-    const style = getTemplateStyle(styleId);
+    const layout = templateLayouts.find((item) => item.id === templateId);
+    if (!layout) return;
+    const workflow = workflowForDesign(layout, design);
     const runId = sessionRunRef.current + 1;
     sessionRunRef.current = runId;
     setError('');
@@ -620,7 +662,7 @@ function GuestApp() {
 
     try {
       setStep('intro');
-      await delay(settings.workflow.introMs);
+      await delay(workflow.introMs);
       if (sessionRunRef.current !== runId) return;
       setStep('capture');
       await delay(100);
@@ -629,7 +671,7 @@ function GuestApp() {
         await startSessionRecording();
       }
 
-      const shotPlan = Array.from({ length: style.shotCount }, (_item, index) => settings.workflow.shots[index % settings.workflow.shots.length]);
+      const shotPlan = layout.photoWindows.map((_item, index) => workflow.shots[index % workflow.shots.length]);
       const nextCaptures: Capture[] = [];
 
       for (const shot of shotPlan) {
@@ -638,7 +680,7 @@ function GuestApp() {
         await delay(shot.cameraBeforeMessageMs);
         if (sessionRunRef.current !== runId) return;
         setCaptureMessage(shot.message);
-        void playAudioCue(settings, `shot${nextCaptures.length}`, shot.message);
+        void playAudioCueObject(settings, shot.audioCue, shot.message);
         setCaptureMessageFadeMs(shot.messageMs);
         await delay(shot.messageMs);
         if (sessionRunRef.current !== runId) return;
@@ -646,8 +688,8 @@ function GuestApp() {
         await delay(shot.cameraBeforeCountdownMs);
         if (!(await runCountdown(runId))) return;
         const capture = await captureFrame(
-          getPrimarySlot(style.id, nextCaptures.length),
-          liveViewUsesFullScreen(style.id)
+          getPrimarySlot(layout, nextCaptures.length),
+          false
         );
         void playAudioCue(settings, 'shutter');
         nextCaptures.push(capture);
@@ -657,14 +699,12 @@ function GuestApp() {
 
       stopSessionRecording();
       stopCamera();
-      const defaultIndexes = Array.from({ length: style.selectCount }, (_item, index) => index).filter((index) => index < nextCaptures.length);
+      const defaultIndexes = Array.from({ length: layout.photoWindows.length }, (_item, index) => index).filter((index) => index < nextCaptures.length);
       setSelectedCaptureIndexes(defaultIndexes);
-      if (styleNeedsSelection(style.id)) {
-        setStep('select');
-      } else if (design) {
-        await printCaptures(nextCaptures, defaultIndexes, style.id, design);
+      if (design) {
+        await printCaptures(nextCaptures, defaultIndexes, layout.id, design);
       } else {
-        setStep('select');
+        setStep('thanks');
       }
     } catch {
       stopSessionRecording();
@@ -681,20 +721,26 @@ function GuestApp() {
   const printCaptures = async (
     sourceCaptures: Capture[],
     indexes: number[],
-    styleId: TemplateStyleId,
+    templateId: string,
     design: TemplateDesign
   ) => {
     if (!settings) return;
-    const style = getTemplateStyle(styleId);
+    const layout = templateLayouts.find((item) => item.id === templateId);
+    if (!layout) return;
     const photoDataUrls = indexes
-      .slice(0, style.selectCount)
+      .slice(0, layout.photoWindows.length)
       .map((index) => sourceCaptures[index]?.dataUrl)
       .filter(Boolean) as string[];
-    if (photoDataUrls.length < style.selectCount) return;
+    if (photoDataUrls.length < layout.photoWindows.length) return;
     setIsBusy(true);
     stopAudioChannel('voice');
     setPrintedPreview('');
     setPrintedNumber('');
+    setUploadMessage('');
+    setPhoneNumber('');
+    setPhoneSubmitted(false);
+    setPhoneEntryMessage('');
+    pendingGalleryUploadRef.current = null;
     setIsAiGenerating(design.usesAi);
     setStep('thanks');
 
@@ -723,29 +769,32 @@ function GuestApp() {
         setGalleryQrDataUrl(uploadQrDataUrl);
       }
 
-      let dataUrl = await createTemplatedPrintImage(photoDataUrls, style.id, design, templateDataUrl);
+      let dataUrl = await createTemplatedPrintImage(photoDataUrls, layout, design, templateDataUrl);
       if (uploadGalleryUrl && uploadQrDataUrl) {
         dataUrl = await addQrToPrintDataUrl(dataUrl, uploadQrDataUrl);
       }
-      const printerName = printerForStyle(settings, style.id);
+      const printerName = printerForTemplate(settings, layout);
       if (design.usesAi && design.aiPresetId) {
-        await window.photoBooth.generateAiFinal({
+        const result = await window.photoBooth.generateAiFinal({
           dataUrl,
-          styleId: style.id,
+          templateId: layout.id,
           designId: design.id,
           presetId: design.aiPresetId,
           printerName
         });
-        setPrintedPreview(dataUrl);
+        setPrintedPreview(result.dataUrl ?? dataUrl);
+        if (result.saved) {
+          setPrintedNumber(photoNumber(result.saved.name));
+          pendingGalleryUploadRef.current = { settings, session: uploadSession, finalPath: result.saved.path };
+        }
         setIsAiGenerating(false);
-        if (uploadSession) void flushSessionVideoUpload(uploadSession.ticket.id);
         return;
       }
       const saved = await window.photoBooth.saveImage({
         dataUrl,
         kind: 'final',
         filenamePrefix: 'final',
-        styleId: style.id,
+        templateId: layout.id,
         designId: design.id,
         printerName
       });
@@ -754,17 +803,23 @@ function GuestApp() {
       setIsAiGenerating(false);
       console.log('[gallery-upload] final photo saved', { path: saved.path, hasUploadSession: Boolean(uploadSession) });
       if (uploadSession) {
-        console.log('[gallery-upload] starting background upload', { ticketId: uploadSession.ticket.id, galleryUrl: uploadSession.galleryUrl });
-        void startBackgroundGalleryUpload(settings, uploadSession, saved.path);
+        console.log('[gallery-upload] final upload waiting for phone entry', { ticketId: uploadSession.ticket.id, galleryUrl: uploadSession.galleryUrl });
+        pendingGalleryUploadRef.current = { settings, session: uploadSession, finalPath: saved.path };
       } else if (isWebQueueConfigured(settings) && !settings.boothSecret.trim()) {
+        pendingGalleryUploadRef.current = { settings, session: null, finalPath: saved.path };
         setUploadMessage('Gallery upload skipped: Booth secret is missing.');
         console.warn('[gallery-upload] skipped because booth secret is missing');
       } else {
+        pendingGalleryUploadRef.current = { settings, session: null, finalPath: saved.path };
         console.warn('[gallery-upload] skipped because web API or event ID is missing');
       }
-      void window.photoBooth.printImage(saved.path, printerName).then((result) => {
-        if (!result.ok) console.warn(result.error || 'Print canceled.');
-      });
+      if (settings.printerEnabled) {
+        void window.photoBooth.printImage(saved.path, printerName).then((result) => {
+          if (!result.ok) console.warn(result.error || 'Print canceled.');
+        });
+      } else {
+        console.log('[print] skipped because printer is off');
+      }
     };
 
     try {
@@ -774,28 +829,72 @@ function GuestApp() {
     }
   };
 
-  const printNow = async () => {
-    if (!settings || !selectedDesign || selectedPhotoDataUrls.length < selectedStyle.selectCount) return;
-    await printCaptures(captures, selectedCaptureIndexes, selectedStyle.id, selectedDesign);
-  };
-
   const startBackgroundGalleryUpload = async (
     currentSettings: AppSettings,
     session: BoothSession,
-    finalPath: string
+    finalPath: string,
+    phoneNumber?: string,
+    marketingConsentValue?: boolean
   ) => {
     try {
       setUploadMessage('Gallery upload is running in background...');
       await window.photoBooth.uploadFinalGallery({
         ticketId: session.ticket.id,
         galleryUrl: session.galleryUrl,
-        finalPath
+        finalPath,
+        phoneNumber,
+        marketingConsent: marketingConsentValue
       });
       void flushSessionVideoUpload(session.ticket.id);
       await refreshQueueSnapshot(currentSettings);
     } catch (error) {
       setUploadMessage(error instanceof Error ? `Upload failed: ${error.message}` : 'Upload failed.');
     }
+  };
+
+  const finishPhoneEntry = (options: { phoneNumber?: string; marketingConsentValue?: boolean }) => {
+    setPhoneEntryMessage('');
+    setPhoneSubmitted(true);
+    const pending = pendingGalleryUploadRef.current;
+    pendingGalleryUploadRef.current = null;
+    if (!pending) return;
+    const normalizedPhone = options.phoneNumber?.replace(/\D/g, '') ?? '';
+    if (normalizedPhone) {
+      void window.photoBooth.updatePhotoPhoneNumber(pending.finalPath, normalizedPhone).catch((error) => {
+        setUploadMessage(error instanceof Error ? `Could not save phone: ${error.message}` : 'Could not save phone.');
+      });
+    }
+    if (pending.session) {
+      void startBackgroundGalleryUpload(
+        pending.settings,
+        pending.session,
+        pending.finalPath,
+        normalizedPhone || undefined,
+        options.marketingConsentValue
+      );
+    }
+  };
+
+  const submitPhoneNumber = () => {
+    const normalizedPhone = phoneNumber.replace(/\D/g, '');
+    if (normalizedPhone.length < 7) {
+      setPhoneEntryMessage('Please enter a valid phone number.');
+      return;
+    }
+    if (!galleryConsent && !marketingConsent) {
+      setPhoneEntryMessage('Please agree to at least one option or tap Skip.');
+      return;
+    }
+    finishPhoneEntry({ phoneNumber: normalizedPhone, marketingConsentValue: marketingConsent });
+  };
+
+  const skipPhoneEntry = () => {
+    finishPhoneEntry({ marketingConsentValue: false });
+  };
+
+  const appendPhoneDigit = (digit: string) => {
+    setPhoneEntryMessage('');
+    setPhoneNumber((current) => `${current}${digit}`.replace(/\D/g, '').slice(0, PHONE_MAX_DIGITS));
   };
 
   const openPickerPreview = async () => {
@@ -819,16 +918,21 @@ function GuestApp() {
           : createPickerPlaceholderCaptures(settings);
       setCaptures(previewCaptures);
       const firstDesign = activeDesigns[0];
-      const style = getTemplateStyle(firstDesign?.styleId ?? 'style1');
-      setSelectedStyleId(style.id);
+      const layout = templateLayouts.find((item) => item.id === firstDesign?.templateId) ?? templateLayouts[0];
+      if (!layout) throw new Error('No template ready.');
+      setSelectedTemplateId(layout.id);
       setSelectedDesignId(firstDesign?.id ?? '');
-      setSelectedCaptureIndexes(Array.from({ length: style.selectCount }, (_item, index) => index).filter((index) => index < previewCaptures.length));
+      setSelectedCaptureIndexes(Array.from({ length: layout.photoWindows.length }, (_item, index) => index).filter((index) => index < previewCaptures.length));
       setPrintedPreview('');
       setPrintedNumber('');
       setIsAiGenerating(false);
       setCountdown(null);
       setCaptureMessage('');
-      setStep('select');
+      if (firstDesign) {
+        await printCaptures(previewCaptures, Array.from({ length: layout.photoWindows.length }, (_item, index) => index), layout.id, firstDesign);
+      } else {
+        setStep('thanks');
+      }
     } catch {
       setError('PREVIEW NOT READY');
       setStep('welcome');
@@ -836,28 +940,6 @@ function GuestApp() {
       setIsBusy(false);
     }
   };
-
-  useEffect(() => {
-    if (!settings || step !== 'select') {
-      setPrintCountdown(null);
-      return undefined;
-    }
-    const seconds = Math.ceil(settings.workflow.printAutoSelectMs / 1000);
-    if (seconds <= 0) {
-      setPrintCountdown(null);
-      return undefined;
-    }
-    setPrintCountdown(seconds);
-    const timer = window.setInterval(() => {
-      setPrintCountdown((current) => (current === null ? current : Math.max(0, current - 1)));
-    }, 1000);
-    return () => window.clearInterval(timer);
-  }, [settings, step]);
-
-  useEffect(() => {
-    if (step !== 'select' || printCountdown !== 0 || isBusy || captures.length < 4) return;
-    void printNow();
-  }, [captures.length, isBusy, printCountdown, step]);
 
   if (!settings) return <GuestShell><p className="quiet">LOADING</p></GuestShell>;
 
@@ -890,16 +972,24 @@ function GuestApp() {
 
       {step === 'welcome' && (
         <section className="welcome-screen">
-          <div>
-            <p className="brand">{settings.eventName || 'PHOTO BOOTH'}</p>
+          <video
+            ref={videoRef}
+            className={`welcome-live-feed${settings.mirrorPreview ? ' mirror' : ''}${settings.cameraRotation ? ` camera-rotate-${settings.cameraRotation}` : ''}`}
+            playsInline
+            muted
+          />
+          <div className="welcome-live-scrim" aria-hidden="true" />
+          <div className="welcome-brand-stack">
+            <img className="welcome-logo" src="/vibo-logo.png" alt="Vibo Booth" />
+            <p className="welcome-site">vibobooth.com</p>
             <button
-              className="booth-button primary"
+              className="booth-button primary welcome-start-button"
               onClick={() => {
                 startUnqueuedFlow();
               }}
               disabled={isBusy}
             >
-              {buttonText('START')}
+              TAP TO START
             </button>
           </div>
         </section>
@@ -907,16 +997,16 @@ function GuestApp() {
 
       {step === 'style' && (
         <section className="template-guest-screen">
-          <p className="instruction">CHOOSE A STYLE</p>
+          <p className="instruction">CHOOSE A TEMPLATE</p>
           {activeDesigns.length === 0 && <p className="quiet">ASK ADMIN TO ADD A TEMPLATE</p>}
           <div className="style-card-grid">
-            {TEMPLATE_STYLES.map((style) => {
-              const count = activeDesigns.filter((design) => design.styleId === style.id).length;
+            {templateLayouts.map((layout) => {
+              const count = activeDesigns.filter((design) => design.templateId === layout.id).length;
               return (
-                <button key={style.id} className="style-card" onClick={() => chooseStyle(style.id)} disabled={count === 0}>
-                  <TemplateMini styleId={style.id} />
-                  <span>{style.name.toUpperCase()}</span>
-                  <small>{style.shotCount} SHOTS / CHOOSE {style.selectCount}</small>
+                <button key={layout.id} className="style-card" onClick={() => chooseTemplate(layout.id)} disabled={count === 0}>
+                  <TemplateMini layout={layout} />
+                  <span>{layout.name.toUpperCase()}</span>
+                  <small>{layout.photoWindows.length} PHOTO{layout.photoWindows.length === 1 ? '' : 'S'}</small>
                   <small>{count} DESIGN{count === 1 ? '' : 'S'}</small>
                 </button>
               );
@@ -940,7 +1030,7 @@ function GuestApp() {
           <p className="ai-disclaimer">AI can make mistake, don't be serious :)</p>
           <div className="design-card-grid">
             {activeDesigns
-              .filter((design) => design.styleId === selectedStyleId)
+              .filter((design) => design.templateId === selectedTemplateId)
               .map((design) => (
                 <button key={design.id} className="design-card" onClick={() => chooseDesign(design)}>
                   <TemplateImagePreview design={design} />
@@ -953,7 +1043,7 @@ function GuestApp() {
 
       {step === 'intro' && (
         <section className="welcome-screen">
-          <p className="brand">{settings.workflow.introMessage.toUpperCase()}</p>
+          <p className="brand">{(selectedWorkflow?.introMessage ?? settings.workflow.introMessage).toUpperCase()}</p>
         </section>
       )}
 
@@ -974,10 +1064,10 @@ function GuestApp() {
           )}
           {!isCapturing && (
             <div className="capture-progress">
-              {captures.length + 1 <= selectedStyle.shotCount ? `${captures.length + 1} / ${selectedStyle.shotCount}` : `${selectedStyle.shotCount} / ${selectedStyle.shotCount}`}
+              {selectedTemplate ? `${Math.min(captures.length + 1, selectedTemplate.photoWindows.length)} / ${selectedTemplate.photoWindows.length}` : '0 / 0'}
             </div>
           )}
-          <div ref={captureGuideRef} className={`capture-guide-layer ${liveViewUsesFullScreen(selectedStyleId) ? 'full-screen' : ''}`} style={liveViewStyle(selectedStyleId, getPrimarySlot(selectedStyleId, captures.length))}>
+          <div ref={captureGuideRef} className="capture-guide-layer" style={slotGuideStyle(getPrimarySlot(selectedTemplate, captures.length))}>
             {!isCapturing && <div className="capture-print-guide" />}
           </div>
           {captureMessage && (
@@ -989,90 +1079,146 @@ function GuestApp() {
         </section>
       )}
 
-      {step === 'select' && (
-        <section className={`selection-screen ${getCameraOrientationClass(settings)}`}>
-          <p className="instruction">
-            {selectedStyle.selectCount === 1 ? 'PLEASE CHOOSE A PICTURE TO PRINT.' : `PLEASE CHOOSE ${selectedStyle.selectCount} PICTURES TO PRINT.`}
-          </p>
-          {selectedDesign && (
-            <div className="selected-template-pill">
-              <span>{selectedDesign.name.toUpperCase()}</span>
-              {selectedDesign.usesAi && <strong>AI</strong>}
-            </div>
-          )}
-
-          <div className={`selection-grid ${getCameraOrientationClass(settings)}`}>
-            {captures.map((photo, index) => (
-              <button
-                key={photo.path}
-                className={`selection-photo ${selectedCaptureIndexes.includes(index) ? 'selected' : ''}`}
-                style={slotGuideStyle(getPrimarySlot(selectedStyleId, Math.min(index, selectedStyle.selectCount - 1)))}
-                onClick={() => {
-                  void playAudioCue(settings, 'button');
-                  setSelectedCaptureIndexes(toggleSelectedIndex(selectedCaptureIndexes, index, selectedStyle.selectCount));
-                }}
-              >
-                <img src={photo.dataUrl} alt={`Captured photo ${index + 1}`} />
-              </button>
-            ))}
-          </div>
-          <button
-            className="booth-button primary selection-print-button"
-            onClick={() => {
-              void playAudioCue(settings, 'button');
-              void printNow();
-            }}
-            disabled={isBusy || selectedPhotoDataUrls.length < selectedStyle.selectCount}
-          >
-            {buttonText(isBusy ? 'PRINTING' : printCountdown && printCountdown > 0 ? `PRINT NOW ${printCountdown}` : 'PRINT NOW')}
-          </button>
-        </section>
-      )}
-
       {step === 'thanks' && (
         <section className="thanks-screen">
-          {thankYouCountdown !== null && (
-            <div className="thanks-top-actions">
-              <div className="thanks-countdown">{thankYouCountdown}</div>
-              <button
-                onClick={() => {
-                  void playAudioCue(settings, 'button');
-                  resetGuestSession();
-                }}
-              >
-                Restart
-              </button>
-            </div>
-          )}
+          <div className="thanks-top-actions">
+            <button
+              onClick={() => {
+                void playAudioCue(settings, 'button');
+                resetGuestSession();
+              }}
+            >
+              Restart
+            </button>
+          </div>
           {(printedPreview || isAiGenerating) && (
             <div className={`thanks-preview ${isAiGenerating ? 'generating' : ''}`}>
               {printedPreview && <img src={printedPreview} alt="Printed layout preview" />}
               {isAiGenerating && <span>GENERATING</span>}
             </div>
           )}
-          <p className="brand">{settings.workflow.thankYouMessage.toUpperCase()}</p>
-          {printedNumber && (
-            <div className="pickup-number">
-              <span>PHOTO NO.</span>
-              <strong>{printedNumber}</strong>
-              <span>REMEMBER IT TO FIND YOUR PIC</span>
-            </div>
-          )}
-          {galleryQrDataUrl && (
-            <div className="gallery-qr-card">
-              <img src={galleryQrDataUrl} alt="Gallery QR code" />
-              <span>Scan for gallery</span>
-            </div>
-          )}
-          {sessionGalleryUrl && <p className="gallery-url-text">{sessionGalleryUrl}</p>}
-          {uploadMessage && <p className="queue-message">{uploadMessage}</p>}
-          {(isAiGenerating || selectedDesign?.usesAi) && <p className="ai-disclaimer">AI can make mistake, don't be serious :)</p>}
-          {isAiGenerating && <p className="ai-wait-message">THIS WILL TAKE A BIT LONGER. PLEASE WAIT OUTSIDE NEAR THE PRINTING AREA.</p>}
+          <div className="thanks-content">
+            {!phoneSubmitted ? (
+              <>
+                <p className="thanks-copy">Enter your phone number to access your photo at <span className="thanks-site">vibobooth.com</span>.</p>
+                <div className="phone-entry-display">{formatPhoneNumber(phoneNumber) || 'Phone number'}</div>
+                <DigitKeypad
+                  disabled={isBusy || isAiGenerating}
+                  value={phoneNumber}
+                  onDigit={appendPhoneDigit}
+                  onClear={() => {
+                    setPhoneNumber('');
+                    setPhoneEntryMessage('');
+                  }}
+                  onBackspace={() => {
+                    setPhoneEntryMessage('');
+                    setPhoneNumber((current) => current.slice(0, -1));
+                  }}
+                />
+                <div className="phone-consent-list">
+                  <label className="phone-consent-row">
+                    <input
+                      type="checkbox"
+                      checked={galleryConsent}
+                      onChange={(event) => {
+                        setGalleryConsent(event.target.checked);
+                        setPhoneEntryMessage('');
+                      }}
+                      disabled={isBusy || isAiGenerating}
+                    />
+                    <span>I agree to use phone number to access my photo gallery</span>
+                  </label>
+                  <label className="phone-consent-row">
+                    <input
+                      type="checkbox"
+                      checked={marketingConsent}
+                      onChange={(event) => {
+                        setMarketingConsent(event.target.checked);
+                        setPhoneEntryMessage('');
+                      }}
+                      disabled={isBusy || isAiGenerating}
+                    />
+                    <span>I agree to receive promotional texts from Stephanie Wong. I can unsubscribe anytime.</span>
+                  </label>
+                </div>
+                <div className="phone-action-row">
+                  <button
+                    className="booth-button"
+                    onClick={submitPhoneNumber}
+                    disabled={
+                      isBusy ||
+                      isAiGenerating ||
+                      phoneNumber.replace(/\D/g, '').length < 7 ||
+                      (!galleryConsent && !marketingConsent)
+                    }
+                  >
+                    Submit
+                  </button>
+                  <button
+                    className="booth-button"
+                    onClick={skipPhoneEntry}
+                    disabled={isBusy || isAiGenerating}
+                  >
+                    Skip
+                  </button>
+                </div>
+                {phoneEntryMessage && <p className="phone-entry-message">{phoneEntryMessage}</p>}
+              </>
+            ) : (
+              <>
+                <p className="brand">THANK YOU!</p>
+                <p className="thanks-copy">
+                  {galleryQrDataUrl
+                    ? <>Scan the QR code to open your photo, or find it later at <span className="thanks-site">vibobooth.com</span> with your phone number.</>
+                    : 'Your photo has been saved.'}
+                </p>
+                {galleryQrDataUrl && (
+                  <div className="gallery-qr-card">
+                    <img src={galleryQrDataUrl} alt="Gallery QR code" />
+                  </div>
+                )}
+                {thankYouCountdown !== null && thankYouCountdown > 0 && (
+                  <div className="thanks-countdown" aria-label={`Returning in ${thankYouCountdown} seconds`}>
+                    {thankYouCountdown}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </section>
       )}
 
       {error && <p className="guest-error">{error}</p>}
     </GuestShell>
+  );
+}
+
+function DigitKeypad({
+  disabled,
+  value,
+  onDigit,
+  onBackspace,
+  onClear
+}: {
+  disabled?: boolean;
+  value: string;
+  onDigit: (digit: string) => void;
+  onBackspace: () => void;
+  onClear: () => void;
+}) {
+  return (
+    <div className="queue-keypad">
+      {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((digit) => (
+        <button key={digit} onClick={() => onDigit(digit)} disabled={disabled}>
+          {digit}
+        </button>
+      ))}
+      <button onClick={onClear} disabled={disabled || !value}>Clear</button>
+      <button onClick={() => onDigit('0')} disabled={disabled}>
+        0
+      </button>
+      <button onClick={onBackspace} disabled={disabled || !value}>Back</button>
+    </div>
   );
 }
 
@@ -1111,18 +1257,13 @@ function QueueEntryScreen({
       <div className="queue-keypad-panel">
         <p className="instruction">ENTER YOUR 4-DIGIT CODE</p>
         <div className="queue-code-display">{code.padEnd(4, '_')}</div>
-        <div className="queue-keypad">
-          {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((digit) => (
-            <button key={digit} onClick={() => onDigit(digit)} disabled={isBusy || !configured}>
-              {digit}
-            </button>
-          ))}
-          <button onClick={onClear} disabled={isBusy || !code}>Clear</button>
-          <button onClick={() => onDigit('0')} disabled={isBusy || !configured}>
-            0
-          </button>
-          <button onClick={onBackspace} disabled={isBusy || !code}>Back</button>
-        </div>
+        <DigitKeypad
+          disabled={isBusy || !configured}
+          value={code}
+          onDigit={onDigit}
+          onBackspace={onBackspace}
+          onClear={onClear}
+        />
         <button className="booth-button primary" onClick={onSubmit} disabled={isBusy || code.length !== 4 || !configured}>
           {buttonText(isBusy ? 'CHECKING' : 'START')}
         </button>
@@ -1149,34 +1290,21 @@ function GuestShell({
   );
 }
 
-function TemplateMini({ styleId }: { styleId: TemplateStyleId }) {
-  const style = getTemplateStyle(styleId);
+function TemplateMini({ layout }: { layout: TemplateLayout }) {
+  const normalized = normalizeTemplateLayoutForClient(layout);
   return (
-    <div className="template-mini">
-      {style.slots.map((slot, index) => (
+    <div className={`template-mini ${normalized.orientation}`}>
+      {normalized.photoWindows.map((slot, index) => (
         <span
           key={`${slot.x}-${slot.y}-${index}`}
           style={{
-            left: `${(slot.x / TEMPLATE_WIDTH) * 100}%`,
-            top: `${(slot.y / TEMPLATE_HEIGHT) * 100}%`,
-            width: `${(slot.width / TEMPLATE_WIDTH) * 100}%`,
-            height: `${(slot.height / TEMPLATE_HEIGHT) * 100}%`
+            left: `${(slot.x / normalized.paperWidth) * 100}%`,
+            top: `${(slot.y / normalized.paperHeight) * 100}%`,
+            width: `${(slot.width / normalized.paperWidth) * 100}%`,
+            height: `${(slot.height / normalized.paperHeight) * 100}%`
           }}
         />
       ))}
-    </div>
-  );
-}
-
-function GuestViewOverlay({ styleId }: { styleId: TemplateStyleId }) {
-  const slot = getPrimarySlot(styleId, 0);
-  return (
-    <div
-      className={`admin-guest-view-overlay ${liveViewUsesFullScreen(styleId) ? 'full-screen' : ''}`}
-      style={liveViewStyle(styleId, slot)}
-      aria-hidden="true"
-    >
-      <span />
     </div>
   );
 }
@@ -1198,7 +1326,545 @@ function TemplateImagePreview({ design }: { design: TemplateDesign }) {
     };
   }, [design.previewPath, design.framePath, design.filePath]);
 
-  return <div className="design-preview">{src ? <img src={src} alt={design.name} /> : <TemplateMini styleId={design.styleId} />}</div>;
+  return <div className="design-preview">{src ? <img src={src} alt={design.name} /> : null}</div>;
+}
+
+function TemplateDesignAdminCard({
+  design,
+  settings,
+  layout,
+  onSave,
+  onUpdateAsset,
+  onDelete,
+  onUploadTemplateAudioCue,
+  onRemoveTemplateAudioCue,
+  onGenerateTemplateCue
+}: {
+  design: TemplateDesign;
+  settings: AppSettings;
+  layout: TemplateLayout;
+  onSave: (design: TemplateDesign) => Promise<void>;
+  onUpdateAsset: (design: TemplateDesign, role: 'preview' | 'frame') => Promise<void>;
+  onDelete: (design: TemplateDesign) => Promise<void>;
+  onUploadTemplateAudioCue: (cue: AudioCue) => Promise<AudioCue>;
+  onRemoveTemplateAudioCue: (cue: AudioCue) => Promise<AudioCue>;
+  onGenerateTemplateCue: (cue: AudioCue, playAfterGenerate?: boolean) => Promise<AudioCue>;
+}) {
+  const workflow = workflowForDesign(layout, design);
+  return (
+    <article className="template-design-admin">
+      <TemplateImagePreview design={design} />
+      <input
+        value={design.name}
+        onChange={(event) => void onSave({ ...design, name: event.target.value })}
+      />
+      <label className="check-row">
+        <input
+          type="checkbox"
+          checked={design.active}
+          onChange={(event) => void onSave({ ...design, active: event.target.checked })}
+        />
+        Active
+      </label>
+      <label className="check-row">
+        <input
+          type="checkbox"
+          checked={design.usesAi}
+          onChange={(event) => void onSave({ ...design, usesAi: event.target.checked })}
+        />
+        AI frame
+      </label>
+      {design.usesAi && (
+        <label>
+          AI preset
+          <select
+            value={design.aiPresetId}
+            onChange={(event) => void onSave({ ...design, aiPresetId: event.target.value })}
+          >
+            <option value="">Choose preset</option>
+            {settings.template.aiPresets
+              .filter((preset) => preset.active)
+              .map((preset) => (
+                <option key={preset.id} value={preset.id}>{preset.name}</option>
+              ))}
+          </select>
+        </label>
+      )}
+      <label className="check-row">
+        <input
+          type="checkbox"
+          checked={design.faceTrackingEnabled}
+          onChange={(event) => void onSave({ ...design, faceTrackingEnabled: event.target.checked })}
+        />
+        Face assets
+      </label>
+      {design.faceTrackingEnabled && (
+        <label>
+          Asset pack
+          <select
+            value={design.faceAssetPackId}
+            onChange={(event) => void onSave({ ...design, faceAssetPackId: event.target.value })}
+          >
+            <option value="">Choose asset pack</option>
+            {settings.template.faceAssetPacks
+              .filter((pack) => pack.active)
+              .map((pack) => (
+                <option key={pack.id} value={pack.id}>{pack.name}</option>
+              ))}
+          </select>
+        </label>
+      )}
+      <label className="check-row">
+        <input
+          type="checkbox"
+          checked={design.videoRecordingEnabled}
+          onChange={(event) => void onSave({ ...design, videoRecordingEnabled: event.target.checked })}
+        />
+        Record session video
+      </label>
+      <label className="check-row">
+        <input
+          type="checkbox"
+          checked={Boolean(design.workflowOverrideEnabled)}
+          onChange={(event) =>
+            void onSave({
+              ...design,
+              workflowOverrideEnabled: event.target.checked,
+              workflowOverride: event.target.checked ? workflow : undefined
+            })
+          }
+        />
+        Override workflow
+      </label>
+      {design.workflowOverrideEnabled && (
+        <TemplateWorkflowEditor
+          workflow={workflow}
+          shotCount={layout.photoWindows.length}
+          cueScopeId={`design-${design.id}`}
+          settings={settings}
+          onChange={(workflowOverride) => void onSave({ ...design, workflowOverride })}
+          onUploadCue={onUploadTemplateAudioCue}
+          onRemoveCue={onRemoveTemplateAudioCue}
+          onGenerateCue={onGenerateTemplateCue}
+        />
+      )}
+      <div className="template-path-note">
+        <span>Preview: {shortPath(templatePreviewPath(design))}</span>
+        <span>Print frame: {shortPath(templateFramePath(design))}</span>
+      </div>
+      <div className="admin-actions">
+        <button onClick={() => void onUpdateAsset(design, 'preview')}>Upload preview</button>
+        <button onClick={() => void onUpdateAsset(design, 'frame')}>Upload print frame</button>
+        <button onClick={() => window.photoBooth.openFile(templateFramePath(design))}>Open frame</button>
+        <button className="danger" onClick={() => void onDelete(design)}>Delete</button>
+      </div>
+    </article>
+  );
+}
+
+function TemplateWorkflowEditor({
+  workflow,
+  shotCount,
+  cueScopeId,
+  settings,
+  onChange,
+  onUploadCue,
+  onRemoveCue,
+  onGenerateCue
+}: {
+  workflow: TemplateWorkflowSettings;
+  shotCount: number;
+  cueScopeId: string;
+  settings: AppSettings;
+  onChange: (workflow: TemplateWorkflowSettings) => void;
+  onUploadCue: (cue: AudioCue) => Promise<AudioCue>;
+  onRemoveCue: (cue: AudioCue) => Promise<AudioCue>;
+  onGenerateCue: (cue: AudioCue, playAfterGenerate?: boolean) => Promise<AudioCue>;
+}) {
+  const normalized = normalizeTemplateWorkflow(workflow, shotCount);
+  const updateShot = (index: number, partial: Partial<TemplateWorkflowSettings['shots'][number]>) => {
+    const shots = normalized.shots.map((shot, shotIndex) => (shotIndex === index ? { ...shot, ...partial } : shot));
+    onChange({ ...normalized, shots });
+  };
+  const screenCue = (cueId: 'intro' | 'select' | 'thanks') => {
+    const defaults = {
+      intro: defaultTemplateScreenCue(cueScopeId, 'intro', 'Intro screen voice', normalized.introMessage),
+      select: defaultTemplateScreenCue(cueScopeId, 'select', 'Photo selection voice', 'Please choose your favorite pictures to print.'),
+      thanks: defaultTemplateScreenCue(cueScopeId, 'thanks', 'Finish screen voice', normalized.thankYouMessage)
+    };
+    return {
+      ...defaults[cueId],
+      ...(normalized.screenCues?.[cueId] ?? {}),
+      id: normalized.screenCues?.[cueId]?.id || `${cueScopeId}-${cueId}`,
+      channel: 'voice' as const
+    };
+  };
+  const saveScreenCue = async (cueId: 'intro' | 'select' | 'thanks', cue: AudioCue) => {
+    onChange({
+      ...normalized,
+      screenCues: {
+        ...normalized.screenCues,
+        [cueId]: { ...cue, updatedAt: new Date().toISOString() }
+      }
+    });
+  };
+  const shotCue = (shot: TemplateWorkflowSettings['shots'][number], index: number) => ({
+    ...defaultTemplateShotAudioCue(cueScopeId, index, shot.message),
+    ...(shot.audioCue ?? {}),
+    id: shot.audioCue?.id || `${cueScopeId}-shot-${index}`,
+    label: `Picture ${index + 1} voice`,
+    channel: 'voice' as const,
+    text: shot.audioCue?.text ?? shot.message
+  });
+  const saveShotCue = async (index: number, cue: AudioCue) => {
+    updateShot(index, { audioCue: { ...cue, updatedAt: new Date().toISOString() } });
+  };
+  return (
+    <div className="workflow-shot template-workflow-panel">
+      <h2>Template workflow</h2>
+      <div className="workflow-grid">
+        <label>
+          Intro message
+          <input
+            value={normalized.introMessage}
+            onChange={(event) =>
+              onChange({
+                ...normalized,
+                introMessage: event.target.value,
+                screenCues: {
+                  ...normalized.screenCues,
+                  intro: { ...screenCue('intro'), text: event.target.value }
+                }
+              })
+            }
+          />
+        </label>
+        <label>
+          Intro seconds
+          <input type="number" min="0" step="0.5" value={msToSeconds(normalized.introMs)} onChange={(event) => onChange({ ...normalized, introMs: secondsToMs(event.target.value) })} />
+        </label>
+        <label>
+          Auto print seconds
+          <input type="number" min="0" step="1" value={msToSeconds(normalized.printAutoSelectMs)} onChange={(event) => onChange({ ...normalized, printAutoSelectMs: secondsToMs(event.target.value) })} />
+        </label>
+        <label>
+          Thank you seconds
+          <input type="number" min="1" step="0.5" value={msToSeconds(normalized.thankYouMs)} onChange={(event) => onChange({ ...normalized, thankYouMs: secondsToMs(event.target.value) })} />
+        </label>
+      </div>
+      <label>
+        Thank you message
+        <input
+          value={normalized.thankYouMessage}
+          onChange={(event) =>
+            onChange({
+              ...normalized,
+              thankYouMessage: event.target.value,
+              screenCues: {
+                ...normalized.screenCues,
+                thanks: { ...screenCue('thanks'), text: event.target.value }
+              }
+            })
+          }
+        />
+      </label>
+      <div className="audio-cue-group template-screen-cues">
+        <h2>Screen voice</h2>
+        <div className="audio-cue-grid">
+          {(['intro', 'select', 'thanks'] as const).map((cueId) => {
+            const cue = screenCue(cueId);
+            return (
+              <AudioCueCard
+                key={cueId}
+                cue={cue}
+                settings={settings}
+                onSave={(updatedCue) => saveScreenCue(cueId, updatedCue)}
+                onUpload={async () => saveScreenCue(cueId, await onUploadCue(cue))}
+                onRemove={async () => saveScreenCue(cueId, await onRemoveCue(cue))}
+                onGenerate={async (_cueId, playAfterGenerate) => saveScreenCue(cueId, await onGenerateCue(cue, playAfterGenerate))}
+                onTest={(updatedCue) => updatedCue.mode === 'host' && !updatedCue.filePath ? void onGenerateCue(updatedCue, true).then((generated) => saveScreenCue(cueId, generated)) : playAudioCueObject(settings, updatedCue)}
+              />
+            );
+          })}
+        </div>
+      </div>
+      <div className="workflow-shots compact">
+        {normalized.shots.map((shot, index) => (
+          <div className="workflow-shot" key={index}>
+            <h2>Picture {index + 1}</h2>
+            <label>
+              Message
+              <input
+                value={shot.message}
+                onChange={(event) => {
+                  const cue = shotCue(shot, index);
+                  updateShot(index, { message: event.target.value, audioCue: { ...cue, text: event.target.value } });
+                }}
+              />
+            </label>
+            <div className="workflow-grid">
+              <label>
+                Camera before message
+                <input type="number" min="0" step="0.5" value={msToSeconds(shot.cameraBeforeMessageMs)} onChange={(event) => updateShot(index, { cameraBeforeMessageMs: secondsToMs(event.target.value) })} />
+              </label>
+              <label>
+                Message time
+                <input type="number" min="0" step="0.5" value={msToSeconds(shot.messageMs)} onChange={(event) => updateShot(index, { messageMs: secondsToMs(event.target.value) })} />
+              </label>
+              <label>
+                Camera before countdown
+                <input type="number" min="0" step="0.5" value={msToSeconds(shot.cameraBeforeCountdownMs)} onChange={(event) => updateShot(index, { cameraBeforeCountdownMs: secondsToMs(event.target.value) })} />
+              </label>
+            </div>
+            <AudioCueCard
+              cue={shotCue(shot, index)}
+              settings={settings}
+              onSave={(cue) => saveShotCue(index, cue)}
+              onUpload={async () => saveShotCue(index, await onUploadCue(shotCue(shot, index)))}
+              onRemove={async () => saveShotCue(index, await onRemoveCue(shotCue(shot, index)))}
+              onGenerate={async (_cueId, playAfterGenerate) => saveShotCue(index, await onGenerateCue(shotCue(shot, index), playAfterGenerate))}
+              onTest={(cue) => cue.mode === 'host' && !cue.filePath ? void onGenerateCue(cue, true).then((updated) => saveShotCue(index, updated)) : playAudioCueObject(settings, cue, shot.message)}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function TemplateCreator({
+  initialLayout,
+  onCancel,
+  onSave
+}: {
+  initialLayout: TemplateLayout;
+  onCancel: () => void;
+  onSave: (layout: TemplateLayout) => void;
+}) {
+  const [layout, setLayout] = useState(() => normalizeTemplateLayoutForClient(initialLayout));
+  const [drag, setDrag] = useState<null | {
+    id: number;
+    mode: 'move' | 'resize';
+    startX: number;
+    startY: number;
+    slot: TemplateSlot;
+  }>(null);
+  const paperRef = useRef<HTMLDivElement>(null);
+
+  const updateWindows = (updater: (windows: TemplateSlot[]) => TemplateSlot[]) => {
+    setLayout((current) => {
+      const photoWindows = updater(current.photoWindows).map((slot, index) => ({ ...slot, sourceIndex: index }));
+      return normalizeTemplateLayoutForClient({
+        ...current,
+        photoWindows,
+        workflowDefaults: normalizeTemplateWorkflow(current.workflowDefaults, photoWindows.length),
+        updatedAt: new Date().toISOString()
+      });
+    });
+  };
+
+  const rotatePaper = () => {
+    setLayout((current) => {
+      const nextOrientation = current.orientation === 'portrait' ? 'landscape' : 'portrait';
+      const dimensions = templateDimensions(nextOrientation);
+      const ratioX = dimensions.width / current.paperWidth;
+      const ratioY = dimensions.height / current.paperHeight;
+      return normalizeTemplateLayoutForClient({
+        ...current,
+        orientation: nextOrientation,
+        paperWidth: dimensions.width,
+        paperHeight: dimensions.height,
+        photoWindows: current.photoWindows.map((slot) => ({
+          ...slot,
+          x: slot.x * ratioX,
+          y: slot.y * ratioY,
+          width: slot.width * ratioX,
+          height: slot.height * ratioY
+        }))
+      });
+    });
+  };
+
+  const addWindow = () => {
+    updateWindows((windows) => {
+      const width = layout.paperWidth / 3;
+      const height = width * 2 / 3;
+      return [
+        ...windows,
+        {
+          x: (layout.paperWidth - width) / 2,
+          y: (layout.paperHeight - height) / 2,
+          width,
+          height,
+          sourceIndex: windows.length,
+          rotation: 0
+        }
+      ];
+    });
+  };
+
+  const duplicateWindow = (index: number) => {
+    updateWindows((windows) => {
+      const source = windows[index];
+      if (!source) return windows;
+      const offset = Math.min(layout.paperWidth, layout.paperHeight) * 0.035;
+      const duplicate = {
+        ...source,
+        x: Math.max(0, Math.min(layout.paperWidth - source.width, source.x + offset)),
+        y: Math.max(0, Math.min(layout.paperHeight - source.height, source.y + offset)),
+        sourceIndex: windows.length
+      };
+      return [...windows.slice(0, index + 1), duplicate, ...windows.slice(index + 1)];
+    });
+  };
+
+  const alignTop = () => {
+    updateWindows((windows) => {
+      if (windows.length < 2) return windows;
+      const top = Math.min(...windows.map((slot) => slot.y));
+      return windows.map((slot) => ({ ...slot, y: top }));
+    });
+  };
+
+  const distributeSameGap = () => {
+    updateWindows((windows) => {
+      if (windows.length < 3) return windows;
+      const sorted = [...windows].sort((a, b) => a.x - b.x);
+      const first = sorted[0];
+      const last = sorted[sorted.length - 1];
+      const left = first.x;
+      const right = last.x + last.width;
+      const totalWidth = sorted.reduce((sum, slot) => sum + slot.width, 0);
+      const gap = Math.max(0, (right - left - totalWidth) / (sorted.length - 1));
+      let nextX = left;
+      const positions = new Map<TemplateSlot, number>();
+      sorted.forEach((slot) => {
+        positions.set(slot, Math.max(0, Math.min(layout.paperWidth - slot.width, nextX)));
+        nextX += slot.width + gap;
+      });
+      return windows.map((slot) => ({ ...slot, x: positions.get(slot) ?? slot.x }));
+    });
+  };
+
+  const paperPoint = (event: React.PointerEvent) => {
+    const rect = paperRef.current?.getBoundingClientRect();
+    if (!rect) return { x: 0, y: 0 };
+    return {
+      x: ((event.clientX - rect.left) / rect.width) * layout.paperWidth,
+      y: ((event.clientY - rect.top) / rect.height) * layout.paperHeight
+    };
+  };
+
+  const onPointerMove = (event: React.PointerEvent) => {
+    if (!drag) return;
+    const point = paperPoint(event);
+    const dx = point.x - drag.startX;
+    const dy = point.y - drag.startY;
+    updateWindows((windows) =>
+      windows.map((slot, index) => {
+        if (index !== drag.id) return slot;
+        if (drag.mode === 'resize') {
+          const width = Math.max(80, Math.min(layout.paperWidth - slot.x, drag.slot.width + dx));
+          const height = Math.max(80, Math.min(layout.paperHeight - slot.y, drag.slot.height + dy));
+          return { ...slot, width, height };
+        }
+        const x = Math.max(0, Math.min(layout.paperWidth - slot.width, drag.slot.x + dx));
+        const y = Math.max(0, Math.min(layout.paperHeight - slot.height, drag.slot.y + dy));
+        return { ...slot, x, y };
+      })
+    );
+  };
+
+  const saveDisabled = layout.name.trim().length === 0 || layout.photoWindows.length === 0;
+
+  return (
+    <div className="template-creator-overlay">
+      <div className="template-creator-shell">
+        <aside className="template-creator-tools">
+          <label>
+            Name
+            <input value={layout.name} onChange={(event) => setLayout({ ...layout, name: event.target.value })} />
+          </label>
+          <button onClick={rotatePaper}><RotateCw size={16} />Rotate paper</button>
+          <button onClick={addWindow}><Image size={16} />Add photo window</button>
+          <button onClick={alignTop} disabled={layout.photoWindows.length < 2}>Align top</button>
+          <button onClick={distributeSameGap} disabled={layout.photoWindows.length < 3}>Same gap</button>
+          <button disabled={saveDisabled} onClick={() => onSave(normalizeTemplateLayoutForClient(layout))}>Save template</button>
+          <button onClick={onCancel}>Cancel</button>
+        </aside>
+        <div className="template-creator-workspace">
+          <div
+            ref={paperRef}
+            className={`template-paper ${layout.orientation}`}
+            onPointerMove={onPointerMove}
+            onPointerUp={() => setDrag(null)}
+            onPointerLeave={() => setDrag(null)}
+          >
+            {layout.photoWindows.map((slot, index) => (
+              <div
+                key={index}
+                className="template-window-box"
+                style={{
+                  left: `${(slot.x / layout.paperWidth) * 100}%`,
+                  top: `${(slot.y / layout.paperHeight) * 100}%`,
+                  width: `${(slot.width / layout.paperWidth) * 100}%`,
+                  height: `${(slot.height / layout.paperHeight) * 100}%`
+                }}
+                onPointerDown={(event) => {
+                  const point = paperPoint(event);
+                  setDrag({ id: index, mode: 'move', startX: point.x, startY: point.y, slot });
+                }}
+              >
+                <span className="template-window-number">{index + 1}</span>
+                <button
+                  className="template-window-rotate"
+                  onPointerDown={(event) => event.stopPropagation()}
+                  onClick={() =>
+                    updateWindows((windows) =>
+                      windows.map((item, itemIndex) =>
+                        itemIndex === index
+                          ? {
+                              ...item,
+                              width: Math.min(item.height, layout.paperWidth - item.x),
+                              height: Math.min(item.width, layout.paperHeight - item.y),
+                              rotation: 0
+                            }
+                          : item
+                      )
+                    )
+                  }
+                >
+                  <RotateCw size={14} />
+                </button>
+                <button
+                  className="template-window-delete"
+                  onPointerDown={(event) => event.stopPropagation()}
+                  onClick={() => updateWindows((windows) => windows.filter((_item, itemIndex) => itemIndex !== index))}
+                >
+                  <Trash2 size={14} />
+                </button>
+                <button
+                  className="template-window-duplicate"
+                  onPointerDown={(event) => event.stopPropagation()}
+                  onClick={() => duplicateWindow(index)}
+                >
+                  <Copy size={14} />
+                </button>
+                <button
+                  className="template-window-resize"
+                  onPointerDown={(event) => {
+                    event.stopPropagation();
+                    const point = paperPoint(event);
+                    setDrag({ id: index, mode: 'resize', startX: point.x, startY: point.y, slot });
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function AdminApp() {
@@ -1212,7 +1878,8 @@ function AdminApp() {
   const [gallerySearch, setGallerySearch] = useState('');
   const [cameraCapabilities, setCameraCapabilities] = useState<CameraCapabilitiesMap>({});
   const [cameraDefaultControls, setCameraDefaultControls] = useState<CameraControlSettings>({});
-  const [templateStyleId, setTemplateStyleId] = useState<TemplateStyleId>('style1');
+  const [selectedAdminTemplateId, setSelectedAdminTemplateId] = useState('');
+  const [editingTemplate, setEditingTemplate] = useState<TemplateLayout | null>(null);
   const [selectedFaceAssetPackId, setSelectedFaceAssetPackId] = useState('');
   const [aiPresetDraft, setAiPresetDraft] = useState({ name: '', prompt: '' });
   const [galleryUploadStatus, setGalleryUploadStatus] = useState<GalleryUploadStatus>({
@@ -1374,6 +2041,31 @@ function AdminApp() {
     setMessage(result.ok ? 'All host voice lines generated.' : result.error ?? 'Host voice generation failed.');
   };
 
+  const uploadTemplateAudioCue = async (cue: AudioCue) => {
+    const updated = await window.photoBooth.uploadTemplateAudioCue(cue);
+    if (!updated) return cue;
+    setMessage('Template audio uploaded.');
+    return updated;
+  };
+
+  const removeTemplateAudioCue = async (cue: AudioCue) => {
+    const updated = await window.photoBooth.removeTemplateAudioCue(cue);
+    setMessage('Template audio cleared.');
+    return updated;
+  };
+
+  const generateTemplateHostVoiceCue = async (cue: AudioCue, playAfterGenerate = false) => {
+    setMessage('Generating template host voice...');
+    const result = await window.photoBooth.generateTemplateHostVoiceCue(cue);
+    if (!result.ok || !result.cue) {
+      setMessage(result.error ?? 'Host voice generation failed.');
+      return cue;
+    }
+    setMessage('Template host voice generated.');
+    if (playAfterGenerate) void playAudioCueObject(settings, result.cue);
+    return result.cue;
+  };
+
   const saveCameraControl = async (key: CameraControlKey, value: number) => {
     const cameraControls = { ...settings.cameraControls, [key]: value };
     await saveMessage({ cameraControls }, 'Camera control saved.');
@@ -1424,9 +2116,44 @@ function AdminApp() {
     await updateSettings({});
   };
 
-  const uploadTemplate = async (styleId: TemplateStyleId) => {
+  const saveTemplateLayout = async (layout: TemplateLayout) => {
+    const next = await window.photoBooth.updateTemplateLayout(layout);
+    await updateSettings(next);
+    setSelectedAdminTemplateId(layout.id);
+    setEditingTemplate(null);
+    setMessage('Template saved.');
+  };
+
+  const deleteTemplateLayout = async (templateId: string) => {
+    const next = await window.photoBooth.deleteTemplateLayout(templateId);
+    await updateSettings(next);
+    setSelectedAdminTemplateId(next.template.layouts[0]?.id ?? '');
+    setMessage('Template deleted.');
+  };
+
+  const importTemplate = async () => {
     try {
-      const design = await window.photoBooth.uploadTemplate({ styleId });
+      const next = await window.photoBooth.importTemplate();
+      await updateSettings(next);
+      setSelectedAdminTemplateId(next.template.selectedTemplateId || next.template.layouts[0]?.id || '');
+      setMessage('Template imported.');
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Template import failed.');
+    }
+  };
+
+  const exportTemplate = async (templateId: string) => {
+    try {
+      const result = await window.photoBooth.exportTemplate(templateId);
+      setMessage(result.ok ? `Template exported: ${result.filePath}` : 'Template export canceled.');
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Template export failed.');
+    }
+  };
+
+  const uploadTemplate = async (templateId: string) => {
+    try {
+      const design = await window.photoBooth.uploadTemplate({ templateId });
       if (design) {
         await refreshSettings();
         setMessage('Template uploaded.');
@@ -1453,9 +2180,9 @@ function AdminApp() {
     }
   };
 
-  const saveGuide = async (styleId: TemplateStyleId) => {
-    const dataUrl = await createGuideTemplateImage(styleId, settings.printCalibration);
-    const filePath = await window.photoBooth.saveGuideTemplate(styleId, dataUrl);
+  const saveGuide = async (layout: TemplateLayout) => {
+    const dataUrl = await createGuideTemplateImage(layout, settings.printCalibration);
+    const filePath = await window.photoBooth.saveGuideTemplate(layout.id, dataUrl);
     setMessage(`Guide saved: ${filePath}`);
   };
 
@@ -1762,26 +2489,12 @@ function AdminApp() {
                 <label>
                   Preview overlay
                   <div className="segmented-control">
-                    {[
-                      ['none', 'None'],
-                      ['style1', 'Style 1'],
-                      ['style2', 'Style 2'],
-                      ['style3', 'Style 3'],
-                      ['style4', 'Style 4']
-                    ].map(([value, label]) => (
-                      <button
-                        key={value}
-                        className={settings.cameraPreviewOverlay === value ? 'active' : ''}
-                        onClick={() =>
-                          void saveMessage(
-                            { cameraPreviewOverlay: value as AppSettings['cameraPreviewOverlay'] },
-                            'Preview overlay saved.'
-                          )
-                        }
-                      >
-                        {label}
-                      </button>
-                    ))}
+                    <button
+                      className={settings.cameraPreviewOverlay === 'none' ? 'active' : ''}
+                      onClick={() => void saveMessage({ cameraPreviewOverlay: 'none' }, 'Preview overlay saved.')}
+                    >
+                      None
+                    </button>
                   </div>
                 </label>
                 <div className="camera-controls-panel">
@@ -1795,9 +2508,6 @@ function AdminApp() {
               <div className="camera-preview-column">
                 <div className={`admin-preview ${getCameraOrientationClass(settings)}`}>
                   <video ref={cameraPreviewRef} className={getCameraVideoClass(settings)} muted playsInline />
-                  {settings.cameraPreviewOverlay !== 'none' && (
-                    <GuestViewOverlay styleId={settings.cameraPreviewOverlay} />
-                  )}
                   {!adminStream && <span>No preview</span>}
                 </div>
                 <button className="admin-action" onClick={refreshCameras}><RefreshCw size={16} />Refresh cameras</button>
@@ -1808,6 +2518,14 @@ function AdminApp() {
 
         {tab === 'printer' && (
           <AdminSection>
+            <label className="check-row">
+              <input
+                type="checkbox"
+                checked={settings.printerEnabled}
+                onChange={(event) => void saveMessage({ printerEnabled: event.target.checked }, event.target.checked ? 'Printer enabled.' : 'Printer disabled.')}
+              />
+              Printer on
+            </label>
             <label>
               Default printer
               <select value={settings.defaultPrinter} onChange={(event) => void saveMessage({ defaultPrinter: event.target.value }, 'Printer saved.')}>
@@ -1828,30 +2546,29 @@ function AdminApp() {
             <div className="workflow-shot">
               <h2>Template printers</h2>
               <div className="workflow-grid">
-                {TEMPLATE_STYLES.map((style) => (
-                  <label key={style.id}>
-                    {style.name} printer
+                {settings.template.layouts.map((layout) => (
+                  <label key={layout.id}>
+                    {layout.name} printer
                     <select
-                      value={settings.stylePrinters[style.id]}
+                      value={layout.printerName}
                       onChange={(event) =>
-                        void saveMessage(
-                          {
-                            stylePrinters: {
-                              ...settings.stylePrinters,
-                              [style.id]: event.target.value
-                            }
-                          },
-                          'Style printer saved.'
-                        )
+                        void saveMessage({
+                          template: {
+                            ...settings.template,
+                            layouts: settings.template.layouts.map((item) =>
+                              item.id === layout.id ? { ...item, printerName: event.target.value } : item
+                            )
+                          }
+                        }, 'Template printer saved.')
                       }
                     >
                       <option value="">Default printer</option>
-                      {settings.stylePrinters[style.id] &&
-                        !printers.some((printer) => printer.name === settings.stylePrinters[style.id]) && (
-                          <option value={settings.stylePrinters[style.id]}>{settings.stylePrinters[style.id]}</option>
+                      {layout.printerName &&
+                        !printers.some((printer) => printer.name === layout.printerName) && (
+                          <option value={layout.printerName}>{layout.printerName}</option>
                         )}
                       {printers.map((printer) => (
-                        <option key={`${style.id}-${printer.name}`} value={printer.name}>{printer.displayName || printer.name}</option>
+                        <option key={`${layout.id}-${printer.name}`} value={printer.name}>{printer.displayName || printer.name}</option>
                       ))}
                     </select>
                   </label>
@@ -2099,7 +2816,7 @@ function AdminApp() {
             <div className="audio-cue-group">
               <h2>Screen voice</h2>
               <div className="audio-cue-grid">
-                {['welcome', 'style', 'design', 'intro', 'select', 'thanks'].map((cueId) => (
+                {['welcome', 'style', 'design'].map((cueId) => (
                   <AudioCueCard
                     key={cueId}
                     cue={settings.audio.cues[cueId]}
@@ -2132,198 +2849,95 @@ function AdminApp() {
               </div>
             </div>
 
-            <div className="workflow-shots">
-              {settings.workflow.shots.slice(0, 4).map((shot, index) => (
-                <div className="workflow-shot" key={index}>
-                  <h2>Picture {index + 1}</h2>
-                  <label>
-                    Message
-                    <input
-                      value={shot.message}
-                      onChange={(event) => {
-                        const shots = [...settings.workflow.shots];
-                        shots[index] = { ...shot, message: event.target.value };
-                        void saveMessage({ workflow: { ...settings.workflow, shots } }, 'Workflow saved.');
-                      }}
-                    />
-                  </label>
-                  <div className="workflow-grid">
-                    <label>
-                      Camera before message
-                      <input
-                        type="number"
-                        min="0"
-                        step="0.5"
-                        value={msToSeconds(shot.cameraBeforeMessageMs)}
-                        onChange={(event) => {
-                          const shots = [...settings.workflow.shots];
-                          shots[index] = { ...shot, cameraBeforeMessageMs: secondsToMs(event.target.value) };
-                          void saveMessage({ workflow: { ...settings.workflow, shots } }, 'Workflow saved.');
-                        }}
-                      />
-                    </label>
-                    <label>
-                      Message time
-                      <input
-                        type="number"
-                        min="0"
-                        step="0.5"
-                        value={msToSeconds(shot.messageMs)}
-                        onChange={(event) => {
-                          const shots = [...settings.workflow.shots];
-                          shots[index] = { ...shot, messageMs: secondsToMs(event.target.value) };
-                          void saveMessage({ workflow: { ...settings.workflow, shots } }, 'Workflow saved.');
-                        }}
-                      />
-                    </label>
-                    <label>
-                      Camera before countdown
-                      <input
-                        type="number"
-                        min="0"
-                        step="0.5"
-                        value={msToSeconds(shot.cameraBeforeCountdownMs)}
-                        onChange={(event) => {
-                          const shots = [...settings.workflow.shots];
-                          shots[index] = { ...shot, cameraBeforeCountdownMs: secondsToMs(event.target.value) };
-                          void saveMessage({ workflow: { ...settings.workflow, shots } }, 'Workflow saved.');
-                        }}
-                      />
-                    </label>
-                  </div>
-                  <AudioCueCard
-                    cue={settings.audio.cues[`shot${index}`]}
-                    settings={settings}
-                    onSave={saveAudioCue}
-                    onUpload={uploadAudioCue}
-                    onRemove={removeAudioCue}
-                    onGenerate={generateHostVoiceCue}
-                    onTest={(cue) => cue.mode === 'host' && !cue.filePath ? generateHostVoiceCue(cue.id, true) : playAudioCue(settings, cue.id, shot.message)}
-                  />
-                </div>
-              ))}
-            </div>
           </AdminSection>
         )}
 
         {tab === 'template' && (
           <AdminSection>
-            <div className="template-manager">
-              <div className="template-style-tabs">
-                {TEMPLATE_STYLES.map((style) => (
-                  <button
-                    key={style.id}
-                    className={templateStyleId === style.id ? 'active' : ''}
-                    onClick={() => setTemplateStyleId(style.id)}
-                  >
-                    {style.name}
-                  </button>
-                ))}
-              </div>
-              <div className="template-style-summary">
-                <TemplateMini styleId={templateStyleId} />
-                <div>
-                  <h2>{getTemplateStyle(templateStyleId).name}</h2>
-                  <p>{getTemplateStyle(templateStyleId).shotCount} shots / choose {getTemplateStyle(templateStyleId).selectCount}</p>
-                  <p>{TEMPLATE_WIDTH} x {TEMPLATE_HEIGHT} frame PNG. Finals save at {PRINT_WIDTH} x {PRINT_HEIGHT}.</p>
+            {(() => {
+              const layouts = settings.template.layouts.map(normalizeTemplateLayoutForClient);
+              const selectedLayout = layouts.find((layout) => layout.id === selectedAdminTemplateId) ?? layouts[0] ?? null;
+              const selectedDesigns = selectedLayout
+                ? settings.template.designs.filter((design) => design.templateId === selectedLayout.id)
+                : [];
+              return (
+                <div className="template-manager custom-template-manager">
                   <div className="admin-actions">
-                    <button onClick={() => void saveGuide(templateStyleId)}>Download blank guide</button>
-                    <button onClick={() => void uploadTemplate(templateStyleId)}>Add print frame PNG</button>
+                    <button onClick={() => setEditingTemplate(createBlankTemplateLayout())}>Create Template</button>
+                    <button onClick={() => void importTemplate()}>Import Template</button>
                   </div>
+                  <div className="custom-template-layout">
+                    <div className="template-list-panel">
+                      {layouts.map((layout) => (
+                        <button
+                          key={layout.id}
+                          className={selectedLayout?.id === layout.id ? 'active template-list-item' : 'template-list-item'}
+                          onClick={() => setSelectedAdminTemplateId(layout.id)}
+                        >
+                          <TemplateMini layout={layout} />
+                          <span>{layout.name}</span>
+                          <small>{layout.orientation} / {layout.photoWindows.length} photo{layout.photoWindows.length === 1 ? '' : 's'}</small>
+                        </button>
+                      ))}
+                      {layouts.length === 0 && <p className="muted">Create or import a template to begin.</p>}
+                    </div>
+                    {selectedLayout && (
+                      <div className="template-detail-panel">
+                        <div className="template-style-summary">
+                          <TemplateMini layout={selectedLayout} />
+                          <div>
+                            <h2>{selectedLayout.name}</h2>
+                            <p>{selectedLayout.photoWindows.length} photos / {selectedLayout.orientation}</p>
+                            <p>{selectedLayout.paperWidth} x {selectedLayout.paperHeight} frame PNG.</p>
+                            <div className="admin-actions">
+                              <button onClick={() => setEditingTemplate(selectedLayout)}>Edit layout</button>
+                              <button onClick={() => void saveGuide(selectedLayout)}>Download blank guide</button>
+                              <button onClick={() => void uploadTemplate(selectedLayout.id)}>Add print frame PNG</button>
+                              <button onClick={() => void exportTemplate(selectedLayout.id)}>Export JSON</button>
+                              <button className="danger" onClick={() => void deleteTemplateLayout(selectedLayout.id)}>Delete template</button>
+                            </div>
+                          </div>
+                        </div>
+                        <TemplateWorkflowEditor
+                          workflow={selectedLayout.workflowDefaults}
+                          shotCount={selectedLayout.photoWindows.length}
+                          cueScopeId={`template-${selectedLayout.id}`}
+                          settings={settings}
+                          onChange={(workflowDefaults) => void saveTemplateLayout({ ...selectedLayout, workflowDefaults })}
+                          onUploadCue={uploadTemplateAudioCue}
+                          onRemoveCue={removeTemplateAudioCue}
+                          onGenerateCue={generateTemplateHostVoiceCue}
+                        />
+                        <div className="template-design-grid">
+                          {selectedDesigns.map((design) => (
+                            <TemplateDesignAdminCard
+                              key={design.id}
+                              design={design}
+                              settings={settings}
+                              layout={selectedLayout}
+                              onSave={saveTemplateDesign}
+                              onUpdateAsset={updateTemplateAsset}
+                              onDelete={deleteTemplateDesign}
+                              onUploadTemplateAudioCue={uploadTemplateAudioCue}
+                              onRemoveTemplateAudioCue={removeTemplateAudioCue}
+                              onGenerateTemplateCue={generateTemplateHostVoiceCue}
+                            />
+                          ))}
+                        </div>
+                        {selectedDesigns.length === 0 && <p className="muted">No designs uploaded for this template yet.</p>}
+                      </div>
+                    )}
+                  </div>
+                  {editingTemplate && (
+                    <TemplateCreator
+                      initialLayout={editingTemplate}
+                      onCancel={() => setEditingTemplate(null)}
+                      onSave={(layout) => void saveTemplateLayout(layout)}
+                    />
+                  )}
                 </div>
-              </div>
-              <div className="template-design-grid">
-                {settings.template.designs
-                  .filter((design) => design.styleId === templateStyleId)
-                  .map((design) => (
-                    <article className="template-design-admin" key={design.id}>
-                      <TemplateImagePreview design={design} />
-                      <input
-                        value={design.name}
-                        onChange={(event) => void saveTemplateDesign({ ...design, name: event.target.value })}
-                      />
-                      <label className="check-row">
-                        <input
-                          type="checkbox"
-                          checked={design.active}
-                          onChange={(event) => void saveTemplateDesign({ ...design, active: event.target.checked })}
-                        />
-                        Active
-                      </label>
-                      <label className="check-row">
-                        <input
-                          type="checkbox"
-                          checked={design.usesAi}
-                          onChange={(event) => void saveTemplateDesign({ ...design, usesAi: event.target.checked })}
-                        />
-                        AI frame
-                      </label>
-                      {design.usesAi && (
-                        <label>
-                          AI preset
-                          <select
-                            value={design.aiPresetId}
-                            onChange={(event) => void saveTemplateDesign({ ...design, aiPresetId: event.target.value })}
-                          >
-                            <option value="">Choose preset</option>
-                            {settings.template.aiPresets
-                              .filter((preset) => preset.active)
-                              .map((preset) => (
-                                <option key={preset.id} value={preset.id}>{preset.name}</option>
-                              ))}
-                          </select>
-                        </label>
-                      )}
-                      <label className="check-row">
-                        <input
-                          type="checkbox"
-                          checked={design.faceTrackingEnabled}
-                          onChange={(event) => void saveTemplateDesign({ ...design, faceTrackingEnabled: event.target.checked })}
-                        />
-                        Face assets
-                      </label>
-                      {design.faceTrackingEnabled && (
-                        <label>
-                          Asset pack
-                          <select
-                            value={design.faceAssetPackId}
-                            onChange={(event) => void saveTemplateDesign({ ...design, faceAssetPackId: event.target.value })}
-                          >
-                            <option value="">Choose asset pack</option>
-                            {settings.template.faceAssetPacks
-                              .filter((pack) => pack.active)
-                              .map((pack) => (
-                                <option key={pack.id} value={pack.id}>{pack.name}</option>
-                              ))}
-                          </select>
-                        </label>
-                      )}
-                      <label className="check-row">
-                        <input
-                          type="checkbox"
-                          checked={design.videoRecordingEnabled}
-                          onChange={(event) => void saveTemplateDesign({ ...design, videoRecordingEnabled: event.target.checked })}
-                        />
-                        Record session video
-                      </label>
-                      <div className="template-path-note">
-                        <span>Preview: {shortPath(templatePreviewPath(design))}</span>
-                        <span>Print frame: {shortPath(templateFramePath(design))}</span>
-                      </div>
-                      <div className="admin-actions">
-                        <button onClick={() => void updateTemplateAsset(design, 'preview')}>Upload preview</button>
-                        <button onClick={() => void updateTemplateAsset(design, 'frame')}>Upload print frame</button>
-                        <button onClick={() => window.photoBooth.openFile(templateFramePath(design))}>Open frame</button>
-                        <button className="danger" onClick={() => void deleteTemplateDesign(design)}>Delete</button>
-                      </div>
-                    </article>
-                  ))}
-              </div>
-              {settings.template.designs.filter((design) => design.styleId === templateStyleId).length === 0 && (
-                <p className="muted">No designs uploaded for this style yet.</p>
-              )}
-            </div>
-
+              );
+            })()}
           </AdminSection>
         )}
 
@@ -3369,8 +3983,13 @@ const templateFramePath = (design: TemplateDesign) => design.framePath || design
 
 const shortPath = (filePath: string) => filePath.split(/[\\/]/).slice(-2).join('/');
 
-const printerForStyle = (settings: AppSettings, styleId: TemplateStyleId) =>
-  settings.stylePrinters[styleId] || settings.defaultPrinter;
+const printerForTemplate = (settings: AppSettings, layout: TemplateLayout) =>
+  layout.printerName || settings.defaultPrinter;
+
+const workflowForDesign = (layout: TemplateLayout, design: TemplateDesign | null): TemplateWorkflowSettings =>
+  design?.workflowOverrideEnabled && design.workflowOverride
+    ? normalizeTemplateWorkflow(design.workflowOverride, layout.photoWindows.length)
+    : normalizeTemplateWorkflow(layout.workflowDefaults, layout.photoWindows.length);
 
 const aiQueueStatusLabel = (item: AiQueueItem) => {
   if (item.status === 'queued') return 'QUEUED';
@@ -3466,18 +4085,15 @@ const toggleSelectedIndex = (current: number[], index: number, maxCount: number)
   return [...current, index].slice(-maxCount);
 };
 
-const styleNeedsSelection = (styleId: TemplateStyleId) => styleId === 'style1' || styleId === 'style2';
-
-const liveViewUsesFullScreen = (styleId: TemplateStyleId) => styleId === 'style1' || styleId === 'style3';
-
-const liveViewStyle = (styleId: TemplateStyleId, slot: Pick<TemplateSlot, 'width' | 'height' | 'cropY'>) =>
-  liveViewUsesFullScreen(styleId) ? ({} as CSSProperties) : slotGuideStyle(slot);
-
-const slotGuideStyle = (slot: Pick<TemplateSlot, 'width' | 'height' | 'cropY'>) =>
-  ({
-    aspectRatio: `${slot.width} / ${slot.height}`,
-    '--slot-aspect': slot.width / slot.height
-  }) as CSSProperties;
+const slotGuideStyle = (slot: Pick<TemplateSlot, 'width' | 'height' | 'cropY' | 'rotation'>) => {
+  const rotated = slot.rotation === 90 || slot.rotation === 270;
+  const width = rotated ? slot.height : slot.width;
+  const height = rotated ? slot.width : slot.height;
+  return {
+    aspectRatio: `${width} / ${height}`,
+    '--slot-aspect': width / height
+  } as CSSProperties;
+};
 
 const createPickerPlaceholderCaptures = (settings: AppSettings): Capture[] =>
   Array.from({ length: 4 }, (_item, index) => {

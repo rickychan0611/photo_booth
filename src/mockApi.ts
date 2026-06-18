@@ -1,4 +1,5 @@
-import type { AiQueueItem, AppSettings, Gallery, SaveImageRequest, SaveImageResult } from './types';
+import { createBlankTemplateLayout, normalizeTemplateLayoutForClient } from './template';
+import type { AiQueueItem, AppSettings, AudioCue, Gallery, SaveImageRequest, SaveImageResult, TemplateLayout } from './types';
 
 const fallbackSettings: AppSettings = {
   eventName: 'PHOTO BOOTH',
@@ -21,6 +22,7 @@ const fallbackSettings: AppSettings = {
     style3: 'DS-RX1',
     style4: 'DS-RX1-HalfCut'
   },
+  printerEnabled: true,
   silentPrint: false,
   adminPassword: '',
   ai: {
@@ -85,9 +87,11 @@ const fallbackSettings: AppSettings = {
     eventName: 'PHOTO BOOTH',
     logoPath: '',
     framePath: '',
-    styleVersion: 2,
+    styleVersion: 3,
+    selectedTemplateId: '',
     selectedStyleId: 'style1',
     selectedDesignId: '',
+    layouts: [],
     aiPresets: [],
     faceAssetPacks: [],
     designs: []
@@ -202,12 +206,17 @@ export function installMockApi() {
       template: {
         ...fallbackSettings.template,
         ...(parsed.template ?? {}),
+        styleVersion: 3,
+        selectedTemplateId: parsed.template?.selectedTemplateId ?? '',
+        layouts: (parsed.template?.layouts ?? []).map((layout) => normalizeTemplateLayoutForClient(layout)),
         faceAssetPacks: parsed.template?.faceAssetPacks ?? fallbackSettings.template.faceAssetPacks,
         designs: (parsed.template?.designs ?? fallbackSettings.template.designs).map((design) => ({
           ...design,
+          templateId: design.templateId ?? design.styleId ?? '',
           faceTrackingEnabled: Boolean(design.faceTrackingEnabled),
           faceAssetPackId: design.faceAssetPackId ?? '',
-          videoRecordingEnabled: Boolean(design.videoRecordingEnabled)
+          videoRecordingEnabled: Boolean(design.videoRecordingEnabled),
+          workflowOverrideEnabled: Boolean(design.workflowOverrideEnabled)
         }))
       },
       workflow: {
@@ -290,11 +299,100 @@ export function installMockApi() {
     chooseImage: async () => '',
     uploadAudioCue: async () => readSettings(),
     removeAudioCue: async () => readSettings(),
+    uploadTemplateAudioCue: async (cue: AudioCue) => cue,
+    removeTemplateAudioCue: async (cue: AudioCue) => ({ ...cue, mode: 'off', filePath: '', updatedAt: new Date().toISOString() }),
     generateHostVoiceCue: async () => ({ ok: false, settings: readSettings(), error: 'Host voice generation is only available in Electron.' }),
+    generateTemplateHostVoiceCue: async (cue: AudioCue) => ({
+      ok: true,
+      settings: readSettings(),
+      cue: { ...cue, mode: 'host', filePath: `Browser preview - ${cue.id}.wav`, updatedAt: new Date().toISOString() },
+      generatedPath: `Browser preview - ${cue.id}.wav`
+    }),
     generateAllHostVoiceCues: async () => ({ ok: false, settings: readSettings(), error: 'Host voice generation is only available in Electron.' }),
-    uploadTemplate: async () => null,
-    deleteTemplate: async () => true,
-    updateTemplate: async (design) => design,
+    uploadTemplate: async (request) => {
+      const current = readSettings();
+      const layout = current.template.layouts.find((item) => item.id === request.templateId);
+      if (!layout) return null;
+      const design = {
+        id: `design-${Date.now()}`,
+        templateId: request.templateId,
+        name: request.name || 'Browser Preview Design',
+        previewPath: '',
+        framePath: '',
+        active: true,
+        usesAi: false,
+        aiPresetId: '',
+        faceTrackingEnabled: false,
+        faceAssetPackId: '',
+        videoRecordingEnabled: false,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      writeSettings({
+        ...current,
+        template: {
+          ...current.template,
+          selectedTemplateId: request.templateId,
+          selectedDesignId: design.id,
+          designs: [...current.template.designs, design]
+        }
+      });
+      return design;
+    },
+    deleteTemplate: async (designId) => {
+      const current = readSettings();
+      writeSettings({
+        ...current,
+        template: {
+          ...current.template,
+          designs: current.template.designs.filter((design) => design.id !== designId)
+        }
+      });
+      return true;
+    },
+    updateTemplate: async (design) => {
+      const current = readSettings();
+      writeSettings({
+        ...current,
+        template: {
+          ...current.template,
+          designs: current.template.designs.map((item) => (item.id === design.id ? design : item))
+        }
+      });
+      return design;
+    },
+    updateTemplateLayout: async (layout) => {
+      const current = readSettings();
+      const normalized = normalizeTemplateLayoutForClient(layout);
+      const layouts = current.template.layouts.some((item) => item.id === normalized.id)
+        ? current.template.layouts.map((item) => (item.id === normalized.id ? normalized : item))
+        : [...current.template.layouts, normalized];
+      return writeSettings({
+        ...current,
+        template: { ...current.template, selectedTemplateId: normalized.id, layouts }
+      });
+    },
+    deleteTemplateLayout: async (templateId) => {
+      const current = readSettings();
+      return writeSettings({
+        ...current,
+        template: {
+          ...current.template,
+          selectedTemplateId: current.template.selectedTemplateId === templateId ? '' : current.template.selectedTemplateId,
+          layouts: current.template.layouts.filter((layout) => layout.id !== templateId),
+          designs: current.template.designs.filter((design) => design.templateId !== templateId)
+        }
+      });
+    },
+    exportTemplate: async (templateId) => ({ ok: true, filePath: `Browser preview - ${templateId}.json` }),
+    importTemplate: async () => {
+      const current = readSettings();
+      const layout = createBlankTemplateLayout('Imported Browser Template');
+      return writeSettings({
+        ...current,
+        template: { ...current.template, selectedTemplateId: layout.id, layouts: [...current.template.layouts, layout] }
+      });
+    },
     updateTemplateAsset: async () => null,
     uploadFaceAsset: async () => readSettings(),
     removeFaceAsset: async () => readSettings(),
@@ -340,6 +438,7 @@ export function installMockApi() {
       const item: AiQueueItem = {
         id: `ai-job-${Date.now()}`,
         status: 'failed',
+        templateId: request.templateId,
         styleId: request.styleId,
         designId: request.designId,
         presetId: request.presetId,
@@ -358,7 +457,7 @@ export function installMockApi() {
       return { item, fallback: true };
     },
     getImageSize: async () => ({ width: 2478, height: 3690 }),
-    saveGuideTemplate: async (styleId) => `Browser preview - ${styleId}-blank-guide.png`,
+    saveGuideTemplate: async (templateId) => `Browser preview - ${templateId}-blank-guide.png`,
     openAdmin: async () => {
       window.open(`${window.location.origin}?window=admin`, '_blank');
       return true;
@@ -398,9 +497,11 @@ export function installMockApi() {
         thumbPath: name,
         type: request.kind,
         createdAt: new Date().toISOString(),
+        templateId: request.templateId,
         styleId: request.styleId,
         designId: request.designId,
-        printerName: request.printerName
+        printerName: request.printerName,
+        phoneNumber: request.phoneNumber
       };
       if (request.kind === 'original') gallery.originals.unshift(saved);
       if (request.kind === 'final') gallery.finals.unshift(saved);
@@ -411,13 +512,21 @@ export function installMockApi() {
       if (photo) photo.galleryUrl = galleryUrl;
       return true;
     },
+    updatePhotoPhoneNumber: async (filePath: string, phoneNumber: string) => {
+      const photo = gallery.finals.find((item) => item.path === filePath);
+      if (photo) photo.phoneNumber = phoneNumber;
+      return true;
+    },
     getImageDataUrl: async () => '',
     getAudioDataUrl: async () => '',
     listGallery: async () => gallery,
     uploadFinalGallery: async (request) => {
       const photo = gallery.finals.find((item) => item.path === request.finalPath);
       const galleryUrl = `http://localhost:3000${request.galleryUrl}`;
-      if (photo) photo.galleryUrl = galleryUrl;
+      if (photo) {
+        photo.galleryUrl = galleryUrl;
+        photo.phoneNumber = request.phoneNumber;
+      }
       return { ok: true, galleryUrl };
     },
     getGalleryUploadStatus: async () => ({ state: 'idle', message: 'No active upload.', active: 0 } as const),
