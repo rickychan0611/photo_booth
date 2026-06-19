@@ -103,6 +103,9 @@ function GuestApp() {
   const templateLayouts = settings?.template.layouts.map(normalizeTemplateLayoutForClient) ?? [];
   const activeTemplateIds = new Set(templateLayouts.map((layout) => layout.id));
   const activeDesigns = settings?.template.designs.filter((design) => design.active && activeTemplateIds.has(design.templateId)) ?? [];
+  const selectableTemplates = templateLayouts.filter((layout) =>
+    activeDesigns.some((design) => design.templateId === layout.id)
+  );
   const selectedTemplate = templateLayouts.find((layout) => layout.id === selectedTemplateId) ?? templateLayouts[0] ?? null;
   const selectedDesign = activeDesigns.find((design) => design.id === selectedDesignId) ?? null;
   const selectedWorkflow = selectedTemplate ? workflowForDesign(selectedTemplate, selectedDesign) : null;
@@ -202,10 +205,21 @@ function GuestApp() {
     if (step !== 'welcome') stopAudioCue('welcome');
     const cueId = cueByStep[step];
     if (cueId) void playAudioCue(settings, cueId);
-    if (step === 'intro') void playAudioCueObject(settings, selectedWorkflow?.screenCues?.intro, selectedWorkflow?.introMessage);
-    if (step === 'select') void playAudioCueObject(settings, selectedWorkflow?.screenCues?.select);
-    if (step === 'thanks') void playAudioCueObject(settings, selectedWorkflow?.screenCues?.thanks, selectedWorkflow?.thankYouMessage);
-  }, [selectedWorkflow, settings?.audio, step]);
+
+    const layout = settings.template.layouts
+      .map(normalizeTemplateLayoutForClient)
+      .find((item) => item.id === selectedTemplateId);
+    const activeTemplateIds = new Set(settings.template.layouts.map((item) => item.id));
+    const design =
+      settings.template.designs.find(
+        (item) => item.active && activeTemplateIds.has(item.templateId) && item.id === selectedDesignId
+      ) ?? null;
+    const workflow = layout ? workflowForDesign(layout, design) : null;
+
+    if (step === 'intro') void playAudioCueObject(settings, workflow?.screenCues?.intro, workflow?.introMessage);
+    if (step === 'select') void playAudioCueObject(settings, workflow?.screenCues?.select);
+    if (step === 'thanks') void playAudioCueObject(settings, workflow?.screenCues?.thanks, workflow?.thankYouMessage);
+  }, [settings, settings?.audio, step, selectedTemplateId, selectedDesignId]);
 
   useEffect(() => {
     if (step !== 'thanks' || !phoneSubmitted) {
@@ -607,6 +621,10 @@ function GuestApp() {
 
   const startUnqueuedFlow = () => {
     if (!settings) return;
+    if (selectableTemplates.length === 1) {
+      chooseTemplate(selectableTemplates[0].id);
+      return;
+    }
     void playAudioCue(settings, 'button');
     setStep('style');
   };
@@ -1021,13 +1039,12 @@ function GuestApp() {
             className="guest-back-button"
             onClick={() => {
               void playAudioCue(settings, 'button');
-              setStep('style');
+              setStep(selectableTemplates.length === 1 ? 'welcome' : 'style');
             }}
           >
             {buttonText('BACK')}
           </button>
           <p className="instruction">CHOOSE A DESIGN</p>
-          <p className="ai-disclaimer">AI can make mistake, don't be serious :)</p>
           <div className="design-card-grid">
             {activeDesigns
               .filter((design) => design.templateId === selectedTemplateId)
@@ -1093,6 +1110,7 @@ function GuestApp() {
           </div>
           {(printedPreview || isAiGenerating) && (
             <div className={`thanks-preview ${isAiGenerating ? 'generating' : ''}`}>
+              {printedNumber && <p className="thanks-photo-number">{printedNumber}</p>}
               {printedPreview && <img src={printedPreview} alt="Printed layout preview" />}
               {isAiGenerating && <span>GENERATING</span>}
             </div>
@@ -1100,7 +1118,7 @@ function GuestApp() {
           <div className="thanks-content">
             {!phoneSubmitted ? (
               <>
-                <p className="thanks-copy">Enter your phone number to access your photo at <span className="thanks-site">vibobooth.com</span>.</p>
+                <p className="thanks-copy">Enter your phone # to view / download your photo at <span className="thanks-site">vibobooth.com</span>.</p>
                 <div className="phone-entry-display">{formatPhoneNumber(phoneNumber) || 'Phone number'}</div>
                 <DigitKeypad
                   disabled={isBusy || isAiGenerating}
