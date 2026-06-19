@@ -51,7 +51,13 @@ button:disabled {
 
 .guest-shell.compact-top {
   align-items: start;
+  place-items: start center;
   padding-top: 42px;
+}
+
+.guest-shell.thanks-layout {
+  place-items: start center;
+  padding: clamp(46px, 5vh, 54px) clamp(14px, 3vw, 28px) clamp(10px, 1.5vh, 18px);
 }
 
 .welcome-screen,
@@ -212,6 +218,75 @@ button:disabled {
   transition: background 160ms ease, color 160ms ease;
 }
 
+.kiosk-button {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+
+.kiosk-button--screen-locked {
+  pointer-events: none;
+}
+
+.booth-button.kiosk-button--pressed:not(:disabled),
+.booth-button.primary.kiosk-button--pressed:not(:disabled),
+.guest-back-button.kiosk-button--pressed,
+.thanks-restart-button.kiosk-button--pressed,
+.fullscreen-button.kiosk-button--pressed,
+.face-debug-toggle.kiosk-button--pressed,
+.queue-keypad .kiosk-button.kiosk-button--pressed:not(:disabled),
+.phone-keypad .kiosk-button.kiosk-button--pressed:not(:disabled),
+.queue-keypad-panel .booth-button.primary.kiosk-button--pressed:not(:disabled) {
+  background: #fff;
+  color: #000;
+  outline: none;
+}
+
+.welcome-start-button.kiosk-button--pressed:not(:disabled) {
+  background: rgba(255, 255, 255, 0.85);
+  color: #000;
+  outline: none;
+}
+
+.style-card.kiosk-button--pressed:not(:disabled) {
+  background: #fff;
+  color: #000;
+  outline: none;
+}
+
+@media (hover: none) {
+  .booth-button.kiosk-button:hover:not(:disabled),
+  .booth-button.primary.kiosk-button:hover:not(:disabled),
+  .guest-back-button.kiosk-button:hover,
+  .fullscreen-button.kiosk-button:hover,
+  .face-debug-toggle.kiosk-button:hover,
+  .queue-keypad .kiosk-button:hover:not(:disabled),
+  .phone-keypad .kiosk-button:hover:not(:disabled),
+  .queue-keypad-panel .booth-button.primary.kiosk-button:hover:not(:disabled),
+  .style-card.kiosk-button:hover:not(:disabled) {
+    background: transparent;
+    color: #fff;
+  }
+
+  .thanks-restart-button.kiosk-button:hover,
+  .thanks-restart-button.kiosk-button--pressed {
+    background: #fff;
+    color: #000;
+  }
+
+  .welcome-start-button.kiosk-button:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.5);
+    color: #fff;
+  }
+
+  .queue-keypad-panel .booth-button.primary.kiosk-button:hover:not(:disabled) {
+    background: #fff;
+    color: #000;
+  }
+}
+
 .booth-button:hover:not(:disabled),
 .booth-button:focus-visible {
   background: #fff;
@@ -357,6 +432,22 @@ button:disabled {
   font-weight: 300;
 }
 
+.phone-keypad {
+  grid-template-columns: repeat(3, minmax(72px, 1fr));
+  gap: 10px;
+  width: min(320px, 88vw);
+}
+
+.phone-keypad .kiosk-button {
+  min-height: 58px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: clamp(20px, 3.2vw, 26px);
+  font-weight: 300;
+  letter-spacing: 0.06em;
+}
+
 .queue-keypad button:hover:not(:disabled),
 .queue-keypad button:focus-visible,
 .queue-refresh-button:hover:not(:disabled),
@@ -450,6 +541,40 @@ button:disabled {
   line-height: 1;
 }
 
+.capture-camera-arrow {
+  position: absolute;
+  top: clamp(20px, 5vh, 64px);
+  left: 50%;
+  z-index: 5;
+  width: clamp(52px, 8vw, 84px);
+  height: clamp(52px, 8vw, 84px);
+  color: #fff;
+  pointer-events: none;
+  animation: capture-camera-arrow-bob 1.15s ease-in-out infinite;
+  filter:
+    drop-shadow(0 0 10px rgba(0, 0, 0, 0.95))
+    drop-shadow(0 0 24px rgba(0, 0, 0, 0.75));
+}
+
+.capture-camera-arrow svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@keyframes capture-camera-arrow-bob {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+    opacity: 0.82;
+  }
+
+  50% {
+    transform: translateX(-50%) translateY(-16px);
+    opacity: 1;
+  }
+}
+
 .flash {
   pointer-events: none;
   position: fixed;
@@ -538,7 +663,7 @@ button:disabled {
   position: absolute;
   inset: 0;
   border: 1px solid rgba(255, 255, 255, 0.92);
-  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.9);
   pointer-events: none;
   z-index: 1;
 }
@@ -1074,12 +1199,12 @@ button:disabled {
 .thanks-screen {
   position: relative;
   width: min(720px, 100%);
-  min-height: calc(100vh - 112px);
+  min-height: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-content: start;
   justify-items: center;
-  gap: clamp(14px, 2.2vh, 24px);
+  gap: clamp(10px, 1.4vh, 16px);
   padding-top: 0;
   text-align: center;
 }
@@ -1106,11 +1231,12 @@ button:disabled {
   margin-top: 4px;
 }
 
-.thanks-top-actions button {
+.thanks-top-actions button,
+.thanks-restart-button {
   min-height: 38px;
-  border: 1px solid rgba(255, 255, 255, 0.72);
-  background: transparent;
-  color: #fff;
+  border: 1px solid #fff;
+  background: #fff;
+  color: #000;
   padding: 8px 12px;
   font-size: 11px;
   letter-spacing: 0.1em;
@@ -1118,7 +1244,10 @@ button:disabled {
 }
 
 .thanks-top-actions button:hover,
-.thanks-top-actions button:focus-visible {
+.thanks-top-actions button:focus-visible,
+.thanks-restart-button:hover,
+.thanks-restart-button:focus-visible,
+.thanks-restart-button.kiosk-button--pressed {
   background: #fff;
   color: #000;
   outline: none;
@@ -1182,21 +1311,22 @@ button:disabled {
 
 .thanks-preview {
   justify-self: center;
-  width: auto;
+  width: 100%;
   max-width: 90vw;
-  max-height: 25vh;
+  margin: 0 0 clamp(8px, 1.2vh, 16px);
   background: transparent;
   border: 0;
-  overflow: visible;
+  overflow: hidden;
   position: relative;
   display: grid;
   justify-items: center;
-  gap: 8px;
+  gap: 6px;
+  flex-shrink: 0;
 }
 
 .thanks-photo-number {
   margin: 0;
-  font-size: clamp(28px, 4vw, 48px);
+  font-size: clamp(22px, 3.2vw, 36px);
   font-weight: 200;
   letter-spacing: 0.12em;
   line-height: 1;
@@ -1205,8 +1335,8 @@ button:disabled {
 .thanks-preview img {
   width: auto;
   height: auto;
-  max-width: 90vw;
-  max-height: 25vh;
+  max-width: min(85vw, 504px);
+  max-height: min(29vh, 288px);
   object-fit: contain;
   display: block;
   border-radius: 5px;
@@ -1244,13 +1374,16 @@ button:disabled {
 .thanks-content {
   display: grid;
   justify-items: center;
-  gap: 12px;
+  gap: clamp(10px, 1.4vh, 14px);
   width: min(420px, 100%);
+  position: relative;
+  z-index: 1;
 }
 
 .thanks-copy {
   max-width: min(420px, 86vw);
   margin: 0;
+  padding-top: 2px;
   color: rgba(255, 255, 255, 0.82);
   font-size: clamp(16px, 2.2vw, 22px);
   font-weight: 300;
@@ -1290,9 +1423,9 @@ button:disabled {
   flex: 1 1 0;
   width: auto;
   min-width: 0;
-  min-height: 42px;
-  padding: 10px 18px;
-  font-size: 13px;
+  min-height: 54px;
+  padding: 14px 20px;
+  font-size: clamp(14px, 2vw, 16px);
   letter-spacing: 0.14em;
 }
 
@@ -1683,7 +1816,7 @@ button:disabled {
   position: absolute;
   inset: 0;
   border: 2px solid rgba(255, 255, 255, 0.95);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.5);
   box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.28), 0 0 12px rgba(0, 0, 0, 0.55);
 }
 
@@ -1823,6 +1956,20 @@ button:disabled {
 .camera-control-list {
   display: grid;
   gap: 9px;
+}
+
+.camera-control-help {
+  margin: 0;
+  line-height: 1.45;
+}
+
+.camera-control-note {
+  display: block;
+  margin-top: 2px;
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .range-row {
@@ -2607,10 +2754,9 @@ button:disabled {
     text-align: center;
   }
 
-  .thanks-preview,
   .thanks-preview img {
-    max-width: 86vw;
-    max-height: 25vh;
+    max-width: min(83vw, 468px);
+    max-height: min(18vh, 252px);
   }
 
   .admin-shell {
@@ -2749,18 +2895,17 @@ button:disabled {
   }
 
   .thanks-screen {
-    min-height: calc(100vh - clamp(56px, 10vw, 128px));
+    min-height: 0;
     grid-template-columns: 1fr;
     justify-items: center;
     align-content: start;
-    padding-top: clamp(54px, 8vh, 96px);
-    padding-bottom: clamp(18px, 3vh, 42px);
-    gap: clamp(8px, 1.2vh, 14px);
+    padding-top: 0;
+    padding-bottom: clamp(12px, 2vh, 24px);
+    gap: clamp(8px, 1.2vh, 12px);
   }
 
-  .thanks-preview,
   .thanks-preview img {
-    max-width: 72vw;
-    max-height: 25vh;
+    max-width: min(83vw, 468px);
+    max-height: min(27vh, 252px);
   }
 }

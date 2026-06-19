@@ -1,9 +1,18 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import QRCode from 'qrcode';
-import { Camera, Copy, Download, Expand, ExternalLink, FolderOpen, Globe, Image, Minimize2, Printer, RefreshCw, RotateCw, Settings, SlidersHorizontal, Sparkles, Trash2, X } from 'lucide-react';
+import { ArrowUp, Camera, Copy, Download, Expand, ExternalLink, FolderOpen, Globe, Image, Minimize2, Printer, RefreshCw, RotateCw, Settings, SlidersHorizontal, Sparkles, Trash2, X } from 'lucide-react';
 import type { AiPreset, AiProvider, AiQueueItem, AppSettings, AudioCue, BoothSession, CameraControlSettings, CameraRotation, Capture, FaceAsset, FaceAssetPack, FaceAssetPlacement, Gallery, GalleryUploadStatus, QueueSnapshot, SavedPhoto, TemplateDesign, TemplateLayout, TemplateSlot, TemplateWorkflowSettings } from './types';
 import { createBlankTemplateLayout, createGuideTemplateImage, createTemplatedPrintImage, defaultTemplateScreenCue, defaultTemplateShotAudioCue, getPrimarySlot, normalizeTemplateLayoutForClient, normalizeTemplateWorkflow, templateDimensions } from './template';
 import { FaceAssetStabilizer, FaceTracker, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceDebugInfo, selectedFaceAssetPack } from './faceAssets';
+import {
+  getCameraVideoStyle,
+  SOFTWARE_CAMERA_DEFAULT,
+  SOFTWARE_CAMERA_KEYS,
+  type CameraCapabilitiesMap,
+  type CameraRangeCapability,
+  type SoftwareCameraKey
+} from './cameraImage';
+import { GuestScreenLockProvider, KioskButton } from './KioskButton';
 import { playAudioCue, playAudioCueObject, stopAllAudio, stopAudioChannel, stopAudioCue } from './audio';
 import { createBoothGallerySession, createQueueRealtimeClient, fetchQueueSnapshot, isRealtimeConfigured, isWebQueueConfigured, publicWebUrl, validateBoothCode } from './webBackend';
 
@@ -89,6 +98,7 @@ function GuestApp() {
   const captureGuideRef = useRef<HTMLDivElement>(null);
   const faceOverlayStabilizerRef = useRef(new FaceAssetStabilizer());
   const streamRef = useRef<MediaStream | null>(null);
+  const [cameraCapabilities, setCameraCapabilities] = useState<CameraCapabilitiesMap>({});
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const recordedChunksRef = useRef<Blob[]>([]);
   const recordStreamRef = useRef<MediaStream | null>(null);
@@ -334,6 +344,7 @@ function GuestApp() {
   const stopCamera = () => {
     streamRef.current?.getTracks().forEach((track) => track.stop());
     streamRef.current = null;
+    setCameraCapabilities({});
     if (videoRef.current) {
       videoRef.current.pause();
       videoRef.current.srcObject = null;
@@ -355,6 +366,7 @@ function GuestApp() {
       audio: false
     };
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    setCameraCapabilities(getCameraCapabilities(stream));
     await applyCameraControls(stream, settings.cameraControls);
     streamRef.current = stream;
     await waitFor(() => videoRef.current);
@@ -961,17 +973,20 @@ function GuestApp() {
 
   if (!settings) return <GuestShell><p className="quiet">LOADING</p></GuestShell>;
 
+  const guestCameraStyle = getCameraVideoStyle(settings.cameraControls, cameraCapabilities);
+
   return (
-    <GuestShell flash={isFlashing} compactTop={step === 'queue'}>
+    <GuestScreenLockProvider step={step}>
+    <GuestShell flash={isFlashing} compactTop={step === 'queue'} thanksLayout={step === 'thanks'}>
       {!isFullscreen && step !== 'capture' && (
-        <button
+        <KioskButton
           className="fullscreen-button"
           aria-label="Fullscreen"
           title="Fullscreen"
-          onClick={() => void window.photoBooth.setGuestFullscreen(true)}
+          onPress={() => void window.photoBooth.setGuestFullscreen(true)}
         >
           <Expand size={18} />
-        </button>
+        </KioskButton>
       )}
 
       {step === 'queue' && (
@@ -993,6 +1008,7 @@ function GuestApp() {
           <video
             ref={videoRef}
             className={`welcome-live-feed${settings.mirrorPreview ? ' mirror' : ''}${settings.cameraRotation ? ` camera-rotate-${settings.cameraRotation}` : ''}`}
+            style={guestCameraStyle}
             playsInline
             muted
           />
@@ -1000,15 +1016,15 @@ function GuestApp() {
           <div className="welcome-brand-stack">
             <img className="welcome-logo" src={`${import.meta.env.BASE_URL}vibo-logo.png`} alt="Vibo Booth" />
             <p className="welcome-site">vibobooth.com</p>
-            <button
+            <KioskButton
               className="booth-button primary welcome-start-button"
-              onClick={() => {
+              onPress={() => {
                 startUnqueuedFlow();
               }}
               disabled={isBusy}
             >
               TAP TO START
-            </button>
+            </KioskButton>
           </div>
         </section>
       )}
@@ -1021,12 +1037,12 @@ function GuestApp() {
             {templateLayouts.map((layout) => {
               const count = activeDesigns.filter((design) => design.templateId === layout.id).length;
               return (
-                <button key={layout.id} className="style-card" onClick={() => chooseTemplate(layout.id)} disabled={count === 0}>
+                <KioskButton key={layout.id} className="style-card" onPress={() => chooseTemplate(layout.id)} disabled={count === 0}>
                   <TemplateMini layout={layout} />
                   <span>{layout.name.toUpperCase()}</span>
                   <small>{layout.photoWindows.length} PHOTO{layout.photoWindows.length === 1 ? '' : 'S'}</small>
                   <small>{count} DESIGN{count === 1 ? '' : 'S'}</small>
-                </button>
+                </KioskButton>
               );
             })}
           </div>
@@ -1035,24 +1051,24 @@ function GuestApp() {
 
       {step === 'design' && (
         <section className="template-guest-screen">
-          <button
+          <KioskButton
             className="guest-back-button"
-            onClick={() => {
+            onPress={() => {
               void playAudioCue(settings, 'button');
               setStep(selectableTemplates.length === 1 ? 'welcome' : 'style');
             }}
           >
             {buttonText('BACK')}
-          </button>
+          </KioskButton>
           <p className="instruction">CHOOSE A DESIGN</p>
           <div className="design-card-grid">
             {activeDesigns
               .filter((design) => design.templateId === selectedTemplateId)
               .map((design) => (
-                <button key={design.id} className="design-card" onClick={() => chooseDesign(design)}>
+                <KioskButton key={design.id} className="design-card" onPress={() => chooseDesign(design)}>
                   <TemplateImagePreview design={design} />
                   <span>{design.name.toUpperCase()}</span>
-                </button>
+                </KioskButton>
               ))}
           </div>
         </section>
@@ -1066,7 +1082,7 @@ function GuestApp() {
 
       {step === 'capture' && (
         <section className="capture-screen">
-          <video ref={videoRef} className={getCameraVideoClass(settings)} playsInline muted />
+          <video ref={videoRef} className={getCameraVideoClass(settings)} style={guestCameraStyle} playsInline muted />
           {activeFacePack && (
             <canvas
               ref={faceOverlayCanvasRef}
@@ -1075,15 +1091,15 @@ function GuestApp() {
             />
           )}
           {activeFacePack && !isCapturing && (
-            <button className="face-debug-toggle" onClick={() => setShowFaceDebug((current) => !current)}>
+            <KioskButton className="face-debug-toggle" onPress={() => setShowFaceDebug((current) => !current)}>
               {showFaceDebug ? 'Hide debug' : 'Show debug'}
-            </button>
+            </KioskButton>
           )}
-          {!isCapturing && (
+          {/* {!isCapturing && (
             <div className="capture-progress">
               {selectedTemplate ? `${Math.min(captures.length + 1, selectedTemplate.photoWindows.length)} / ${selectedTemplate.photoWindows.length}` : '0 / 0'}
             </div>
-          )}
+          )} */}
           <div ref={captureGuideRef} className="capture-guide-layer" style={slotGuideStyle(getPrimarySlot(selectedTemplate, captures.length))}>
             {!isCapturing && <div className="capture-print-guide" />}
           </div>
@@ -1092,21 +1108,29 @@ function GuestApp() {
               {captureMessage}
             </div>
           )}
-          {countdown && <div className="countdown">{countdown}</div>}
+          {countdown && (
+            <>
+              <div className="capture-camera-arrow" aria-hidden="true">
+                <ArrowUp strokeWidth={1.5} />
+              </div>
+              <div className="countdown">{countdown}</div>
+            </>
+          )}
         </section>
       )}
 
       {step === 'thanks' && (
         <section className="thanks-screen">
           <div className="thanks-top-actions">
-            <button
-              onClick={() => {
+            <KioskButton
+              className="thanks-restart-button"
+              onPress={() => {
                 void playAudioCue(settings, 'button');
                 resetGuestSession();
               }}
             >
               Restart
-            </button>
+            </KioskButton>
           </div>
           {(printedPreview || isAiGenerating) && (
             <div className={`thanks-preview ${isAiGenerating ? 'generating' : ''}`}>
@@ -1121,6 +1145,7 @@ function GuestApp() {
                 <p className="thanks-copy">Enter your phone # to view / download your photo at <span className="thanks-site">vibobooth.com</span>.</p>
                 <div className="phone-entry-display">{formatPhoneNumber(phoneNumber) || 'Phone number'}</div>
                 <DigitKeypad
+                  className="phone-keypad"
                   disabled={isBusy || isAiGenerating}
                   value={phoneNumber}
                   onDigit={appendPhoneDigit}
@@ -1160,9 +1185,9 @@ function GuestApp() {
                   </label>
                 </div>
                 <div className="phone-action-row">
-                  <button
+                  <KioskButton
                     className="booth-button"
-                    onClick={submitPhoneNumber}
+                    onPress={submitPhoneNumber}
                     disabled={
                       isBusy ||
                       isAiGenerating ||
@@ -1171,14 +1196,14 @@ function GuestApp() {
                     }
                   >
                     Submit
-                  </button>
-                  <button
+                  </KioskButton>
+                  <KioskButton
                     className="booth-button"
-                    onClick={skipPhoneEntry}
+                    onPress={skipPhoneEntry}
                     disabled={isBusy || isAiGenerating}
                   >
                     Skip
-                  </button>
+                  </KioskButton>
                 </div>
                 {phoneEntryMessage && <p className="phone-entry-message">{phoneEntryMessage}</p>}
               </>
@@ -1208,16 +1233,19 @@ function GuestApp() {
 
       {error && <p className="guest-error">{error}</p>}
     </GuestShell>
+    </GuestScreenLockProvider>
   );
 }
 
 function DigitKeypad({
+  className = '',
   disabled,
   value,
   onDigit,
   onBackspace,
   onClear
 }: {
+  className?: string;
   disabled?: boolean;
   value: string;
   onDigit: (digit: string) => void;
@@ -1225,17 +1253,17 @@ function DigitKeypad({
   onClear: () => void;
 }) {
   return (
-    <div className="queue-keypad">
+    <div className={`queue-keypad${className ? ` ${className}` : ''}`}>
       {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((digit) => (
-        <button key={digit} onClick={() => onDigit(digit)} disabled={disabled}>
+        <KioskButton key={digit} onPress={() => onDigit(digit)} disabled={disabled}>
           {digit}
-        </button>
+        </KioskButton>
       ))}
-      <button onClick={onClear} disabled={disabled || !value}>Clear</button>
-      <button onClick={() => onDigit('0')} disabled={disabled}>
+      <KioskButton onPress={onClear} disabled={disabled || !value}>Clear</KioskButton>
+      <KioskButton onPress={() => onDigit('0')} disabled={disabled}>
         0
-      </button>
-      <button onClick={onBackspace} disabled={disabled || !value}>Back</button>
+      </KioskButton>
+      <KioskButton onPress={onBackspace} disabled={disabled || !value}>Back</KioskButton>
     </div>
   );
 }
@@ -1282,9 +1310,9 @@ function QueueEntryScreen({
           onBackspace={onBackspace}
           onClear={onClear}
         />
-        <button className="booth-button primary" onClick={onSubmit} disabled={isBusy || code.length !== 4 || !configured}>
+        <KioskButton className="booth-button primary" onPress={onSubmit} disabled={isBusy || code.length !== 4 || !configured}>
           {buttonText(isBusy ? 'CHECKING' : 'START')}
-        </button>
+        </KioskButton>
         {message && <p className="queue-message">{message}</p>}
       </div>
     </section>
@@ -1294,14 +1322,24 @@ function QueueEntryScreen({
 function GuestShell({
   children,
   flash = false,
-  compactTop = false
+  compactTop = false,
+  thanksLayout = false
 }: {
   children: React.ReactNode;
   flash?: boolean;
   compactTop?: boolean;
+  thanksLayout?: boolean;
 }) {
   return (
-    <main className={`guest-shell ${compactTop ? 'compact-top' : ''}`}>
+    <main
+      className={[
+        'guest-shell',
+        compactTop ? 'compact-top' : '',
+        thanksLayout ? 'thanks-layout' : ''
+      ]
+        .filter(Boolean)
+        .join(' ')}
+    >
       {children}
       <div className={`flash ${flash ? 'active' : ''}`} />
     </main>
@@ -2525,7 +2563,13 @@ function AdminApp() {
               </div>
               <div className="camera-preview-column">
                 <div className={`admin-preview ${getCameraOrientationClass(settings)}`}>
-                  <video ref={cameraPreviewRef} className={getCameraVideoClass(settings)} muted playsInline />
+                  <video
+                    ref={cameraPreviewRef}
+                    className={getCameraVideoClass(settings)}
+                    style={getCameraVideoStyle(settings.cameraControls, cameraCapabilities)}
+                    muted
+                    playsInline
+                  />
                   {!adminStream && <span>No preview</span>}
                 </div>
                 <button className="admin-action" onClick={refreshCameras}><RefreshCw size={16} />Refresh cameras</button>
@@ -3811,41 +3855,68 @@ function CameraControlPanel({
   values: CameraControlSettings;
   onChange: (key: CameraControlKey, value: number) => void;
 }) {
-  const controls = CAMERA_CONTROL_FIELDS.filter((field) => capabilities[field.key]);
-  if (controls.length === 0) {
-    return <p className="muted">This camera does not expose image controls to Electron.</p>;
+  const hardwareControls = CAMERA_CONTROL_FIELDS.filter((field) => capabilities[field.key]);
+  const softwareControls = SOFTWARE_CAMERA_KEYS.filter((key) => !capabilities[key]);
+
+  const renderSlider = (
+    key: CameraControlKey,
+    label: string,
+    min: number,
+    max: number,
+    step: number,
+    defaultValue: number,
+    note?: string
+  ) => {
+    const value = values[key] ?? defaultValue;
+    return (
+      <label key={key}>
+        {label}
+        {note ? <span className="camera-control-note">{note}</span> : null}
+        <div className="range-row">
+          <input
+            type="range"
+            min={min}
+            max={max}
+            step={step}
+            value={value}
+            onChange={(event) => onChange(key, Number(event.target.value))}
+          />
+          <input
+            type="number"
+            min={min}
+            max={max}
+            step={step}
+            value={value}
+            onChange={(event) => onChange(key, Number(event.target.value))}
+          />
+        </div>
+      </label>
+    );
+  };
+
+  if (hardwareControls.length === 0 && softwareControls.length === 0) {
+    return (
+      <p className="muted">
+        This camera does not expose adjustable image controls. Use mirror, rotation, and lighting setup instead.
+      </p>
+    );
   }
 
   return (
     <div className="camera-control-list">
-      {controls.map((field) => {
+      {hardwareControls.length === 0 && softwareControls.length > 0 && (
+        <p className="muted camera-control-help">
+          This camera does not expose hardware brightness or color controls. Use the software adjustments below — they apply to the live preview and captured photos.
+        </p>
+      )}
+      {hardwareControls.map((field) => {
         const capability = capabilities[field.key];
         if (!capability) return null;
-        const step = capability.step || 1;
-        const value = values[field.key] ?? defaultCameraControlValue(capability);
-        return (
-          <label key={field.key}>
-            {field.label}
-            <div className="range-row">
-              <input
-                type="range"
-                min={capability.min}
-                max={capability.max}
-                step={step}
-                value={value}
-                onChange={(event) => onChange(field.key, Number(event.target.value))}
-              />
-              <input
-                type="number"
-                min={capability.min}
-                max={capability.max}
-                step={step}
-                value={value}
-                onChange={(event) => onChange(field.key, Number(event.target.value))}
-              />
-            </div>
-          </label>
-        );
+        return renderSlider(field.key, field.label, capability.min, capability.max, capability.step || 1, defaultCameraControlValue(capability));
+      })}
+      {softwareControls.map((key) => {
+        const label = CAMERA_CONTROL_FIELDS.find((field) => field.key === key)?.label ?? key;
+        return renderSlider(key, label, 0, 100, 1, SOFTWARE_CAMERA_DEFAULT, hardwareControls.length > 0 ? 'Software' : undefined);
       })}
     </div>
   );
@@ -4022,14 +4093,6 @@ const aiQueueStatusLabel = (item: AiQueueItem) => {
 
 type CameraControlKey = keyof CameraControlSettings;
 
-type CameraRangeCapability = {
-  min: number;
-  max: number;
-  step?: number;
-};
-
-type CameraCapabilitiesMap = Partial<Record<CameraControlKey, CameraRangeCapability>>;
-
 const CAMERA_CONTROL_FIELDS: Array<{ key: CameraControlKey; label: string }> = [
   { key: 'brightness', label: 'Brightness' },
   { key: 'contrast', label: 'Contrast' },
@@ -4070,9 +4133,14 @@ const getCameraControlSettings = (stream: MediaStream | null): CameraControlSett
 const getManualCameraDefaults = (capabilities: CameraCapabilitiesMap): CameraControlSettings =>
   CAMERA_CONTROL_FIELDS.reduce<CameraControlSettings>((next, field) => {
     const capability = capabilities[field.key];
-    if (!capability) return next;
-    const requestedValue = field.key === 'zoom' ? 0 : 50;
-    next[field.key] = Math.min(capability.max, Math.max(capability.min, requestedValue));
+    if (capability) {
+      const requestedValue = field.key === 'zoom' ? 0 : 50;
+      next[field.key] = Math.min(capability.max, Math.max(capability.min, requestedValue));
+      return next;
+    }
+    if (SOFTWARE_CAMERA_KEYS.includes(field.key as SoftwareCameraKey)) {
+      next[field.key] = SOFTWARE_CAMERA_DEFAULT;
+    }
     return next;
   }, {});
 
