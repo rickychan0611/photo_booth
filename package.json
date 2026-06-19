@@ -1,6 +1,6 @@
 {
   "name": "photo-booth",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "A premium black-and-white Electron photo booth kiosk for modern events.",
   "main": "dist-electron/main.js",
