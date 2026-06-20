@@ -3976,9 +3976,10 @@ const addQrToPrintDataUrl = async (printDataUrl: string, qrDataUrl: string) => {
   ctx.drawImage(printImage, 0, 0);
 
   const qrSize = Math.max(110, Math.round(Math.min(canvas.width, canvas.height) * 0.06));
-  const margin = Math.round(qrSize * 0.28);
-  const x = canvas.width - qrSize - margin;
-  const y = canvas.height - qrSize - margin;
+  const paddingLeft = Math.round(qrSize * 0.42);
+  const paddingBottom = Math.round(qrSize * 0.42);
+  const x = paddingLeft;
+  const y = canvas.height - qrSize - paddingBottom;
   ctx.fillStyle = '#fff';
   ctx.fillRect(x - 8, y - 8, qrSize + 16, qrSize + 16);
   ctx.drawImage(qrImage, x, y, qrSize, qrSize);
