@@ -814,7 +814,7 @@ function GuestApp() {
         });
         setPrintedPreview(result.dataUrl ?? dataUrl);
         if (result.saved) {
-          setPrintedNumber(photoNumber(result.saved.name));
+          setPrintedNumber(displayedPhotoNumber(result.saved.name, uploadSession));
           pendingGalleryUploadRef.current = { settings, session: uploadSession, finalPath: result.saved.path };
         }
         setIsAiGenerating(false);
@@ -829,7 +829,7 @@ function GuestApp() {
         printerName
       });
       setPrintedPreview(dataUrl);
-      setPrintedNumber(photoNumber(saved.name));
+      setPrintedNumber(displayedPhotoNumber(saved.name, uploadSession));
       setIsAiGenerating(false);
       console.log('[gallery-upload] final photo saved', { path: saved.path, hasUploadSession: Boolean(uploadSession) });
       if (uploadSession) {
@@ -1013,18 +1013,18 @@ function GuestApp() {
             muted
           />
           <div className="welcome-live-scrim" aria-hidden="true" />
+          <KioskButton
+            className="booth-button primary welcome-start-button"
+            onPress={() => {
+              startUnqueuedFlow();
+            }}
+            disabled={isBusy}
+          >
+            TAP TO START
+          </KioskButton>
           <div className="welcome-brand-stack">
             <img className="welcome-logo" src={`${import.meta.env.BASE_URL}vibo-logo.png`} alt="Vibo Booth" />
             <p className="welcome-site">vibobooth.com</p>
-            <KioskButton
-              className="booth-button primary welcome-start-button"
-              onPress={() => {
-                startUnqueuedFlow();
-              }}
-              disabled={isBusy}
-            >
-              TAP TO START
-            </KioskButton>
           </div>
         </section>
       )}
@@ -1111,7 +1111,7 @@ function GuestApp() {
           {countdown && (
             <>
               <div className="capture-camera-arrow" aria-hidden="true">
-                <ArrowUp strokeWidth={1.5} />
+                <ArrowUp strokeWidth={2.25} />
               </div>
               <div className="countdown">{countdown}</div>
             </>
@@ -1134,7 +1134,7 @@ function GuestApp() {
           </div>
           {(printedPreview || isAiGenerating) && (
             <div className={`thanks-preview ${isAiGenerating ? 'generating' : ''}`}>
-              {printedNumber && <p className="thanks-photo-number">{printedNumber}</p>}
+              {printedNumber && <p className="thanks-photo-number">Photo# {printedNumber}</p>}
               {printedPreview && <img src={printedPreview} alt="Printed layout preview" />}
               {isAiGenerating && <span>GENERATING</span>}
             </div>
@@ -3959,7 +3959,7 @@ const createGalleryQrCode = (galleryUrl: string) =>
   QRCode.toDataURL(galleryUrl, {
     errorCorrectionLevel: 'M',
     margin: 1,
-    scale: 8,
+    scale: 12,
     color: {
       dark: '#000000',
       light: '#ffffff'
@@ -4065,6 +4065,9 @@ const msToSeconds = (ms: number) => Number((ms / 1000).toFixed(1));
 const secondsToMs = (value: string) => Math.max(0, Math.round(Number(value || 0) * 1000));
 
 const photoNumber = (name: string) => name.replace(/\.[^.]+$/, '');
+
+const displayedPhotoNumber = (savedName: string, session: BoothSession | null | undefined) =>
+  session?.ticket.queue_number != null ? String(session.ticket.queue_number) : photoNumber(savedName);
 
 const templatePreviewPath = (design: TemplateDesign) => design.previewPath || design.filePath || design.framePath;
 

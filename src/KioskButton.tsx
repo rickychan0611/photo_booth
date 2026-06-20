@@ -11,9 +11,9 @@ import {
   type ReactNode
 } from 'react';
 
-const CLICK_LOCK_MS = 700;
-const PRESSED_RESET_MS = 800;
-export const SCREEN_OPEN_LOCK_MS = 1000;
+const CLICK_LOCK_MS = 150;
+const PRESSED_RESET_MS = 250;
+export const SCREEN_OPEN_LOCK_MS = 200;
 
 const GuestScreenLockContext = createContext(false);
 

@@ -5,6 +5,7 @@
   "description": "A premium black-and-white Electron photo booth kiosk for modern events.",
   "main": "dist-electron/main.js",
   "scripts": {
+    "postinstall": "node scripts/ensure-electron.js",
     "dev": "tsc -p tsconfig.electron.json && concurrently -k \"vite\" \"wait-on http://localhost:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron .\"",
     "build": "tsc -p tsconfig.json && vite build && tsc -p tsconfig.electron.json",
     "dist": "npm run build && electron-builder --win",
