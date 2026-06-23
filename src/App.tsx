@@ -799,7 +799,10 @@ function GuestApp() {
         setGalleryQrDataUrl(uploadQrDataUrl);
       }
 
-      let dataUrl = await createTemplatedPrintImage(photoDataUrls, layout, design, templateDataUrl);
+      const printPhotoDataUrls = settings.mirrorPreview
+        ? await Promise.all(photoDataUrls.map(flipPhotoForPrint))
+        : photoDataUrls;
+      let dataUrl = await createTemplatedPrintImage(printPhotoDataUrls, layout, design, templateDataUrl);
       if (uploadGalleryUrl && uploadQrDataUrl) {
         dataUrl = await addQrToPrintDataUrl(dataUrl, uploadQrDataUrl);
       }
@@ -3954,6 +3957,19 @@ const loadDataUrlImage = (dataUrl: string) =>
     image.onerror = () => reject(new Error('Could not load image for upload.'));
     image.src = dataUrl;
   });
+
+const flipPhotoForPrint = async (dataUrl: string) => {
+  const image = await loadDataUrlImage(dataUrl);
+  const canvas = document.createElement('canvas');
+  canvas.width = image.naturalWidth || image.width;
+  canvas.height = image.naturalHeight || image.height;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('Could not prepare photo for print.');
+  ctx.translate(canvas.width, 0);
+  ctx.scale(-1, 1);
+  ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+  return canvas.toDataURL('image/png');
+};
 
 const createGalleryQrCode = (galleryUrl: string) =>
   QRCode.toDataURL(galleryUrl, {
