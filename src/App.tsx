@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import QRCode from 'qrcode';
 import { ArrowUp, Camera, Copy, Download, Expand, ExternalLink, FolderOpen, Globe, Image, Minimize2, Printer, RefreshCw, RotateCw, Settings, SlidersHorizontal, Sparkles, Trash2, X } from 'lucide-react';
-import type { AiPreset, AiProvider, AiQueueItem, AppSettings, AudioCue, BoothSession, CameraControlSettings, CameraRotation, Capture, FaceAsset, FaceAssetPack, FaceAssetPlacement, Gallery, GalleryUploadStatus, QueueSnapshot, SavedPhoto, TemplateDesign, TemplateLayout, TemplateSlot, TemplateWorkflowSettings } from './types';
+import type { AiPreset, AiProvider, AiQueueItem, AppSettings, AudioCue, BoothSession, CameraControlSettings, CameraRotation, Capture, ColorFilterPreset, ColorFilterValues, FaceAsset, FaceAssetPack, FaceAssetPlacement, Gallery, GalleryUploadStatus, QueueSnapshot, SavedPhoto, TemplateDesign, TemplateLayout, TemplateSlot, TemplateWorkflowSettings } from './types';
 import { createBlankTemplateLayout, createGuideTemplateImage, createTemplatedPrintImage, defaultTemplateScreenCue, defaultTemplateShotAudioCue, getPrimarySlot, normalizeTemplateLayoutForClient, normalizeTemplateWorkflow, templateDimensions } from './template';
 import { FaceAssetStabilizer, FaceTracker, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceDebugInfo, selectedFaceAssetPack } from './faceAssets';
 import {
@@ -16,10 +16,31 @@ import { GuestScreenLockProvider, KioskButton } from './KioskButton';
 import { playAudioCue, playAudioCueObject, stopAllAudio, stopAudioChannel, stopAudioCue } from './audio';
 import { createBoothGallerySession, createQueueRealtimeClient, fetchQueueSnapshot, isRealtimeConfigured, isWebQueueConfigured, publicWebUrl, validateBoothCode } from './webBackend';
 
-type GuestStep = 'queue' | 'welcome' | 'style' | 'design' | 'intro' | 'capture' | 'select' | 'thanks';
+type GuestStep = 'queue' | 'welcome' | 'style' | 'design' | 'intro' | 'capture' | 'select' | 'filterPreview' | 'thanks';
+
+type PendingPrint = {
+  captures: Capture[];
+  indexes: number[];
+  templateId: string;
+  design: TemplateDesign;
+};
 
 const buttonText = (value: string) => `[ ${value} ]`;
 const PHONE_MAX_DIGITS = 15;
+const COLOR_FILTER_FIELDS: Array<{ key: keyof ColorFilterValues; label: string; min: number; max: number; step?: number }> = [
+  { key: 'intensity', label: 'Intensity', min: 0, max: 100 },
+  { key: 'brightness', label: 'Brightness', min: -50, max: 50 },
+  { key: 'contrast', label: 'Contrast', min: -50, max: 50 },
+  { key: 'saturation', label: 'Saturation', min: -50, max: 50 },
+  { key: 'warmth', label: 'Warmth', min: -50, max: 50 },
+  { key: 'tint', label: 'Tint', min: -50, max: 50 },
+  { key: 'hue', label: 'Hue', min: -180, max: 180 },
+  { key: 'fade', label: 'Fade', min: 0, max: 50 },
+  { key: 'highlights', label: 'Highlights', min: -50, max: 50 },
+  { key: 'shadows', label: 'Shadows', min: -50, max: 50 },
+  { key: 'vignette', label: 'Vignette', min: 0, max: 50 },
+  { key: 'blur', label: 'Blur', min: 0, max: 20 }
+];
 
 function formatPhoneNumber(value: string) {
   const digits = value.replace(/\D/g, '').slice(0, PHONE_MAX_DIGITS);
@@ -72,6 +93,11 @@ function GuestApp() {
   const [selectedCaptureIndexes, setSelectedCaptureIndexes] = useState<number[]>([]);
   const [selectedTemplateId, setSelectedTemplateId] = useState('');
   const [selectedDesignId, setSelectedDesignId] = useState('');
+  const [pendingPrint, setPendingPrint] = useState<PendingPrint | null>(null);
+  const [selectedBeautyLevel, setSelectedBeautyLevel] = useState(0);
+  const [selectedColorFilterId, setSelectedColorFilterId] = useState('normal');
+  const [filterPreviewDataUrl, setFilterPreviewDataUrl] = useState('');
+  const [filterCountdown, setFilterCountdown] = useState<number | null>(null);
   const [thankYouCountdown, setThankYouCountdown] = useState<number | null>(null);
   const [printedPreview, setPrintedPreview] = useState('');
   const [printedNumber, setPrintedNumber] = useState('');
@@ -251,6 +277,11 @@ function GuestApp() {
     setSelectedCaptureIndexes([]);
     setPrintedPreview('');
     setPrintedNumber('');
+    setPendingPrint(null);
+    setSelectedBeautyLevel(0);
+    setSelectedColorFilterId('normal');
+    setFilterPreviewDataUrl('');
+    setFilterCountdown(null);
     setIsAiGenerating(false);
     setCountdown(null);
     setCaptureMessage('');
@@ -276,6 +307,11 @@ function GuestApp() {
     setSelectedCaptureIndexes([]);
     setPrintedPreview('');
     setPrintedNumber('');
+    setPendingPrint(null);
+    setSelectedBeautyLevel(0);
+    setSelectedColorFilterId('normal');
+    setFilterPreviewDataUrl('');
+    setFilterCountdown(null);
     setIsAiGenerating(false);
     setCountdown(null);
     setCaptureMessage('');
@@ -550,6 +586,87 @@ function GuestApp() {
   };
 
   const activeFacePack = settings && selectedDesign ? selectedFaceAssetPack(settings, selectedDesign) : null;
+  const activeColorFilterPresets = settings?.template.colorFilterPresets.filter((preset) => preset.active) ?? [];
+  const selectedColorPreset = selectedColorFilterId === 'normal'
+    ? null
+    : activeColorFilterPresets.find((preset) => preset.id === selectedColorFilterId) ?? null;
+
+  const processPrintPhotoDataUrls = async (
+    request: PendingPrint,
+    beautyLevel: number,
+    colorPreset: ColorFilterPreset | null
+  ) => {
+    if (!settings) return [];
+    const layout = templateLayouts.find((item) => item.id === request.templateId);
+    if (!layout) return [];
+    const baseDataUrls = request.indexes
+      .slice(0, layout.photoWindows.length)
+      .map((index) => request.captures[index]?.dataUrl)
+      .filter(Boolean) as string[];
+    const printReady = settings.mirrorPreview
+      ? await Promise.all(baseDataUrls.map(flipPhotoForPrint))
+      : baseDataUrls;
+    const activeBeautyLevel = settings.beautyFilter.enabledMode === 'off' ? 0 : beautyLevel;
+    return Promise.all(printReady.map((dataUrl) => applyPhotoFilters(dataUrl, colorPreset, activeBeautyLevel)));
+  };
+
+  const prepareFilterPreview = async (
+    sourceCaptures: Capture[],
+    indexes: number[],
+    templateId: string,
+    design: TemplateDesign
+  ) => {
+    setPendingPrint({ captures: sourceCaptures, indexes, templateId, design });
+    setSelectedBeautyLevel(0);
+    setSelectedColorFilterId('normal');
+    setFilterPreviewDataUrl('');
+    setFilterCountdown(Math.max(1, Math.ceil((settings?.beautyFilter.previewTimeoutMs ?? 30000) / 1000)));
+    setStep('filterPreview');
+  };
+
+  const confirmFilterPrint = async () => {
+    if (!pendingPrint || isBusy) return;
+    const request = pendingPrint;
+    const processed = await processPrintPhotoDataUrls(request, selectedBeautyLevel, selectedColorPreset);
+    setPendingPrint(null);
+    setFilterCountdown(null);
+    await printCaptures(request.captures, request.indexes, request.templateId, request.design, processed);
+  };
+
+  useEffect(() => {
+    if (step !== 'filterPreview' || !pendingPrint || !settings) return undefined;
+    let active = true;
+    void (async () => {
+      try {
+        const layout = templateLayouts.find((item) => item.id === pendingPrint.templateId);
+        if (!layout) return;
+        const templateDataUrl = await window.photoBooth.getImageDataUrl(templateFramePath(pendingPrint.design));
+        const processed = await processPrintPhotoDataUrls(pendingPrint, selectedBeautyLevel, selectedColorPreset);
+        if (processed.length < layout.photoWindows.length) return;
+        const preview = await createTemplatedPrintImage(processed, layout, pendingPrint.design, templateDataUrl);
+        if (active) setFilterPreviewDataUrl(preview);
+      } catch (error) {
+        if (active) setError(error instanceof Error ? error.message : 'Could not preview filters.');
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [pendingPrint, selectedBeautyLevel, selectedColorFilterId, settings, step]);
+
+  useEffect(() => {
+    if (step !== 'filterPreview' || !pendingPrint || !settings) return undefined;
+    setFilterCountdown(Math.max(1, Math.ceil(settings.beautyFilter.previewTimeoutMs / 1000)));
+    const timer = window.setInterval(() => {
+      setFilterCountdown((current) => (current === null ? current : Math.max(0, current - 1)));
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [pendingPrint?.templateId, settings?.beautyFilter.previewTimeoutMs, step]);
+
+  useEffect(() => {
+    if (step !== 'filterPreview' || filterCountdown !== 0 || !pendingPrint) return;
+    void confirmFilterPrint();
+  }, [filterCountdown, pendingPrint, step]);
 
   useEffect(() => {
     const canvas = faceOverlayCanvasRef.current;
@@ -686,6 +803,11 @@ function GuestApp() {
     setSelectedCaptureIndexes([]);
     setPrintedPreview('');
     setPrintedNumber('');
+    setPendingPrint(null);
+    setSelectedBeautyLevel(0);
+    setSelectedColorFilterId('normal');
+    setFilterPreviewDataUrl('');
+    setFilterCountdown(null);
     setIsAiGenerating(false);
     setCaptureMessage('');
     setCountdown(null);
@@ -732,7 +854,7 @@ function GuestApp() {
       const defaultIndexes = Array.from({ length: layout.photoWindows.length }, (_item, index) => index).filter((index) => index < nextCaptures.length);
       setSelectedCaptureIndexes(defaultIndexes);
       if (design) {
-        await printCaptures(nextCaptures, defaultIndexes, layout.id, design);
+        await prepareFilterPreview(nextCaptures, defaultIndexes, layout.id, design);
       } else {
         setStep('thanks');
       }
@@ -752,15 +874,18 @@ function GuestApp() {
     sourceCaptures: Capture[],
     indexes: number[],
     templateId: string,
-    design: TemplateDesign
+    design: TemplateDesign,
+    processedPhotoDataUrls?: string[]
   ) => {
     if (!settings) return;
     const layout = templateLayouts.find((item) => item.id === templateId);
     if (!layout) return;
-    const photoDataUrls = indexes
-      .slice(0, layout.photoWindows.length)
-      .map((index) => sourceCaptures[index]?.dataUrl)
-      .filter(Boolean) as string[];
+    const photoDataUrls = processedPhotoDataUrls ?? (
+      indexes
+        .slice(0, layout.photoWindows.length)
+        .map((index) => sourceCaptures[index]?.dataUrl)
+        .filter(Boolean) as string[]
+    );
     if (photoDataUrls.length < layout.photoWindows.length) return;
     setIsBusy(true);
     stopAudioChannel('voice');
@@ -799,7 +924,9 @@ function GuestApp() {
         setGalleryQrDataUrl(uploadQrDataUrl);
       }
 
-      const printPhotoDataUrls = settings.mirrorPreview
+      const printPhotoDataUrls = processedPhotoDataUrls
+        ? photoDataUrls
+        : settings.mirrorPreview
         ? await Promise.all(photoDataUrls.map(flipPhotoForPrint))
         : photoDataUrls;
       let dataUrl = await createTemplatedPrintImage(printPhotoDataUrls, layout, design, templateDataUrl);
@@ -980,7 +1107,7 @@ function GuestApp() {
 
   return (
     <GuestScreenLockProvider step={step}>
-    <GuestShell flash={isFlashing} compactTop={step === 'queue'} thanksLayout={step === 'thanks'}>
+    <GuestShell flash={isFlashing} compactTop={step === 'queue'} thanksLayout={step === 'thanks' || step === 'filterPreview'} filterLayout={step === 'filterPreview'}>
       {!isFullscreen && step !== 'capture' && (
         <KioskButton
           className="fullscreen-button"
@@ -1119,6 +1246,83 @@ function GuestApp() {
               <div className="countdown">{countdown}</div>
             </>
           )}
+        </section>
+      )}
+
+      {step === 'filterPreview' && (
+        <section className="filter-preview-screen">
+          <div className={`filter-preview-stage${filterPreviewDataUrl ? '' : ' generating'}`}>
+            {filterPreviewDataUrl ? <img src={filterPreviewDataUrl} alt="Print preview" /> : <span>PREVIEWING</span>}
+          </div>
+          <div className="filter-content">
+            <div className="filter-controls">
+              {settings.beautyFilter.enabledMode !== 'off' && (
+                <div className="filter-control-group">
+                  <p>BEAUTY</p>
+                  <div className="filter-button-row beauty-buttons">
+                    {[0, 1, 2, 3, 4].map((level) => (
+                      <KioskButton
+                        key={level}
+                        className={`filter-choice-button${selectedBeautyLevel === level ? ' active' : ''}`}
+                        onPress={() => {
+                          void playAudioCue(settings, 'button');
+                          setSelectedBeautyLevel(level);
+                        }}
+                      >
+                        <span>{level === 0 ? 'No Beauty' : String(level)}</span>
+                      </KioskButton>
+                    ))}
+                  </div>
+                </div>
+              )}
+              <div className="filter-control-group">
+                <p>COLOR</p>
+                <div className="filter-button-row color-buttons">
+                <KioskButton
+                  className={`filter-choice-button filter-choice-button-solo${selectedColorFilterId === 'normal' ? ' active' : ''}`}
+                    onPress={() => {
+                      void playAudioCue(settings, 'button');
+                      setSelectedColorFilterId('normal');
+                    }}
+                  >
+                    <span>No Filter</span>
+                  </KioskButton>
+                  {activeColorFilterPresets.map((preset) => (
+                    <KioskButton
+                      key={preset.id}
+                      className={`filter-choice-button${selectedColorFilterId === preset.id ? ' active' : ''}`}
+                      onPress={() => {
+                        void playAudioCue(settings, 'button');
+                        setSelectedColorFilterId(preset.id);
+                      }}
+                    >
+                      <ImagePathThumb path={preset.thumbnailPath} label={preset.name} />
+                      <span>{preset.name}</span>
+                    </KioskButton>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="filter-print-row">
+              <KioskButton
+                className="booth-button primary filter-print-button"
+                onPress={() => {
+                  void playAudioCue(settings, 'button');
+                  void confirmFilterPrint();
+                }}
+                disabled={isBusy || !filterPreviewDataUrl}
+              >
+                <span className="filter-print-button-inner">
+                  <span className="filter-print-button-label">Print Now</span>
+                  {filterCountdown !== null && (
+                    <span className="filter-countdown" aria-label={`Auto-print in ${filterCountdown} seconds`}>
+                      {filterCountdown}
+                    </span>
+                  )}
+                </span>
+              </KioskButton>
+            </div>
+          </div>
         </section>
       )}
 
@@ -1326,19 +1530,22 @@ function GuestShell({
   children,
   flash = false,
   compactTop = false,
-  thanksLayout = false
+  thanksLayout = false,
+  filterLayout = false
 }: {
   children: React.ReactNode;
   flash?: boolean;
   compactTop?: boolean;
   thanksLayout?: boolean;
+  filterLayout?: boolean;
 }) {
   return (
     <main
       className={[
         'guest-shell',
         compactTop ? 'compact-top' : '',
-        thanksLayout ? 'thanks-layout' : ''
+        thanksLayout ? 'thanks-layout' : '',
+        filterLayout ? 'filter-layout' : ''
       ]
         .filter(Boolean)
         .join(' ')}
@@ -1386,6 +1593,259 @@ function TemplateImagePreview({ design }: { design: TemplateDesign }) {
   }, [design.previewPath, design.framePath, design.filePath]);
 
   return <div className="design-preview">{src ? <img src={src} alt={design.name} /> : null}</div>;
+}
+
+function ImagePathThumb({ path, label }: { path: string; label: string }) {
+  const [src, setSrc] = useState('');
+  useEffect(() => {
+    let active = true;
+    if (!path) {
+      setSrc('');
+      return undefined;
+    }
+    void window.photoBooth
+      .getImageDataUrl(path)
+      .then((dataUrl) => {
+        if (active) setSrc(dataUrl);
+      })
+      .catch(() => {
+        if (active) setSrc('');
+      });
+    return () => {
+      active = false;
+    };
+  }, [path]);
+  return src ? <img src={src} alt={label} /> : <Image size={22} />;
+}
+
+function createFilterExamplePlaceholder() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 900;
+  canvas.height = 900;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return '';
+  const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+  gradient.addColorStop(0, '#f2c7a7');
+  gradient.addColorStop(0.45, '#b8d7ff');
+  gradient.addColorStop(1, '#222');
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.82)';
+  ctx.beginPath();
+  ctx.arc(450, 360, 150, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#1a1a1a';
+  ctx.fillRect(270, 560, 360, 120);
+  return canvas.toDataURL('image/png');
+}
+
+function ColorFilterStudio({
+  settings,
+  selectedPreset,
+  selectedPresetId,
+  onSelect,
+  onSavePreset,
+  onAddPreset,
+  onDuplicatePreset,
+  onDeletePreset,
+  onUploadThumbnail,
+  onUploadExample,
+  onGenerateAllThumbnails,
+  onGenerateThumbnail,
+  onSaveSettings
+}: {
+  settings: AppSettings;
+  selectedPreset: ColorFilterPreset | null;
+  selectedPresetId: string;
+  onSelect: (presetId: string) => void;
+  onSavePreset: (preset: ColorFilterPreset, text?: string) => Promise<void>;
+  onAddPreset: () => Promise<void>;
+  onDuplicatePreset: (preset: ColorFilterPreset) => Promise<void>;
+  onDeletePreset: (presetId: string) => Promise<void>;
+  onUploadThumbnail: (presetId: string) => Promise<void>;
+  onUploadExample: () => Promise<void>;
+  onGenerateAllThumbnails: (exampleDataUrl: string) => Promise<void>;
+  onGenerateThumbnail: (exampleDataUrl: string, preset: ColorFilterPreset) => Promise<void>;
+  onSaveSettings: (partial: Partial<AppSettings>, text?: string) => Promise<AppSettings>;
+}) {
+  const [exampleSrc, setExampleSrc] = useState('');
+  const [previewSrc, setPreviewSrc] = useState('');
+
+  useEffect(() => {
+    let active = true;
+    if (!settings.template.colorFilterExamplePath) {
+      setExampleSrc(createFilterExamplePlaceholder());
+      return undefined;
+    }
+    void window.photoBooth
+      .getImageDataUrl(settings.template.colorFilterExamplePath)
+      .then((dataUrl) => {
+        if (active) setExampleSrc(dataUrl);
+      })
+      .catch(() => {
+        if (active) setExampleSrc(createFilterExamplePlaceholder());
+      });
+    return () => {
+      active = false;
+    };
+  }, [settings.template.colorFilterExamplePath]);
+
+  useEffect(() => {
+    let active = true;
+    if (!exampleSrc || !selectedPreset) {
+      setPreviewSrc(exampleSrc);
+      return undefined;
+    }
+    void applyPhotoFilters(exampleSrc, selectedPreset, 0)
+      .then((dataUrl) => {
+        if (active) setPreviewSrc(dataUrl);
+      })
+      .catch(() => {
+        if (active) setPreviewSrc(exampleSrc);
+      });
+    return () => {
+      active = false;
+    };
+  }, [exampleSrc, selectedPreset]);
+
+  const updateFilterValue = (key: keyof ColorFilterValues, value: number) => {
+    if (!selectedPreset) return;
+    void onSavePreset({
+      ...selectedPreset,
+      filter: {
+        ...selectedPreset.filter,
+        [key]: value
+      }
+    });
+  };
+
+  return (
+    <div className="color-filter-studio">
+      <div className="color-filter-layout">
+        <aside className="color-filter-preview-panel">
+          <div className="color-filter-preview">
+            {previewSrc && <img src={previewSrc} alt="Color filter preview" />}
+          </div>
+          <div className="color-filter-settings">
+            <div className="admin-actions">
+              <button onClick={() => void onUploadExample()}>Upload example</button>
+              <button disabled={!exampleSrc} onClick={() => void onGenerateAllThumbnails(exampleSrc)}>Generate all buttons</button>
+            </div>
+            <div className="compact-settings-grid">
+              <label>
+                Countdown
+                <input
+                  type="number"
+                  min="5"
+                  max="120"
+                  step="1"
+                  value={Math.round(settings.beautyFilter.previewTimeoutMs / 1000)}
+                  onChange={(event) =>
+                    void onSaveSettings({
+                      beautyFilter: {
+                        ...settings.beautyFilter,
+                        previewTimeoutMs: Math.max(5, Number(event.target.value || 30)) * 1000
+                      }
+                    }, 'Filter countdown saved.')
+                  }
+                />
+              </label>
+              <label>
+                Beauty
+                <select
+                  value={settings.beautyFilter.enabledMode}
+                  onChange={(event) =>
+                    void onSaveSettings({
+                      beautyFilter: {
+                        ...settings.beautyFilter,
+                        enabledMode: event.target.value as AppSettings['beautyFilter']['enabledMode']
+                      }
+                    }, 'Beauty mode saved.')
+                  }
+                >
+                  <option value="off">Off</option>
+                  <option value="print">Print only</option>
+                  <option value="live">Live + Print</option>
+                </select>
+              </label>
+            </div>
+          </div>
+        </aside>
+
+        <section className="color-filter-editor">
+          <div className="color-filter-list">
+            <div className="admin-actions">
+              <button onClick={() => void onAddPreset()}>Add preset</button>
+            </div>
+            <div className="color-filter-preset-strip">
+              {settings.template.colorFilterPresets.map((preset) => (
+                <button
+                  key={preset.id}
+                  className={preset.id === selectedPresetId ? 'active' : ''}
+                  onClick={() => onSelect(preset.id)}
+                >
+                  <ImagePathThumb path={preset.thumbnailPath} label={preset.name} />
+                  <span>{preset.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {selectedPreset ? (
+            <div className="workflow-shot color-filter-edit-card">
+              <div className="color-filter-edit-header">
+                <label>
+                  Name
+                  <input
+                    value={selectedPreset.name}
+                    onChange={(event) => void onSavePreset({ ...selectedPreset, name: event.target.value })}
+                  />
+                </label>
+                <label className="check-row">
+                  <input
+                    type="checkbox"
+                    checked={selectedPreset.active}
+                    onChange={(event) => void onSavePreset({ ...selectedPreset, active: event.target.checked })}
+                  />
+                  Active
+                </label>
+              </div>
+              <div className="color-thumbnail-row">
+                <div className="color-thumbnail-preview">
+                  <ImagePathThumb path={selectedPreset.thumbnailPath} label={selectedPreset.name} />
+                </div>
+                <div className="admin-actions">
+                  <button onClick={() => void onUploadThumbnail(selectedPreset.id)}>Upload square button image</button>
+                  <button disabled={!exampleSrc} onClick={() => void onGenerateThumbnail(exampleSrc, selectedPreset)}>Update button image</button>
+                  <button onClick={() => void onSavePreset({ ...selectedPreset, filter: neutralColorFilterValues() }, 'Color filter reset.')}>Reset</button>
+                  <button onClick={() => void onDuplicatePreset(selectedPreset)}>Duplicate</button>
+                  <button className="danger" onClick={() => void onDeletePreset(selectedPreset.id)}>Delete</button>
+                </div>
+              </div>
+              <div className="color-slider-grid">
+                {COLOR_FILTER_FIELDS.map((field) => (
+                  <label key={field.key} className="color-slider">
+                    <span>{field.label}</span>
+                    <input
+                      type="range"
+                      min={field.min}
+                      max={field.max}
+                      step={field.step ?? 1}
+                      value={selectedPreset.filter[field.key]}
+                      onChange={(event) => updateFilterValue(field.key, Number(event.target.value))}
+                    />
+                    <strong>{selectedPreset.filter[field.key]}</strong>
+                  </label>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p className="muted">Create a color preset to start.</p>
+          )}
+        </section>
+      </div>
+    </div>
+  );
 }
 
 function TemplateDesignAdminCard({
@@ -1940,6 +2400,7 @@ function AdminApp() {
   const [selectedAdminTemplateId, setSelectedAdminTemplateId] = useState('');
   const [editingTemplate, setEditingTemplate] = useState<TemplateLayout | null>(null);
   const [selectedFaceAssetPackId, setSelectedFaceAssetPackId] = useState('');
+  const [selectedColorFilterId, setSelectedColorFilterId] = useState('');
   const [aiPresetDraft, setAiPresetDraft] = useState({ name: '', prompt: '' });
   const [galleryUploadStatus, setGalleryUploadStatus] = useState<GalleryUploadStatus>({
     state: 'idle',
@@ -1992,6 +2453,15 @@ function AdminApp() {
   }, [settings?.template.faceAssetPacks, selectedFaceAssetPackId]);
 
   useEffect(() => {
+    if (!settings) return;
+    const presets = settings.template.colorFilterPresets;
+    if (presets.length > 0 && !presets.some((preset) => preset.id === selectedColorFilterId)) {
+      setSelectedColorFilterId(presets[0].id);
+    }
+    if (presets.length === 0 && selectedColorFilterId) setSelectedColorFilterId('');
+  }, [settings?.template.colorFilterPresets, selectedColorFilterId]);
+
+  useEffect(() => {
     if (tab !== 'aiQueue') return undefined;
     const timer = window.setInterval(() => {
       void refreshAiQueue();
@@ -2030,6 +2500,7 @@ function AdminApp() {
   }, [settings?.cameraId, tab]);
 
   const selectedFaceAssetPack = settings?.template.faceAssetPacks.find((pack) => pack.id === selectedFaceAssetPackId) ?? null;
+  const selectedColorFilter = settings?.template.colorFilterPresets.find((preset) => preset.id === selectedColorFilterId) ?? null;
 
   const latestFinal = useMemo(() => gallery.finals[0], [gallery]);
   const filteredFinals = useMemo(() => {
@@ -2333,6 +2804,113 @@ function AdminApp() {
     setMessage('AI image removed.');
   };
 
+  const saveColorFilterPreset = async (preset: ColorFilterPreset, text = 'Color filter saved.') => {
+    const colorFilterPresets = settings.template.colorFilterPresets.map((item) =>
+      item.id === preset.id ? { ...preset, filter: normalizeColorFilterValuesForClient(preset.filter), updatedAt: new Date().toISOString() } : item
+    );
+    await saveMessage({ template: { ...settings.template, colorFilterPresets } }, text);
+  };
+
+  const addColorFilterPreset = async () => {
+    const now = new Date().toISOString();
+    const preset: ColorFilterPreset = {
+      id: `color-filter-${Date.now()}`,
+      name: 'New Filter',
+      active: true,
+      thumbnailPath: '',
+      filter: neutralColorFilterValues(),
+      createdAt: now,
+      updatedAt: now
+    };
+    await saveMessage({
+      template: {
+        ...settings.template,
+        colorFilterPresets: [...settings.template.colorFilterPresets, preset]
+      }
+    }, 'Color filter added.');
+    setSelectedColorFilterId(preset.id);
+  };
+
+  const duplicateColorFilterPreset = async (preset: ColorFilterPreset) => {
+    const now = new Date().toISOString();
+    const copyPreset: ColorFilterPreset = {
+      ...preset,
+      id: `color-filter-${Date.now()}`,
+      name: `${preset.name} Copy`,
+      createdAt: now,
+      updatedAt: now
+    };
+    await saveMessage({
+      template: {
+        ...settings.template,
+        colorFilterPresets: [...settings.template.colorFilterPresets, copyPreset]
+      }
+    }, 'Color filter duplicated.');
+    setSelectedColorFilterId(copyPreset.id);
+  };
+
+  const deleteColorFilterPreset = async (presetId: string) => {
+    const colorFilterPresets = settings.template.colorFilterPresets.filter((preset) => preset.id !== presetId);
+    await saveMessage({ template: { ...settings.template, colorFilterPresets } }, 'Color filter deleted.');
+    setSelectedColorFilterId(colorFilterPresets[0]?.id ?? '');
+  };
+
+  const uploadColorFilterThumbnail = async (presetId: string) => {
+    const next = await window.photoBooth.uploadColorFilterThumbnail(presetId);
+    await updateSettings(next);
+    setMessage('Color filter thumbnail uploaded.');
+  };
+
+  const uploadColorFilterExample = async () => {
+    const next = await window.photoBooth.uploadColorFilterExample();
+    await updateSettings(next);
+    setMessage('Color filter example uploaded. Generating buttons...');
+    if (!next.template.colorFilterExamplePath) return;
+    try {
+      const exampleDataUrl = await window.photoBooth.getImageDataUrl(next.template.colorFilterExamplePath);
+      const thumbnails = await Promise.all(
+        next.template.colorFilterPresets.map(async (preset) => ({
+          presetId: preset.id,
+          dataUrl: await createSquareFilterThumbnail(exampleDataUrl, preset)
+        }))
+      );
+      const generated = await window.photoBooth.saveGeneratedColorFilterThumbnails(thumbnails);
+      await updateSettings(generated);
+      setMessage('Color filter buttons generated.');
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Color filter buttons failed.');
+    }
+  };
+
+  const generateAllColorFilterThumbnails = async (exampleDataUrl: string) => {
+    try {
+      setMessage('Generating color filter buttons...');
+      const thumbnails = await Promise.all(
+        settings.template.colorFilterPresets.map(async (preset) => ({
+          presetId: preset.id,
+          dataUrl: await createSquareFilterThumbnail(exampleDataUrl, preset)
+        }))
+      );
+      const next = await window.photoBooth.saveGeneratedColorFilterThumbnails(thumbnails);
+      await updateSettings(next);
+      setMessage('Color filter buttons updated.');
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Color filter buttons failed.');
+    }
+  };
+
+  const generateColorFilterThumbnail = async (exampleDataUrl: string, preset: ColorFilterPreset) => {
+    try {
+      setMessage('Updating color filter button...');
+      const dataUrl = await createSquareFilterThumbnail(exampleDataUrl, preset);
+      const next = await window.photoBooth.saveGeneratedColorFilterThumbnails([{ presetId: preset.id, dataUrl }]);
+      await updateSettings(next);
+      setMessage('Color filter button updated.');
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Color filter button failed.');
+    }
+  };
+
   const updateAiProvider = async (provider: AiProvider, partial: Partial<AppSettings['ai']['providers'][AiProvider]>) => {
     await saveMessage({
       ai: {
@@ -2374,6 +2952,7 @@ function AdminApp() {
           ['printer', 'Printer', Printer],
           ['workflow', 'Workflow', SlidersHorizontal],
           ['template', 'Template', Image],
+          ['colorFilters', 'Color Filters', SlidersHorizontal],
           ['faceAssets', 'Face Assets', Sparkles],
           ['aiPresets', 'AI Presets', Sparkles],
           ['aiQueue', 'AI Queue', RefreshCw],
@@ -3003,6 +3582,26 @@ function AdminApp() {
                 </div>
               );
             })()}
+          </AdminSection>
+        )}
+
+        {tab === 'colorFilters' && (
+          <AdminSection>
+            <ColorFilterStudio
+              settings={settings}
+              selectedPreset={selectedColorFilter}
+              selectedPresetId={selectedColorFilterId}
+              onSelect={setSelectedColorFilterId}
+              onSavePreset={saveColorFilterPreset}
+              onAddPreset={addColorFilterPreset}
+              onDuplicatePreset={duplicateColorFilterPreset}
+              onDeletePreset={deleteColorFilterPreset}
+              onUploadThumbnail={uploadColorFilterThumbnail}
+              onUploadExample={uploadColorFilterExample}
+              onGenerateAllThumbnails={generateAllColorFilterThumbnails}
+              onGenerateThumbnail={generateColorFilterThumbnail}
+              onSaveSettings={saveMessage}
+            />
           </AdminSection>
         )}
 
@@ -3957,6 +4556,227 @@ const loadDataUrlImage = (dataUrl: string) =>
     image.onerror = () => reject(new Error('Could not load image for upload.'));
     image.src = dataUrl;
   });
+
+const clampChannel = (value: number) => Math.max(0, Math.min(255, value));
+
+const neutralColorFilterValues = (): ColorFilterValues => ({
+  intensity: 100,
+  brightness: 0,
+  contrast: 0,
+  saturation: 0,
+  warmth: 0,
+  tint: 0,
+  hue: 0,
+  fade: 0,
+  highlights: 0,
+  shadows: 0,
+  vignette: 0,
+  blur: 0
+});
+
+const normalizeColorFilterValuesForClient = (filter: Partial<ColorFilterValues> | undefined): ColorFilterValues => {
+  const fallback = neutralColorFilterValues();
+  const finite = (value: unknown, fallbackValue: number, min: number, max: number) =>
+    typeof value === 'number' && Number.isFinite(value) ? Math.min(max, Math.max(min, value)) : fallbackValue;
+  return {
+    intensity: finite(filter?.intensity, fallback.intensity, 0, 100),
+    brightness: finite(filter?.brightness, fallback.brightness, -50, 50),
+    contrast: finite(filter?.contrast, fallback.contrast, -50, 50),
+    saturation: finite(filter?.saturation, fallback.saturation, -50, 50),
+    warmth: finite(filter?.warmth, fallback.warmth, -50, 50),
+    tint: finite(filter?.tint, fallback.tint, -50, 50),
+    hue: finite(filter?.hue, fallback.hue, -180, 180),
+    fade: finite(filter?.fade, fallback.fade, 0, 50),
+    highlights: finite(filter?.highlights, fallback.highlights, -50, 50),
+    shadows: finite(filter?.shadows, fallback.shadows, -50, 50),
+    vignette: finite(filter?.vignette, fallback.vignette, 0, 50),
+    blur: finite(filter?.blur, fallback.blur, 0, 20)
+  };
+};
+
+const rgbToHsl = (r: number, g: number, b: number) => {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  let h = 0;
+  let s = 0;
+  const l = (max + min) / 2;
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
+    else if (max === g) h = (b - r) / d + 2;
+    else h = (r - g) / d + 4;
+    h /= 6;
+  }
+  return { h, s, l };
+};
+
+const hueToRgb = (p: number, q: number, t: number) => {
+  if (t < 0) t += 1;
+  if (t > 1) t -= 1;
+  if (t < 1 / 6) return p + (q - p) * 6 * t;
+  if (t < 1 / 2) return q;
+  if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+  return p;
+};
+
+const hslToRgb = (h: number, s: number, l: number) => {
+  if (s === 0) {
+    const value = l * 255;
+    return { r: value, g: value, b: value };
+  }
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const p = 2 * l - q;
+  return {
+    r: hueToRgb(p, q, h + 1 / 3) * 255,
+    g: hueToRgb(p, q, h) * 255,
+    b: hueToRgb(p, q, h - 1 / 3) * 255
+  };
+};
+
+const applyPhotoFilters = async (
+  dataUrl: string,
+  preset: ColorFilterPreset | null,
+  beautyLevel = 0
+) => {
+  const image = await loadDataUrlImage(dataUrl);
+  const canvas = document.createElement('canvas');
+  canvas.width = image.naturalWidth || image.width;
+  canvas.height = image.naturalHeight || image.height;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('Could not apply filter.');
+  ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+  if (beautyLevel > 0) {
+    const strength = Math.min(4, Math.max(1, beautyLevel));
+    const blur = document.createElement('canvas');
+    blur.width = canvas.width;
+    blur.height = canvas.height;
+    const blurCtx = blur.getContext('2d');
+    if (blurCtx) {
+      blurCtx.filter = `blur(${strength * 3.2}px) saturate(${1 + strength * 0.08}) brightness(${1 + strength * 0.035})`;
+      blurCtx.drawImage(canvas, 0, 0);
+      ctx.globalCompositeOperation = 'screen';
+      ctx.globalAlpha = Math.min(0.5, 0.08 + strength * 0.08);
+      ctx.drawImage(blur, 0, 0);
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = Math.min(0.7, 0.16 + strength * 0.12);
+      ctx.drawImage(blur, 0, 0);
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  const filter = normalizeColorFilterValuesForClient(preset?.filter);
+  const intensity = Math.max(0, Math.min(1, filter.intensity / 100));
+  const blurAmount = Math.max(0, filter.blur * intensity);
+  if (blurAmount > 0) {
+    const blur = document.createElement('canvas');
+    blur.width = canvas.width;
+    blur.height = canvas.height;
+    const blurCtx = blur.getContext('2d');
+    if (blurCtx) {
+      blurCtx.filter = `blur(${blurAmount}px)`;
+      blurCtx.drawImage(canvas, 0, 0);
+      ctx.globalAlpha = Math.min(0.7, 0.18 + blurAmount / 28);
+      ctx.drawImage(blur, 0, 0);
+      ctx.globalAlpha = 1;
+    }
+  }
+  if (intensity <= 0 && beautyLevel <= 0) return canvas.toDataURL('image/png');
+
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const data = imageData.data;
+  const brightness = filter.brightness * 2.2 * intensity;
+  const contrast = 1 + (filter.contrast / 50) * 0.45 * intensity;
+  const saturation = 1 + (filter.saturation / 50) * 0.9 * intensity;
+  const warmth = filter.warmth * 1.45 * intensity;
+  const tint = filter.tint * 1.2 * intensity;
+  const hueShift = (filter.hue / 360) * intensity;
+  const fade = (filter.fade / 50) * 42 * intensity;
+  const highlights = filter.highlights * 1.2 * intensity;
+  const shadows = filter.shadows * 1.2 * intensity;
+  const vignette = (filter.vignette / 50) * 1.35 * intensity;
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
+  const maxDistance = Math.hypot(centerX, centerY);
+
+  for (let index = 0; index < data.length; index += 4) {
+    const pixel = index / 4;
+    const x = pixel % canvas.width;
+    const y = Math.floor(pixel / canvas.width);
+    let r = data[index];
+    let g = data[index + 1];
+    let b = data[index + 2];
+
+    r = (r - 128) * contrast + 128 + brightness;
+    g = (g - 128) * contrast + 128 + brightness;
+    b = (b - 128) * contrast + 128 + brightness;
+
+    const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+    r = luminance + (r - luminance) * saturation;
+    g = luminance + (g - luminance) * saturation;
+    b = luminance + (b - luminance) * saturation;
+
+    r += warmth + tint * 0.25;
+    g += -Math.abs(tint) * 0.25;
+    b += -warmth + tint * 0.75;
+
+    if (hueShift !== 0) {
+      const hsl = rgbToHsl(clampChannel(r), clampChannel(g), clampChannel(b));
+      const shifted = hslToRgb((hsl.h + hueShift + 1) % 1, Math.min(1, hsl.s * (1 + 0.18 * intensity)), hsl.l);
+      r = shifted.r;
+      g = shifted.g;
+      b = shifted.b;
+    }
+
+    const highWeight = Math.max(0, (luminance - 128) / 127);
+    const shadowWeight = Math.max(0, (128 - luminance) / 128);
+    r += highlights * highWeight + shadows * shadowWeight;
+    g += highlights * highWeight + shadows * shadowWeight;
+    b += highlights * highWeight + shadows * shadowWeight;
+
+    if (fade > 0) {
+      r = r + (128 - r) * (fade / 100);
+      g = g + (128 - g) * (fade / 100);
+      b = b + (128 - b) * (fade / 100);
+    }
+
+    if (vignette > 0) {
+      const distance = Math.hypot(x - centerX, y - centerY) / maxDistance;
+      const edge = Math.max(0, (distance - 0.28) / 0.72);
+      const darken = Math.max(0.08, 1 - Math.pow(edge, 1.55) * vignette);
+      r *= darken;
+      g *= darken;
+      b *= darken;
+    }
+
+    data[index] = clampChannel(r);
+    data[index + 1] = clampChannel(g);
+    data[index + 2] = clampChannel(b);
+  }
+
+  ctx.putImageData(imageData, 0, 0);
+  return canvas.toDataURL('image/png');
+};
+
+const createSquareFilterThumbnail = async (dataUrl: string, preset: ColorFilterPreset) => {
+  const filtered = await applyPhotoFilters(dataUrl, preset, 0);
+  const image = await loadDataUrlImage(filtered);
+  const size = 420;
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('Could not generate filter button image.');
+  const scale = Math.max(size / image.width, size / image.height);
+  const drawWidth = image.width * scale;
+  const drawHeight = image.height * scale;
+  ctx.drawImage(image, (size - drawWidth) / 2, (size - drawHeight) / 2, drawWidth, drawHeight);
+  return canvas.toDataURL('image/png');
+};
 
 const flipPhotoForPrint = async (dataUrl: string) => {
   const image = await loadDataUrlImage(dataUrl);

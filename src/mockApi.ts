@@ -25,6 +25,10 @@ const fallbackSettings: AppSettings = {
   printerEnabled: true,
   silentPrint: false,
   adminPassword: '',
+  beautyFilter: {
+    enabledMode: 'print',
+    previewTimeoutMs: 30000
+  },
   ai: {
     provider: 'openai',
     systemPrompt: 'Create a polished photo booth AI edit. Keep the guest recognizable and preserve a clean print-ready composition.',
@@ -94,6 +98,15 @@ const fallbackSettings: AppSettings = {
     layouts: [],
     aiPresets: [],
     faceAssetPacks: [],
+    colorFilterExamplePath: '',
+    colorFilterPresets: [
+      { id: 'vibo-pop', name: 'Vibo Pop', active: true, thumbnailPath: '', filter: { intensity: 100, brightness: 8, contrast: 24, saturation: 6, warmth: -10, tint: 2, hue: 0, fade: 0, highlights: 18, shadows: -20, vignette: 24, blur: 0 }, createdAt: '', updatedAt: '' },
+      { id: 'neon-dream', name: 'Neon Dream', active: true, thumbnailPath: '', filter: { intensity: 100, brightness: 6, contrast: 26, saturation: 34, warmth: -18, tint: 36, hue: -18, fade: 0, highlights: 20, shadows: -26, vignette: 32, blur: 4 }, createdAt: '', updatedAt: '' },
+      { id: 'teal-crush', name: 'Teal Crush', active: true, thumbnailPath: '', filter: { intensity: 100, brightness: -2, contrast: 20, saturation: -8, warmth: -22, tint: -10, hue: -12, fade: 4, highlights: -8, shadows: -22, vignette: 30, blur: 2 }, createdAt: '', updatedAt: '' },
+      { id: 'gold-rush', name: 'Gold Rush', active: true, thumbnailPath: '', filter: { intensity: 100, brightness: 8, contrast: 24, saturation: 28, warmth: 34, tint: 2, hue: 8, fade: 0, highlights: 20, shadows: -20, vignette: 26, blur: 0 }, createdAt: '', updatedAt: '' },
+      { id: 'rose-fade', name: 'Rose Fade', active: true, thumbnailPath: '', filter: { intensity: 100, brightness: 10, contrast: -4, saturation: 18, warmth: 12, tint: 20, hue: 6, fade: 14, highlights: 16, shadows: 6, vignette: 18, blur: 5 }, createdAt: '', updatedAt: '' },
+      { id: 'blue-gold', name: 'Blue Gold', active: true, thumbnailPath: '', filter: { intensity: 100, brightness: 6, contrast: 30, saturation: 18, warmth: 12, tint: -8, hue: -10, fade: 0, highlights: 12, shadows: -32, vignette: 34, blur: 1 }, createdAt: '', updatedAt: '' }
+    ],
     designs: []
   },
   workflow: {
@@ -418,6 +431,9 @@ export function installMockApi() {
     },
     uploadAiPresetImage: async () => readSettings(),
     removeAiPresetImage: async () => readSettings(),
+    uploadColorFilterThumbnail: async () => readSettings(),
+    uploadColorFilterExample: async () => readSettings(),
+    saveGeneratedColorFilterThumbnails: async () => readSettings(),
     listAiQueue: async () => aiQueue,
     retryAiQueueItem: async (itemId: string) => {
       const item = aiQueue.find((queueItem) => queueItem.id === itemId);

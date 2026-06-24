@@ -81,6 +81,38 @@ export type AiSettings = {
   providers: Record<AiProvider, AiProviderConfig>;
 };
 
+export type BeautyFilterMode = 'off' | 'print' | 'live';
+
+export type BeautyFilterSettings = {
+  enabledMode: BeautyFilterMode;
+  previewTimeoutMs: number;
+};
+
+export type ColorFilterValues = {
+  intensity: number;
+  brightness: number;
+  contrast: number;
+  saturation: number;
+  warmth: number;
+  tint: number;
+  hue: number;
+  fade: number;
+  highlights: number;
+  shadows: number;
+  vignette: number;
+  blur: number;
+};
+
+export type ColorFilterPreset = {
+  id: string;
+  name: string;
+  active: boolean;
+  thumbnailPath: string;
+  filter: ColorFilterValues;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type AiQueueStatus = 'queued' | 'generating' | 'requested' | 'done' | 'failed' | 'printed' | 'print_failed';
 
 export type AiQueueItem = {
@@ -162,6 +194,8 @@ export type TemplateSettings = {
   layouts: TemplateLayout[];
   aiPresets: AiPreset[];
   faceAssetPacks: FaceAssetPack[];
+  colorFilterExamplePath: string;
+  colorFilterPresets: ColorFilterPreset[];
   designs: TemplateDesign[];
 };
 
@@ -184,6 +218,7 @@ export type AppSettings = {
   printerEnabled: boolean;
   silentPrint: boolean;
   adminPassword: string;
+  beautyFilter: BeautyFilterSettings;
   ai: AiSettings;
   audio: AudioSettings;
   template: TemplateSettings;

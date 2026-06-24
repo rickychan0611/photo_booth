@@ -17,6 +17,8 @@ import type {
   BackgroundGalleryUploadRequest,
   BackgroundGalleryUploadResult,
   BackgroundVideoUploadRequest,
+  ColorFilterPreset,
+  ColorFilterValues,
   FaceAsset,
   FaceAssetPack,
   FaceAssetPlacement,
@@ -83,6 +85,42 @@ const defaultAiSettings = (): AppSettings['ai'] => ({
     }
   }
 });
+
+const neutralColorFilter = (): ColorFilterValues => ({
+  intensity: 100,
+  brightness: 0,
+  contrast: 0,
+  saturation: 0,
+  warmth: 0,
+  tint: 0,
+  hue: 0,
+  fade: 0,
+  highlights: 0,
+  shadows: 0,
+  vignette: 0,
+  blur: 0
+});
+
+const defaultColorFilterPresets = (): ColorFilterPreset[] => {
+  const now = '';
+  const preset = (id: string, name: string, filter: Omit<ColorFilterValues, 'intensity'>): ColorFilterPreset => ({
+    id,
+    name,
+    active: true,
+    thumbnailPath: '',
+    filter: { ...neutralColorFilter(), ...filter },
+    createdAt: now,
+    updatedAt: now
+  });
+  return [
+    preset('vibo-pop', 'Vibo Pop', { brightness: 8, contrast: 24, saturation: 6, warmth: -10, tint: 2, hue: 0, fade: 0, highlights: 18, shadows: -20, vignette: 24, blur: 0 }),
+    preset('neon-dream', 'Neon Dream', { brightness: 6, contrast: 26, saturation: 34, warmth: -18, tint: 36, hue: -18, fade: 0, highlights: 20, shadows: -26, vignette: 32, blur: 4 }),
+    preset('teal-crush', 'Teal Crush', { brightness: -2, contrast: 20, saturation: -8, warmth: -22, tint: -10, hue: -12, fade: 4, highlights: -8, shadows: -22, vignette: 30, blur: 2 }),
+    preset('gold-rush', 'Gold Rush', { brightness: 8, contrast: 24, saturation: 28, warmth: 34, tint: 2, hue: 8, fade: 0, highlights: 20, shadows: -20, vignette: 26, blur: 0 }),
+    preset('rose-fade', 'Rose Fade', { brightness: 10, contrast: -4, saturation: 18, warmth: 12, tint: 20, hue: 6, fade: 14, highlights: 16, shadows: 6, vignette: 18, blur: 5 }),
+    preset('blue-gold', 'Blue Gold', { brightness: 6, contrast: 30, saturation: 18, warmth: 12, tint: -8, hue: -10, fade: 0, highlights: 12, shadows: -32, vignette: 34, blur: 1 })
+  ];
+};
 
 const defaultAudioCue = (
   id: string,
@@ -220,6 +258,10 @@ const defaultSettings = (): AppSettings => ({
   printerEnabled: true,
   silentPrint: false,
   adminPassword: '',
+  beautyFilter: {
+    enabledMode: 'print',
+    previewTimeoutMs: 30000
+  },
   ai: defaultAiSettings(),
   audio: defaultAudioSettings(),
   template: {
@@ -233,6 +275,8 @@ const defaultSettings = (): AppSettings => ({
     layouts: [],
     aiPresets: [],
     faceAssetPacks: [],
+    colorFilterExamplePath: '',
+    colorFilterPresets: defaultColorFilterPresets(),
     designs: []
   },
   workflow: {
@@ -268,6 +312,7 @@ async function ensureEventFolders(eventFolder: string) {
   await fs.mkdir(path.join(eventFolder, 'face-assets'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'audio'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'ai-presets'), { recursive: true });
+  await fs.mkdir(path.join(eventFolder, 'color-filters'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'ai-queue'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'ai-queue', 'inputs'), { recursive: true });
   await fs.mkdir(path.join(eventFolder, 'ai-queue', 'results'), { recursive: true });
@@ -301,6 +346,7 @@ async function readSettings(): Promise<AppSettings> {
       ...fallback,
       ...parsed,
       defaultPrinter: normalizePrinterName(parsed.defaultPrinter ?? fallback.defaultPrinter),
+      beautyFilter: normalizeBeautyFilterSettings(parsed.beautyFilter),
       ai: normalizeAiSettings(parsed.ai),
       audio: normalizeAudioSettings(parsed.audio),
       template: {
@@ -312,6 +358,8 @@ async function readSettings(): Promise<AppSettings> {
         layouts: (parsed.template?.layouts ?? []).map((layout) => normalizeTemplateLayout(layout)),
         aiPresets: (parsed.template?.aiPresets ?? fallback.template.aiPresets).map(normalizeAiPreset),
         faceAssetPacks: (parsed.template?.faceAssetPacks ?? fallback.template.faceAssetPacks).map(normalizeFaceAssetPack),
+        colorFilterExamplePath: String(parsed.template?.colorFilterExamplePath ?? fallback.template.colorFilterExamplePath),
+        colorFilterPresets: normalizeColorFilterPresets(parsed.template?.colorFilterPresets),
         designs: (parsed.template?.designs ?? fallback.template.designs).map((design) =>
           normalizeTemplateDesign(design, isLegacyTemplateStyle)
         )
@@ -357,6 +405,7 @@ async function writeSettings(settings: AppSettings): Promise<AppSettings> {
   const normalized = {
     ...settings,
     defaultPrinter: normalizePrinterName(settings.defaultPrinter),
+    beautyFilter: normalizeBeautyFilterSettings(settings.beautyFilter),
     ai: normalizeAiSettings(settings.ai),
     audio: normalizeAudioSettings(settings.audio),
     template: {
@@ -365,6 +414,8 @@ async function writeSettings(settings: AppSettings): Promise<AppSettings> {
       layouts: (settings.template.layouts ?? []).map(normalizeTemplateLayout),
       aiPresets: settings.template.aiPresets.map(normalizeAiPreset),
       faceAssetPacks: settings.template.faceAssetPacks.map(normalizeFaceAssetPack),
+      colorFilterExamplePath: String(settings.template.colorFilterExamplePath ?? ''),
+      colorFilterPresets: normalizeColorFilterPresets(settings.template.colorFilterPresets),
       designs: settings.template.designs.map((design) => normalizeTemplateDesign(design))
     },
     stylePrinters: normalizeStylePrinters(settings.stylePrinters),
@@ -905,6 +956,52 @@ const normalizeAudioSettings = (settings?: Partial<AppSettings['audio']>): AppSe
 const normalizeAiPreset = (preset: AiPreset): AiPreset => ({
   ...preset,
   referenceImages: preset.referenceImages ?? []
+});
+
+const finiteRange = (value: unknown, fallback: number, min: number, max: number) =>
+  typeof value === 'number' && Number.isFinite(value) ? Math.min(max, Math.max(min, value)) : fallback;
+
+const normalizeColorFilterValues = (filter: Partial<ColorFilterValues> | undefined): ColorFilterValues => {
+  const fallback = neutralColorFilter();
+  return {
+    intensity: finiteRange(filter?.intensity, fallback.intensity, 0, 100),
+    brightness: finiteRange(filter?.brightness, fallback.brightness, -50, 50),
+    contrast: finiteRange(filter?.contrast, fallback.contrast, -50, 50),
+    saturation: finiteRange(filter?.saturation, fallback.saturation, -50, 50),
+    warmth: finiteRange(filter?.warmth, fallback.warmth, -50, 50),
+    tint: finiteRange(filter?.tint, fallback.tint, -50, 50),
+    hue: finiteRange(filter?.hue, fallback.hue, -180, 180),
+    fade: finiteRange(filter?.fade, fallback.fade, 0, 50),
+    highlights: finiteRange(filter?.highlights, fallback.highlights, -50, 50),
+    shadows: finiteRange(filter?.shadows, fallback.shadows, -50, 50),
+    vignette: finiteRange(filter?.vignette, fallback.vignette, 0, 50),
+    blur: finiteRange(filter?.blur, fallback.blur, 0, 20)
+  };
+};
+
+const normalizeColorFilterPreset = (preset: Partial<ColorFilterPreset>): ColorFilterPreset => {
+  const now = new Date().toISOString();
+  return {
+    id: String(preset.id || `color-filter-${Date.now()}`),
+    name: String(preset.name || 'Color Filter'),
+    active: preset.active !== false,
+    thumbnailPath: String(preset.thumbnailPath || ''),
+    filter: normalizeColorFilterValues(preset.filter),
+    createdAt: String(preset.createdAt || now),
+    updatedAt: String(preset.updatedAt || now)
+  };
+};
+
+const normalizeColorFilterPresets = (presets: Partial<ColorFilterPreset>[] | undefined) => {
+  if (!presets) return defaultColorFilterPresets();
+  return presets
+    .map(normalizeColorFilterPreset)
+    .filter((preset) => preset.id !== 'silver-soft' || Boolean(preset.updatedAt));
+};
+
+const normalizeBeautyFilterSettings = (settings: Partial<AppSettings['beautyFilter']> | undefined): AppSettings['beautyFilter'] => ({
+  enabledMode: settings?.enabledMode === 'off' || settings?.enabledMode === 'live' ? settings.enabledMode : 'print',
+  previewTimeoutMs: finiteRange(settings?.previewTimeoutMs, 30000, 5000, 120000)
 });
 
 const normalizePrinterName = (printerName = '') => PRINTER_ALIASES.get(printerName) ?? printerName;
@@ -1721,6 +1818,69 @@ async function removeAiPresetImage(presetId: string, imageId: string) {
   });
 }
 
+async function uploadColorFilterImage(presetId: string, role: 'thumbnail' | 'example') {
+  const sourcePath = await chooseTemplateAsset('preview');
+  if (!sourcePath) return readSettings();
+  const settings = await readSettings();
+  const now = new Date().toISOString();
+  const extension = path.extname(sourcePath).toLowerCase() || '.png';
+  const folder = path.join(settings.eventFolder, 'color-filters');
+  await fs.mkdir(folder, { recursive: true });
+  const targetPath = role === 'example'
+    ? path.join(folder, `example-${Date.now()}${extension}`)
+    : path.join(folder, `${presetId}-${Date.now()}${extension}`);
+  await fs.copyFile(sourcePath, targetPath);
+  if (role === 'example') {
+    return writeSettings({
+      ...settings,
+      template: {
+        ...settings.template,
+        colorFilterExamplePath: targetPath
+      }
+    });
+  }
+  const presets = normalizeColorFilterPresets(settings.template.colorFilterPresets);
+  if (!presets.some((preset) => preset.id === presetId)) throw new Error('Color preset not found.');
+  return writeSettings({
+    ...settings,
+    template: {
+      ...settings.template,
+      colorFilterPresets: presets.map((preset) =>
+        preset.id === presetId
+          ? { ...preset, thumbnailPath: targetPath, updatedAt: now }
+          : preset
+      )
+    }
+  });
+}
+
+async function saveGeneratedColorFilterThumbnails(thumbnails: Array<{ presetId: string; dataUrl: string }>) {
+  const settings = await readSettings();
+  const presets = normalizeColorFilterPresets(settings.template.colorFilterPresets);
+  const now = new Date().toISOString();
+  const folder = path.join(settings.eventFolder, 'color-filters');
+  await fs.mkdir(folder, { recursive: true });
+  const nextPaths = new Map<string, string>();
+  for (const thumbnail of thumbnails) {
+    if (!presets.some((preset) => preset.id === thumbnail.presetId)) continue;
+    const targetPath = path.join(folder, `${thumbnail.presetId}-generated-${Date.now()}.png`);
+    await fs.writeFile(targetPath, dataUrlToBuffer(thumbnail.dataUrl));
+    nextPaths.set(thumbnail.presetId, targetPath);
+  }
+  if (nextPaths.size === 0) return settings;
+  return writeSettings({
+    ...settings,
+    template: {
+      ...settings.template,
+      colorFilterPresets: presets.map((preset) =>
+        nextPaths.has(preset.id)
+          ? { ...preset, thumbnailPath: nextPaths.get(preset.id) ?? preset.thumbnailPath, updatedAt: now }
+          : preset
+      )
+    }
+  });
+}
+
 const chooseFaceAssetImage = async () => {
   const parent = modalParent();
   const options = {
@@ -2482,10 +2642,18 @@ app.whenReady().then(async () => {
           ...(partial.audio?.cues ?? {})
         }
       }),
+      beautyFilter: normalizeBeautyFilterSettings({
+        ...current.beautyFilter,
+        ...(partial.beautyFilter ?? {})
+      }),
       template: {
         ...current.template,
         ...(partial.template ?? {}),
         layouts: (partial.template?.layouts ?? current.template.layouts).map(normalizeTemplateLayout),
+        aiPresets: (partial.template?.aiPresets ?? current.template.aiPresets).map(normalizeAiPreset),
+        faceAssetPacks: (partial.template?.faceAssetPacks ?? current.template.faceAssetPacks).map(normalizeFaceAssetPack),
+        colorFilterExamplePath: String(partial.template?.colorFilterExamplePath ?? current.template.colorFilterExamplePath ?? ''),
+        colorFilterPresets: normalizeColorFilterPresets(partial.template?.colorFilterPresets ?? current.template.colorFilterPresets),
         designs: (partial.template?.designs ?? current.template.designs).map((design) => normalizeTemplateDesign(design))
       },
       workflow: {
@@ -2549,6 +2717,11 @@ app.whenReady().then(async () => {
   ipcMain.handle('face-asset:remove', async (_event, packId: string, assetId: string) => removeFaceAsset(packId, assetId));
   ipcMain.handle('ai:preset-image-upload', async (_event, presetId: string) => copyAiPresetImage(presetId));
   ipcMain.handle('ai:preset-image-remove', async (_event, presetId: string, imageId: string) => removeAiPresetImage(presetId, imageId));
+  ipcMain.handle('color-filter:upload-thumbnail', async (_event, presetId: string) => uploadColorFilterImage(presetId, 'thumbnail'));
+  ipcMain.handle('color-filter:upload-example', async () => uploadColorFilterImage('', 'example'));
+  ipcMain.handle('color-filter:save-generated-thumbnails', async (_event, thumbnails: Array<{ presetId: string; dataUrl: string }>) =>
+    saveGeneratedColorFilterThumbnails(thumbnails)
+  );
   ipcMain.handle('ai:queue-list', async () => readAiQueue());
   ipcMain.handle('ai:queue-retry', async (_event, itemId: string) => processAiQueueItem(itemId, true));
   ipcMain.handle('ai:queue-print', async (_event, itemId: string) => printAiQueueItem(itemId));

@@ -60,6 +60,17 @@ button:disabled {
   padding: clamp(46px, 5vh, 54px) clamp(14px, 3vw, 28px) clamp(10px, 1.5vh, 18px);
 }
 
+.guest-shell.filter-layout {
+  height: 100%;
+  max-height: 100%;
+  place-items: start center;
+  align-content: start;
+  overflow: hidden;
+  padding-top: clamp(18px, 2.5vh, 28px);
+  padding-bottom: 12px;
+  box-sizing: border-box;
+}
+
 .welcome-screen,
 .photo-screen,
 .ready-screen {
@@ -1204,6 +1215,259 @@ button:disabled {
   color: #fff;
 }
 
+.filter-preview-screen {
+  position: relative;
+  width: min(1180px, 100%);
+  height: 100%;
+  max-height: 100%;
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  justify-items: center;
+  gap: clamp(10px, 1.4vh, 16px);
+  padding-top: 0;
+  text-align: center;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.filter-preview-stage {
+  justify-self: center;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+  color: #fff;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  flex-shrink: 0;
+}
+
+.filter-preview-stage img {
+  display: block;
+  width: auto;
+  height: 30vh;
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: 5px;
+}
+
+.filter-preview-stage.generating::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 0%, rgba(255, 255, 255, 0.24) 45%, transparent 70%);
+  animation: generateSweep 1.3s linear infinite;
+}
+
+.filter-preview-stage span {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: rgba(0, 0, 0, 0.72);
+  padding: 7px 11px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+}
+
+.filter-content {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: clamp(10px, 1.4vh, 14px);
+  width: min(1180px, 100%);
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 8px;
+}
+
+.filter-controls {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  display: grid;
+  gap: clamp(10px, 1.4vh, 14px);
+}
+
+.filter-control-group {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  min-width: 0;
+}
+
+.filter-control-group p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+}
+
+.filter-button-row {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
+  gap: 10px;
+}
+
+.beauty-buttons {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.filter-choice-button {
+  min-width: 0;
+  min-height: clamp(64px, 9vh, 92px);
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  background: #080808;
+  color: #fff;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  place-items: center;
+  gap: 6px;
+  padding: 8px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.beauty-buttons .filter-choice-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 300;
+  padding: 8px 6px;
+}
+
+.beauty-buttons .filter-choice-button span {
+  width: 100%;
+  text-align: center;
+  white-space: normal;
+  line-height: 1.15;
+}
+
+.filter-choice-button-solo {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 6px;
+}
+
+.filter-choice-button-solo span {
+  width: 100%;
+  text-align: center;
+  white-space: normal;
+  line-height: 1.15;
+}
+
+.filter-choice-button img {
+  width: 100%;
+  height: 58px;
+  object-fit: cover;
+  display: block;
+}
+
+.filter-choice-button span {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.filter-choice-button.active,
+.filter-choice-button:hover:not(:disabled),
+.filter-choice-button:focus-visible {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+  outline: none;
+}
+
+.filter-print-row {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.booth-button.primary.filter-print-button {
+  width: min(420px, 100%);
+  min-width: 0;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 24px;
+}
+
+.filter-print-button-inner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.filter-print-button-label {
+  letter-spacing: 0.12em;
+  text-align: center;
+  line-height: 1;
+}
+
+.filter-print-button .filter-countdown {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  color: inherit;
+  font-size: 18px;
+  font-weight: 200;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+  line-height: 1;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+@media (max-width: 620px) {
+  .filter-preview-screen {
+    padding-inline: 14px;
+  }
+
+  .beauty-buttons {
+    gap: 6px;
+  }
+
+  .beauty-buttons .filter-choice-button {
+    font-size: 18px;
+    min-height: 58px;
+    padding: 6px 4px;
+  }
+}
+
 .thanks-screen {
   position: relative;
   width: min(720px, 100%);
@@ -1346,9 +1610,8 @@ button:disabled {
 
 .thanks-preview img {
   width: auto;
-  height: auto;
-  max-width: min(85vw, 504px);
-  max-height: min(29vh, 288px);
+  height: 30vh;
+  max-width: 100%;
   object-fit: contain;
   display: block;
   border-radius: 5px;
@@ -2391,6 +2654,11 @@ button:disabled {
   max-width: 1440px;
 }
 
+.admin-section:has(.color-filter-studio) {
+  max-width: none;
+  width: 100%;
+}
+
 .custom-template-manager,
 .custom-template-manager * {
   min-width: 0;
@@ -2478,6 +2746,194 @@ button:disabled {
 
 .template-design-admin .workflow-shot {
   padding: 10px;
+}
+
+.color-filter-studio {
+  display: grid;
+  gap: 10px;
+}
+
+.color-filter-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  width: 100%;
+  max-width: none;
+  overflow: visible;
+}
+
+.color-filter-list {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+}
+
+.color-filter-preset-strip {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(82px, 1fr);
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.color-filter-preset-strip > button {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  display: grid;
+  grid-template-rows: 48px auto;
+  align-items: center;
+  justify-items: center;
+  gap: 4px;
+  padding: 6px;
+  text-align: center;
+  min-height: 78px;
+}
+
+.color-filter-preset-strip > button.active,
+.color-filter-preset-strip > button:hover {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.color-filter-preset-strip img,
+.color-filter-preset-strip svg {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  background: #000;
+}
+
+.color-filter-preset-strip span {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+}
+
+.color-filter-editor {
+  display: grid;
+  gap: 10px;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  overflow: visible;
+}
+
+.color-filter-preview-panel {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.color-filter-preview {
+  aspect-ratio: 1;
+  background: #050505;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.color-filter-settings {
+  display: grid;
+  gap: 8px;
+}
+
+.compact-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.color-filter-preview img,
+.color-thumbnail-preview img,
+.color-thumbnail-preview svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.color-thumbnail-row {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.color-thumbnail-preview {
+  width: 72px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: #000;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.color-slider-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px 12px;
+}
+
+.color-slider {
+  display: grid;
+  grid-template-columns: minmax(74px, 104px) minmax(0, 1fr) 36px;
+  align-items: center;
+  gap: 7px;
+  min-height: 24px;
+  font-size: 11px;
+}
+
+.color-slider strong {
+  text-align: right;
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.color-filter-edit-card {
+  padding: 10px;
+  width: 100%;
+  max-width: none;
+  overflow: auto;
+}
+
+.color-filter-edit-header {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) auto;
+  gap: 10px;
+  align-items: end;
+}
+
+.color-filter-edit-card .admin-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+  gap: 8px;
+}
+
+.color-filter-edit-card .admin-actions button {
+  min-height: 34px;
+  padding: 7px 9px;
+  font-size: 11px;
+  justify-content: center;
+  text-align: center;
+}
+
+.color-thumbnail-row .admin-actions button,
+.color-filter-settings .admin-actions button,
+.color-filter-list .admin-actions button {
+  justify-content: center;
+  text-align: center;
 }
 
 .ai-preset-list article {
@@ -2767,8 +3223,8 @@ button:disabled {
   }
 
   .thanks-preview img {
-    max-width: min(83vw, 468px);
-    max-height: min(18vh, 252px);
+    max-width: 100%;
+    height: 30vh;
   }
 
   .admin-shell {
@@ -2922,7 +3378,20 @@ button:disabled {
   }
 
   .thanks-preview img {
-    max-width: min(83vw, 468px);
-    max-height: min(27vh, 252px);
+    max-width: 100%;
+    height: 30vh;
+  }
+
+  .filter-preview-screen {
+    min-height: 0;
+    align-content: start;
+    padding-top: 0;
+    padding-bottom: 0;
+    gap: clamp(8px, 1.2vh, 12px);
+  }
+
+  .filter-preview-stage img {
+    max-width: 100%;
+    height: 30vh;
   }
 }

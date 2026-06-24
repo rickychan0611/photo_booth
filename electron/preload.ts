@@ -68,6 +68,12 @@ const api = {
     ipcRenderer.invoke('ai:preset-image-upload', presetId) as Promise<AppSettings>,
   removeAiPresetImage: (presetId: string, imageId: string) =>
     ipcRenderer.invoke('ai:preset-image-remove', presetId, imageId) as Promise<AppSettings>,
+  uploadColorFilterThumbnail: (presetId: string) =>
+    ipcRenderer.invoke('color-filter:upload-thumbnail', presetId) as Promise<AppSettings>,
+  uploadColorFilterExample: () =>
+    ipcRenderer.invoke('color-filter:upload-example') as Promise<AppSettings>,
+  saveGeneratedColorFilterThumbnails: (thumbnails: Array<{ presetId: string; dataUrl: string }>) =>
+    ipcRenderer.invoke('color-filter:save-generated-thumbnails', thumbnails) as Promise<AppSettings>,
   listAiQueue: () => ipcRenderer.invoke('ai:queue-list') as Promise<AiQueueItem[]>,
   retryAiQueueItem: (itemId: string) => ipcRenderer.invoke('ai:queue-retry', itemId) as Promise<AiGenerateResult>,
   printAiQueueItem: (itemId: string) => ipcRenderer.invoke('ai:queue-print', itemId) as Promise<AiQueueItem>,
