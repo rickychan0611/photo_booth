@@ -99,13 +99,14 @@ const fallbackSettings: AppSettings = {
     aiPresets: [],
     faceAssetPacks: [],
     colorFilterExamplePath: '',
+    colorFilterPresetVersion: 2,
     colorFilterPresets: [
-      { id: 'vibo-pop', name: 'Vibo Pop', active: true, thumbnailPath: '', filter: { intensity: 100, brightness: 8, contrast: 24, saturation: 6, warmth: -10, tint: 2, hue: 0, fade: 0, highlights: 18, shadows: -20, vignette: 24, blur: 0 }, createdAt: '', updatedAt: '' },
-      { id: 'neon-dream', name: 'Neon Dream', active: true, thumbnailPath: '', filter: { intensity: 100, brightness: 6, contrast: 26, saturation: 34, warmth: -18, tint: 36, hue: -18, fade: 0, highlights: 20, shadows: -26, vignette: 32, blur: 4 }, createdAt: '', updatedAt: '' },
-      { id: 'teal-crush', name: 'Teal Crush', active: true, thumbnailPath: '', filter: { intensity: 100, brightness: -2, contrast: 20, saturation: -8, warmth: -22, tint: -10, hue: -12, fade: 4, highlights: -8, shadows: -22, vignette: 30, blur: 2 }, createdAt: '', updatedAt: '' },
-      { id: 'gold-rush', name: 'Gold Rush', active: true, thumbnailPath: '', filter: { intensity: 100, brightness: 8, contrast: 24, saturation: 28, warmth: 34, tint: 2, hue: 8, fade: 0, highlights: 20, shadows: -20, vignette: 26, blur: 0 }, createdAt: '', updatedAt: '' },
-      { id: 'rose-fade', name: 'Rose Fade', active: true, thumbnailPath: '', filter: { intensity: 100, brightness: 10, contrast: -4, saturation: 18, warmth: 12, tint: 20, hue: 6, fade: 14, highlights: 16, shadows: 6, vignette: 18, blur: 5 }, createdAt: '', updatedAt: '' },
-      { id: 'blue-gold', name: 'Blue Gold', active: true, thumbnailPath: '', filter: { intensity: 100, brightness: 6, contrast: 30, saturation: 18, warmth: 12, tint: -8, hue: -10, fade: 0, highlights: 12, shadows: -32, vignette: 34, blur: 1 }, createdAt: '', updatedAt: '' }
+      { id: 'golden-hour-glow', name: 'Golden Hour Glow', active: true, thumbnailPath: '', filter: { intensity: 75, brightness: 8, contrast: 12, saturation: 10, warmth: 22, tint: 4, hue: 2, fade: 5, highlights: -10, shadows: 8, vignette: 12, blur: 0 }, createdAt: '', updatedAt: '' },
+      { id: 'clean-bright-blogger', name: 'Clean Bright Blogger', active: true, thumbnailPath: '', filter: { intensity: 60, brightness: 18, contrast: 5, saturation: 6, warmth: 4, tint: 0, hue: 0, fade: 3, highlights: -18, shadows: 14, vignette: 4, blur: 0 }, createdAt: '', updatedAt: '' },
+      { id: 'moody-street', name: 'Moody Street', active: true, thumbnailPath: '', filter: { intensity: 80, brightness: -6, contrast: 24, saturation: -8, warmth: -6, tint: 3, hue: -2, fade: 12, highlights: -22, shadows: -10, vignette: 20, blur: 0 }, createdAt: '', updatedAt: '' },
+      { id: 'soft-pastel-dream', name: 'Soft Pastel Dream', active: true, thumbnailPath: '', filter: { intensity: 65, brightness: 12, contrast: -10, saturation: -12, warmth: 6, tint: 8, hue: 1, fade: 25, highlights: -12, shadows: 18, vignette: 6, blur: 2 }, createdAt: '', updatedAt: '' },
+      { id: 'vintage-film', name: 'Vintage Film', active: true, thumbnailPath: '', filter: { intensity: 85, brightness: -2, contrast: 10, saturation: -6, warmth: 14, tint: 6, hue: 3, fade: 30, highlights: -20, shadows: 10, vignette: 18, blur: 1 }, createdAt: '', updatedAt: '' },
+      { id: 'cool-urban-blue', name: 'Cool Urban Blue', active: true, thumbnailPath: '', filter: { intensity: 70, brightness: 4, contrast: 16, saturation: -4, warmth: -18, tint: -6, hue: -5, fade: 8, highlights: 0, shadows: 0, vignette: 0, blur: 0 }, createdAt: '', updatedAt: '' }
     ],
     designs: []
   },

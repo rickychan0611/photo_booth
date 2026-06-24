@@ -103,7 +103,7 @@ const neutralColorFilter = (): ColorFilterValues => ({
 
 const defaultColorFilterPresets = (): ColorFilterPreset[] => {
   const now = '';
-  const preset = (id: string, name: string, filter: Omit<ColorFilterValues, 'intensity'>): ColorFilterPreset => ({
+  const preset = (id: string, name: string, filter: ColorFilterValues): ColorFilterPreset => ({
     id,
     name,
     active: true,
@@ -113,12 +113,12 @@ const defaultColorFilterPresets = (): ColorFilterPreset[] => {
     updatedAt: now
   });
   return [
-    preset('vibo-pop', 'Vibo Pop', { brightness: 8, contrast: 24, saturation: 6, warmth: -10, tint: 2, hue: 0, fade: 0, highlights: 18, shadows: -20, vignette: 24, blur: 0 }),
-    preset('neon-dream', 'Neon Dream', { brightness: 6, contrast: 26, saturation: 34, warmth: -18, tint: 36, hue: -18, fade: 0, highlights: 20, shadows: -26, vignette: 32, blur: 4 }),
-    preset('teal-crush', 'Teal Crush', { brightness: -2, contrast: 20, saturation: -8, warmth: -22, tint: -10, hue: -12, fade: 4, highlights: -8, shadows: -22, vignette: 30, blur: 2 }),
-    preset('gold-rush', 'Gold Rush', { brightness: 8, contrast: 24, saturation: 28, warmth: 34, tint: 2, hue: 8, fade: 0, highlights: 20, shadows: -20, vignette: 26, blur: 0 }),
-    preset('rose-fade', 'Rose Fade', { brightness: 10, contrast: -4, saturation: 18, warmth: 12, tint: 20, hue: 6, fade: 14, highlights: 16, shadows: 6, vignette: 18, blur: 5 }),
-    preset('blue-gold', 'Blue Gold', { brightness: 6, contrast: 30, saturation: 18, warmth: 12, tint: -8, hue: -10, fade: 0, highlights: 12, shadows: -32, vignette: 34, blur: 1 })
+    preset('golden-hour-glow', 'Golden Hour Glow', { intensity: 75, brightness: 8, contrast: 12, saturation: 10, warmth: 22, tint: 4, hue: 2, fade: 5, highlights: -10, shadows: 8, vignette: 12, blur: 0 }),
+    preset('clean-bright-blogger', 'Clean Bright Blogger', { intensity: 60, brightness: 18, contrast: 5, saturation: 6, warmth: 4, tint: 0, hue: 0, fade: 3, highlights: -18, shadows: 14, vignette: 4, blur: 0 }),
+    preset('moody-street', 'Moody Street', { intensity: 80, brightness: -6, contrast: 24, saturation: -8, warmth: -6, tint: 3, hue: -2, fade: 12, highlights: -22, shadows: -10, vignette: 20, blur: 0 }),
+    preset('soft-pastel-dream', 'Soft Pastel Dream', { intensity: 65, brightness: 12, contrast: -10, saturation: -12, warmth: 6, tint: 8, hue: 1, fade: 25, highlights: -12, shadows: 18, vignette: 6, blur: 2 }),
+    preset('vintage-film', 'Vintage Film', { intensity: 85, brightness: -2, contrast: 10, saturation: -6, warmth: 14, tint: 6, hue: 3, fade: 30, highlights: -20, shadows: 10, vignette: 18, blur: 1 }),
+    preset('cool-urban-blue', 'Cool Urban Blue', { intensity: 70, brightness: 4, contrast: 16, saturation: -4, warmth: -18, tint: -6, hue: -5, fade: 8, highlights: 0, shadows: 0, vignette: 0, blur: 0 })
   ];
 };
 
@@ -276,6 +276,7 @@ const defaultSettings = (): AppSettings => ({
     aiPresets: [],
     faceAssetPacks: [],
     colorFilterExamplePath: '',
+    colorFilterPresetVersion: 2,
     colorFilterPresets: defaultColorFilterPresets(),
     designs: []
   },
@@ -359,7 +360,8 @@ async function readSettings(): Promise<AppSettings> {
         aiPresets: (parsed.template?.aiPresets ?? fallback.template.aiPresets).map(normalizeAiPreset),
         faceAssetPacks: (parsed.template?.faceAssetPacks ?? fallback.template.faceAssetPacks).map(normalizeFaceAssetPack),
         colorFilterExamplePath: String(parsed.template?.colorFilterExamplePath ?? fallback.template.colorFilterExamplePath),
-        colorFilterPresets: normalizeColorFilterPresets(parsed.template?.colorFilterPresets),
+        colorFilterPresetVersion: 2,
+        colorFilterPresets: migrateColorFilterPresets(parsed.template?.colorFilterPresets, parsed.template?.colorFilterPresetVersion),
         designs: (parsed.template?.designs ?? fallback.template.designs).map((design) =>
           normalizeTemplateDesign(design, isLegacyTemplateStyle)
         )
@@ -415,6 +417,7 @@ async function writeSettings(settings: AppSettings): Promise<AppSettings> {
       aiPresets: settings.template.aiPresets.map(normalizeAiPreset),
       faceAssetPacks: settings.template.faceAssetPacks.map(normalizeFaceAssetPack),
       colorFilterExamplePath: String(settings.template.colorFilterExamplePath ?? ''),
+      colorFilterPresetVersion: 2,
       colorFilterPresets: normalizeColorFilterPresets(settings.template.colorFilterPresets),
       designs: settings.template.designs.map((design) => normalizeTemplateDesign(design))
     },
@@ -997,6 +1000,19 @@ const normalizeColorFilterPresets = (presets: Partial<ColorFilterPreset>[] | und
   return presets
     .map(normalizeColorFilterPreset)
     .filter((preset) => preset.id !== 'silver-soft' || Boolean(preset.updatedAt));
+};
+
+const migrateColorFilterPresets = (
+  presets: Partial<ColorFilterPreset>[] | undefined,
+  version: number | undefined
+) => {
+  const normalized = normalizeColorFilterPresets(presets);
+  if ((version ?? 0) >= 2) return normalized;
+  const existingIds = new Set(normalized.map((preset) => preset.id));
+  return [
+    ...normalized,
+    ...defaultColorFilterPresets().filter((preset) => !existingIds.has(preset.id))
+  ];
 };
 
 const normalizeBeautyFilterSettings = (settings: Partial<AppSettings['beautyFilter']> | undefined): AppSettings['beautyFilter'] => ({
@@ -2653,6 +2669,7 @@ app.whenReady().then(async () => {
         aiPresets: (partial.template?.aiPresets ?? current.template.aiPresets).map(normalizeAiPreset),
         faceAssetPacks: (partial.template?.faceAssetPacks ?? current.template.faceAssetPacks).map(normalizeFaceAssetPack),
         colorFilterExamplePath: String(partial.template?.colorFilterExamplePath ?? current.template.colorFilterExamplePath ?? ''),
+        colorFilterPresetVersion: 2,
         colorFilterPresets: normalizeColorFilterPresets(partial.template?.colorFilterPresets ?? current.template.colorFilterPresets),
         designs: (partial.template?.designs ?? current.template.designs).map((design) => normalizeTemplateDesign(design))
       },

@@ -1400,6 +1400,64 @@ button:disabled {
   outline: none;
 }
 
+/* Color preset buttons with a live thumbnail: image fills the whole square,
+   label overlays on top with a shadow for legibility. */
+.color-buttons .filter-choice-button:has(img) {
+  position: relative;
+  display: block;
+  aspect-ratio: 1 / 1;
+  min-height: 0;
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+}
+
+.color-buttons .filter-choice-button:has(img) img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.color-buttons .filter-choice-button:has(img) span {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  bottom: 7px;
+  z-index: 1;
+  max-width: none;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95), 0 0 6px rgba(0, 0, 0, 0.75);
+}
+
+.color-buttons .filter-choice-button:has(img).active,
+.color-buttons .filter-choice-button:has(img):hover:not(:disabled),
+.color-buttons .filter-choice-button:has(img):focus-visible {
+  background: #080808;
+  color: #fff;
+  border-color: #fff;
+}
+
+.color-buttons .filter-choice-button:has(img).active::after,
+.color-buttons .filter-choice-button:has(img):hover:not(:disabled)::after,
+.color-buttons .filter-choice-button:has(img):focus-visible::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 3px solid #fff;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.color-buttons .filter-choice-button:has(img).active span,
+.color-buttons .filter-choice-button:has(img):hover:not(:disabled) span,
+.color-buttons .filter-choice-button:has(img):focus-visible span {
+  color: #fff;
+}
+
 .filter-print-row {
   width: 100%;
   min-width: 0;
@@ -1445,6 +1503,8 @@ button:disabled {
   font-size: 18px;
   font-weight: 200;
   font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  text-indent: 0;
   flex-shrink: 0;
   line-height: 1;
   padding: 0;

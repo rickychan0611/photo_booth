@@ -4,6 +4,7 @@ import { ArrowUp, Camera, Copy, Download, Expand, ExternalLink, FolderOpen, Glob
 import type { AiPreset, AiProvider, AiQueueItem, AppSettings, AudioCue, BoothSession, CameraControlSettings, CameraRotation, Capture, ColorFilterPreset, ColorFilterValues, FaceAsset, FaceAssetPack, FaceAssetPlacement, Gallery, GalleryUploadStatus, QueueSnapshot, SavedPhoto, TemplateDesign, TemplateLayout, TemplateSlot, TemplateWorkflowSettings } from './types';
 import { createBlankTemplateLayout, createGuideTemplateImage, createTemplatedPrintImage, defaultTemplateScreenCue, defaultTemplateShotAudioCue, getPrimarySlot, normalizeTemplateLayoutForClient, normalizeTemplateWorkflow, templateDimensions } from './template';
 import { FaceAssetStabilizer, FaceTracker, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceDebugInfo, selectedFaceAssetPack } from './faceAssets';
+import { applyFaceBeauty } from './beauty';
 import {
   getCameraVideoStyle,
   SOFTWARE_CAMERA_DEFAULT,
@@ -96,6 +97,7 @@ function GuestApp() {
   const [pendingPrint, setPendingPrint] = useState<PendingPrint | null>(null);
   const [selectedBeautyLevel, setSelectedBeautyLevel] = useState(0);
   const [selectedColorFilterId, setSelectedColorFilterId] = useState('normal');
+  const [filterThumbs, setFilterThumbs] = useState<Record<string, string>>({});
   const [filterPreviewDataUrl, setFilterPreviewDataUrl] = useState('');
   const [filterCountdown, setFilterCountdown] = useState<number | null>(null);
   const [thankYouCountdown, setThankYouCountdown] = useState<number | null>(null);
@@ -619,6 +621,7 @@ function GuestApp() {
     setPendingPrint({ captures: sourceCaptures, indexes, templateId, design });
     setSelectedBeautyLevel(0);
     setSelectedColorFilterId('normal');
+    setFilterThumbs({});
     setFilterPreviewDataUrl('');
     setFilterCountdown(Math.max(1, Math.ceil((settings?.beautyFilter.previewTimeoutMs ?? 30000) / 1000)));
     setStep('filterPreview');
@@ -653,6 +656,43 @@ function GuestApp() {
       active = false;
     };
   }, [pendingPrint, selectedBeautyLevel, selectedColorFilterId, settings, step]);
+
+  // Build live per-preset thumbnails from the last captured photo (color only,
+  // small + cached) so guests preview each filter on their own picture.
+  useEffect(() => {
+    if (step !== 'filterPreview' || !pendingPrint || !settings) return undefined;
+    let active = true;
+    void (async () => {
+      try {
+        const lastCapture = pendingPrint.captures[pendingPrint.captures.length - 1];
+        if (!lastCapture?.dataUrl) return;
+        const smallDataUrl = await downscaleDataUrl(lastCapture.dataUrl, 220);
+        const presets = settings.template.colorFilterPresets.filter((preset) => preset.active);
+        const entries = await Promise.all([
+          (async () => ['normal', smallDataUrl] as const)(),
+          ...presets.map(async (preset) => {
+            try {
+              const thumb = await applyPhotoFilters(smallDataUrl, preset, 0);
+              return [preset.id, thumb] as const;
+            } catch {
+              return [preset.id, ''] as const;
+            }
+          })
+        ]);
+        if (!active) return;
+        const next: Record<string, string> = {};
+        entries.forEach(([id, src]) => {
+          if (src) next[id] = src;
+        });
+        setFilterThumbs(next);
+      } catch {
+        // Leave thumbnails empty; buttons fall back to static sample images.
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [pendingPrint, settings, step]);
 
   useEffect(() => {
     if (step !== 'filterPreview' || !pendingPrint || !settings) return undefined;
@@ -1257,8 +1297,8 @@ function GuestApp() {
           <div className="filter-content">
             <div className="filter-controls">
               {settings.beautyFilter.enabledMode !== 'off' && (
-                <div className="filter-control-group">
-                  <p>BEAUTY</p>
+              <div className="filter-control-group">
+                <p>Beauty Filter Level</p>
                   <div className="filter-button-row beauty-buttons">
                     {[0, 1, 2, 3, 4].map((level) => (
                       <KioskButton
@@ -1276,15 +1316,16 @@ function GuestApp() {
                 </div>
               )}
               <div className="filter-control-group">
-                <p>COLOR</p>
+                <p>Color Filter</p>
                 <div className="filter-button-row color-buttons">
                 <KioskButton
-                  className={`filter-choice-button filter-choice-button-solo${selectedColorFilterId === 'normal' ? ' active' : ''}`}
+                  className={`filter-choice-button${filterThumbs.normal ? '' : ' filter-choice-button-solo'}${selectedColorFilterId === 'normal' ? ' active' : ''}`}
                     onPress={() => {
                       void playAudioCue(settings, 'button');
                       setSelectedColorFilterId('normal');
                     }}
                   >
+                    {filterThumbs.normal && <img src={filterThumbs.normal} alt="No Filter" />}
                     <span>No Filter</span>
                   </KioskButton>
                   {activeColorFilterPresets.map((preset) => (
@@ -1296,8 +1337,11 @@ function GuestApp() {
                         setSelectedColorFilterId(preset.id);
                       }}
                     >
-                      <ImagePathThumb path={preset.thumbnailPath} label={preset.name} />
-                      <span>{preset.name}</span>
+                      {filterThumbs[preset.id] ? (
+                        <img src={filterThumbs[preset.id]} alt={preset.name} />
+                      ) : (
+                        <ImagePathThumb path={preset.thumbnailPath} label={preset.name} />
+                      )}
                     </KioskButton>
                   ))}
                 </div>
@@ -4557,6 +4601,21 @@ const loadDataUrlImage = (dataUrl: string) =>
     image.src = dataUrl;
   });
 
+const downscaleDataUrl = async (dataUrl: string, maxEdge: number) => {
+  const image = await loadDataUrlImage(dataUrl);
+  const naturalWidth = image.naturalWidth || image.width;
+  const naturalHeight = image.naturalHeight || image.height;
+  const longEdge = Math.max(naturalWidth, naturalHeight, 1);
+  const scale = Math.min(1, maxEdge / longEdge);
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.max(1, Math.round(naturalWidth * scale));
+  canvas.height = Math.max(1, Math.round(naturalHeight * scale));
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('Could not downscale image.');
+  ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+  return canvas.toDataURL('image/jpeg', 0.86);
+};
+
 const clampChannel = (value: number) => Math.max(0, Math.min(255, value));
 
 const neutralColorFilterValues = (): ColorFilterValues => ({
@@ -4651,21 +4710,10 @@ const applyPhotoFilters = async (
   ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
 
   if (beautyLevel > 0) {
-    const strength = Math.min(4, Math.max(1, beautyLevel));
-    const blur = document.createElement('canvas');
-    blur.width = canvas.width;
-    blur.height = canvas.height;
-    const blurCtx = blur.getContext('2d');
-    if (blurCtx) {
-      blurCtx.filter = `blur(${strength * 3.2}px) saturate(${1 + strength * 0.08}) brightness(${1 + strength * 0.035})`;
-      blurCtx.drawImage(canvas, 0, 0);
-      ctx.globalCompositeOperation = 'screen';
-      ctx.globalAlpha = Math.min(0.5, 0.08 + strength * 0.08);
-      ctx.drawImage(blur, 0, 0);
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.globalAlpha = Math.min(0.7, 0.16 + strength * 0.12);
-      ctx.drawImage(blur, 0, 0);
-      ctx.globalAlpha = 1;
+    try {
+      await applyFaceBeauty(canvas, beautyLevel);
+    } catch (error) {
+      console.warn('Face beauty retouch failed; using original photo.', error);
     }
   }
 
@@ -4685,7 +4733,7 @@ const applyPhotoFilters = async (
       ctx.globalAlpha = 1;
     }
   }
-  if (intensity <= 0 && beautyLevel <= 0) return canvas.toDataURL('image/png');
+  if (intensity <= 0) return canvas.toDataURL('image/png');
 
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const data = imageData.data;

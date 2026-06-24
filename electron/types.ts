@@ -195,6 +195,7 @@ export type TemplateSettings = {
   aiPresets: AiPreset[];
   faceAssetPacks: FaceAssetPack[];
   colorFilterExamplePath: string;
+  colorFilterPresetVersion?: number;
   colorFilterPresets: ColorFilterPreset[];
   designs: TemplateDesign[];
 };
