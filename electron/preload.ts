@@ -27,6 +27,10 @@ const api = {
   getSettings: () => ipcRenderer.invoke('settings:get') as Promise<AppSettings>,
   updateSettings: (settings: Partial<AppSettings>) =>
     ipcRenderer.invoke('settings:update', settings) as Promise<AppSettings>,
+  exportSettings: () =>
+    ipcRenderer.invoke('settings:export') as Promise<{ ok: boolean; filePath?: string; error?: string }>,
+  importSettings: () =>
+    ipcRenderer.invoke('settings:import') as Promise<{ ok: boolean; filePath?: string; settings?: AppSettings; error?: string }>,
   chooseFolder: () => ipcRenderer.invoke('dialog:choose-folder') as Promise<string>,
   chooseImage: () => ipcRenderer.invoke('dialog:choose-image') as Promise<string>,
   uploadAudioCue: (cueId: string) =>

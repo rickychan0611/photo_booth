@@ -57,6 +57,14 @@ app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
 
 const defaultEventFolder = () => path.join(app.getPath('pictures'), 'Photo Booth');
 const settingsPath = () => path.join(app.getPath('userData'), 'settings.json');
+const settingsBackupPath = () => path.join(app.getPath('userData'), 'settings.json.bak');
+const settingsTempPath = () => path.join(app.getPath('userData'), 'settings.json.tmp');
+const portableSettingsToken = {
+  eventFolder: '${EVENT_FOLDER}',
+  appUserData: '${APP_USER_DATA}',
+  pictures: '${PICTURES}',
+  home: '${HOME}'
+} as const;
 
 const defaultAiSettings = (): AppSettings['ai'] => ({
   provider: 'openai',
@@ -337,74 +345,91 @@ async function migrateLegacyTemplateFolders(eventFolder: string) {
   await moveFolderIfPossible(path.join(templatesFolder, 'style5'), path.join(templatesFolder, 'style4'));
 }
 
+const normalizeLoadedSettings = (parsed: Partial<AppSettings>, fallback = defaultSettings()): AppSettings => {
+  const isLegacyTemplateStyle = (parsed.template?.styleVersion ?? 0) < 2;
+  return {
+    ...fallback,
+    ...parsed,
+    defaultPrinter: normalizePrinterName(parsed.defaultPrinter ?? fallback.defaultPrinter),
+    beautyFilter: normalizeBeautyFilterSettings(parsed.beautyFilter),
+    ai: normalizeAiSettings(parsed.ai),
+    audio: normalizeAudioSettings(parsed.audio),
+    template: {
+      ...fallback.template,
+      ...(parsed.template ?? {}),
+      styleVersion: 3,
+      selectedTemplateId: String(parsed.template?.selectedTemplateId ?? ''),
+      selectedStyleId: normalizeTemplateStyleId(String(parsed.template?.selectedStyleId ?? fallback.template.selectedStyleId), isLegacyTemplateStyle),
+      layouts: (parsed.template?.layouts ?? []).map((layout) => normalizeTemplateLayout(layout)),
+      aiPresets: (parsed.template?.aiPresets ?? fallback.template.aiPresets).map(normalizeAiPreset),
+      faceAssetPacks: (parsed.template?.faceAssetPacks ?? fallback.template.faceAssetPacks).map(normalizeFaceAssetPack),
+      colorFilterExamplePath: String(parsed.template?.colorFilterExamplePath ?? fallback.template.colorFilterExamplePath),
+      colorFilterPresetVersion: 2,
+      colorFilterPresets: migrateColorFilterPresets(parsed.template?.colorFilterPresets, parsed.template?.colorFilterPresetVersion),
+      designs: (parsed.template?.designs ?? fallback.template.designs).map((design) =>
+        normalizeTemplateDesign(design, isLegacyTemplateStyle)
+      )
+    },
+    workflow: {
+      ...fallback.workflow,
+      ...(parsed.workflow ?? {}),
+      shots: fallback.workflow.shots.map((shot, index) => ({
+        ...shot,
+        ...(parsed.workflow?.shots?.[index] ?? {})
+      }))
+    },
+    printPicker: {
+      ...fallback.printPicker,
+      ...(parsed.printPicker ?? {})
+    },
+    cameraControls: {
+      ...fallback.cameraControls,
+      ...(parsed.cameraControls ?? {})
+    },
+    cameraPreviewOverlay: normalizeCameraPreviewOverlay(parsed.cameraPreviewOverlay),
+    stylePrinters: normalizeStylePrinters({
+      ...fallback.stylePrinters,
+      ...(parsed.stylePrinters ?? {})
+    }),
+    printerEnabled: parsed.printerEnabled !== false,
+    printCalibration: normalizePrintCalibration({
+      ...fallback.printCalibration,
+      ...(parsed.printCalibration ?? {})
+    })
+  };
+};
+
+async function readSettingsFile(filePath: string): Promise<AppSettings> {
+  const raw = await fs.readFile(filePath, 'utf8');
+  const parsed = JSON.parse(raw) as Partial<AppSettings>;
+  const merged = normalizeLoadedSettings(parsed);
+  if ((parsed.template?.styleVersion ?? 0) < 2) await migrateLegacyTemplateFolders(merged.eventFolder);
+  await ensureEventFolders(merged.eventFolder);
+  return merged;
+}
+
 async function readSettings(): Promise<AppSettings> {
-  const fallback = defaultSettings();
   try {
-    const raw = await fs.readFile(settingsPath(), 'utf8');
-    const parsed = JSON.parse(raw) as Partial<AppSettings>;
-    const isLegacyTemplateStyle = (parsed.template?.styleVersion ?? 0) < 2;
-    const merged: AppSettings = {
-      ...fallback,
-      ...parsed,
-      defaultPrinter: normalizePrinterName(parsed.defaultPrinter ?? fallback.defaultPrinter),
-      beautyFilter: normalizeBeautyFilterSettings(parsed.beautyFilter),
-      ai: normalizeAiSettings(parsed.ai),
-      audio: normalizeAudioSettings(parsed.audio),
-      template: {
-        ...fallback.template,
-        ...(parsed.template ?? {}),
-        styleVersion: 3,
-        selectedTemplateId: String(parsed.template?.selectedTemplateId ?? ''),
-        selectedStyleId: normalizeTemplateStyleId(String(parsed.template?.selectedStyleId ?? fallback.template.selectedStyleId), isLegacyTemplateStyle),
-        layouts: (parsed.template?.layouts ?? []).map((layout) => normalizeTemplateLayout(layout)),
-        aiPresets: (parsed.template?.aiPresets ?? fallback.template.aiPresets).map(normalizeAiPreset),
-        faceAssetPacks: (parsed.template?.faceAssetPacks ?? fallback.template.faceAssetPacks).map(normalizeFaceAssetPack),
-        colorFilterExamplePath: String(parsed.template?.colorFilterExamplePath ?? fallback.template.colorFilterExamplePath),
-        colorFilterPresetVersion: 2,
-        colorFilterPresets: migrateColorFilterPresets(parsed.template?.colorFilterPresets, parsed.template?.colorFilterPresetVersion),
-        designs: (parsed.template?.designs ?? fallback.template.designs).map((design) =>
-          normalizeTemplateDesign(design, isLegacyTemplateStyle)
-        )
-      },
-      workflow: {
-        ...fallback.workflow,
-        ...(parsed.workflow ?? {}),
-        shots: fallback.workflow.shots.map((shot, index) => ({
-          ...shot,
-          ...(parsed.workflow?.shots?.[index] ?? {})
-        }))
-      },
-      printPicker: {
-        ...fallback.printPicker,
-        ...(parsed.printPicker ?? {})
-      },
-      cameraControls: {
-        ...fallback.cameraControls,
-        ...(parsed.cameraControls ?? {})
-      },
-      cameraPreviewOverlay: normalizeCameraPreviewOverlay(parsed.cameraPreviewOverlay),
-      stylePrinters: normalizeStylePrinters({
-        ...fallback.stylePrinters,
-        ...(parsed.stylePrinters ?? {})
-      }),
-      printerEnabled: parsed.printerEnabled !== false,
-      printCalibration: normalizePrintCalibration({
-        ...fallback.printCalibration,
-        ...(parsed.printCalibration ?? {})
-      })
-    };
-    if (isLegacyTemplateStyle) await migrateLegacyTemplateFolders(merged.eventFolder);
-    await ensureEventFolders(merged.eventFolder);
-    return merged;
-  } catch {
-    await writeSettings(fallback);
-    return fallback;
+    return await readSettingsFile(settingsPath());
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+      return writeSettings(defaultSettings());
+    }
+    console.warn('Could not read settings.json; trying backup.', error);
+    try {
+      const recovered = await readSettingsFile(settingsBackupPath());
+      await writeSettings(recovered);
+      return recovered;
+    } catch (backupError) {
+      console.error('Could not recover settings from backup. Keeping existing settings files untouched.', backupError);
+      return defaultSettings();
+    }
   }
 }
 
 async function writeSettings(settings: AppSettings): Promise<AppSettings> {
   await fs.mkdir(app.getPath('userData'), { recursive: true });
-  const normalized = {
+  const normalized: AppSettings = {
     ...settings,
     defaultPrinter: normalizePrinterName(settings.defaultPrinter),
     beautyFilter: normalizeBeautyFilterSettings(settings.beautyFilter),
@@ -426,9 +451,103 @@ async function writeSettings(settings: AppSettings): Promise<AppSettings> {
     printCalibration: normalizePrintCalibration(settings.printCalibration)
   };
   await ensureEventFolders(normalized.eventFolder);
-  await fs.writeFile(settingsPath(), `${JSON.stringify(normalized, null, 2)}${os.EOL}`, 'utf8');
+  const serialized = `${JSON.stringify(normalized, null, 2)}${os.EOL}`;
+  await fs.writeFile(settingsTempPath(), serialized, 'utf8');
+  if (await fileExists(settingsPath())) {
+    await fs.copyFile(settingsPath(), settingsBackupPath());
+  }
+  await fs.rename(settingsTempPath(), settingsPath());
   return normalized;
 }
+
+type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
+
+const cloneJson = <T,>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
+
+const normalizePathForCompare = (value: string) => path.normalize(value).toLowerCase();
+
+const pathStartsWith = (value: string, base: string) => {
+  const normalizedValue = normalizePathForCompare(value);
+  const normalizedBase = normalizePathForCompare(base);
+  return normalizedValue === normalizedBase || normalizedValue.startsWith(`${normalizedBase}${path.sep}`);
+};
+
+const portableJoin = (token: string, absolutePath: string, basePath: string) => {
+  const relative = path.relative(basePath, absolutePath);
+  return relative ? `${token}${path.sep}${relative}` : token;
+};
+
+const replacePathPrefixes = (
+  value: string,
+  replacements: Array<{ base: string; token: string }>
+) => {
+  const match = replacements
+    .filter(({ base }) => base && pathStartsWith(value, base))
+    .sort((a, b) => b.base.length - a.base.length)[0];
+  return match ? portableJoin(match.token, value, match.base) : value;
+};
+
+const mapJsonStrings = (value: JsonValue, mapper: (value: string, key?: string) => string, key?: string): JsonValue => {
+  if (typeof value === 'string') return mapper(value, key);
+  if (Array.isArray(value)) return value.map((item) => mapJsonStrings(item, mapper));
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value).map(([entryKey, entryValue]) => [entryKey, mapJsonStrings(entryValue, mapper, entryKey)])
+    );
+  }
+  return value;
+};
+
+const portableSettingsForExport = (settings: AppSettings): AppSettings => {
+  const exported = cloneJson(settings) as unknown as JsonValue;
+  const home = app.getPath('home');
+  const pictures = app.getPath('pictures');
+  const userData = app.getPath('userData');
+  const eventFolder = settings.eventFolder;
+  return mapJsonStrings(
+    exported,
+    (value, key) =>
+      replacePathPrefixes(
+        value,
+        key === 'eventFolder'
+          ? [
+              { base: pictures, token: portableSettingsToken.pictures },
+              { base: home, token: portableSettingsToken.home }
+            ]
+          : [
+              { base: eventFolder, token: portableSettingsToken.eventFolder },
+              { base: userData, token: portableSettingsToken.appUserData },
+              { base: pictures, token: portableSettingsToken.pictures },
+              { base: home, token: portableSettingsToken.home }
+            ]
+      )
+  ) as unknown as AppSettings;
+};
+
+const expandPortablePath = (value: string, eventFolder: string) => {
+  const replacements = [
+    { token: portableSettingsToken.eventFolder, base: eventFolder },
+    { token: portableSettingsToken.appUserData, base: app.getPath('userData') },
+    { token: portableSettingsToken.pictures, base: app.getPath('pictures') },
+    { token: portableSettingsToken.home, base: app.getPath('home') }
+  ];
+  const match = replacements.find(({ token }) => value === token || value.startsWith(`${token}${path.sep}`) || value.startsWith(`${token}/`));
+  if (!match) return value;
+  const suffix = value.slice(match.token.length).replace(/^[/\\]/, '');
+  return suffix ? path.join(match.base, suffix) : match.base;
+};
+
+const expandPortableSettingsForImport = (settings: Partial<AppSettings>): Partial<AppSettings> => {
+  const imported = cloneJson(settings) as unknown as JsonValue;
+  const source = imported as Partial<AppSettings>;
+  const eventFolder =
+    typeof source.eventFolder === 'string'
+      ? expandPortablePath(source.eventFolder, defaultEventFolder())
+      : defaultEventFolder();
+  const expanded = mapJsonStrings(imported, (value) => expandPortablePath(value, eventFolder)) as unknown as Partial<AppSettings>;
+  expanded.eventFolder = eventFolder;
+  return expanded;
+};
 
 type AppWindowKind = 'guest' | 'admin' | 'facePreview';
 
@@ -1620,8 +1739,8 @@ async function uploadFinalPhotoInBackground(
   }
 }
 
-const VIDEO_MAX_LONG_EDGE = 1280;
-const VIDEO_CRF = 26;
+const VIDEO_MAX_LONG_EDGE = 1920;
+const VIDEO_CRF = 23;
 
 const resolveFfmpegPath = () => {
   if (!ffmpegStatic) return '';
@@ -2700,6 +2819,34 @@ app.whenReady().then(async () => {
       })
     };
     return writeSettings(next);
+  });
+  ipcMain.handle('settings:export', async () => {
+    const current = await readSettings();
+    const parent = modalParent();
+    const options = {
+      defaultPath: path.join(current.eventFolder || defaultEventFolder(), 'settings.json'),
+      filters: [{ name: 'Photo Booth Settings', extensions: ['json'] }]
+    };
+    const result = parent ? await dialog.showSaveDialog(parent, options) : await dialog.showSaveDialog(options);
+    if (result.canceled || !result.filePath) return { ok: false, error: 'Export cancelled.' };
+    const portable = portableSettingsForExport(current);
+    await fs.writeFile(result.filePath, `${JSON.stringify(portable, null, 2)}${os.EOL}`, 'utf8');
+    return { ok: true, filePath: result.filePath };
+  });
+  ipcMain.handle('settings:import', async () => {
+    const parent = modalParent();
+    const options = {
+      properties: ['openFile'] as Array<'openFile'>,
+      filters: [{ name: 'Photo Booth Settings', extensions: ['json'] }]
+    };
+    const result = parent ? await dialog.showOpenDialog(parent, options) : await dialog.showOpenDialog(options);
+    if (result.canceled || !result.filePaths[0]) return { ok: false, error: 'Import cancelled.' };
+    const raw = await fs.readFile(result.filePaths[0], 'utf8');
+    const parsed = JSON.parse(raw) as Partial<AppSettings>;
+    const expanded = expandPortableSettingsForImport(parsed);
+    const normalized = normalizeLoadedSettings(expanded);
+    const saved = await writeSettings(normalized);
+    return { ok: true, filePath: result.filePaths[0], settings: saved };
   });
   ipcMain.handle('dialog:choose-folder', async () => {
     const parent = modalParent();

@@ -300,6 +300,8 @@ export function installMockApi() {
         printCalibration: normalizePrintCalibration({ ...current.printCalibration, ...(partial.printCalibration ?? {}) })
       });
     },
+    exportSettings: async () => ({ ok: false, error: 'Settings export is available in Electron.' }),
+    importSettings: async () => ({ ok: false, error: 'Settings import is available in Electron.' }),
     chooseFolder: async () => {
       const picker = (window as Window & { showDirectoryPicker?: () => Promise<{ name: string }> }).showDirectoryPicker;
       if (!picker) return 'Browser preview - open Electron for native folder picker';

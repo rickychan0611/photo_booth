@@ -33,8 +33,16 @@ type SelectContext = {
   autoSelectMs: number;
 };
 
+type FilterPreviewAssets = {
+  layout: TemplateLayout;
+  photoDataUrls: string[];
+  templateDataUrl: string;
+  facePack: FaceAssetPack | null;
+};
+
 const buttonText = (value: string) => `[ ${value} ]`;
 const PHONE_MAX_DIGITS = 15;
+const FILTER_PREVIEW_MAX_LONG_EDGE = 900;
 const COLOR_FILTER_FIELDS: Array<{ key: keyof ColorFilterValues; label: string; min: number; max: number; step?: number }> = [
   { key: 'intensity', label: 'Intensity', min: 0, max: 100 },
   { key: 'brightness', label: 'Brightness', min: -50, max: 50 },
@@ -49,6 +57,18 @@ const COLOR_FILTER_FIELDS: Array<{ key: keyof ColorFilterValues; label: string; 
   { key: 'vignette', label: 'Vignette', min: 0, max: 50 },
   { key: 'blur', label: 'Blur', min: 0, max: 20 }
 ];
+
+const colorFilterPreviewCacheKey = (preset: ColorFilterPreset | null) =>
+  preset
+    ? [
+        preset.id,
+        preset.updatedAt,
+        ...COLOR_FILTER_FIELDS.map(({ key }) => preset.filter[key])
+      ].join('|')
+    : 'normal';
+
+const filterPreviewCacheKey = (beautyLevel: number, preset: ColorFilterPreset | null) =>
+  `beauty:${beautyLevel}|color:${colorFilterPreviewCacheKey(preset)}`;
 
 function formatPhoneNumber(value: string) {
   const digits = value.replace(/\D/g, '').slice(0, PHONE_MAX_DIGITS);
@@ -109,6 +129,9 @@ function GuestApp() {
   const [filterThumbs, setFilterThumbs] = useState<Record<string, string>>({});
   const [filterPreviewDataUrl, setFilterPreviewDataUrl] = useState('');
   const [filterCountdown, setFilterCountdown] = useState<number | null>(null);
+  const filterPreviewSessionRef = useRef(0);
+  const filterPreviewAssetsRef = useRef<Promise<FilterPreviewAssets | null> | null>(null);
+  const filterPreviewCacheRef = useRef<Map<string, Promise<string>>>(new Map());
   const [thankYouCountdown, setThankYouCountdown] = useState<number | null>(null);
   const [printedPreview, setPrintedPreview] = useState('');
   const [printedNumber, setPrintedNumber] = useState('');
@@ -138,6 +161,7 @@ function GuestApp() {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const recordedChunksRef = useRef<Blob[]>([]);
   const recordStreamRef = useRef<MediaStream | null>(null);
+  const recordingCleanupRef = useRef<(() => void) | null>(null);
   const pendingVideoSaveRef = useRef<Promise<string | null> | null>(null);
   const pendingVideoPathRef = useRef<string | null>(null);
   const pendingVideoTicketIdRef = useRef<string | null>(null);
@@ -451,19 +475,22 @@ function GuestApp() {
   const stopRecordingTracks = () => {
     recordStreamRef.current?.getTracks().forEach((track) => track.stop());
     recordStreamRef.current = null;
+    recordingCleanupRef.current?.();
+    recordingCleanupRef.current = null;
   };
 
   // Captures the full on-screen composite (camera + face-asset overlays +
-  // countdown/messages) of the booth window plus microphone audio, mirroring the
-  // way stills are screenshotted, so the saved video matches what the guest sees.
+  // countdown/messages) of the booth window plus microphone audio. If mirror
+  // preview is enabled, the saved MP4 is flipped during transcode so playback is
+  // natural while the guest can still see a mirrored live preview.
   const startSessionRecording = async () => {
     if (mediaRecorderRef.current || typeof MediaRecorder === 'undefined') return;
     try {
       const displayStream = await navigator.mediaDevices.getDisplayMedia({
         video: {
-          frameRate: { ideal: 10, max: 10 },
-          width: { ideal: 1280, max: 1920 },
-          height: { ideal: 720, max: 1080 }
+          frameRate: { ideal: 15, max: 15 },
+          width: { ideal: 1920, max: 1920 },
+          height: { ideal: 1080, max: 1080 }
         },
         audio: false
       });
@@ -488,7 +515,7 @@ function GuestApp() {
       const mimeType = pickRecorderMimeType();
       const recorder = new MediaRecorder(merged, {
         ...(mimeType ? { mimeType } : {}),
-        videoBitsPerSecond: 1_800_000,
+        videoBitsPerSecond: 4_000_000,
         audioBitsPerSecond: 128_000
       });
       recorder.ondataavailable = (event) => {
@@ -563,36 +590,16 @@ function GuestApp() {
   const captureFrame = async (slot: TemplateSlot, useFullLiveView = false) => {
     if (!videoRef.current || !settings) throw new Error('Camera not ready.');
 
-    // Render the composited capture view (video + face assets, oriented and
-    // mirrored exactly as on screen) directly from the camera's native
-    // resolution. A plain window screenshot is capped by the guest screen's
-    // physical pixel density, which is usually far lower than what the camera
-    // actually captures -- that mismatch is what made prints look soft/blurry.
+    // Render the camera view directly from the camera's native resolution. A
+    // plain window screenshot is capped by the guest screen's physical pixel
+    // density, which is usually far lower than what the camera actually
+    // captures -- that mismatch is what made prints look soft/blurry.
     setIsCapturing(true);
     await nextPaint();
 
     try {
       const video = videoRef.current;
       const composed = captureNativeResolutionFrame(video, settings, window.innerWidth, window.innerHeight);
-
-      if (composed && activeFacePack) {
-        const ctx = composed.canvas.getContext('2d');
-        if (ctx) {
-          try {
-            const faceResult = await detectFaces(composed.canvas, performance.now());
-            await drawFaceAssets(
-              ctx,
-              faceResult,
-              activeFacePack,
-              composed.canvas.width,
-              composed.canvas.height,
-              faceOverlayStabilizerRef.current
-            );
-          } catch (error) {
-            console.warn('Face assets capture skipped.', error);
-          }
-        }
-      }
 
       let dataUrl: string;
       if (composed && !useFullLiveView && captureGuideRef.current) {
@@ -650,23 +657,130 @@ function GuestApp() {
     ? null
     : activeColorFilterPresets.find((preset) => preset.id === selectedColorFilterId) ?? null;
 
-  const processPrintPhotoDataUrls = async (
+  const applyFaceAssetsToPhoto = async (dataUrl: string, facePack: FaceAssetPack | null) => {
+    if (!facePack) return dataUrl;
+    const image = await loadDataUrlImage(dataUrl);
+    const canvas = document.createElement('canvas');
+    canvas.width = image.naturalWidth || image.width;
+    canvas.height = image.naturalHeight || image.height;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) throw new Error('Could not apply face assets.');
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+    try {
+      const result = await detectFaces(canvas, performance.now());
+      await drawFaceAssets(ctx, result, facePack, canvas.width, canvas.height);
+    } catch (error) {
+      console.warn('Face assets print burn-in skipped.', error);
+    }
+    return canvas.toDataURL('image/png');
+  };
+
+  const applyFaceAssetsToPhotos = async (dataUrls: string[], facePack: FaceAssetPack | null) => {
+    const next: string[] = [];
+    for (const dataUrl of dataUrls) {
+      next.push(await applyFaceAssetsToPhoto(dataUrl, facePack));
+    }
+    return next;
+  };
+
+  const createProcessedPrintImage = async (
     request: PendingPrint,
     beautyLevel: number,
-    colorPreset: ColorFilterPreset | null
+    colorPreset: ColorFilterPreset | null,
+    options: { maxLongEdge?: number; previewPhotos?: boolean } = {}
   ) => {
-    if (!settings) return [];
+    if (!settings) return '';
     const layout = templateLayouts.find((item) => item.id === request.templateId);
-    if (!layout) return [];
+    if (!layout) return '';
     const baseDataUrls = request.indexes
       .slice(0, layout.photoWindows.length)
       .map((index) => request.captures[index]?.dataUrl)
       .filter(Boolean) as string[];
+    if (baseDataUrls.length < layout.photoWindows.length) return '';
     const printReady = settings.mirrorPreview
       ? await Promise.all(baseDataUrls.map(flipPhotoForPrint))
       : baseDataUrls;
+    const photoDataUrls = options.previewPhotos
+      ? await Promise.all(printReady.map((dataUrl) => downscaleDataUrl(dataUrl, FILTER_PREVIEW_MAX_LONG_EDGE)))
+      : printReady;
+    const facePack = selectedFaceAssetPack(settings, request.design);
+    const withFaceAssets = await applyFaceAssetsToPhotos(photoDataUrls, facePack);
     const activeBeautyLevel = settings.beautyFilter.enabledMode === 'off' ? 0 : beautyLevel;
-    return Promise.all(printReady.map((dataUrl) => applyPhotoFilters(dataUrl, colorPreset, activeBeautyLevel)));
+    const filteredPhotos = colorPreset || activeBeautyLevel > 0
+      ? await Promise.all(withFaceAssets.map((dataUrl) => applyPhotoFilters(dataUrl, colorPreset, activeBeautyLevel)))
+      : withFaceAssets;
+    const templateDataUrl = await window.photoBooth.getImageDataUrl(templateFramePath(request.design));
+    return createTemplatedPrintImage(
+      filteredPhotos,
+      layout,
+      request.design,
+      templateDataUrl,
+      options.maxLongEdge ? { maxLongEdge: options.maxLongEdge } : undefined
+    );
+  };
+
+  const getFilterPreviewAssets = () => {
+    if (filterPreviewAssetsRef.current) return filterPreviewAssetsRef.current;
+    const request = pendingPrint;
+    if (!request || !settings) return Promise.resolve(null);
+    const layout = templateLayouts.find((item) => item.id === request.templateId);
+    if (!layout) return Promise.resolve(null);
+
+    const promise = (async (): Promise<FilterPreviewAssets | null> => {
+      const baseDataUrls = request.indexes
+        .slice(0, layout.photoWindows.length)
+        .map((index) => request.captures[index]?.dataUrl)
+        .filter(Boolean) as string[];
+      if (baseDataUrls.length < layout.photoWindows.length) return null;
+      const printReady = settings.mirrorPreview
+        ? await Promise.all(baseDataUrls.map(flipPhotoForPrint))
+        : baseDataUrls;
+      const [photoDataUrls, templateDataUrl] = await Promise.all([
+        Promise.all(printReady.map((dataUrl) => downscaleDataUrl(dataUrl, FILTER_PREVIEW_MAX_LONG_EDGE))),
+        window.photoBooth.getImageDataUrl(templateFramePath(request.design))
+      ]);
+      return { layout, photoDataUrls, templateDataUrl, facePack: selectedFaceAssetPack(settings, request.design) };
+    })().catch((error) => {
+      filterPreviewAssetsRef.current = null;
+      throw error;
+    });
+
+    filterPreviewAssetsRef.current = promise;
+    return promise;
+  };
+
+  const getCachedFilterPreview = (
+    beautyLevel: number,
+    colorPreset: ColorFilterPreset | null
+  ) => {
+    const activeBeautyLevel = settings?.beautyFilter.enabledMode === 'off' ? 0 : beautyLevel;
+    const key = filterPreviewCacheKey(activeBeautyLevel, colorPreset);
+    const cached = filterPreviewCacheRef.current.get(key);
+    if (cached) return cached;
+
+    const renderPromise = (async () => {
+      const assets = await getFilterPreviewAssets();
+      if (!assets) return '';
+      const withFaceAssets = await applyFaceAssetsToPhotos(assets.photoDataUrls, assets.facePack);
+      if (withFaceAssets.length < assets.layout.photoWindows.length) return '';
+      const filteredPhotos = colorPreset || activeBeautyLevel > 0
+        ? await Promise.all(withFaceAssets.map((dataUrl) => applyPhotoFilters(dataUrl, colorPreset, activeBeautyLevel)))
+        : withFaceAssets;
+      return createTemplatedPrintImage(
+        filteredPhotos,
+        assets.layout,
+        pendingPrint?.design,
+        assets.templateDataUrl,
+        { maxLongEdge: FILTER_PREVIEW_MAX_LONG_EDGE }
+      );
+    })();
+
+    const cachedPromise = renderPromise.catch((error) => {
+      filterPreviewCacheRef.current.delete(key);
+      throw error;
+    });
+    filterPreviewCacheRef.current.set(key, cachedPromise);
+    return cachedPromise;
   };
 
   const prepareFilterPreview = async (
@@ -675,6 +789,9 @@ function GuestApp() {
     templateId: string,
     design: TemplateDesign
   ) => {
+    filterPreviewSessionRef.current += 1;
+    filterPreviewAssetsRef.current = null;
+    filterPreviewCacheRef.current.clear();
     setPendingPrint({ captures: sourceCaptures, indexes, templateId, design });
     setSelectedBeautyLevel(0);
     setSelectedColorFilterId('normal');
@@ -727,7 +844,7 @@ function GuestApp() {
   const confirmFilterPrint = async () => {
     if (!pendingPrint || isBusy) return;
     const request = pendingPrint;
-    const processed = await processPrintPhotoDataUrls(request, selectedBeautyLevel, selectedColorPreset);
+    const processed = await createProcessedPrintImage(request, selectedBeautyLevel, selectedColorPreset);
     setPendingPrint(null);
     setFilterCountdown(null);
     await printCaptures(request.captures, request.indexes, request.templateId, request.design, processed);
@@ -736,15 +853,17 @@ function GuestApp() {
   useEffect(() => {
     if (step !== 'filterPreview' || !pendingPrint || !settings) return undefined;
     let active = true;
+    const sessionId = filterPreviewSessionRef.current;
+    const activeBeautyLevel = settings.beautyFilter.enabledMode === 'off' ? 0 : selectedBeautyLevel;
+    const requestedKey = filterPreviewCacheKey(activeBeautyLevel, selectedColorPreset);
     void (async () => {
       try {
-        const layout = templateLayouts.find((item) => item.id === pendingPrint.templateId);
-        if (!layout) return;
-        const templateDataUrl = await window.photoBooth.getImageDataUrl(templateFramePath(pendingPrint.design));
-        const processed = await processPrintPhotoDataUrls(pendingPrint, selectedBeautyLevel, selectedColorPreset);
-        if (processed.length < layout.photoWindows.length) return;
-        const preview = await createTemplatedPrintImage(processed, layout, pendingPrint.design, templateDataUrl);
-        if (active) setFilterPreviewDataUrl(preview);
+        const preview = await getCachedFilterPreview(activeBeautyLevel, selectedColorPreset);
+        const currentBeautyLevel = settings.beautyFilter.enabledMode === 'off' ? 0 : selectedBeautyLevel;
+        const currentKey = filterPreviewCacheKey(currentBeautyLevel, selectedColorPreset);
+        if (active && preview && sessionId === filterPreviewSessionRef.current && requestedKey === currentKey) {
+          setFilterPreviewDataUrl(preview);
+        }
       } catch (error) {
         if (active) setError(error instanceof Error ? error.message : 'Could not preview filters.');
       }
@@ -753,6 +872,27 @@ function GuestApp() {
       active = false;
     };
   }, [pendingPrint, selectedBeautyLevel, selectedColorFilterId, settings, step]);
+
+  useEffect(() => {
+    if (step !== 'filterPreview' || !pendingPrint || !settings) return undefined;
+    let active = true;
+    const sessionId = filterPreviewSessionRef.current;
+    void (async () => {
+      try {
+        await getCachedFilterPreview(0, null);
+        if (!active || sessionId !== filterPreviewSessionRef.current) return;
+        for (const preset of activeColorFilterPresets) {
+          if (!active || sessionId !== filterPreviewSessionRef.current) return;
+          await getCachedFilterPreview(0, preset);
+        }
+      } catch {
+        // The active preview effect reports user-facing errors; prewarm can fail silently.
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [pendingPrint, settings, step]);
 
   // Build live per-preset thumbnails from the last captured photo (color only,
   // small + cached) so guests preview each filter on their own picture.
@@ -764,12 +904,14 @@ function GuestApp() {
         const lastCapture = pendingPrint.captures[pendingPrint.captures.length - 1];
         if (!lastCapture?.dataUrl) return;
         const smallDataUrl = await downscaleDataUrl(lastCapture.dataUrl, 220);
+        const facePack = selectedFaceAssetPack(settings, pendingPrint.design);
+        const thumbSourceDataUrl = await applyFaceAssetsToPhoto(smallDataUrl, facePack);
         const presets = settings.template.colorFilterPresets.filter((preset) => preset.active);
         const entries = await Promise.all([
-          (async () => ['normal', smallDataUrl] as const)(),
+          (async () => ['normal', thumbSourceDataUrl] as const)(),
           ...presets.map(async (preset) => {
             try {
-              const thumb = await applyPhotoFilters(smallDataUrl, preset, 0);
+              const thumb = await applyPhotoFilters(thumbSourceDataUrl, preset, 0);
               return [preset.id, thumb] as const;
             } catch {
               return [preset.id, ''] as const;
@@ -1028,18 +1170,13 @@ function GuestApp() {
     indexes: number[],
     templateId: string,
     design: TemplateDesign,
-    processedPhotoDataUrls?: string[]
+    processedPrintDataUrl?: string
   ) => {
     if (!settings) return;
     const layout = templateLayouts.find((item) => item.id === templateId);
     if (!layout) return;
-    const photoDataUrls = processedPhotoDataUrls ?? (
-      indexes
-        .slice(0, layout.photoWindows.length)
-        .map((index) => sourceCaptures[index]?.dataUrl)
-        .filter(Boolean) as string[]
-    );
-    if (photoDataUrls.length < layout.photoWindows.length) return;
+    const request = { captures: sourceCaptures, indexes, templateId, design };
+    if (!processedPrintDataUrl && indexes.slice(0, layout.photoWindows.length).some((index) => !sourceCaptures[index]?.dataUrl)) return;
     setIsBusy(true);
     stopAudioChannel('voice');
     setPrintedPreview('');
@@ -1053,7 +1190,6 @@ function GuestApp() {
     setStep('thanks');
 
     const printFinal = async () => {
-      const templateDataUrl = await window.photoBooth.getImageDataUrl(templateFramePath(design));
       let uploadSession = boothSession;
       let uploadGalleryUrl = sessionGalleryUrl;
       let uploadQrDataUrl = galleryQrDataUrl;
@@ -1077,12 +1213,8 @@ function GuestApp() {
         setGalleryQrDataUrl(uploadQrDataUrl);
       }
 
-      const printPhotoDataUrls = processedPhotoDataUrls
-        ? photoDataUrls
-        : settings.mirrorPreview
-        ? await Promise.all(photoDataUrls.map(flipPhotoForPrint))
-        : photoDataUrls;
-      let dataUrl = await createTemplatedPrintImage(printPhotoDataUrls, layout, design, templateDataUrl);
+      let dataUrl = processedPrintDataUrl || await createProcessedPrintImage(request, 0, null);
+      if (!dataUrl) return;
       if (uploadGalleryUrl && uploadQrDataUrl) {
         dataUrl = await addQrToPrintDataUrl(dataUrl, uploadQrDataUrl);
       }
@@ -2604,7 +2736,7 @@ function TemplateCreator({
 }
 
 function AdminApp() {
-  const { settings, updateSettings } = useSettings();
+  const { settings, updateSettings, refreshSettings: reloadSettings } = useSettings();
   const [tab, setTab] = useState('event');
   const [gallery, setGallery] = useState<Gallery>({ originals: [], finals: [] });
   const [aiQueue, setAiQueue] = useState<AiQueueItem[]>([]);
@@ -3195,6 +3327,33 @@ function AdminApp() {
 
         {tab === 'event' && (
           <AdminSection>
+            <div className="admin-actions">
+              <button
+                onClick={async () => {
+                  await window.photoBooth.openGuest();
+                  setMessage('Guest window opened.');
+                }}
+              >
+                Open guest window
+              </button>
+              <button
+                onClick={async () => {
+                  await window.photoBooth.openGuest();
+                  await window.photoBooth.setGuestFullscreen(true);
+                  setMessage('Guest window opened fullscreen.');
+                }}
+              >
+                Open guest fullscreen
+              </button>
+              <button
+                onClick={async () => {
+                  await window.photoBooth.setGuestFullscreen(false);
+                  setMessage('Guest fullscreen disabled.');
+                }}
+              >
+                <Minimize2 size={16} />Exit guest fullscreen
+              </button>
+            </div>
             <label>
               Event name
               <input value={settings.eventName} onChange={(event) => void saveMessage({ eventName: event.target.value }, 'Event name saved.')} />
@@ -3271,36 +3430,35 @@ function AdminApp() {
             <div className="admin-actions">
               <button
                 onClick={async () => {
-                  await window.photoBooth.openGuest();
-                  setMessage('Guest window opened.');
-                }}
-              >
-                Open guest window
-              </button>
-              <button
-                onClick={async () => {
                   await window.photoBooth.openGuestPickerPreview();
                   setMessage('Guest photo picker opened.');
                 }}
               >
                 Open photo picker
               </button>
+            </div>
+            <div className="admin-actions">
               <button
                 onClick={async () => {
-                  await window.photoBooth.openGuest();
-                  await window.photoBooth.setGuestFullscreen(true);
-                  setMessage('Guest window opened fullscreen.');
+                  const result = await window.photoBooth.exportSettings();
+                  setMessage(result.ok && result.filePath ? `Settings exported to ${result.filePath}` : result.error ?? 'Settings export cancelled.');
                 }}
               >
-                Open guest fullscreen
+                <Download size={16} />Export settings
               </button>
               <button
                 onClick={async () => {
-                  await window.photoBooth.setGuestFullscreen(false);
-                  setMessage('Guest fullscreen disabled.');
+                  const result = await window.photoBooth.importSettings();
+                  if (result.ok && result.settings) {
+                    await reloadSettings();
+                    setMessage(result.filePath ? `Settings imported from ${result.filePath}` : 'Settings imported.');
+                    await refreshGallery();
+                    return;
+                  }
+                  setMessage(result.error ?? 'Settings import cancelled.');
                 }}
               >
-                <Minimize2 size={16} />Exit guest fullscreen
+                <FolderOpen size={16} />Import settings
               </button>
             </div>
           </AdminSection>

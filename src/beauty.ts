@@ -137,6 +137,24 @@ const smoothstep = (edge0: number, edge1: number, value: number) => {
   return t * t * (3 - 2 * t);
 };
 
+const blendBilinearSample = (
+  src: Uint8ClampedArray,
+  width: number,
+  height: number,
+  x: number,
+  y: number,
+  dest: Uint8ClampedArray,
+  destIndex: number,
+  alpha: number
+) => {
+  const sample = new Uint8ClampedArray(4);
+  sampleBilinear(src, width, height, x, y, sample, 0);
+  const blend = Math.min(1, Math.max(0, alpha));
+  for (let c = 0; c < 4; c += 1) {
+    dest[destIndex + c] = src[destIndex + c] * (1 - blend) + sample[c] * blend;
+  }
+};
+
 type FaceGeometry = {
   midX: number;
   faceWidth: number;
@@ -227,6 +245,7 @@ const warpFaces = (
       for (let x = bbox.minX; x <= bbox.maxX; x += 1) {
         let sx = x;
         let sy = y;
+        let warpAlpha = 1;
 
         // Eye enlargement takes precedence inside the iris radius.
         let handledByEye = false;
@@ -240,6 +259,7 @@ const warpFaces = (
             const scale = 1 - strength.eye * (1 - t * t);
             sx = eye.center.x + dx * scale;
             sy = eye.center.y + dy * scale;
+            warpAlpha = 1 - smoothstep(0.82, 1, t);
             handledByEye = true;
             break;
           }
@@ -247,8 +267,14 @@ const warpFaces = (
 
         if (!handledByEye) {
           // Vertical influence: none above the eyes, full around the jaw,
-          // with an extra pinch toward the chin tip.
-          const vWeight = smoothstep(face.cheekTopY, face.chinY, y);
+          // with an extra pinch toward the chin tip. Fade below the chin so
+          // the transform never ends as a visible horizontal cut on the neck.
+          const belowChinFade = 1 - smoothstep(
+            face.chinY + face.faceWidth * 0.03,
+            face.chinY + face.faceWidth * 0.32,
+            y
+          );
+          const vWeight = smoothstep(face.cheekTopY, face.chinY, y) * belowChinFade;
           if (vWeight > 0) {
             const dx = x - face.midX;
             const hFall = 1 - smoothstep(slimRange * 0.55, slimRange, Math.abs(dx));
@@ -261,13 +287,14 @@ const warpFaces = (
               const squeeze = (strength.slim * vWeight + strength.chin * chinWeight) * hFall;
               const factor = 1 / (1 - Math.min(0.6, squeeze));
               sx = face.midX + dx * factor;
+              warpAlpha = Math.min(1, Math.max(0, vWeight * hFall * 1.3));
             }
           }
         }
 
         if (sx !== x || sy !== y) {
           const di = (y * width + x) * 4;
-          sampleBilinear(src, width, height, sx, sy, out, di);
+          blendBilinearSample(src, width, height, sx, sy, out, di, warpAlpha);
         }
       }
     }

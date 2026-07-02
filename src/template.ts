@@ -277,9 +277,26 @@ const fillImageClipped = (
   ctx.restore();
 };
 
-const scaleSlotForPrint = (slot: TemplateSlot, layout: TemplateLayout): TemplateSlot => {
+type TemplatedPrintImageOptions = {
+  maxLongEdge?: number;
+};
+
+const outputPrintDimensions = (orientation: TemplateOrientation, maxLongEdge?: number) => {
+  const base = templatePrintDimensions(orientation);
+  if (!maxLongEdge || maxLongEdge <= 0) return base;
+  const scale = Math.min(1, maxLongEdge / Math.max(base.width, base.height));
+  return {
+    width: Math.max(1, Math.round(base.width * scale)),
+    height: Math.max(1, Math.round(base.height * scale))
+  };
+};
+
+const scaleSlotForPrint = (
+  slot: TemplateSlot,
+  layout: TemplateLayout,
+  target = templatePrintDimensions(layout.orientation)
+): TemplateSlot => {
   const source = { width: layout.paperWidth, height: layout.paperHeight };
-  const target = templatePrintDimensions(layout.orientation);
   return {
     ...slot,
     x: (slot.x / source.width) * target.width,
@@ -289,8 +306,8 @@ const scaleSlotForPrint = (slot: TemplateSlot, layout: TemplateLayout): Template
   };
 };
 
-const createPrintCanvas = (orientation: TemplateOrientation) => {
-  const { width, height } = templatePrintDimensions(orientation);
+const createPrintCanvas = (orientation: TemplateOrientation, maxLongEdge?: number) => {
+  const { width, height } = outputPrintDimensions(orientation, maxLongEdge);
   const canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
@@ -304,17 +321,18 @@ export async function createTemplatedPrintImage(
   photoDataUrls: string[],
   layout: TemplateLayout,
   design?: TemplateDesign | null,
-  templateDataUrl?: string
+  templateDataUrl?: string,
+  options: TemplatedPrintImageOptions = {}
 ) {
   const normalizedLayout = normalizeTemplateLayoutForClient(layout);
-  const { canvas, ctx } = createPrintCanvas(normalizedLayout.orientation);
+  const { canvas, ctx } = createPrintCanvas(normalizedLayout.orientation, options.maxLongEdge);
   const photos = await Promise.all(photoDataUrls.slice(0, normalizedLayout.photoWindows.length).map((dataUrl) => loadImage(dataUrl)));
 
   ctx.fillStyle = '#000';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   normalizedLayout.photoWindows.forEach((slot) => {
     const photo = photos[slot.sourceIndex];
-    if (photo) fillImageClipped(ctx, photo, scaleSlotForPrint(slot, normalizedLayout));
+    if (photo) fillImageClipped(ctx, photo, scaleSlotForPrint(slot, normalizedLayout, canvas));
   });
 
   if (design && templateDataUrl) {
