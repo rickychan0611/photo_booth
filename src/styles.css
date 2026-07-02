@@ -1305,15 +1305,15 @@ button:disabled {
 
 .filter-control-group {
   display: grid;
-  gap: 8px;
+  gap: 18px;
   justify-items: center;
   min-width: 0;
 }
 
 .filter-control-group p {
-  margin: 0;
+  margin: 10;
   color: rgba(255, 255, 255, 0.72);
-  font-size: 11px;
+  font-size: 16px;
   letter-spacing: 0.16em;
 }
 
@@ -1321,72 +1321,102 @@ button:disabled {
   display: grid;
   width: 100%;
   min-width: 0;
-  grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(72px, 88px));
+  justify-content: center;
+  gap: 20px;
 }
 
 .beauty-buttons {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(52px, 64px));
+  gap: 12px;
+  width: auto;
+  max-width: 100%;
+  justify-content: center;
+}
+
+.beauty-filter-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 2vw, 18px);
+  width: 100%;
+  min-width: 0;
+}
+
+.beauty-filter-icon {
+  width: clamp(72px, 12vw, 108px);
+  height: auto;
+  flex-shrink: 0;
+  display: block;
+  object-fit: contain;
+}
+
+.beauty-filter-row .beauty-buttons {
+  flex: 0 1 auto;
+  width: auto;
 }
 
 .filter-choice-button {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   min-width: 0;
-  min-height: clamp(64px, 9vh, 92px);
+  min-height: 0;
+  border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.58);
   background: #080808;
   color: #fff;
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
-  place-items: center;
-  gap: 6px;
-  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
   overflow: hidden;
   text-align: center;
 }
 
 .beauty-buttons .filter-choice-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
+  font-size: clamp(13px, 2vw, 16px);
   font-weight: 300;
-  padding: 8px 6px;
 }
 
 .beauty-buttons .filter-choice-button span {
-  width: 100%;
+  width: auto;
+  max-width: 88%;
   text-align: center;
   white-space: normal;
-  line-height: 1.15;
-}
-
-.filter-choice-button-solo {
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 6px;
+  line-height: 1.1;
+  font-size: inherit;
+  letter-spacing: 0.02em;
+  text-transform: none;
 }
 
 .filter-choice-button-solo span {
-  width: 100%;
+  max-width: 88%;
   text-align: center;
   white-space: normal;
-  line-height: 1.15;
+  line-height: 1.1;
+  font-size: clamp(9px, 1.6vw, 11px);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .filter-choice-button img {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: 58px;
+  height: 100%;
   object-fit: cover;
   display: block;
 }
 
 .filter-choice-button span {
-  max-width: 100%;
+  position: relative;
+  z-index: 1;
+  max-width: 88%;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 11px;
+  font-size: clamp(9px, 1.6vw, 11px);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -1400,25 +1430,9 @@ button:disabled {
   outline: none;
 }
 
-/* Color preset buttons with a live thumbnail: image fills the whole square,
-   label overlays on top with a shadow for legibility. */
+/* Thumbnail buttons: image fills the circle; active ring sits on top. */
 .color-buttons .filter-choice-button:has(img) {
-  position: relative;
-  display: block;
-  aspect-ratio: 1 / 1;
-  min-height: 0;
-  padding: 0;
-  gap: 0;
-  overflow: hidden;
-}
-
-.color-buttons .filter-choice-button:has(img) img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
+  background: #080808;
 }
 
 .color-buttons .filter-choice-button:has(img) span {
@@ -1448,6 +1462,7 @@ button:disabled {
   position: absolute;
   inset: 0;
   border: 3px solid #fff;
+  border-radius: 50%;
   z-index: 2;
   pointer-events: none;
 }
@@ -1520,12 +1535,105 @@ button:disabled {
   .beauty-buttons {
     gap: 6px;
   }
+}
 
-  .beauty-buttons .filter-choice-button {
-    font-size: 18px;
-    min-height: 58px;
-    padding: 6px 4px;
-  }
+.select-screen {
+  position: relative;
+  width: min(1180px, 100%);
+  height: 100%;
+  max-height: 100%;
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  align-content: start;
+  justify-items: center;
+  gap: clamp(12px, 2vh, 22px);
+  padding-inline: clamp(14px, 3vw, 40px);
+  padding-top: clamp(8px, 2vh, 20px);
+  overflow-y: auto;
+  text-align: center;
+}
+
+.select-header h2 {
+  margin: 0;
+  font-size: clamp(24px, 3.4vw, 40px);
+  letter-spacing: 0.04em;
+}
+
+.select-header p {
+  margin: 6px 0 0;
+  opacity: 0.72;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+}
+
+.select-grid {
+  width: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--select-cols, 3), minmax(0, var(--select-col-max, 300px)));
+  align-content: start;
+  justify-content: center;
+  gap: clamp(10px, 1.6vw, 20px);
+}
+
+.select-tile {
+  position: relative;
+  padding: 0 !important;
+  aspect-ratio: var(--tile-aspect, 3 / 4);
+  min-height: 0;
+  border-radius: 0;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.22);
+  background: rgba(0, 0, 0, 0.25);
+  transition: transform 0.12s ease, border-color 0.12s ease;
+}
+
+.select-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.select-tile.selected {
+  border-color: #ffffff;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+}
+
+.select-tile:not(.selected) img {
+  opacity: 0.78;
+}
+
+.select-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(40px, 5vw, 54px);
+  height: clamp(40px, 5vw, 54px);
+  border-radius: 50%;
+  background: #ffffff;
+  color: #111111;
+  font-size: clamp(20px, 2.6vw, 28px);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.select-footer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: clamp(8px, 2vh, 20px);
+}
+
+.select-confirm-button:disabled {
+  opacity: 0.5;
 }
 
 .thanks-screen {

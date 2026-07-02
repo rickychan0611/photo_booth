@@ -40,6 +40,7 @@ export type TemplateLayout = {
   paperWidth: number;
   paperHeight: number;
   photoWindows: TemplatePhotoWindow[];
+  photosToTake?: number;
   workflowDefaults: TemplateWorkflowSettings;
   printerName: string;
   createdAt: string;

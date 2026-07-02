@@ -831,6 +831,8 @@ const normalizeTemplateLayout = (layout: TemplateLayout): TemplateLayout => {
     rotation: normalizeRotation(slot.rotation)
   }));
   const shotCount = Math.max(1, photoWindows.length);
+  const requestedPhotos = Number.isFinite(layout.photosToTake) ? Math.round(layout.photosToTake as number) : shotCount;
+  const photosToTake = Math.min(12, Math.max(shotCount, requestedPhotos));
   return {
     ...layout,
     id: layout.id || `template-${Date.now()}`,
@@ -839,7 +841,8 @@ const normalizeTemplateLayout = (layout: TemplateLayout): TemplateLayout => {
     paperWidth: dimensions.width,
     paperHeight: dimensions.height,
     photoWindows,
-    workflowDefaults: normalizeTemplateWorkflow(layout.workflowDefaults, shotCount),
+    photosToTake,
+    workflowDefaults: normalizeTemplateWorkflow(layout.workflowDefaults, photosToTake),
     printerName: normalizePrinterName(layout.printerName ?? ''),
     createdAt: layout.createdAt || new Date().toISOString(),
     updatedAt: layout.updatedAt || new Date().toISOString()

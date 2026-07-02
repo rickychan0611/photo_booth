@@ -70,22 +70,18 @@ type BeautyStrength = {
   eye: number;
   slim: number;
   chin: number;
-  smoothAlpha: number;
-  smoothBlurScale: number;
   whitenBrightness: number;
   whitenAlpha: number;
 };
 
 // Per-level tuning (level 1..4). Asian-beauty leaning: progressively larger
-// eyes, slimmer jaw, pointier chin, softer + brighter skin.
+// eyes, slimmer jaw, pointier chin, and brighter skin (no blur smoothing).
 const strengthForLevel = (level: number): BeautyStrength => {
   const n = Math.min(4, Math.max(1, level));
   return {
     eye: 0.05 * n, // up to ~0.20 magnification at the iris
     slim: 0.0225 * n, // up to ~0.09 horizontal jaw compression
     chin: 0.0175 * n, // extra taper toward the chin tip
-    smoothAlpha: Math.min(0.62, 0.16 + n * 0.12),
-    smoothBlurScale: 0.006 + n * 0.0035, // multiplied by face width (px)
     whitenBrightness: 0.05 * n, // skin brightness lift (filter brightness 1+..)
     whitenAlpha: Math.min(0.55, 0.14 + n * 0.1)
   };
@@ -280,9 +276,8 @@ const warpFaces = (
   ctx.putImageData(dest, 0, 0);
 };
 
-// Face-masked skin smoothing. Blurs a copy of the photo but only blends it back
-// over face skin, with eyes and mouth cut out so they stay crisp.
-const smoothSkin = (
+// Face-masked skin whitening. Eyes and mouth are cut out so they stay crisp.
+const whitenSkin = (
   canvas: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
   width: number,
@@ -291,21 +286,11 @@ const smoothSkin = (
   faces: FaceGeometry[],
   strength: BeautyStrength
 ) => {
+  if (strength.whitenBrightness <= 0 || strength.whitenAlpha <= 0) return;
+
   const avgFaceWidth =
     faces.reduce((sum, face) => sum + face.faceWidth, 0) / Math.max(1, faces.length);
-  const blurPx = Math.max(1.5, avgFaceWidth * strength.smoothBlurScale);
 
-  // Blurred copy of the whole photo.
-  const blurCanvas = document.createElement('canvas');
-  blurCanvas.width = width;
-  blurCanvas.height = height;
-  const blurCtx = blurCanvas.getContext('2d');
-  if (!blurCtx) return;
-  blurCtx.filter = `blur(${blurPx}px)`;
-  blurCtx.drawImage(canvas, 0, 0);
-  blurCtx.filter = 'none';
-
-  // Mask: white over face skin, holes punched for eyes and mouth.
   const maskCanvas = document.createElement('canvas');
   maskCanvas.width = width;
   maskCanvas.height = height;
@@ -326,72 +311,58 @@ const smoothSkin = (
     maskCtx.fill();
   });
 
-  const eraseEllipse = (landmarks: NormalizedLandmark[], indices: number[], grow: number) => {
-    const pts = indices.map((index) => landmarks[index]).filter(Boolean) as NormalizedLandmark[];
-    if (pts.length < 2) return;
-    const xs = pts.map((p) => p.x * width);
-    const ys = pts.map((p) => p.y * height);
-    const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
-    const cy = (Math.min(...ys) + Math.max(...ys)) / 2;
-    const rx = ((Math.max(...xs) - Math.min(...xs)) / 2) * grow + 4;
-    const ry = ((Math.max(...ys) - Math.min(...ys)) / 2) * grow + 4;
-    maskCtx.beginPath();
-    maskCtx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
-    maskCtx.fill();
+  const punchFeatureHoles = (targetCtx: CanvasRenderingContext2D) => {
+    const eraseEllipse = (landmarks: NormalizedLandmark[], indices: number[], grow: number) => {
+      const pts = indices.map((index) => landmarks[index]).filter(Boolean) as NormalizedLandmark[];
+      if (pts.length < 2) return;
+      const xs = pts.map((p) => p.x * width);
+      const ys = pts.map((p) => p.y * height);
+      const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
+      const cy = (Math.min(...ys) + Math.max(...ys)) / 2;
+      const rx = ((Math.max(...xs) - Math.min(...xs)) / 2) * grow + 4;
+      const ry = ((Math.max(...ys) - Math.min(...ys)) / 2) * grow + 4;
+      targetCtx.beginPath();
+      targetCtx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+      targetCtx.fill();
+    };
+    targetCtx.save();
+    targetCtx.globalCompositeOperation = 'destination-out';
+    targetCtx.fillStyle = '#fff';
+    targetCtx.filter = `blur(${Math.max(1.5, avgFaceWidth * 0.02)}px)`;
+    faceLandmarks.forEach((landmarks) => {
+      eraseEllipse(landmarks, [LEFT_EYE_OUTER, LEFT_EYE_INNER, LEFT_EYE_TOP, LEFT_EYE_BOTTOM], 1.7);
+      eraseEllipse(landmarks, [RIGHT_EYE_OUTER, RIGHT_EYE_INNER, RIGHT_EYE_TOP, RIGHT_EYE_BOTTOM], 1.7);
+      eraseEllipse(landmarks, [MOUTH_LEFT, MOUTH_RIGHT, MOUTH_TOP, MOUTH_BOTTOM], 1.5);
+    });
+    targetCtx.restore();
   };
 
-  maskCtx.globalCompositeOperation = 'destination-out';
-  maskCtx.fillStyle = '#fff';
-  faceLandmarks.forEach((landmarks) => {
-    eraseEllipse(landmarks, [LEFT_EYE_OUTER, LEFT_EYE_INNER, LEFT_EYE_TOP, LEFT_EYE_BOTTOM], 1.7);
-    eraseEllipse(landmarks, [RIGHT_EYE_OUTER, RIGHT_EYE_INNER, RIGHT_EYE_TOP, RIGHT_EYE_BOTTOM], 1.7);
-    eraseEllipse(landmarks, [MOUTH_LEFT, MOUTH_RIGHT, MOUTH_TOP, MOUTH_BOTTOM], 1.5);
-  });
-  maskCtx.globalCompositeOperation = 'source-over';
+  const whitenFeather = document.createElement('canvas');
+  whitenFeather.width = width;
+  whitenFeather.height = height;
+  const whitenFeatherCtx = whitenFeather.getContext('2d');
+  const whitenCanvas = document.createElement('canvas');
+  whitenCanvas.width = width;
+  whitenCanvas.height = height;
+  const whitenCtx = whitenCanvas.getContext('2d');
+  if (!whitenFeatherCtx || !whitenCtx) return;
 
-  // Feather the mask edges so smoothing fades in/out smoothly.
-  const featherPx = Math.max(2, avgFaceWidth * 0.03);
-  const featherCanvas = document.createElement('canvas');
-  featherCanvas.width = width;
-  featherCanvas.height = height;
-  const featherCtx = featherCanvas.getContext('2d');
-  if (!featherCtx) return;
-  featherCtx.filter = `blur(${featherPx}px)`;
-  featherCtx.drawImage(maskCanvas, 0, 0);
-  featherCtx.filter = 'none';
+  whitenFeatherCtx.filter = `blur(${Math.max(8, avgFaceWidth * 0.18)}px)`;
+  whitenFeatherCtx.drawImage(maskCanvas, 0, 0);
+  whitenFeatherCtx.filter = 'none';
+  punchFeatureHoles(whitenFeatherCtx);
 
-  // Keep only the blurred pixels that fall inside the feathered mask.
-  blurCtx.globalCompositeOperation = 'destination-in';
-  blurCtx.drawImage(featherCanvas, 0, 0);
-  blurCtx.globalCompositeOperation = 'source-over';
+  whitenCtx.filter = `brightness(${1 + strength.whitenBrightness}) saturate(${1 - strength.whitenBrightness * 0.4})`;
+  whitenCtx.drawImage(canvas, 0, 0);
+  whitenCtx.filter = 'none';
+  whitenCtx.globalCompositeOperation = 'destination-in';
+  whitenCtx.drawImage(whitenFeather, 0, 0);
+  whitenCtx.globalCompositeOperation = 'source-over';
 
-  // Blend the masked, blurred skin back over the original.
   ctx.save();
-  ctx.globalAlpha = strength.smoothAlpha;
-  ctx.drawImage(blurCanvas, 0, 0);
+  ctx.globalAlpha = strength.whitenAlpha;
+  ctx.drawImage(whitenCanvas, 0, 0);
   ctx.restore();
-
-  // Skin whitening: brighten + slightly desaturate a copy of the (now smoothed)
-  // photo and blend it back only inside the feathered skin mask.
-  if (strength.whitenBrightness > 0 && strength.whitenAlpha > 0) {
-    const whitenCanvas = document.createElement('canvas');
-    whitenCanvas.width = width;
-    whitenCanvas.height = height;
-    const whitenCtx = whitenCanvas.getContext('2d');
-    if (whitenCtx) {
-      whitenCtx.filter = `brightness(${1 + strength.whitenBrightness}) saturate(${1 - strength.whitenBrightness * 0.4})`;
-      whitenCtx.drawImage(canvas, 0, 0);
-      whitenCtx.filter = 'none';
-      whitenCtx.globalCompositeOperation = 'destination-in';
-      whitenCtx.drawImage(featherCanvas, 0, 0);
-      whitenCtx.globalCompositeOperation = 'source-over';
-
-      ctx.save();
-      ctx.globalAlpha = strength.whitenAlpha;
-      ctx.drawImage(whitenCanvas, 0, 0);
-      ctx.restore();
-    }
-  }
 };
 
 // Detects faces on the canvas and applies the beauty retouch in place. Returns
@@ -430,8 +401,8 @@ export const applyFaceBeauty = async (
     .filter((geometry): geometry is FaceGeometry => geometry !== null);
   if (geometries.length === 0) return false;
 
-  // Geometry first (eyes/slim/chin), then skin smoothing over the result.
+  // Geometry first (eyes/slim/chin), then masked skin whitening.
   warpFaces(ctx, canvas.width, canvas.height, geometries, strength);
-  smoothSkin(canvas, ctx, canvas.width, canvas.height, faceLandmarks, geometries, strength);
+  whitenSkin(canvas, ctx, canvas.width, canvas.height, faceLandmarks, geometries, strength);
   return true;
 };

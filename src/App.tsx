@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties }
 import QRCode from 'qrcode';
 import { ArrowUp, Camera, Copy, Download, Expand, ExternalLink, FolderOpen, Globe, Image, Minimize2, Printer, RefreshCw, RotateCw, Settings, SlidersHorizontal, Sparkles, Trash2, X } from 'lucide-react';
 import type { AiPreset, AiProvider, AiQueueItem, AppSettings, AudioCue, BoothSession, CameraControlSettings, CameraRotation, Capture, ColorFilterPreset, ColorFilterValues, FaceAsset, FaceAssetPack, FaceAssetPlacement, Gallery, GalleryUploadStatus, QueueSnapshot, SavedPhoto, TemplateDesign, TemplateLayout, TemplateSlot, TemplateWorkflowSettings } from './types';
-import { createBlankTemplateLayout, createGuideTemplateImage, createTemplatedPrintImage, defaultTemplateScreenCue, defaultTemplateShotAudioCue, getPrimarySlot, normalizeTemplateLayoutForClient, normalizeTemplateWorkflow, templateDimensions } from './template';
+import { createBlankTemplateLayout, createGuideTemplateImage, createTemplatedPrintImage, defaultTemplateScreenCue, defaultTemplateShotAudioCue, getPrimarySlot, MAX_PHOTOS_TO_TAKE, normalizePhotosToTake, normalizeTemplateLayoutForClient, normalizeTemplateWorkflow, templateDimensions } from './template';
 import { FaceAssetStabilizer, FaceTracker, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceDebugInfo, selectedFaceAssetPack } from './faceAssets';
 import { applyFaceBeauty } from './beauty';
 import {
@@ -24,6 +24,13 @@ type PendingPrint = {
   indexes: number[];
   templateId: string;
   design: TemplateDesign;
+};
+
+type SelectContext = {
+  templateId: string;
+  design: TemplateDesign;
+  slotCount: number;
+  autoSelectMs: number;
 };
 
 const buttonText = (value: string) => `[ ${value} ]`;
@@ -92,6 +99,8 @@ function GuestApp() {
   const [error, setError] = useState('');
   const [captures, setCaptures] = useState<Capture[]>([]);
   const [selectedCaptureIndexes, setSelectedCaptureIndexes] = useState<number[]>([]);
+  const [selectContext, setSelectContext] = useState<SelectContext | null>(null);
+  const [selectCountdown, setSelectCountdown] = useState<number | null>(null);
   const [selectedTemplateId, setSelectedTemplateId] = useState('');
   const [selectedDesignId, setSelectedDesignId] = useState('');
   const [pendingPrint, setPendingPrint] = useState<PendingPrint | null>(null);
@@ -106,7 +115,6 @@ function GuestApp() {
   const [isAiGenerating, setIsAiGenerating] = useState(false);
   const [isFlashing, setIsFlashing] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [showFaceDebug, setShowFaceDebug] = useState(true);
   const [isCapturing, setIsCapturing] = useState(false);
   const [isBusy, setIsBusy] = useState(false);
   const [queueSnapshot, setQueueSnapshot] = useState<QueueSnapshot | null>(null);
@@ -277,6 +285,8 @@ function GuestApp() {
     if (step !== 'thanks' || thankYouCountdown !== 0) return;
     setCaptures([]);
     setSelectedCaptureIndexes([]);
+    setSelectContext(null);
+    setSelectCountdown(null);
     setPrintedPreview('');
     setPrintedNumber('');
     setPendingPrint(null);
@@ -307,6 +317,8 @@ function GuestApp() {
   const resetGuestSession = () => {
     setCaptures([]);
     setSelectedCaptureIndexes([]);
+    setSelectContext(null);
+    setSelectCountdown(null);
     setPrintedPreview('');
     setPrintedNumber('');
     setPendingPrint(null);
@@ -551,26 +563,71 @@ function GuestApp() {
   const captureFrame = async (slot: TemplateSlot, useFullLiveView = false) => {
     if (!videoRef.current || !settings) throw new Error('Camera not ready.');
 
-    // Take an actual screenshot of the live window (video + face assets exactly
-    // as composited on screen). No programmatic re-rendering or re-detection,
-    // so the photo matches the preview 1:1.
+    // Render the composited capture view (video + face assets, oriented and
+    // mirrored exactly as on screen) directly from the camera's native
+    // resolution. A plain window screenshot is capped by the guest screen's
+    // physical pixel density, which is usually far lower than what the camera
+    // actually captures -- that mismatch is what made prints look soft/blurry.
     setIsCapturing(true);
     await nextPaint();
 
     try {
-      let rect: { x: number; y: number; width: number; height: number } | undefined;
-      if (!useFullLiveView && captureGuideRef.current) {
-        const bounds = captureGuideRef.current.getBoundingClientRect();
-        rect = { x: bounds.left, y: bounds.top, width: bounds.width, height: bounds.height };
+      const video = videoRef.current;
+      const composed = captureNativeResolutionFrame(video, settings, window.innerWidth, window.innerHeight);
+
+      if (composed && activeFacePack) {
+        const ctx = composed.canvas.getContext('2d');
+        if (ctx) {
+          try {
+            const faceResult = await detectFaces(composed.canvas, performance.now());
+            await drawFaceAssets(
+              ctx,
+              faceResult,
+              activeFacePack,
+              composed.canvas.width,
+              composed.canvas.height,
+              faceOverlayStabilizerRef.current
+            );
+          } catch (error) {
+            console.warn('Face assets capture skipped.', error);
+          }
+        }
       }
-      const screenshot = await window.photoBooth.capturePage(rect);
-      // Cover-crop the screenshot to the slot's exact aspect ratio so it drops
-      // into the print frame without stretching, for every template style.
-      const dataUrl = await coverCropToAspect(screenshot, slot.width / slot.height, slot.cropY);
+
+      let dataUrl: string;
+      if (composed && !useFullLiveView && captureGuideRef.current) {
+        const bounds = captureGuideRef.current.getBoundingClientRect();
+        const { canvas, outputScale } = composed;
+        const cropX = Math.max(0, Math.round(bounds.left * outputScale));
+        const cropY = Math.max(0, Math.round(bounds.top * outputScale));
+        const cropWidth = Math.max(1, Math.min(canvas.width - cropX, Math.round(bounds.width * outputScale)));
+        const cropHeight = Math.max(1, Math.min(canvas.height - cropY, Math.round(bounds.height * outputScale)));
+        const cropCanvas = document.createElement('canvas');
+        cropCanvas.width = cropWidth;
+        cropCanvas.height = cropHeight;
+        const cropCtx = cropCanvas.getContext('2d');
+        if (!cropCtx) throw new Error('Canvas is not available.');
+        cropCtx.drawImage(canvas, cropX, cropY, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
+        dataUrl = cropCanvas.toDataURL('image/png');
+      } else if (composed) {
+        dataUrl = composed.canvas.toDataURL('image/png');
+      } else {
+        // Fallback for the rare case the video frame isn't ready yet.
+        let rect: { x: number; y: number; width: number; height: number } | undefined;
+        if (!useFullLiveView && captureGuideRef.current) {
+          const bounds = captureGuideRef.current.getBoundingClientRect();
+          rect = { x: bounds.left, y: bounds.top, width: bounds.width, height: bounds.height };
+        }
+        dataUrl = await window.photoBooth.capturePage(rect);
+      }
+
+      // Cover-crop to the slot's exact aspect ratio so it drops into the print
+      // frame without stretching, for every template style.
+      const finalDataUrl = await coverCropToAspect(dataUrl, slot.width / slot.height, slot.cropY);
       setIsFlashing(true);
       window.setTimeout(() => setIsFlashing(false), 180);
-      const saved = await window.photoBooth.saveImage({ dataUrl, kind: 'original', filenamePrefix: 'original' });
-      return { dataUrl, ...saved };
+      const saved = await window.photoBooth.saveImage({ dataUrl: finalDataUrl, kind: 'original', filenamePrefix: 'original' });
+      return { dataUrl: finalDataUrl, ...saved };
     } finally {
       setIsCapturing(false);
     }
@@ -626,6 +683,46 @@ function GuestApp() {
     setFilterCountdown(Math.max(1, Math.ceil((settings?.beautyFilter.previewTimeoutMs ?? 30000) / 1000)));
     setStep('filterPreview');
   };
+
+  const finalizeSelection = (indexes: number[]) => {
+    const context = selectContext;
+    if (!context) return;
+    const final = indexes.slice(0, context.slotCount);
+    for (let index = 0; index < captures.length && final.length < context.slotCount; index += 1) {
+      if (!final.includes(index)) final.push(index);
+    }
+    if (final.length < context.slotCount) return;
+    setSelectedCaptureIndexes(final);
+    setSelectContext(null);
+    setSelectCountdown(null);
+    if (settings) void playAudioCue(settings, 'button');
+    void prepareFilterPreview(captures, final, context.templateId, context.design);
+  };
+
+  const toggleCaptureSelection = (index: number) => {
+    if (!selectContext) return;
+    setSelectedCaptureIndexes((current) => {
+      if (current.includes(index)) return current.filter((item) => item !== index);
+      // At capacity: replace the oldest pick so the guest can swap immediately
+      // without having to deselect one first.
+      return [...current, index].slice(-selectContext.slotCount);
+    });
+  };
+
+  useEffect(() => {
+    if (step !== 'select' || !selectContext) return undefined;
+    setSelectCountdown(Math.max(1, Math.ceil(selectContext.autoSelectMs / 1000)));
+    const timer = window.setInterval(() => {
+      setSelectCountdown((value) => (value === null ? value : Math.max(0, value - 1)));
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [step, selectContext]);
+
+  useEffect(() => {
+    if (step !== 'select' || selectCountdown !== 0 || !selectContext) return;
+    finalizeSelection(selectedCaptureIndexes);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectCountdown, step, selectContext]);
 
   const confirmFilterPrint = async () => {
     if (!pendingPrint || isBusy) return;
@@ -751,7 +848,6 @@ function GuestApp() {
           missedFrames = 0;
           if (ctx) {
             await drawFaceAssets(ctx, displayResult, activeFacePack, overlay.width, overlay.height, faceOverlayStabilizerRef.current, tracker);
-            if (showFaceDebug) drawFaceDebugInfo(ctx, displayResult, overlay.width, overlay.height);
           }
         } catch (error) {
           console.warn('Face assets preview skipped.', error);
@@ -769,7 +865,7 @@ function GuestApp() {
       clearFaceAssetCanvas(canvas, canvas.width, canvas.height);
       faceOverlayStabilizerRef.current.reset();
     };
-  }, [activeFacePack, settings?.cameraRotation, settings?.mirrorPreview, showFaceDebug, step]);
+  }, [activeFacePack, settings?.cameraRotation, settings?.mirrorPreview, step]);
 
   const chooseTemplate = (templateId: string) => {
     if (settings) void playAudioCue(settings, 'button');
@@ -841,6 +937,8 @@ function GuestApp() {
     setIsBusy(true);
     setCaptures([]);
     setSelectedCaptureIndexes([]);
+    setSelectContext(null);
+    setSelectCountdown(null);
     setPrintedPreview('');
     setPrintedNumber('');
     setPendingPrint(null);
@@ -863,7 +961,10 @@ function GuestApp() {
         await startSessionRecording();
       }
 
-      const shotPlan = layout.photoWindows.map((_item, index) => workflow.shots[index % workflow.shots.length]);
+      const slotCount = layout.photoWindows.length;
+      const takeCount = normalizePhotosToTake(layout.photosToTake, slotCount);
+      const pickMode = Boolean(design) && takeCount > slotCount;
+      const shotPlan = Array.from({ length: takeCount }, (_item, index) => workflow.shots[index % workflow.shots.length]);
       const nextCaptures: Capture[] = [];
 
       for (const shot of shotPlan) {
@@ -879,10 +980,11 @@ function GuestApp() {
         setCaptureMessage('');
         await delay(shot.cameraBeforeCountdownMs);
         if (!(await runCountdown(runId))) return;
-        const capture = await captureFrame(
-          getPrimarySlot(layout, nextCaptures.length),
-          false
-        );
+        // When taking more photos than slots, every shot is a candidate for any
+        // slot, so crop them all to the first slot's aspect ratio for a
+        // consistent selection grid. Otherwise match each slot in order.
+        const guideSlot = pickMode ? getPrimarySlot(layout, 0) : getPrimarySlot(layout, nextCaptures.length);
+        const capture = await captureFrame(guideSlot, false);
         void playAudioCue(settings, 'shutter');
         nextCaptures.push(capture);
         setCaptures([...nextCaptures]);
@@ -891,7 +993,18 @@ function GuestApp() {
 
       stopSessionRecording();
       stopCamera();
-      const defaultIndexes = Array.from({ length: layout.photoWindows.length }, (_item, index) => index).filter((index) => index < nextCaptures.length);
+      if (pickMode && design) {
+        setSelectedCaptureIndexes([]);
+        setSelectContext({
+          templateId: layout.id,
+          design,
+          slotCount,
+          autoSelectMs: Math.max(4000, workflow.printAutoSelectMs || 20000)
+        });
+        setStep('select');
+        return;
+      }
+      const defaultIndexes = Array.from({ length: slotCount }, (_item, index) => index).filter((index) => index < nextCaptures.length);
       setSelectedCaptureIndexes(defaultIndexes);
       if (design) {
         await prepareFilterPreview(nextCaptures, defaultIndexes, layout.id, design);
@@ -1260,11 +1373,6 @@ function GuestApp() {
               aria-hidden="true"
             />
           )}
-          {activeFacePack && !isCapturing && (
-            <KioskButton className="face-debug-toggle" onPress={() => setShowFaceDebug((current) => !current)}>
-              {showFaceDebug ? 'Hide debug' : 'Show debug'}
-            </KioskButton>
-          )}
           {/* {!isCapturing && (
             <div className="capture-progress">
               {selectedTemplate ? `${Math.min(captures.length + 1, selectedTemplate.photoWindows.length)} / ${selectedTemplate.photoWindows.length}` : '0 / 0'}
@@ -1289,6 +1397,63 @@ function GuestApp() {
         </section>
       )}
 
+      {step === 'select' && selectContext && (() => {
+        const selectLayout = templateLayouts.find((item) => item.id === selectContext.templateId) ?? selectedTemplate;
+        const selectSlot = getPrimarySlot(selectLayout, 0);
+        const hasSlotSize = Boolean(selectSlot && selectSlot.width > 0 && selectSlot.height > 0);
+        const tileAspect = hasSlotSize ? `${selectSlot.width} / ${selectSlot.height}` : '3 / 4';
+        const isLandscape = hasSlotSize && selectSlot.width > selectSlot.height;
+        const maxCols = isLandscape ? 2 : 3;
+        const cols = Math.max(1, Math.min(captures.length, maxCols));
+        const colMax = isLandscape ? '460px' : '300px';
+        return (
+        <section
+          className="select-screen"
+          style={{ '--tile-aspect': tileAspect, '--select-cols': cols, '--select-col-max': colMax } as CSSProperties}
+        >
+          <div className="select-header">
+            <h2>Pick your favorite {selectContext.slotCount}</h2>
+            <p>{selectedCaptureIndexes.length} / {selectContext.slotCount} selected</p>
+          </div>
+          <div className="select-grid">
+            {captures.map((capture, index) => {
+              const order = selectedCaptureIndexes.indexOf(index);
+              const selected = order !== -1;
+              return (
+                <KioskButton
+                  key={capture.path || index}
+                  className={`select-tile${selected ? ' selected' : ''}`}
+                  onPress={() => {
+                    void playAudioCue(settings, 'button');
+                    toggleCaptureSelection(index);
+                  }}
+                >
+                  <img src={capture.dataUrl} alt={`Photo ${index + 1}`} />
+                  {selected && <span className="select-badge">{order + 1}</span>}
+                </KioskButton>
+              );
+            })}
+          </div>
+          <div className="select-footer">
+            <KioskButton
+              className="booth-button primary filter-print-button select-confirm-button"
+              onPress={() => finalizeSelection(selectedCaptureIndexes)}
+              disabled={selectedCaptureIndexes.length !== selectContext.slotCount}
+            >
+              <span className="filter-print-button-inner">
+                <span className="filter-print-button-label">Continue</span>
+                {selectCountdown !== null && (
+                  <span className="filter-countdown" aria-label={`Auto-continue in ${selectCountdown} seconds`}>
+                    {selectCountdown}
+                  </span>
+                )}
+              </span>
+            </KioskButton>
+          </div>
+        </section>
+        );
+      })()}
+
       {step === 'filterPreview' && (
         <section className="filter-preview-screen">
           <div className={`filter-preview-stage${filterPreviewDataUrl ? '' : ' generating'}`}>
@@ -1296,25 +1461,6 @@ function GuestApp() {
           </div>
           <div className="filter-content">
             <div className="filter-controls">
-              {settings.beautyFilter.enabledMode !== 'off' && (
-              <div className="filter-control-group">
-                <p>Beauty Filter Level</p>
-                  <div className="filter-button-row beauty-buttons">
-                    {[0, 1, 2, 3, 4].map((level) => (
-                      <KioskButton
-                        key={level}
-                        className={`filter-choice-button${selectedBeautyLevel === level ? ' active' : ''}`}
-                        onPress={() => {
-                          void playAudioCue(settings, 'button');
-                          setSelectedBeautyLevel(level);
-                        }}
-                      >
-                        <span>{level === 0 ? 'No Beauty' : String(level)}</span>
-                      </KioskButton>
-                    ))}
-                  </div>
-                </div>
-              )}
               <div className="filter-control-group">
                 <p>Color Filter</p>
                 <div className="filter-button-row color-buttons">
@@ -1346,6 +1492,33 @@ function GuestApp() {
                   ))}
                 </div>
               </div>
+              {settings.beautyFilter.enabledMode !== 'off' && (
+              <div className="filter-control-group beauty-filter-group" style={{ marginBottom: '30px' }}>
+                <p style={{ marginTop: '30px' }}>Beauty Filter Level</p>
+                <div className="beauty-filter-row">
+                  <img
+                    className="beauty-filter-icon"
+                    src={`${import.meta.env.BASE_URL}beauty-icon.png`}
+                    alt=""
+                    aria-hidden="true"
+                  />
+                  <div className="filter-button-row beauty-buttons">
+                    {[0, 1, 2, 3].map((level) => (
+                      <KioskButton
+                        key={level}
+                        className={`filter-choice-button${selectedBeautyLevel === level ? ' active' : ''}`}
+                        onPress={() => {
+                          void playAudioCue(settings, 'button');
+                          setSelectedBeautyLevel(level);
+                        }}
+                      >
+                        <span>{level === 0 ? 'No Beauty' : String(level)}</span>
+                      </KioskButton>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              )}
             </div>
             <div className="filter-print-row">
               <KioskButton
@@ -1422,7 +1595,7 @@ function GuestApp() {
                     />
                     <span>I agree to use phone number to access my photo gallery</span>
                   </label>
-                  <label className="phone-consent-row">
+                  {/* <label className="phone-consent-row">
                     <input
                       type="checkbox"
                       checked={marketingConsent}
@@ -1433,7 +1606,7 @@ function GuestApp() {
                       disabled={isBusy || isAiGenerating}
                     />
                     <span>I agree to receive promotional texts from Stephanie Wong. I can unsubscribe anytime.</span>
-                  </label>
+                  </label> */}
                 </div>
                 <div className="phone-action-row">
                   <KioskButton
@@ -2002,7 +2175,7 @@ function TemplateDesignAdminCard({
       {design.workflowOverrideEnabled && (
         <TemplateWorkflowEditor
           workflow={workflow}
-          shotCount={layout.photoWindows.length}
+          shotCount={normalizePhotosToTake(layout.photosToTake, layout.photoWindows.length)}
           cueScopeId={`design-${design.id}`}
           settings={settings}
           onChange={(workflowOverride) => void onSave({ ...design, workflowOverride })}
@@ -3577,6 +3750,30 @@ function AdminApp() {
                             <h2>{selectedLayout.name}</h2>
                             <p>{selectedLayout.photoWindows.length} photos / {selectedLayout.orientation}</p>
                             <p>{selectedLayout.paperWidth} x {selectedLayout.paperHeight} frame PNG.</p>
+                            {(() => {
+                              const slotCount = selectedLayout.photoWindows.length;
+                              const photosToTake = normalizePhotosToTake(selectedLayout.photosToTake, slotCount);
+                              return (
+                                <label className="template-photos-to-take">
+                                  <span>Photos to take</span>
+                                  <input
+                                    type="number"
+                                    min={slotCount}
+                                    max={MAX_PHOTOS_TO_TAKE}
+                                    value={photosToTake}
+                                    onChange={(event) => {
+                                      const next = normalizePhotosToTake(Number(event.target.value), slotCount);
+                                      void saveTemplateLayout({ ...selectedLayout, photosToTake: next });
+                                    }}
+                                  />
+                                  <small>
+                                    {photosToTake > slotCount
+                                      ? `Guest takes ${photosToTake}, then picks ${slotCount} to print.`
+                                      : `Guest takes ${slotCount} (one per photo slot).`}
+                                  </small>
+                                </label>
+                              );
+                            })()}
                             <div className="admin-actions">
                               <button onClick={() => setEditingTemplate(selectedLayout)}>Edit layout</button>
                               <button onClick={() => void saveGuide(selectedLayout)}>Download blank guide</button>
@@ -3588,7 +3785,7 @@ function AdminApp() {
                         </div>
                         <TemplateWorkflowEditor
                           workflow={selectedLayout.workflowDefaults}
-                          shotCount={selectedLayout.photoWindows.length}
+                          shotCount={normalizePhotosToTake(selectedLayout.photosToTake, selectedLayout.photoWindows.length)}
                           cueScopeId={`template-${selectedLayout.id}`}
                           settings={settings}
                           onChange={(workflowDefaults) => void saveTemplateLayout({ ...selectedLayout, workflowDefaults })}
@@ -4593,6 +4790,53 @@ const drawCameraViewToCanvas = (video: HTMLVideoElement, width: number, height: 
   return canvas;
 };
 
+// Upper bound on the composited capture's long edge, in pixels. Generous
+// enough to fully cover the print pipeline's highest-res template space
+// (2478x3690 / ~600dpi) with headroom, while keeping PNG encode time and
+// memory usage reasonable on kiosk hardware.
+const CAPTURE_NATIVE_MAX_LONG_EDGE = 3600;
+
+// Renders the capture-screen camera view at up to native resolution instead of
+// the guest window's physical pixel density. Returns null if the video frame
+// isn't ready yet, so callers can fall back gracefully.
+const captureNativeResolutionFrame = (
+  video: HTMLVideoElement,
+  settings: AppSettings,
+  viewportWidth: number,
+  viewportHeight: number
+) => {
+  const nativeWidth = video.videoWidth;
+  const nativeHeight = video.videoHeight;
+  if (!nativeWidth || !nativeHeight || viewportWidth <= 0 || viewportHeight <= 0) return null;
+
+  const rotation = settings.cameraRotation;
+  const isSideways = rotation === 90 || rotation === 270;
+  const visualWidth = isSideways ? nativeHeight : nativeWidth;
+  const visualHeight = isSideways ? nativeWidth : nativeHeight;
+
+  // The CSS "cover" scale factor currently used to fit the video into the
+  // screen. Its inverse renders the video at native pixel density (1 camera
+  // pixel ~= 1 canvas pixel along the dominant axis) instead of being
+  // downsampled to whatever resolution the screen happens to be.
+  const baseCoverScale = Math.max(viewportWidth / visualWidth, viewportHeight / visualHeight);
+  let outputScale = baseCoverScale > 0 && Number.isFinite(baseCoverScale) ? 1 / baseCoverScale : 1;
+  outputScale = Math.max(0.1, outputScale);
+
+  let targetWidth = Math.round(viewportWidth * outputScale);
+  let targetHeight = Math.round(viewportHeight * outputScale);
+  const longEdge = Math.max(targetWidth, targetHeight);
+  if (longEdge > CAPTURE_NATIVE_MAX_LONG_EDGE) {
+    const clamp = CAPTURE_NATIVE_MAX_LONG_EDGE / longEdge;
+    targetWidth = Math.max(1, Math.round(targetWidth * clamp));
+    targetHeight = Math.max(1, Math.round(targetHeight * clamp));
+    outputScale *= clamp;
+  }
+  if (targetWidth < 1 || targetHeight < 1) return null;
+
+  const canvas = drawCameraViewToCanvas(video, targetWidth, targetHeight, settings);
+  return { canvas, outputScale };
+};
+
 const loadDataUrlImage = (dataUrl: string) =>
   new Promise<HTMLImageElement>((resolve, reject) => {
     const image = new window.Image();
@@ -4963,10 +5207,12 @@ const shortPath = (filePath: string) => filePath.split(/[\\/]/).slice(-2).join('
 const printerForTemplate = (settings: AppSettings, layout: TemplateLayout) =>
   layout.printerName || settings.defaultPrinter;
 
-const workflowForDesign = (layout: TemplateLayout, design: TemplateDesign | null): TemplateWorkflowSettings =>
-  design?.workflowOverrideEnabled && design.workflowOverride
-    ? normalizeTemplateWorkflow(design.workflowOverride, layout.photoWindows.length)
-    : normalizeTemplateWorkflow(layout.workflowDefaults, layout.photoWindows.length);
+const workflowForDesign = (layout: TemplateLayout, design: TemplateDesign | null): TemplateWorkflowSettings => {
+  const shotCount = normalizePhotosToTake(layout.photosToTake, layout.photoWindows.length);
+  return design?.workflowOverrideEnabled && design.workflowOverride
+    ? normalizeTemplateWorkflow(design.workflowOverride, shotCount)
+    : normalizeTemplateWorkflow(layout.workflowDefaults, shotCount);
+};
 
 const aiQueueStatusLabel = (item: AiQueueItem) => {
   if (item.status === 'queued') return 'QUEUED';

@@ -114,11 +114,23 @@ export const createBlankTemplateLayout = (name = 'New Template', orientation: Te
         rotation: 0
       }
     ],
+    photosToTake: 1,
     workflowDefaults: defaultTemplateWorkflow(1),
     printerName: '',
     createdAt: now,
     updatedAt: now
   };
+};
+
+// Number of photos the guest takes for a template. Always at least the number
+// of photo slots (you cannot fill more slots than photos taken) and capped to a
+// sensible maximum. When it exceeds the slot count the guest picks which shots
+// to use before the frame is applied.
+export const MAX_PHOTOS_TO_TAKE = 12;
+export const normalizePhotosToTake = (photosToTake: number | undefined, slotCount: number) => {
+  const slots = Math.max(1, slotCount);
+  const requested = Number.isFinite(photosToTake) ? Math.round(photosToTake as number) : slots;
+  return Math.min(MAX_PHOTOS_TO_TAKE, Math.max(slots, requested));
 };
 
 export const normalizeTemplateLayoutForClient = (layout: TemplateLayout): TemplateLayout => {
@@ -133,8 +145,8 @@ export const normalizeTemplateLayoutForClient = (layout: TemplateLayout): Templa
     cropY: slot.cropY === 'top' ? 'top' as const : 'center' as const,
     rotation: normalizeRotation(slot.rotation)
   }));
-  const shotCount = Math.max(1, photoWindows.length);
-  const workflowDefaults = normalizeTemplateWorkflow(layout.workflowDefaults, shotCount);
+  const photosToTake = normalizePhotosToTake(layout.photosToTake, photoWindows.length);
+  const workflowDefaults = normalizeTemplateWorkflow(layout.workflowDefaults, photosToTake);
   return {
     ...layout,
     id: layout.id || `template-${Date.now()}`,
@@ -143,6 +155,7 @@ export const normalizeTemplateLayoutForClient = (layout: TemplateLayout): Templa
     paperWidth: dimensions.width,
     paperHeight: dimensions.height,
     photoWindows,
+    photosToTake,
     workflowDefaults,
     printerName: layout.printerName ?? '',
     createdAt: layout.createdAt || new Date().toISOString(),
