@@ -5266,9 +5266,33 @@ const addQrToPrintDataUrl = async (printDataUrl: string, qrDataUrl: string) => {
   const paddingBottom = Math.round(qrSize * 0.42);
   const x = paddingLeft;
   const y = canvas.height - qrSize - paddingBottom;
+
+  const line1 = 'Scan to Download';
+  const line2 = 'ViboBooth.com';
+  const textGap = Math.max(2, Math.round(qrSize * 0.04));
+  const lineHeight = (qrSize - textGap) / 2;
+  const fontSize = Math.max(5, Math.round(lineHeight * 0.78 * 0.5));
+  const textPadX = Math.round(qrSize * 0.14);
+  const textX = x + qrSize + textPadX;
+
+  const bgPad = 8;
   ctx.fillStyle = '#fff';
-  ctx.fillRect(x - 8, y - 8, qrSize + 16, qrSize + 16);
+  ctx.fillRect(x - bgPad, y - bgPad, qrSize + bgPad * 2, qrSize + bgPad * 2);
   ctx.drawImage(qrImage, x, y, qrSize, qrSize);
+
+  ctx.font = `300 ${fontSize}px Arial, Helvetica, sans-serif`;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.lineJoin = 'round';
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = '#fff';
+  ctx.fillStyle = '#111';
+  const line2Y = y + qrSize;
+  const line1Y = line2Y - textGap - fontSize;
+  ctx.strokeText(line2, textX, line2Y);
+  ctx.fillText(line2, textX, line2Y);
+  ctx.strokeText(line1, textX, line1Y);
+  ctx.fillText(line1, textX, line1Y);
 
   return canvas.toDataURL('image/png');
 };
