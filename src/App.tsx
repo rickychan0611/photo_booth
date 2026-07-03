@@ -3,7 +3,7 @@ import QRCode from 'qrcode';
 import { ArrowUp, Camera, Copy, Download, Expand, ExternalLink, FolderOpen, Globe, Image, Minimize2, Printer, RefreshCw, RotateCw, Settings, SlidersHorizontal, Sparkles, Trash2, X } from 'lucide-react';
 import type { AiPreset, AiProvider, AiQueueItem, AppSettings, AudioCue, BoothSession, CameraControlSettings, CameraRotation, Capture, ColorFilterPreset, ColorFilterValues, FaceAsset, FaceAssetPack, FaceAssetPlacement, Gallery, GalleryUploadStatus, QueueSnapshot, SavedPhoto, TemplateDesign, TemplateLayout, TemplateSlot, TemplateWorkflowSettings } from './types';
 import { createBlankTemplateLayout, createGuideTemplateImage, createTemplatedPrintImage, defaultTemplateScreenCue, defaultTemplateShotAudioCue, getPrimarySlot, MAX_PHOTOS_TO_TAKE, normalizePhotosToTake, normalizeTemplateLayoutForClient, normalizeTemplateWorkflow, templateDimensions } from './template';
-import { FaceAssetStabilizer, FaceTracker, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceDebugInfo, selectedFaceAssetPack } from './faceAssets';
+import { FaceAssetStabilizer, FaceTracker, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceDebugInfo, isGuestSelectableFacePack, resolveGuestFaceAssetPack } from './faceAssets';
 import { applyFaceBeauty } from './beauty';
 import {
   getCameraVideoStyle,
@@ -17,7 +17,7 @@ import { GuestScreenLockProvider, KioskButton } from './KioskButton';
 import { playAudioCue, playAudioCueObject, stopAllAudio, stopAudioChannel, stopAudioCue } from './audio';
 import { createBoothGallerySession, createQueueRealtimeClient, fetchQueueSnapshot, isRealtimeConfigured, isWebQueueConfigured, publicWebUrl, validateBoothCode } from './webBackend';
 
-type GuestStep = 'queue' | 'welcome' | 'style' | 'design' | 'intro' | 'capture' | 'select' | 'filterPreview' | 'thanks';
+type GuestStep = 'queue' | 'welcome' | 'style' | 'design' | 'facePack' | 'intro' | 'capture' | 'select' | 'filterPreview' | 'thanks';
 
 type PendingPrint = {
   captures: Capture[];
@@ -123,6 +123,7 @@ function GuestApp() {
   const [selectCountdown, setSelectCountdown] = useState<number | null>(null);
   const [selectedTemplateId, setSelectedTemplateId] = useState('');
   const [selectedDesignId, setSelectedDesignId] = useState('');
+  const [guestFaceAssetPackId, setGuestFaceAssetPackId] = useState<string | null>(null);
   const [pendingPrint, setPendingPrint] = useState<PendingPrint | null>(null);
   const [selectedBeautyLevel, setSelectedBeautyLevel] = useState(0);
   const [selectedColorFilterId, setSelectedColorFilterId] = useState('normal');
@@ -179,6 +180,7 @@ function GuestApp() {
   const selectedTemplate = templateLayouts.find((layout) => layout.id === selectedTemplateId) ?? templateLayouts[0] ?? null;
   const selectedDesign = activeDesigns.find((design) => design.id === selectedDesignId) ?? null;
   const selectedWorkflow = selectedTemplate ? workflowForDesign(selectedTemplate, selectedDesign) : null;
+  const selectableGuestFacePacks = settings?.template.faceAssetPacks.filter(isGuestSelectableFacePack) ?? [];
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -287,6 +289,7 @@ function GuestApp() {
     const workflow = layout ? workflowForDesign(layout, design) : null;
 
     if (step === 'intro') void playAudioCueObject(settings, workflow?.screenCues?.intro, workflow?.introMessage);
+    if (step === 'facePack') void playAudioCueObject(settings, workflow?.screenCues?.facePack, 'Please choose your face accessories.');
     if (step === 'select') void playAudioCueObject(settings, workflow?.screenCues?.select);
     if (step === 'thanks') void playAudioCueObject(settings, workflow?.screenCues?.thanks, workflow?.thankYouMessage);
   }, [settings, settings?.audio, step, selectedTemplateId, selectedDesignId]);
@@ -335,6 +338,7 @@ function GuestApp() {
     setMarketingConsent(true);
     pendingGalleryUploadRef.current = null;
     setThankYouCountdown(null);
+    setGuestFaceAssetPackId(null);
     setStep(queueModeEnabled ? 'queue' : 'welcome');
   }, [queueModeEnabled, step, thankYouCountdown]);
 
@@ -366,6 +370,7 @@ function GuestApp() {
     setGalleryConsent(true);
     setMarketingConsent(true);
     setThankYouCountdown(null);
+    setGuestFaceAssetPackId(null);
     pendingGalleryUploadRef.current = null;
     setStep(queueModeEnabled ? 'queue' : 'welcome');
   };
@@ -454,6 +459,18 @@ function GuestApp() {
     let active = true;
     void startCamera().catch((error) => {
       if (active) console.warn('Welcome camera preview unavailable.', error);
+    });
+    return () => {
+      active = false;
+      stopCamera();
+    };
+  }, [settings, step]);
+
+  useEffect(() => {
+    if (!settings || step !== 'facePack') return undefined;
+    let active = true;
+    void startCamera().catch((error) => {
+      if (active) console.warn('Face pack camera preview unavailable.', error);
     });
     return () => {
       active = false;
@@ -651,7 +668,7 @@ function GuestApp() {
     return true;
   };
 
-  const activeFacePack = settings && selectedDesign ? selectedFaceAssetPack(settings, selectedDesign) : null;
+  const activeFacePack = settings ? resolveGuestFaceAssetPack(settings, guestFaceAssetPackId) : null;
   const activeColorFilterPresets = settings?.template.colorFilterPresets.filter((preset) => preset.active) ?? [];
   const selectedColorPreset = selectedColorFilterId === 'normal'
     ? null
@@ -703,7 +720,7 @@ function GuestApp() {
     const photoDataUrls = options.previewPhotos
       ? await Promise.all(printReady.map((dataUrl) => downscaleDataUrl(dataUrl, FILTER_PREVIEW_MAX_LONG_EDGE)))
       : printReady;
-    const facePack = selectedFaceAssetPack(settings, request.design);
+    const facePack = resolveGuestFaceAssetPack(settings, guestFaceAssetPackId);
     const withFaceAssets = await applyFaceAssetsToPhotos(photoDataUrls, facePack);
     const activeBeautyLevel = settings.beautyFilter.enabledMode === 'off' ? 0 : beautyLevel;
     const filteredPhotos = colorPreset || activeBeautyLevel > 0
@@ -739,7 +756,7 @@ function GuestApp() {
         Promise.all(printReady.map((dataUrl) => downscaleDataUrl(dataUrl, FILTER_PREVIEW_MAX_LONG_EDGE))),
         window.photoBooth.getImageDataUrl(templateFramePath(request.design))
       ]);
-      return { layout, photoDataUrls, templateDataUrl, facePack: selectedFaceAssetPack(settings, request.design) };
+      return { layout, photoDataUrls, templateDataUrl, facePack: resolveGuestFaceAssetPack(settings, guestFaceAssetPackId) };
     })().catch((error) => {
       filterPreviewAssetsRef.current = null;
       throw error;
@@ -892,7 +909,7 @@ function GuestApp() {
     return () => {
       active = false;
     };
-  }, [pendingPrint, settings, step]);
+  }, [guestFaceAssetPackId, pendingPrint, settings, step]);
 
   // Build live per-preset thumbnails from the last captured photo (color only,
   // small + cached) so guests preview each filter on their own picture.
@@ -904,7 +921,7 @@ function GuestApp() {
         const lastCapture = pendingPrint.captures[pendingPrint.captures.length - 1];
         if (!lastCapture?.dataUrl) return;
         const smallDataUrl = await downscaleDataUrl(lastCapture.dataUrl, 220);
-        const facePack = selectedFaceAssetPack(settings, pendingPrint.design);
+        const facePack = resolveGuestFaceAssetPack(settings, guestFaceAssetPackId);
         const thumbSourceDataUrl = await applyFaceAssetsToPhoto(smallDataUrl, facePack);
         const presets = settings.template.colorFilterPresets.filter((preset) => preset.active);
         const entries = await Promise.all([
@@ -931,7 +948,7 @@ function GuestApp() {
     return () => {
       active = false;
     };
-  }, [pendingPrint, settings, step]);
+  }, [guestFaceAssetPackId, pendingPrint, settings, step]);
 
   useEffect(() => {
     if (step !== 'filterPreview' || !pendingPrint || !settings) return undefined;
@@ -949,7 +966,8 @@ function GuestApp() {
 
   useEffect(() => {
     const canvas = faceOverlayCanvasRef.current;
-    if (!settings || !canvas || step !== 'capture' || !activeFacePack) {
+    const showFaceOverlay = step === 'capture' || step === 'facePack';
+    if (!settings || !canvas || !showFaceOverlay || !activeFacePack) {
       if (canvas) clearFaceAssetCanvas(canvas, canvas.width, canvas.height);
       faceOverlayStabilizerRef.current.reset();
       return undefined;
@@ -1022,8 +1040,27 @@ function GuestApp() {
     if (settings) void playAudioCue(settings, 'button');
     setSelectedTemplateId(design.templateId);
     setSelectedDesignId(design.id);
+    setGuestFaceAssetPackId(null);
+    setSelectedCaptureIndexes([]);
+    const hasSelectablePacks = settings?.template.faceAssetPacks.some(isGuestSelectableFacePack) ?? false;
+    if (hasSelectablePacks) {
+      setStep('facePack');
+      return;
+    }
     setStep('intro');
     void startSession(design.templateId, design);
+  };
+
+  const selectFacePack = (packId: string | null) => {
+    if (settings) void playAudioCue(settings, 'button');
+    setGuestFaceAssetPackId(packId);
+    faceOverlayStabilizerRef.current.reset();
+  };
+
+  const confirmFacePack = () => {
+    if (settings) void playAudioCue(settings, 'button');
+    setStep('intro');
+    void startSession(selectedTemplateId, selectedDesign);
   };
 
   const startUnqueuedFlow = () => {
@@ -1489,6 +1526,55 @@ function GuestApp() {
         </section>
       )}
 
+      {step === 'facePack' && (
+        <section className="face-pack-screen">
+          <video ref={videoRef} className={getCameraVideoClass(settings)} style={guestCameraStyle} playsInline muted />
+          {activeFacePack && (
+            <canvas
+              ref={faceOverlayCanvasRef}
+              className="face-overlay-canvas"
+              aria-hidden="true"
+            />
+          )}
+          <div className="face-pack-ui">
+            <KioskButton
+              className="guest-back-button"
+              onPress={() => {
+                void playAudioCue(settings, 'button');
+                setStep('design');
+              }}
+            >
+              {buttonText('BACK')}
+            </KioskButton>
+            <p className="instruction face-pack-instruction">CHOOSE YOUR STICKERS</p>
+            <div className="face-pack-controls">
+              <div className="design-card-grid face-pack-card-grid">
+                {selectableGuestFacePacks.map((pack) => (
+                  <KioskButton
+                    key={pack.id}
+                    className={`design-card${guestFaceAssetPackId === pack.id ? ' selected' : ''}`}
+                    onPress={() => selectFacePack(pack.id)}
+                  >
+                    <FaceAssetPackPreview pack={pack} />
+                    <span>{pack.name.toUpperCase()}</span>
+                  </KioskButton>
+                ))}
+                <KioskButton
+                  className={`design-card face-pack-none-card${guestFaceAssetPackId === null ? ' selected' : ''}`}
+                  onPress={() => selectFacePack(null)}
+                >
+                  <div className="design-preview face-pack-none-preview" />
+                  <span>NO Stickers</span>
+                </KioskButton>
+              </div>
+              <KioskButton className="booth-button primary face-pack-ok-button" onPress={confirmFacePack}>
+                {buttonText('OK')}
+              </KioskButton>
+            </div>
+          </div>
+        </section>
+      )}
+
       {step === 'intro' && (
         <section className="welcome-screen">
           <p className="brand">{(selectedWorkflow?.introMessage ?? settings.workflow.introMessage).toUpperCase()}</p>
@@ -1596,35 +1682,39 @@ function GuestApp() {
               <div className="filter-control-group">
                 <p>Color Filter</p>
                 <div className="filter-button-row color-buttons">
-                <KioskButton
-                  className={`filter-choice-button${filterThumbs.normal ? '' : ' filter-choice-button-solo'}${selectedColorFilterId === 'normal' ? ' active' : ''}`}
-                    onPress={() => {
-                      void playAudioCue(settings, 'button');
-                      setSelectedColorFilterId('normal');
-                    }}
-                  >
-                    {filterThumbs.normal && <img src={filterThumbs.normal} alt="No Filter" />}
-                    <span>No Filter</span>
-                  </KioskButton>
-                  {activeColorFilterPresets.map((preset) => (
+                  <div className="filter-choice-item">
                     <KioskButton
-                      key={preset.id}
-                      className={`filter-choice-button${selectedColorFilterId === preset.id ? ' active' : ''}`}
+                      className={`filter-choice-button${selectedColorFilterId === 'normal' ? ' active' : ''}`}
                       onPress={() => {
                         void playAudioCue(settings, 'button');
-                        setSelectedColorFilterId(preset.id);
+                        setSelectedColorFilterId('normal');
                       }}
                     >
-                      {filterThumbs[preset.id] ? (
-                        <img src={filterThumbs[preset.id]} alt={preset.name} />
-                      ) : (
-                        <ImagePathThumb path={preset.thumbnailPath} label={preset.name} />
-                      )}
+                      {filterThumbs.normal && <img src={filterThumbs.normal} alt="" />}
                     </KioskButton>
+                    <span className="filter-choice-label">No Filter</span>
+                  </div>
+                  {activeColorFilterPresets.map((preset) => (
+                    <div className="filter-choice-item" key={preset.id}>
+                      <KioskButton
+                        className={`filter-choice-button${selectedColorFilterId === preset.id ? ' active' : ''}`}
+                        onPress={() => {
+                          void playAudioCue(settings, 'button');
+                          setSelectedColorFilterId(preset.id);
+                        }}
+                      >
+                        {filterThumbs[preset.id] ? (
+                          <img src={filterThumbs[preset.id]} alt="" />
+                        ) : (
+                          <ImagePathThumb path={preset.thumbnailPath} label={preset.name} />
+                        )}
+                      </KioskButton>
+                      <span className="filter-choice-label">{preset.name}</span>
+                    </div>
                   ))}
                 </div>
               </div>
-              {settings.beautyFilter.enabledMode !== 'off' && (
+              {/* {settings.beautyFilter.enabledMode !== 'off' && (
               <div className="filter-control-group beauty-filter-group" style={{ marginBottom: '30px' }}>
                 <p style={{ marginTop: '30px' }}>Beauty Filter Level</p>
                 <div className="beauty-filter-row">
@@ -1650,7 +1740,7 @@ function GuestApp() {
                   </div>
                 </div>
               </div>
-              )}
+              )} */}
             </div>
             <div className="filter-print-row">
               <KioskButton
@@ -1942,6 +2032,30 @@ function TemplateImagePreview({ design }: { design: TemplateDesign }) {
   }, [design.previewPath, design.framePath, design.filePath]);
 
   return <div className="design-preview">{src ? <img src={src} alt={design.name} /> : null}</div>;
+}
+
+function FaceAssetPackPreview({ pack }: { pack: FaceAssetPack }) {
+  const [src, setSrc] = useState('');
+  useEffect(() => {
+    let active = true;
+    if (!pack.guestPreviewPath) {
+      setSrc('');
+      return undefined;
+    }
+    void window.photoBooth
+      .getImageDataUrl(pack.guestPreviewPath)
+      .then((dataUrl) => {
+        if (active) setSrc(dataUrl);
+      })
+      .catch(() => {
+        if (active) setSrc('');
+      });
+    return () => {
+      active = false;
+    };
+  }, [pack.guestPreviewPath]);
+
+  return <div className="design-preview">{src ? <img src={src} alt={pack.name} /> : null}</div>;
 }
 
 function ImagePathThumb({ path, label }: { path: string; label: string }) {
@@ -2261,30 +2375,6 @@ function TemplateDesignAdminCard({
       <label className="check-row">
         <input
           type="checkbox"
-          checked={design.faceTrackingEnabled}
-          onChange={(event) => void onSave({ ...design, faceTrackingEnabled: event.target.checked })}
-        />
-        Face assets
-      </label>
-      {design.faceTrackingEnabled && (
-        <label>
-          Asset pack
-          <select
-            value={design.faceAssetPackId}
-            onChange={(event) => void onSave({ ...design, faceAssetPackId: event.target.value })}
-          >
-            <option value="">Choose asset pack</option>
-            {settings.template.faceAssetPacks
-              .filter((pack) => pack.active)
-              .map((pack) => (
-                <option key={pack.id} value={pack.id}>{pack.name}</option>
-              ))}
-          </select>
-        </label>
-      )}
-      <label className="check-row">
-        <input
-          type="checkbox"
           checked={design.videoRecordingEnabled}
           onChange={(event) => void onSave({ ...design, videoRecordingEnabled: event.target.checked })}
         />
@@ -2354,11 +2444,12 @@ function TemplateWorkflowEditor({
     const shots = normalized.shots.map((shot, shotIndex) => (shotIndex === index ? { ...shot, ...partial } : shot));
     onChange({ ...normalized, shots });
   };
-  const screenCue = (cueId: 'intro' | 'select' | 'thanks') => {
+  const screenCue = (cueId: 'intro' | 'select' | 'thanks' | 'facePack') => {
     const defaults = {
       intro: defaultTemplateScreenCue(cueScopeId, 'intro', 'Intro screen voice', normalized.introMessage),
       select: defaultTemplateScreenCue(cueScopeId, 'select', 'Photo selection voice', 'Please choose your favorite pictures to print.'),
-      thanks: defaultTemplateScreenCue(cueScopeId, 'thanks', 'Finish screen voice', normalized.thankYouMessage)
+      thanks: defaultTemplateScreenCue(cueScopeId, 'thanks', 'Finish screen voice', normalized.thankYouMessage),
+      facePack: defaultTemplateScreenCue(cueScopeId, 'facePack', 'Face assets screen voice', 'Please choose your face accessories.')
     };
     return {
       ...defaults[cueId],
@@ -2367,7 +2458,7 @@ function TemplateWorkflowEditor({
       channel: 'voice' as const
     };
   };
-  const saveScreenCue = async (cueId: 'intro' | 'select' | 'thanks', cue: AudioCue) => {
+  const saveScreenCue = async (cueId: 'intro' | 'select' | 'thanks' | 'facePack', cue: AudioCue) => {
     onChange({
       ...normalized,
       screenCues: {
@@ -2439,7 +2530,7 @@ function TemplateWorkflowEditor({
       <div className="audio-cue-group template-screen-cues">
         <h2>Screen voice</h2>
         <div className="audio-cue-grid">
-          {(['intro', 'select', 'thanks'] as const).map((cueId) => {
+          {(['intro', 'select', 'thanks', 'facePack'] as const).map((cueId) => {
             const cue = screenCue(cueId);
             return (
               <AudioCueCard
@@ -3072,6 +3163,7 @@ function AdminApp() {
       name: 'Face Asset Pack',
       active: true,
       assignPerFace: false,
+      guestPreviewPath: '',
       assets: [],
       createdAt: now,
       updatedAt: now
@@ -3102,6 +3194,16 @@ function AdminApp() {
       setMessage('Face asset uploaded.');
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'Face asset upload failed.');
+    }
+  };
+
+  const uploadFaceAssetPackPreview = async (packId: string) => {
+    try {
+      const next = await window.photoBooth.uploadFaceAssetPackPreview(packId);
+      await updateSettings(next);
+      setMessage('Guest preview uploaded.');
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Guest preview upload failed.');
     }
   };
 
@@ -4054,6 +4156,17 @@ function AdminApp() {
                           />
                           Assign per person
                         </label>
+                      </div>
+                      <div className="face-pack-guest-preview">
+                        <h3>Guest preview</h3>
+                        <div className="face-pack-guest-preview-row">
+                          {selectedFaceAssetPack.guestPreviewPath ? (
+                            <ImagePathThumb path={selectedFaceAssetPack.guestPreviewPath} label={selectedFaceAssetPack.name} />
+                          ) : (
+                            <p className="muted">Upload a preview image for the guest selection screen.</p>
+                          )}
+                          <button onClick={() => void uploadFaceAssetPackPreview(selectedFaceAssetPack.id)}>Upload guest preview</button>
+                        </div>
                       </div>
                       <div className="admin-actions">
                         <button onClick={() => void uploadFaceAsset(selectedFaceAssetPack.id)}>Upload PNG asset</button>

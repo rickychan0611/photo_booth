@@ -62,6 +62,8 @@ const api = {
     ipcRenderer.invoke('template:update-asset', designId, role) as Promise<TemplateDesign | null>,
   uploadFaceAsset: (packId: string) =>
     ipcRenderer.invoke('face-asset:upload', packId) as Promise<AppSettings>,
+  uploadFaceAssetPackPreview: (packId: string) =>
+    ipcRenderer.invoke('face-asset-pack:upload-preview', packId) as Promise<AppSettings>,
   removeFaceAsset: (packId: string, assetId: string) =>
     ipcRenderer.invoke('face-asset:remove', packId, assetId) as Promise<AppSettings>,
   deleteFaceAssetPack: (packId: string) =>

@@ -29,7 +29,7 @@ export type TemplateWorkflowSettings = {
   printAutoSelectMs: number;
   thankYouMessage: string;
   thankYouMs: number;
-  screenCues?: Partial<Record<'intro' | 'select' | 'thanks', AudioCue>>;
+  screenCues?: Partial<Record<'intro' | 'select' | 'thanks' | 'facePack', AudioCue>>;
   shots: WorkflowShotSettings[];
 };
 
@@ -179,6 +179,7 @@ export type FaceAssetPack = {
   name: string;
   active: boolean;
   assignPerFace: boolean;
+  guestPreviewPath: string;
   assets: FaceAsset[];
   createdAt: string;
   updatedAt: string;

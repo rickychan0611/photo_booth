@@ -857,6 +857,129 @@ button:disabled {
   outline: none;
 }
 
+.design-card.selected .design-preview,
+.design-card.selected .face-pack-none-preview {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.face-pack-screen {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  overflow: hidden;
+}
+
+.face-pack-screen > video {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.face-pack-screen > .face-overlay-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.face-pack-screen > video.camera-rotate-90,
+.face-pack-screen > video.camera-rotate-270,
+.face-pack-screen > canvas.camera-rotate-90,
+.face-pack-screen > canvas.camera-rotate-270 {
+  inset: auto;
+  left: 50%;
+  top: 50%;
+  width: 100vh;
+  height: 100vw;
+}
+
+.face-pack-screen > video.camera-rotate-90,
+.face-pack-screen > canvas.camera-rotate-90 {
+  transform: translate(-50%, -50%) rotate(90deg) scaleX(var(--camera-scale-x));
+}
+
+.face-pack-screen > video.camera-rotate-270,
+.face-pack-screen > canvas.camera-rotate-270 {
+  transform: translate(-50%, -50%) rotate(270deg) scaleX(var(--camera-scale-x));
+}
+
+.face-pack-ui {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.42) 0%,
+    rgba(0, 0, 0, 0.08) 22%,
+    rgba(0, 0, 0, 0) 42%,
+    rgba(0, 0, 0, 0.55) 78%,
+    rgba(0, 0, 0, 0.82) 100%
+  );
+}
+
+.face-pack-ui .guest-back-button {
+  position: absolute;
+  top: clamp(16px, 3vh, 32px);
+  left: clamp(12px, 3vw, 24px);
+  pointer-events: auto;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.face-pack-ui .face-pack-instruction {
+  position: absolute;
+  top: clamp(72px, 9vh, 96px);
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  width: min(80vw, 560px);
+  text-align: center;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+}
+
+.face-pack-controls {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  gap: clamp(12px, 2vh, 20px);
+  justify-items: center;
+  padding: 0 clamp(12px, 3vw, 24px) clamp(18px, 4vh, 36px);
+  pointer-events: none;
+}
+
+.face-pack-controls > * {
+  pointer-events: auto;
+}
+
+.face-pack-card-grid {
+  width: min(1040px, 100%);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.design-card-grid.face-pack-card-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.face-pack-card-grid .design-card span {
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.85);
+}
+
+.face-pack-ok-button {
+  min-width: min(280px, 80vw);
+}
+
 .design-card span {
   max-width: 100%;
   min-height: 2.6em;
@@ -1326,6 +1449,32 @@ button:disabled {
   gap: 20px;
 }
 
+.filter-choice-item {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  min-width: 0;
+  width: 100%;
+}
+
+.filter-choice-label {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: clamp(9px, 1.5vw, 11px);
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  line-height: 1.25;
+  text-align: center;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.color-buttons .filter-choice-button {
+  width: 100%;
+}
+
 .beauty-buttons {
   grid-template-columns: repeat(4, minmax(52px, 64px));
   gap: 12px;
@@ -1408,6 +1557,11 @@ button:disabled {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.color-buttons .filter-choice-button span,
+.color-buttons .filter-choice-button svg {
+  display: none;
 }
 
 .filter-choice-button span {
@@ -2535,6 +2689,39 @@ button:disabled {
   gap: 8px;
 }
 
+.face-pack-guest-preview {
+  margin-top: 10px;
+}
+
+.face-pack-guest-preview h3 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.face-pack-guest-preview-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.face-pack-guest-preview-row img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.face-pack-none-preview {
+  display: grid;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: clamp(10px, 1.45vw, 13px);
+  text-align: center;
+  padding: 12px;
+}
+
 .face-pack-editor .workflow-shot .muted {
   font-size: 11px;
   line-height: 1.35;
@@ -3421,6 +3608,11 @@ button:disabled {
 
   .design-card-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .design-card-grid.face-pack-card-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
   }
 
   .workflow-grid {

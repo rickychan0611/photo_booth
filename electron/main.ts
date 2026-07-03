@@ -204,7 +204,7 @@ const defaultTemplateShotAudioCue = (scopeId: string, index: number, text: strin
 
 const defaultTemplateScreenCue = (
   scopeId: string,
-  cueId: 'intro' | 'select' | 'thanks',
+  cueId: 'intro' | 'select' | 'thanks' | 'facePack',
   label: string,
   text: string
 ): AppSettings['audio']['cues'][string] => ({
@@ -229,7 +229,8 @@ const defaultTemplateWorkflow = (shotCount = 1): TemplateLayout['workflowDefault
   screenCues: {
     intro: defaultTemplateScreenCue('template', 'intro', 'Intro screen voice', "Let's take pictures."),
     select: defaultTemplateScreenCue('template', 'select', 'Photo selection voice', 'Please choose your favorite pictures to print.'),
-    thanks: defaultTemplateScreenCue('template', 'thanks', 'Finish screen voice', 'Thank you. Please pick up your print.')
+    thanks: defaultTemplateScreenCue('template', 'thanks', 'Finish screen voice', 'Thank you. Please pick up your print.'),
+    facePack: defaultTemplateScreenCue('template', 'facePack', 'Face assets screen voice', 'Please choose your face accessories.')
   },
   shots: Array.from({ length: Math.max(1, shotCount) }, (_item, index) => {
     const shot = { ...(defaultWorkflowShots()[index] ?? defaultWorkflowShots()[defaultWorkflowShots().length - 1]) };
@@ -903,6 +904,13 @@ const normalizeTemplateWorkflow = (
         ...(workflow?.screenCues?.thanks ?? {})
       },
       defaultTemplateScreenCue('template', 'thanks', 'Finish screen voice', workflow?.thankYouMessage ?? fallback.thankYouMessage)
+    ),
+    facePack: normalizeAudioCue(
+      {
+        ...defaultTemplateScreenCue('template', 'facePack', 'Face assets screen voice', 'Please choose your face accessories.'),
+        ...(workflow?.screenCues?.facePack ?? {})
+      },
+      defaultTemplateScreenCue('template', 'facePack', 'Face assets screen voice', 'Please choose your face accessories.')
     )
   };
   return {
@@ -997,6 +1005,7 @@ const normalizeFaceAssetPack = (pack: FaceAssetPack): FaceAssetPack => ({
   name: pack.name?.trim() || 'Face Asset Pack',
   active: pack.active !== false,
   assignPerFace: pack.assignPerFace === true,
+  guestPreviewPath: pack.guestPreviewPath ?? '',
   assets: (pack.assets ?? []).map(normalizeFaceAsset),
   createdAt: pack.createdAt || new Date().toISOString(),
   updatedAt: pack.updatedAt || new Date().toISOString()
@@ -2301,6 +2310,30 @@ async function removeFaceAsset(packId: string, assetId: string) {
   });
 }
 
+async function uploadFaceAssetPackPreview(packId: string) {
+  const sourcePath = await chooseTemplateAsset('preview');
+  if (!sourcePath) return readSettings();
+  const settings = await readSettings();
+  const packs = settings.template.faceAssetPacks.map(normalizeFaceAssetPack);
+  const pack = packs.find((item) => item.id === packId);
+  if (!pack) throw new Error('Face asset pack not found.');
+  const now = new Date().toISOString();
+  const extension = path.extname(sourcePath).toLowerCase() || '.png';
+  const folder = path.join(settings.eventFolder, 'face-assets', packId);
+  await fs.mkdir(folder, { recursive: true });
+  const targetPath = path.join(folder, `guest-preview${extension}`);
+  await fs.copyFile(sourcePath, targetPath);
+  return writeSettings({
+    ...settings,
+    template: {
+      ...settings.template,
+      faceAssetPacks: packs.map((item) =>
+        item.id === packId ? { ...item, guestPreviewPath: targetPath, updatedAt: now } : item
+      )
+    }
+  });
+}
+
 const dataUrlMimeType = (dataUrl: string) => dataUrl.match(/^data:([^;,]+)/)?.[1] ?? 'image/png';
 
 const fileToInlineImage = async (filePath: string) => {
@@ -2881,6 +2914,7 @@ app.whenReady().then(async () => {
   ipcMain.handle('face-asset-pack:update', async (_event, pack: FaceAssetPack) => updateFaceAssetPack(pack));
   ipcMain.handle('face-asset-pack:delete', async (_event, packId: string) => deleteFaceAssetPack(packId));
   ipcMain.handle('face-asset:upload', async (_event, packId: string) => uploadFaceAsset(packId));
+  ipcMain.handle('face-asset-pack:upload-preview', async (_event, packId: string) => uploadFaceAssetPackPreview(packId));
   ipcMain.handle('face-asset:remove', async (_event, packId: string, assetId: string) => removeFaceAsset(packId, assetId));
   ipcMain.handle('ai:preset-image-upload', async (_event, presetId: string) => copyAiPresetImage(presetId));
   ipcMain.handle('ai:preset-image-remove', async (_event, presetId: string, imageId: string) => removeAiPresetImage(presetId, imageId));

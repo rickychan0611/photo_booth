@@ -411,6 +411,7 @@ export function installMockApi() {
     },
     updateTemplateAsset: async () => null,
     uploadFaceAsset: async () => readSettings(),
+    uploadFaceAssetPackPreview: async () => readSettings(),
     removeFaceAsset: async () => readSettings(),
     deleteFaceAssetPack: async (packId: string) => {
       const current = readSettings();

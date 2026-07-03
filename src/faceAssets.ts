@@ -1,5 +1,5 @@
 import { FaceLandmarker, FilesetResolver, type FaceLandmarkerResult, type ImageSource, type NormalizedLandmark } from '@mediapipe/tasks-vision';
-import type { AppSettings, CameraRotation, FaceAsset, FaceAssetPack, FaceAssetPlacement, TemplateDesign } from './types';
+import type { AppSettings, CameraRotation, FaceAsset, FaceAssetPack, FaceAssetPlacement } from './types';
 
 let faceLandmarkerPromise: Promise<FaceLandmarker> | null = null;
 const imageCache = new Map<string, Promise<HTMLImageElement>>();
@@ -7,11 +7,13 @@ const imageCache = new Map<string, Promise<HTMLImageElement>>();
 const mediapipeUrl = (path: string) => new URL(`./mediapipe/${path}`, window.location.href).toString();
 const mediapipeFolderUrl = (path: string) => new URL(`./mediapipe/${path}/`, window.location.href).toString();
 
-export const selectedFaceAssetPack = (settings: AppSettings, design: TemplateDesign | null) => {
-  if (!design?.faceTrackingEnabled || !design.faceAssetPackId) return null;
-  const pack = settings.template.faceAssetPacks.find((candidate) => candidate.id === design.faceAssetPackId);
-  if (!pack?.active) return null;
-  if (!pack.assets.some((asset) => asset.active)) return null;
+export const isGuestSelectableFacePack = (pack: FaceAssetPack) =>
+  pack.active && pack.assets.some((asset) => asset.active);
+
+export const resolveGuestFaceAssetPack = (settings: AppSettings, packId: string | null) => {
+  if (!packId) return null;
+  const pack = settings.template.faceAssetPacks.find((candidate) => candidate.id === packId);
+  if (!pack || !isGuestSelectableFacePack(pack)) return null;
   return pack;
 };
 
