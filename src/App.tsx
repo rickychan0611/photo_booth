@@ -43,6 +43,7 @@ type FilterPreviewAssets = {
 const buttonText = (value: string) => `[ ${value} ]`;
 const PHONE_MAX_DIGITS = 15;
 const FILTER_PREVIEW_MAX_LONG_EDGE = 900;
+const SELECT_PREVIEW_MAX_LONG_EDGE = 600;
 const COLOR_FILTER_FIELDS: Array<{ key: keyof ColorFilterValues; label: string; min: number; max: number; step?: number }> = [
   { key: 'intensity', label: 'Intensity', min: 0, max: 100 },
   { key: 'brightness', label: 'Brightness', min: -50, max: 50 },
@@ -128,6 +129,7 @@ function GuestApp() {
   const [selectedBeautyLevel, setSelectedBeautyLevel] = useState(0);
   const [selectedColorFilterId, setSelectedColorFilterId] = useState('normal');
   const [filterThumbs, setFilterThumbs] = useState<Record<string, string>>({});
+  const [selectPreviewUrls, setSelectPreviewUrls] = useState<Record<number, string>>({});
   const [filterPreviewDataUrl, setFilterPreviewDataUrl] = useState('');
   const [filterCountdown, setFilterCountdown] = useState<number | null>(null);
   const filterPreviewSessionRef = useRef(0);
@@ -354,6 +356,7 @@ function GuestApp() {
     setSelectedColorFilterId('normal');
     setFilterPreviewDataUrl('');
     setFilterCountdown(null);
+    setSelectPreviewUrls({});
     setIsAiGenerating(false);
     setCountdown(null);
     setCaptureMessage('');
@@ -910,6 +913,42 @@ function GuestApp() {
       active = false;
     };
   }, [guestFaceAssetPackId, pendingPrint, settings, step]);
+
+  useEffect(() => {
+    if (step !== 'select' || !settings || captures.length === 0) {
+      if (step !== 'select') setSelectPreviewUrls({});
+      return undefined;
+    }
+    let active = true;
+    void (async () => {
+      try {
+        const facePack = resolveGuestFaceAssetPack(settings, guestFaceAssetPackId);
+        const entries = await Promise.all(
+          captures.map(async (capture, index) => {
+            if (!capture.dataUrl) return [index, ''] as const;
+            let source = capture.dataUrl;
+            if (settings.mirrorPreview) {
+              source = await flipPhotoForPrint(source);
+            }
+            const withFace = await applyFaceAssetsToPhoto(source, facePack);
+            const thumb = await downscaleDataUrl(withFace, SELECT_PREVIEW_MAX_LONG_EDGE);
+            return [index, thumb] as const;
+          })
+        );
+        if (!active) return;
+        const next: Record<number, string> = {};
+        entries.forEach(([index, src]) => {
+          if (src) next[index] = src;
+        });
+        setSelectPreviewUrls(next);
+      } catch {
+        if (active) setSelectPreviewUrls({});
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [captures, guestFaceAssetPackId, settings, step]);
 
   // Build live per-preset thumbnails from the last captured photo (color only,
   // small + cached) so guests preview each filter on their own picture.
@@ -1646,7 +1685,7 @@ function GuestApp() {
                     toggleCaptureSelection(index);
                   }}
                 >
-                  <img src={capture.dataUrl} alt={`Photo ${index + 1}`} />
+                  <img src={selectPreviewUrls[index] ?? capture.dataUrl} alt={`Photo ${index + 1}`} />
                   {selected && <span className="select-badge">{order + 1}</span>}
                 </KioskButton>
               );
@@ -5380,7 +5419,7 @@ const addQrToPrintDataUrl = async (printDataUrl: string, qrDataUrl: string) => {
   const x = paddingLeft;
   const y = canvas.height - qrSize - paddingBottom;
 
-  const line1 = 'Scan to Download';
+  const line1 = 'View Video';
   const line2 = 'ViboBooth.com';
   const textGap = Math.max(2, Math.round(qrSize * 0.04));
   const lineHeight = (qrSize - textGap) / 2;
