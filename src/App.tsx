@@ -5442,6 +5442,7 @@ const addQrToPrintDataUrl = async (printDataUrl: string, qrDataUrl: string) => {
   const line2Y = y + qrSize;
   const line1Y = line2Y - textGap - fontSize;
   ctx.strokeText(line2, textX, line2Y);
+  
   ctx.fillText(line2, textX, line2Y);
   ctx.strokeText(line1, textX, line1Y);
   ctx.fillText(line1, textX, line1Y);
