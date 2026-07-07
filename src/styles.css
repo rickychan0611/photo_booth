@@ -275,6 +275,22 @@ button:disabled {
   outline: none;
 }
 
+.design-card.kiosk-button--pressed:not(:disabled) {
+  opacity: 0.82;
+  outline: none;
+}
+
+.design-card.kiosk-button--pressed:not(:disabled) .design-preview,
+.design-card.kiosk-button--pressed:not(:disabled) .face-pack-none-preview {
+  outline-color: rgba(255, 255, 255, 0.72);
+}
+
+.face-pack-ok-button.kiosk-button--pressed:not(:disabled) {
+  background: #fff;
+  color: #000;
+  outline: none;
+}
+
 @media (hover: none) {
   .booth-button.kiosk-button:hover:not(:disabled),
   .booth-button.primary.kiosk-button:hover:not(:disabled),
@@ -931,6 +947,10 @@ button:disabled {
   left: clamp(12px, 3vw, 24px);
   pointer-events: auto;
   background: rgba(0, 0, 0, 0.45);
+}
+
+.face-pack-ui .kiosk-button {
+  pointer-events: auto;
 }
 
 .face-pack-ui .face-pack-instruction {

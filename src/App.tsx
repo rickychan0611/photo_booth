@@ -1155,6 +1155,7 @@ function GuestApp() {
   };
 
   const confirmFacePack = () => {
+    if (isBusy) return;
     if (settings) void playAudioCue(settings, 'button');
     setStep('intro');
     void startSession(selectedTemplateId, selectedDesign);
@@ -1686,6 +1687,7 @@ function GuestApp() {
                 void playAudioCue(settings, 'button');
                 setStep('design');
               }}
+              disabled={isBusy}
             >
               {buttonText('BACK')}
             </KioskButton>
@@ -1697,6 +1699,7 @@ function GuestApp() {
                     key={pack.id}
                     className={`design-card${guestFaceAssetPackId === pack.id ? ' selected' : ''}`}
                     onPress={() => selectFacePack(pack.id)}
+                    disabled={isBusy}
                   >
                     <FaceAssetPackPreview pack={pack} />
                     <span>{pack.name.toUpperCase()}</span>
@@ -1705,12 +1708,17 @@ function GuestApp() {
                 <KioskButton
                   className={`design-card face-pack-none-card${guestFaceAssetPackId === null ? ' selected' : ''}`}
                   onPress={() => selectFacePack(null)}
+                  disabled={isBusy}
                 >
                   <div className="design-preview face-pack-none-preview" />
                   <span>NO Stickers</span>
                 </KioskButton>
               </div>
-              <KioskButton className="booth-button primary face-pack-ok-button" onPress={confirmFacePack}>
+              <KioskButton
+                className="booth-button primary face-pack-ok-button"
+                onPress={confirmFacePack}
+                disabled={isBusy}
+              >
                 {buttonText('OK')}
               </KioskButton>
             </div>

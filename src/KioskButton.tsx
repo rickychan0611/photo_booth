@@ -36,6 +36,8 @@ function useGuestScreenLocked() {
 type KioskButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onClick'> & {
   onPress?: () => void;
   onClick?: () => void;
+  /** Fire onPress on touch/click down instead of release. Good for instant kiosk picks. */
+  activateOnPress?: boolean;
 };
 
 export function KioskButton({
@@ -45,6 +47,7 @@ export function KioskButton({
   className = '',
   children,
   type = 'button',
+  activateOnPress = true,
   onPointerDown,
   onPointerUp,
   onPointerCancel,
@@ -108,6 +111,10 @@ export function KioskButton({
       event.currentTarget.setPointerCapture(event.pointerId);
     } catch {
       // Pointer capture is optional on some platforms.
+    }
+
+    if (activateOnPress) {
+      activatedRef.current = runAction();
     }
   };
 
