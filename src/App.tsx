@@ -2,8 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties }
 import QRCode from 'qrcode';
 import { ArrowUp, Camera, Copy, Download, Expand, ExternalLink, FolderOpen, Globe, Image, Minimize2, Printer, RefreshCw, RotateCw, Settings, SlidersHorizontal, Sparkles, Trash2, X } from 'lucide-react';
 import type { AiPreset, AiProvider, AiQueueItem, AppSettings, AudioCue, BoothSession, CameraControlSettings, CameraRotation, Capture, ColorFilterPreset, ColorFilterValues, FaceAsset, FaceAssetPack, FaceAssetPlacement, Gallery, GalleryUploadStatus, QueueSnapshot, SavedPhoto, TemplateDesign, TemplateLayout, TemplateSlot, TemplateWorkflowSettings } from './types';
-import { createBlankTemplateLayout, createGuideTemplateImage, createTemplatedPrintImage, defaultTemplateScreenCue, defaultTemplateShotAudioCue, getPrimarySlot, MAX_PHOTOS_TO_TAKE, normalizePhotosToTake, normalizeTemplateLayoutForClient, normalizeTemplateWorkflow, templateDimensions } from './template';
-import { FaceAssetStabilizer, FaceTracker, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceDebugInfo, isGuestSelectableFacePack, resolveGuestFaceAssetPack } from './faceAssets';
+import { createBlankTemplateLayout, createGuideTemplateImage, createTemplatedPhotoLayer, createTemplatedPrintImage, createTemplatedPrintImageFromLayer, defaultTemplateScreenCue, defaultTemplateShotAudioCue, getPrimarySlot, MAX_PHOTOS_TO_TAKE, normalizePhotosToTake, normalizeTemplateLayoutForClient, normalizeTemplateWorkflow, templateDimensions } from './template';
+import { FaceAssetStabilizer, FaceTracker, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceDebugInfo, isGuestSelectableFacePack, loadFaceLandmarker, preloadFaceAssetPack, resolveGuestFaceAssetPack } from './faceAssets';
 import { applyFaceBeauty } from './beauty';
 import {
   getCameraVideoStyle,
@@ -24,6 +24,11 @@ type PendingPrint = {
   indexes: number[];
   templateId: string;
   design: TemplateDesign;
+};
+
+type PendingPhoneSubmission = {
+  phoneNumber?: string;
+  marketingConsentValue?: boolean;
 };
 
 type SelectContext = {
@@ -139,6 +144,7 @@ function GuestApp() {
   const [printedPreview, setPrintedPreview] = useState('');
   const [printedNumber, setPrintedNumber] = useState('');
   const [isAiGenerating, setIsAiGenerating] = useState(false);
+  const [isFinalPreparing, setIsFinalPreparing] = useState(false);
   const [isFlashing, setIsFlashing] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isCapturing, setIsCapturing] = useState(false);
@@ -169,7 +175,9 @@ function GuestApp() {
   const pendingVideoPathRef = useRef<string | null>(null);
   const pendingVideoTicketIdRef = useRef<string | null>(null);
   const isUploadingSessionVideoRef = useRef(false);
+  const confirmPrintLockRef = useRef(false);
   const pendingGalleryUploadRef = useRef<{ settings: AppSettings; session: BoothSession | null; finalPath: string } | null>(null);
+  const pendingPhoneSubmissionRef = useRef<PendingPhoneSubmission | null>(null);
   const lastShortcutRef = useRef('');
   const sessionRunRef = useRef(0);
   const queueModeEnabled = Boolean(settings?.staffControlQueueMode);
@@ -297,7 +305,7 @@ function GuestApp() {
   }, [settings, settings?.audio, step, selectedTemplateId, selectedDesignId]);
 
   useEffect(() => {
-    if (step !== 'thanks' || !phoneSubmitted) {
+    if (step !== 'thanks' || !phoneSubmitted || isFinalPreparing) {
       setThankYouCountdown(null);
       return undefined;
     }
@@ -308,7 +316,7 @@ function GuestApp() {
       setThankYouCountdown((current) => (current === null ? current : Math.max(0, current - 1)));
     }, 1000);
     return () => window.clearInterval(timer);
-  }, [phoneSubmitted, selectedWorkflow?.thankYouMs, settings?.workflow.thankYouMs, step]);
+  }, [isFinalPreparing, phoneSubmitted, selectedWorkflow?.thankYouMs, settings?.workflow.thankYouMs, step]);
 
   useEffect(() => {
     if (step !== 'thanks' || thankYouCountdown !== 0) return;
@@ -324,6 +332,7 @@ function GuestApp() {
     setFilterPreviewDataUrl('');
     setFilterCountdown(null);
     setIsAiGenerating(false);
+    setIsFinalPreparing(false);
     setCountdown(null);
     setCaptureMessage('');
     setError('');
@@ -339,6 +348,8 @@ function GuestApp() {
     setGalleryConsent(true);
     setMarketingConsent(true);
     pendingGalleryUploadRef.current = null;
+    pendingPhoneSubmissionRef.current = null;
+    confirmPrintLockRef.current = false;
     setThankYouCountdown(null);
     setGuestFaceAssetPackId(null);
     setStep(queueModeEnabled ? 'queue' : 'welcome');
@@ -358,6 +369,7 @@ function GuestApp() {
     setFilterCountdown(null);
     setSelectPreviewUrls({});
     setIsAiGenerating(false);
+    setIsFinalPreparing(false);
     setCountdown(null);
     setCaptureMessage('');
     setError('');
@@ -375,6 +387,8 @@ function GuestApp() {
     setThankYouCountdown(null);
     setGuestFaceAssetPackId(null);
     pendingGalleryUploadRef.current = null;
+    pendingPhoneSubmissionRef.current = null;
+    confirmPrintLockRef.current = false;
     setStep(queueModeEnabled ? 'queue' : 'welcome');
   };
 
@@ -435,14 +449,31 @@ function GuestApp() {
     }
   };
 
-  const startCamera = async () => {
+  const attachCameraStream = async (stream: MediaStream) => {
+    await waitFor(() => videoRef.current);
+    if (!videoRef.current) throw new Error('Camera view not ready.');
+    if (videoRef.current.srcObject !== stream) videoRef.current.srcObject = stream;
+    await videoRef.current.play();
+  };
+
+  const startCamera = async (quality: 'preview' | 'capture' = 'capture', options: { forceRestart?: boolean } = {}) => {
     if (!settings) throw new Error('Settings not ready.');
+    if (streamRef.current && !options.forceRestart) {
+      await attachCameraStream(streamRef.current);
+      return;
+    }
     stopCamera();
-    const videoSettings: MediaTrackConstraints = {
-      width: { ideal: 3840 },
-      height: { ideal: 2160 },
-      frameRate: { ideal: 30 }
-    };
+    const videoSettings: MediaTrackConstraints = quality === 'preview'
+      ? {
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+          frameRate: { ideal: 30 }
+        }
+      : {
+          width: { ideal: 3840 },
+          height: { ideal: 2160 },
+          frameRate: { ideal: 30 }
+        };
     const constraints: MediaStreamConstraints = {
       video: settings.cameraId ? { ...videoSettings, deviceId: { exact: settings.cameraId } } : videoSettings,
       audio: false
@@ -451,33 +482,22 @@ function GuestApp() {
     setCameraCapabilities(getCameraCapabilities(stream));
     await applyCameraControls(stream, settings.cameraControls);
     streamRef.current = stream;
-    await waitFor(() => videoRef.current);
-    if (!videoRef.current) throw new Error('Camera view not ready.');
-    videoRef.current.srcObject = stream;
-    await videoRef.current.play();
+    await attachCameraStream(stream);
   };
 
   useEffect(() => {
-    if (!settings || step !== 'welcome') return undefined;
+    if (!settings) return undefined;
+    const needsPreviewCamera = step === 'welcome' || step === 'facePack';
+    if (!needsPreviewCamera) {
+      if (step !== 'intro' && step !== 'capture') stopCamera();
+      return undefined;
+    }
     let active = true;
-    void startCamera().catch((error) => {
-      if (active) console.warn('Welcome camera preview unavailable.', error);
+    void startCamera('preview').catch((error) => {
+      if (active) console.warn('Guest camera preview unavailable.', error);
     });
     return () => {
       active = false;
-      stopCamera();
-    };
-  }, [settings, step]);
-
-  useEffect(() => {
-    if (!settings || step !== 'facePack') return undefined;
-    let active = true;
-    void startCamera().catch((error) => {
-      if (active) console.warn('Face pack camera preview unavailable.', error);
-    });
-    return () => {
-      active = false;
-      stopCamera();
     };
   }, [settings, step]);
 
@@ -509,8 +529,8 @@ function GuestApp() {
       const displayStream = await navigator.mediaDevices.getDisplayMedia({
         video: {
           frameRate: { ideal: 15, max: 15 },
-          width: { ideal: 1920, max: 1920 },
-          height: { ideal: 1080, max: 1080 }
+          width: { ideal: 854, max: 854 },
+          height: { ideal: 480, max: 480 }
         },
         audio: false
       });
@@ -518,9 +538,9 @@ function GuestApp() {
       try {
         const micStream = await navigator.mediaDevices.getUserMedia({
           audio: {
-            echoCancellation: true,
-            noiseSuppression: true,
-            autoGainControl: true,
+            echoCancellation: false,
+            noiseSuppression: false,
+            autoGainControl: false,
             sampleRate: 48000
           },
           video: false
@@ -535,8 +555,8 @@ function GuestApp() {
       const mimeType = pickRecorderMimeType();
       const recorder = new MediaRecorder(merged, {
         ...(mimeType ? { mimeType } : {}),
-        videoBitsPerSecond: 4_000_000,
-        audioBitsPerSecond: 128_000
+        videoBitsPerSecond: 1_500_000,
+        audioBitsPerSecond: 96_000
       });
       recorder.ondataavailable = (event) => {
         if (event.data && event.data.size > 0) recordedChunksRef.current.push(event.data);
@@ -726,12 +746,17 @@ function GuestApp() {
     const facePack = resolveGuestFaceAssetPack(settings, guestFaceAssetPackId);
     const withFaceAssets = await applyFaceAssetsToPhotos(photoDataUrls, facePack);
     const activeBeautyLevel = settings.beautyFilter.enabledMode === 'off' ? 0 : beautyLevel;
-    const filteredPhotos = colorPreset || activeBeautyLevel > 0
-      ? await Promise.all(withFaceAssets.map((dataUrl) => applyPhotoFilters(dataUrl, colorPreset, activeBeautyLevel)))
-      : withFaceAssets;
+    const photoLayer = await createTemplatedPhotoLayer(
+      withFaceAssets,
+      layout,
+      options.maxLongEdge ? { maxLongEdge: options.maxLongEdge } : undefined
+    );
+    const filteredPhotoLayer = colorPreset || activeBeautyLevel > 0
+      ? await applyPhotoFilters(photoLayer, colorPreset, activeBeautyLevel)
+      : photoLayer;
     const templateDataUrl = await window.photoBooth.getImageDataUrl(templateFramePath(request.design));
-    return createTemplatedPrintImage(
-      filteredPhotos,
+    return createTemplatedPrintImageFromLayer(
+      filteredPhotoLayer,
       layout,
       request.design,
       templateDataUrl,
@@ -783,11 +808,16 @@ function GuestApp() {
       if (!assets) return '';
       const withFaceAssets = await applyFaceAssetsToPhotos(assets.photoDataUrls, assets.facePack);
       if (withFaceAssets.length < assets.layout.photoWindows.length) return '';
-      const filteredPhotos = colorPreset || activeBeautyLevel > 0
-        ? await Promise.all(withFaceAssets.map((dataUrl) => applyPhotoFilters(dataUrl, colorPreset, activeBeautyLevel)))
-        : withFaceAssets;
-      return createTemplatedPrintImage(
-        filteredPhotos,
+      const photoLayer = await createTemplatedPhotoLayer(
+        withFaceAssets,
+        assets.layout,
+        { maxLongEdge: FILTER_PREVIEW_MAX_LONG_EDGE }
+      );
+      const filteredPhotoLayer = colorPreset || activeBeautyLevel > 0
+        ? await applyPhotoFilters(photoLayer, colorPreset, activeBeautyLevel)
+        : photoLayer;
+      return createTemplatedPrintImageFromLayer(
+        filteredPhotoLayer,
         assets.layout,
         pendingPrint?.design,
         assets.templateDataUrl,
@@ -862,12 +892,18 @@ function GuestApp() {
   }, [selectCountdown, step, selectContext]);
 
   const confirmFilterPrint = async () => {
-    if (!pendingPrint || isBusy) return;
-    const request = pendingPrint;
-    const processed = await createProcessedPrintImage(request, selectedBeautyLevel, selectedColorPreset);
-    setPendingPrint(null);
+    if (!pendingPrint || confirmPrintLockRef.current) return;
+    confirmPrintLockRef.current = true;
+    setIsBusy(true);
     setFilterCountdown(null);
-    await printCaptures(request.captures, request.indexes, request.templateId, request.design, processed);
+    const request = pendingPrint;
+    const beautyLevel = selectedBeautyLevel;
+    const colorPreset = selectedColorPreset;
+    setPendingPrint(null);
+    void printCaptures(request.captures, request.indexes, request.templateId, request.design, undefined, {
+      beautyLevel,
+      colorPreset
+    });
   };
 
   useEffect(() => {
@@ -894,15 +930,16 @@ function GuestApp() {
   }, [pendingPrint, selectedBeautyLevel, selectedColorFilterId, settings, step]);
 
   useEffect(() => {
-    if (step !== 'filterPreview' || !pendingPrint || !settings) return undefined;
+    if (step !== 'filterPreview' || !pendingPrint || !settings || !filterPreviewDataUrl) return undefined;
     let active = true;
     const sessionId = filterPreviewSessionRef.current;
     void (async () => {
       try {
-        await getCachedFilterPreview(0, null);
+        if (selectedColorFilterId !== 'normal') await getCachedFilterPreview(0, null);
         if (!active || sessionId !== filterPreviewSessionRef.current) return;
         for (const preset of activeColorFilterPresets) {
           if (!active || sessionId !== filterPreviewSessionRef.current) return;
+          if (preset.id === selectedColorFilterId) continue;
           await getCachedFilterPreview(0, preset);
         }
       } catch {
@@ -912,7 +949,7 @@ function GuestApp() {
     return () => {
       active = false;
     };
-  }, [guestFaceAssetPackId, pendingPrint, settings, step]);
+  }, [filterPreviewDataUrl, guestFaceAssetPackId, pendingPrint, selectedColorFilterId, settings, step]);
 
   useEffect(() => {
     if (step !== 'select' || !settings || captures.length === 0) {
@@ -1004,9 +1041,19 @@ function GuestApp() {
   }, [filterCountdown, pendingPrint, step]);
 
   useEffect(() => {
+    if (!settings || selectableGuestFacePacks.length === 0) return;
+    void Promise.all([
+      loadFaceLandmarker(),
+      ...selectableGuestFacePacks.map((pack) => preloadFaceAssetPack(pack))
+    ]).catch((error) => {
+      console.warn('Face assets preload skipped.', error);
+    });
+  }, [settings?.template.faceAssetPacks]);
+
+  useEffect(() => {
     const canvas = faceOverlayCanvasRef.current;
     const showFaceOverlay = step === 'capture' || step === 'facePack';
-    if (!settings || !canvas || !showFaceOverlay || !activeFacePack) {
+    if (!settings || !canvas || !showFaceOverlay) {
       if (canvas) clearFaceAssetCanvas(canvas, canvas.width, canvas.height);
       faceOverlayStabilizerRef.current.reset();
       return undefined;
@@ -1033,6 +1080,11 @@ function GuestApp() {
           const displayResult = await detectDisplayedFaces(video, displayWidth, displayHeight, settings, now);
           clearFaceAssetCanvas(overlay, displayWidth, displayHeight);
           const ctx = overlay.getContext('2d');
+          if (!activeFacePack) {
+            faceOverlayStabilizerRef.current.reset();
+            tracker.reset();
+            return;
+          }
           if (displayResult.faceLandmarks.length === 0) {
             missedFrames += 1;
             if (ctx) {
@@ -1093,6 +1145,12 @@ function GuestApp() {
   const selectFacePack = (packId: string | null) => {
     if (settings) void playAudioCue(settings, 'button');
     setGuestFaceAssetPackId(packId);
+    if (settings && packId) {
+      const pack = settings.template.faceAssetPacks.find((candidate) => candidate.id === packId);
+      void preloadFaceAssetPack(pack).catch((error) => {
+        console.warn('Selected face assets preload skipped.', error);
+      });
+    }
     faceOverlayStabilizerRef.current.reset();
   };
 
@@ -1167,6 +1225,7 @@ function GuestApp() {
     setIsAiGenerating(false);
     setCaptureMessage('');
     setCountdown(null);
+    confirmPrintLockRef.current = false;
 
     try {
       setStep('intro');
@@ -1174,7 +1233,7 @@ function GuestApp() {
       if (sessionRunRef.current !== runId) return;
       setStep('capture');
       await delay(100);
-      await startCamera();
+      await startCamera('capture', { forceRestart: true });
       if (design?.videoRecordingEnabled) {
         await startSessionRecording();
       }
@@ -1246,14 +1305,26 @@ function GuestApp() {
     indexes: number[],
     templateId: string,
     design: TemplateDesign,
-    processedPrintDataUrl?: string
+    processedPrintDataUrl?: string,
+    filterOptions: { beautyLevel?: number; colorPreset?: ColorFilterPreset | null } = {}
   ) => {
-    if (!settings) return;
+    if (!settings) {
+      confirmPrintLockRef.current = false;
+      setIsBusy(false);
+      return;
+    }
     const layout = templateLayouts.find((item) => item.id === templateId);
-    if (!layout) return;
+    if (!layout) {
+      confirmPrintLockRef.current = false;
+      setIsBusy(false);
+      return;
+    }
     const request = { captures: sourceCaptures, indexes, templateId, design };
-    if (!processedPrintDataUrl && indexes.slice(0, layout.photoWindows.length).some((index) => !sourceCaptures[index]?.dataUrl)) return;
-    setIsBusy(true);
+    if (!processedPrintDataUrl && indexes.slice(0, layout.photoWindows.length).some((index) => !sourceCaptures[index]?.dataUrl)) {
+      confirmPrintLockRef.current = false;
+      setIsBusy(false);
+      return;
+    }
     stopAudioChannel('voice');
     setPrintedPreview('');
     setPrintedNumber('');
@@ -1262,8 +1333,11 @@ function GuestApp() {
     setPhoneSubmitted(false);
     setPhoneEntryMessage('');
     pendingGalleryUploadRef.current = null;
+    pendingPhoneSubmissionRef.current = null;
+    setIsFinalPreparing(true);
     setIsAiGenerating(design.usesAi);
     setStep('thanks');
+    setIsBusy(false);
 
     const printFinal = async () => {
       let uploadSession = boothSession;
@@ -1289,7 +1363,11 @@ function GuestApp() {
         setGalleryQrDataUrl(uploadQrDataUrl);
       }
 
-      let dataUrl = processedPrintDataUrl || await createProcessedPrintImage(request, 0, null);
+      let dataUrl = processedPrintDataUrl || await createProcessedPrintImage(
+        request,
+        filterOptions.beautyLevel ?? 0,
+        filterOptions.colorPreset ?? null
+      );
       if (!dataUrl) return;
       if (uploadGalleryUrl && uploadQrDataUrl) {
         dataUrl = await addQrToPrintDataUrl(dataUrl, uploadQrDataUrl);
@@ -1307,8 +1385,10 @@ function GuestApp() {
         if (result.saved) {
           setPrintedNumber(displayedPhotoNumber(result.saved.name, uploadSession));
           pendingGalleryUploadRef.current = { settings, session: uploadSession, finalPath: result.saved.path };
+          consumeQueuedPhoneSubmission();
         }
         setIsAiGenerating(false);
+        setIsFinalPreparing(false);
         return;
       }
       const saved = await window.photoBooth.saveImage({
@@ -1341,11 +1421,16 @@ function GuestApp() {
       } else {
         console.log('[print] skipped because printer is off');
       }
+      consumeQueuedPhoneSubmission();
     };
 
     try {
       await printFinal();
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Could not prepare photo.');
     } finally {
+      setIsFinalPreparing(false);
+      setIsAiGenerating(false);
       setIsBusy(false);
     }
   };
@@ -1373,12 +1458,10 @@ function GuestApp() {
     }
   };
 
-  const finishPhoneEntry = (options: { phoneNumber?: string; marketingConsentValue?: boolean }) => {
-    setPhoneEntryMessage('');
-    setPhoneSubmitted(true);
-    const pending = pendingGalleryUploadRef.current;
-    pendingGalleryUploadRef.current = null;
-    if (!pending) return;
+  const applyPhoneSubmissionToUpload = (
+    pending: { settings: AppSettings; session: BoothSession | null; finalPath: string },
+    options: PendingPhoneSubmission
+  ) => {
     const normalizedPhone = options.phoneNumber?.replace(/\D/g, '') ?? '';
     if (normalizedPhone) {
       void window.photoBooth.updatePhotoPhoneNumber(pending.finalPath, normalizedPhone).catch((error) => {
@@ -1394,6 +1477,29 @@ function GuestApp() {
         options.marketingConsentValue
       );
     }
+  };
+
+  const consumeQueuedPhoneSubmission = () => {
+    const queuedPhone = pendingPhoneSubmissionRef.current;
+    const pending = pendingGalleryUploadRef.current;
+    if (!queuedPhone || !pending) return false;
+    pendingPhoneSubmissionRef.current = null;
+    pendingGalleryUploadRef.current = null;
+    applyPhoneSubmissionToUpload(pending, queuedPhone);
+    return true;
+  };
+
+  const finishPhoneEntry = (options: { phoneNumber?: string; marketingConsentValue?: boolean }) => {
+    setPhoneEntryMessage('');
+    setPhoneSubmitted(true);
+    const pending = pendingGalleryUploadRef.current;
+    pendingGalleryUploadRef.current = null;
+    if (!pending) {
+      pendingPhoneSubmissionRef.current = options;
+      if (isFinalPreparing) setUploadMessage('Photo is still preparing. Upload will start automatically.');
+      return;
+    }
+    applyPhoneSubmissionToUpload(pending, options);
   };
 
   const submitPhoneNumber = () => {
@@ -1568,13 +1674,11 @@ function GuestApp() {
       {step === 'facePack' && (
         <section className="face-pack-screen">
           <video ref={videoRef} className={getCameraVideoClass(settings)} style={guestCameraStyle} playsInline muted />
-          {activeFacePack && (
-            <canvas
-              ref={faceOverlayCanvasRef}
-              className="face-overlay-canvas"
-              aria-hidden="true"
-            />
-          )}
+          <canvas
+            ref={faceOverlayCanvasRef}
+            className="face-overlay-canvas"
+            aria-hidden="true"
+          />
           <div className="face-pack-ui">
             <KioskButton
               className="guest-back-button"
@@ -1728,6 +1832,7 @@ function GuestApp() {
                         void playAudioCue(settings, 'button');
                         setSelectedColorFilterId('normal');
                       }}
+                      disabled={isBusy}
                     >
                       {filterThumbs.normal && <img src={filterThumbs.normal} alt="" />}
                     </KioskButton>
@@ -1741,6 +1846,7 @@ function GuestApp() {
                           void playAudioCue(settings, 'button');
                           setSelectedColorFilterId(preset.id);
                         }}
+                        disabled={isBusy}
                       >
                         {filterThumbs[preset.id] ? (
                           <img src={filterThumbs[preset.id]} alt="" />
@@ -1807,21 +1913,24 @@ function GuestApp() {
       {step === 'thanks' && (
         <section className="thanks-screen">
           <div className="thanks-top-actions">
-            <KioskButton
-              className="thanks-restart-button"
-              onPress={() => {
-                void playAudioCue(settings, 'button');
-                resetGuestSession();
-              }}
-            >
-              Restart
-            </KioskButton>
+            {phoneSubmitted && !isFinalPreparing && (
+              <KioskButton
+                className="thanks-restart-button"
+                onPress={() => {
+                  void playAudioCue(settings, 'button');
+                  resetGuestSession();
+                }}
+              >
+                Restart
+              </KioskButton>
+            )}
           </div>
-          {(printedPreview || isAiGenerating) && (
-            <div className={`thanks-preview ${isAiGenerating ? 'generating' : ''}`}>
+          {phoneSubmitted && (printedPreview || isAiGenerating || isFinalPreparing) && (
+            <div className={`thanks-preview ${isAiGenerating || isFinalPreparing ? 'generating' : ''}${!printedPreview && isFinalPreparing ? ' loading' : ''}`}>
               {printedNumber && <p className="thanks-photo-number">Photo# {printedNumber}</p>}
               {printedPreview && <img src={printedPreview} alt="Printed layout preview" />}
-              {isAiGenerating && <span>GENERATING</span>}
+              {!printedPreview && isFinalPreparing && <div className="thanks-spinner" aria-hidden="true" />}
+              {!printedPreview && isFinalPreparing ? <span>PRINTING AND UPLOADING</span> : isAiGenerating && <span>GENERATING</span>}
             </div>
           )}
           <div className="thanks-content">
@@ -1831,7 +1940,7 @@ function GuestApp() {
                 <div className="phone-entry-display">{formatPhoneNumber(phoneNumber) || 'Phone number'}</div>
                 <DigitKeypad
                   className="phone-keypad"
-                  disabled={isBusy || isAiGenerating}
+                  disabled={isBusy}
                   value={phoneNumber}
                   onDigit={appendPhoneDigit}
                   onClear={() => {
@@ -1852,7 +1961,7 @@ function GuestApp() {
                         setGalleryConsent(event.target.checked);
                         setPhoneEntryMessage('');
                       }}
-                      disabled={isBusy || isAiGenerating}
+                      disabled={isBusy}
                     />
                     <span>I agree to use phone number to access my photo gallery</span>
                   </label>
@@ -1864,7 +1973,7 @@ function GuestApp() {
                         setMarketingConsent(event.target.checked);
                         setPhoneEntryMessage('');
                       }}
-                      disabled={isBusy || isAiGenerating}
+                      disabled={isBusy}
                     />
                     <span>I agree to receive promotional texts from Stephanie Wong. I can unsubscribe anytime.</span>
                   </label> */}
@@ -1875,7 +1984,6 @@ function GuestApp() {
                     onPress={submitPhoneNumber}
                     disabled={
                       isBusy ||
-                      isAiGenerating ||
                       phoneNumber.replace(/\D/g, '').length < 7 ||
                       (!galleryConsent && !marketingConsent)
                     }
@@ -1885,7 +1993,7 @@ function GuestApp() {
                   <KioskButton
                     className="booth-button"
                     onPress={skipPhoneEntry}
-                    disabled={isBusy || isAiGenerating}
+                    disabled={isBusy}
                   >
                     Skip
                   </KioskButton>
@@ -1896,7 +2004,9 @@ function GuestApp() {
               <>
                 <p className="brand">THANK YOU!</p>
                 <p className="thanks-copy">
-                  {galleryQrDataUrl
+                  {isFinalPreparing
+                    ? 'Printing and uploading. Your photo will appear here when it is ready.'
+                    : galleryQrDataUrl
                     ? <>Scan the QR code to open your photo, or find it later at <span className="thanks-site">vibobooth.com</span> with your phone number.</>
                     : 'Your photo has been saved.'}
                 </p>
@@ -5419,8 +5529,8 @@ const addQrToPrintDataUrl = async (printDataUrl: string, qrDataUrl: string) => {
   const x = paddingLeft;
   const y = canvas.height - qrSize - paddingBottom;
 
-  const line1 = 'View Video';
-  const line2 = 'ViboBooth.com';
+  const line1 = ' ';
+  const line2 = 'Scan to Download Photo/Video @ ViboBooth.com';
   const textGap = Math.max(2, Math.round(qrSize * 0.04));
   const lineHeight = (qrSize - textGap) / 2;
   const fontSize = Math.max(5, Math.round(lineHeight * 0.78 * 0.5));
@@ -5442,7 +5552,7 @@ const addQrToPrintDataUrl = async (printDataUrl: string, qrDataUrl: string) => {
   const line2Y = y + qrSize;
   const line1Y = line2Y - textGap - fontSize;
   ctx.strokeText(line2, textX, line2Y);
-  
+
   ctx.fillText(line2, textX, line2Y);
   ctx.strokeText(line1, textX, line1Y);
   ctx.fillText(line1, textX, line1Y);

@@ -6,6 +6,7 @@ const imageCache = new Map<string, Promise<HTMLImageElement>>();
 
 const mediapipeUrl = (path: string) => new URL(`./mediapipe/${path}`, window.location.href).toString();
 const mediapipeFolderUrl = (path: string) => new URL(`./mediapipe/${path}/`, window.location.href).toString();
+const MAX_FACE_ASSET_FACES = 8;
 
 export const isGuestSelectableFacePack = (pack: FaceAssetPack) =>
   pack.active && pack.assets.some((asset) => asset.active);
@@ -27,7 +28,7 @@ export const loadFaceLandmarker = () => {
           delegate
       },
       runningMode: 'VIDEO',
-      numFaces: 6,
+      numFaces: MAX_FACE_ASSET_FACES,
       minFaceDetectionConfidence: 0.28,
       minFacePresenceConfidence: 0.28,
       minTrackingConfidence: 0.28,
@@ -249,7 +250,7 @@ export const drawFaceAssets = async (
   if (assets.length === 0) return;
 
   const detectedFaces = result.faceLandmarks
-    .slice(0, 6)
+    .slice(0, MAX_FACE_ASSET_FACES)
     .sort((a, b) => faceBounds(a, width, height).x - faceBounds(b, width, height).x);
   const faces = tracker
     ? tracker.update(detectedFaces)
@@ -292,7 +293,7 @@ export const drawFaceDebugInfo = (
   ctx.lineWidth = 3;
   ctx.textBaseline = 'top';
 
-  result.faceLandmarks.slice(0, 6).forEach((landmarks, index) => {
+  result.faceLandmarks.slice(0, MAX_FACE_ASSET_FACES).forEach((landmarks, index) => {
     const face = createFaceGeometry(landmarks, width, height);
     const rollDegrees = (face.roll * 180) / Math.PI;
     const label = `FACE ${index + 1}  x:${Math.round(face.eyeCenter.x)} y:${Math.round(face.eyeCenter.y)}  roll:${rollDegrees.toFixed(1)}deg`;
@@ -407,6 +408,16 @@ const loadAssetImage = (path: string) => {
     imageCache.set(path, window.photoBooth.getImageDataUrl(path).then(loadImage));
   }
   return imageCache.get(path)!;
+};
+
+export const preloadFaceAssetPack = async (pack: FaceAssetPack | null | undefined) => {
+  if (!pack) return;
+  await Promise.all([
+    loadFaceLandmarker(),
+    ...pack.assets
+      .filter((asset) => asset.active && asset.path)
+      .map((asset) => loadAssetImage(asset.path))
+  ]);
 };
 
 const loadImage = (src: string) =>

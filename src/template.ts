@@ -329,6 +329,15 @@ export async function createTemplatedPrintImage(
   templateDataUrl?: string,
   options: TemplatedPrintImageOptions = {}
 ) {
+  const photoLayerDataUrl = await createTemplatedPhotoLayer(photoDataUrls, layout, options);
+  return createTemplatedPrintImageFromLayer(photoLayerDataUrl, layout, design, templateDataUrl, options);
+}
+
+export async function createTemplatedPhotoLayer(
+  photoDataUrls: string[],
+  layout: TemplateLayout,
+  options: TemplatedPrintImageOptions = {}
+) {
   const normalizedLayout = normalizeTemplateLayoutForClient(layout);
   const { canvas, ctx } = createPrintCanvas(normalizedLayout.orientation, options.maxLongEdge);
   const photos = await Promise.all(photoDataUrls.slice(0, normalizedLayout.photoWindows.length).map((dataUrl) => loadImage(dataUrl)));
@@ -339,6 +348,21 @@ export async function createTemplatedPrintImage(
     const photo = photos[slot.sourceIndex];
     if (photo) fillImageClipped(ctx, photo, scaleSlotForPrint(slot, normalizedLayout, canvas));
   });
+
+  return canvas.toDataURL('image/png');
+}
+
+export async function createTemplatedPrintImageFromLayer(
+  photoLayerDataUrl: string,
+  layout: TemplateLayout,
+  design?: TemplateDesign | null,
+  templateDataUrl?: string,
+  options: TemplatedPrintImageOptions = {}
+) {
+  const normalizedLayout = normalizeTemplateLayoutForClient(layout);
+  const { canvas, ctx } = createPrintCanvas(normalizedLayout.orientation, options.maxLongEdge);
+  const photoLayer = await loadImage(photoLayerDataUrl);
+  ctx.drawImage(photoLayer, 0, 0, canvas.width, canvas.height);
 
   if (design && templateDataUrl) {
     const frame = await loadImage(templateDataUrl);

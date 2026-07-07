@@ -1918,6 +1918,22 @@ button:disabled {
   flex-shrink: 0;
 }
 
+.thanks-preview.loading {
+  min-height: 112px;
+  align-content: center;
+  place-items: center;
+  gap: 12px;
+}
+
+.thanks-spinner {
+  width: 42px;
+  height: 42px;
+  border: 2px solid rgba(255, 255, 255, 0.24);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: queueSpin 0.8s linear infinite;
+}
+
 .thanks-photo-number {
   margin: 0;
   display: inline-block;
@@ -1957,6 +1973,11 @@ button:disabled {
   padding: 7px 11px;
   font-size: 10px;
   letter-spacing: 0.14em;
+}
+
+.thanks-preview.loading span {
+  position: static;
+  transform: none;
 }
 
 .ai-wait-message {

@@ -1748,8 +1748,19 @@ async function uploadFinalPhotoInBackground(
   }
 }
 
-const VIDEO_MAX_LONG_EDGE = 1920;
-const VIDEO_CRF = 23;
+const VIDEO_TRANSCODE_THREADS = 1;
+const VIDEO_UPLOAD_MAX_ATTEMPTS = 3;
+const VIDEO_UPLOAD_RETRY_DELAY_MS = 2000;
+const VIDEO_UPLOAD_MAX_BYTES = 4 * 1024 * 1024;
+type VideoTranscodeProfile = { maxLongEdge: number; crf: number; audioBitrate: string };
+const VIDEO_TRANSCODE_PROFILES = [
+  { maxLongEdge: 854, crf: 25, audioBitrate: '96k' },
+  { maxLongEdge: 854, crf: 28, audioBitrate: '64k' },
+  { maxLongEdge: 640, crf: 30, audioBitrate: '64k' },
+  { maxLongEdge: 480, crf: 32, audioBitrate: '48k' }
+] satisfies VideoTranscodeProfile[];
+
+const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
 const resolveFfmpegPath = () => {
   if (!ffmpegStatic) return '';
@@ -1758,7 +1769,7 @@ const resolveFfmpegPath = () => {
   return ffmpegStatic.replace('app.asar', 'app.asar.unpacked');
 };
 
-function transcodeToMp4(inputPath: string, outputPath: string) {
+function transcodeToMp4(inputPath: string, outputPath: string, profile: VideoTranscodeProfile = VIDEO_TRANSCODE_PROFILES[0]) {
   return new Promise<void>((resolve, reject) => {
     const ffmpegPath = resolveFfmpegPath();
     if (!ffmpegPath) {
@@ -1768,17 +1779,18 @@ function transcodeToMp4(inputPath: string, outputPath: string) {
     // Downscale the longer edge to VIDEO_MAX_LONG_EDGE (keeping aspect, even
     // dimensions) and encode H.264/AAC with faststart for broad playback.
     const scaleFilter =
-      `scale='if(gt(a,1),min(${VIDEO_MAX_LONG_EDGE},iw),-2)':'if(gt(a,1),-2,min(${VIDEO_MAX_LONG_EDGE},ih))'`;
+      `scale='if(gt(a,1),min(${profile.maxLongEdge},iw),-2)':'if(gt(a,1),-2,min(${profile.maxLongEdge},ih))'`;
     const args = [
       '-y',
       '-i', inputPath,
       '-vf', scaleFilter,
       '-c:v', 'libx264',
       '-preset', 'veryfast',
-      '-crf', String(VIDEO_CRF),
+      '-crf', String(profile.crf),
       '-pix_fmt', 'yuv420p',
       '-c:a', 'aac',
-      '-b:a', '128k',
+      '-b:a', profile.audioBitrate,
+      '-threads', String(VIDEO_TRANSCODE_THREADS),
       '-movflags', '+faststart',
       outputPath
     ];
@@ -1795,11 +1807,43 @@ function transcodeToMp4(inputPath: string, outputPath: string) {
   });
 }
 
+const formatMegabytes = (bytes: number) => `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+
+async function prepareVideoForUpload(inputPath: string, statusName = path.basename(inputPath)) {
+  const initialSize = (await fs.stat(inputPath)).size;
+  if (/\.mp4$/i.test(inputPath) && initialSize <= VIDEO_UPLOAD_MAX_BYTES) return inputPath;
+
+  const parsed = path.parse(inputPath);
+  let lastSize = initialSize;
+  const inputIsMp4 = /\.mp4$/i.test(inputPath);
+
+  for (let index = 0; index < VIDEO_TRANSCODE_PROFILES.length; index += 1) {
+    const profile = VIDEO_TRANSCODE_PROFILES[index];
+    const suffix = inputIsMp4 || index > 0 ? `-${profile.maxLongEdge}p` : '';
+    const outputPath = path.join(parsed.dir, `${parsed.name}${suffix}.mp4`);
+    setGalleryUploadStatus({
+      state: 'uploading',
+      message: `Compressing ${statusName} (${index + 1}/${VIDEO_TRANSCODE_PROFILES.length})...`,
+      lastError: undefined
+    });
+    console.log(
+      `[video] transcode profile ${index + 1}/${VIDEO_TRANSCODE_PROFILES.length}: ` +
+      `${profile.maxLongEdge}px crf ${profile.crf} audio ${profile.audioBitrate}`
+    );
+    await transcodeToMp4(inputPath, outputPath, profile);
+    lastSize = (await fs.stat(outputPath)).size;
+    console.log(`[video] compressed ${path.basename(outputPath)} ${lastSize} bytes`);
+    if (lastSize <= VIDEO_UPLOAD_MAX_BYTES) return outputPath;
+  }
+
+  throw new Error(`Video is ${formatMegabytes(lastSize)} after compression, over upload limit ${formatMegabytes(VIDEO_UPLOAD_MAX_BYTES)}.`);
+}
+
 async function nextVideoName(eventFolder: string) {
   try {
     const entries = await fs.readdir(path.join(eventFolder, 'videos'), { withFileTypes: true });
     const numbers = entries
-      .filter((entry) => entry.isFile() && /^\d+\.mp4$/i.test(entry.name))
+      .filter((entry) => entry.isFile() && /^\d+\.(mp4|webm)$/i.test(entry.name))
       .map((entry) => Number.parseInt(path.parse(entry.name).name, 10))
       .filter((value) => Number.isFinite(value));
     const nextNumber = numbers.length > 0 ? Math.max(...numbers) + 1 : 1;
@@ -1815,49 +1859,72 @@ async function saveSessionVideoData(request: SaveVideoRequest): Promise<SaveVide
   const videosFolder = path.join(settings.eventFolder, 'videos');
   const safeBase = request.baseName?.trim().replace(/[^\w-]+/g, '') || (await nextVideoName(settings.eventFolder));
   const webmPath = path.join(videosFolder, `${safeBase}.webm`);
-  const mp4Path = path.join(videosFolder, `${safeBase}.mp4`);
   const buffer = Buffer.from(request.data instanceof Uint8Array ? request.data : new Uint8Array(request.data));
   console.log(`[video] received recording ${buffer.byteLength} bytes -> ${webmPath}`);
   await fs.writeFile(webmPath, buffer);
-  try {
-    console.log(`[video] transcoding ${path.basename(webmPath)} -> ${path.basename(mp4Path)} (ffmpeg: ${resolveFfmpegPath() || 'MISSING'})`);
-    await transcodeToMp4(webmPath, mp4Path);
-    await fs.rm(webmPath, { force: true });
-    console.log(`[video] saved ${mp4Path}`);
-    return { path: mp4Path, name: path.basename(mp4Path) };
-  } catch (error) {
-    // Keep the raw webm if transcoding fails so the recording is not lost.
-    console.warn('[video] transcode failed; keeping raw webm.', error);
-    return { path: webmPath, name: path.basename(webmPath) };
-  }
+  console.log(`[video] saved raw recording ${webmPath}`);
+  return { path: webmPath, name: path.basename(webmPath) };
 }
 
 async function uploadSessionVideoInBackground(
   request: BackgroundVideoUploadRequest
 ): Promise<BackgroundGalleryUploadResult> {
   galleryUploadStatus.active += 1;
-  setGalleryUploadStatus({ state: 'uploading', message: `Uploading ${path.basename(request.videoPath)}...`, lastError: undefined });
+  setGalleryUploadStatus({ state: 'uploading', message: `Preparing ${path.basename(request.videoPath)}...`, lastError: undefined });
   try {
     const settings = await readSettings();
     if (!settings.webApiBaseUrl || !settings.eventId || !settings.boothSecret) {
       throw new Error('Web API, event ID, or booth secret is missing.');
     }
-    const buffer = await fs.readFile(request.videoPath);
-    const isMp4 = /\.mp4$/i.test(request.videoPath);
-    console.log(`[video-upload] POST video ${path.basename(request.videoPath)} ${buffer.byteLength} bytes`);
-    await uploadGalleryBuffer(settings, request.ticketId, {
-      kind: 'video',
-      filename: path.basename(request.videoPath),
-      contentType: isMp4 ? 'video/mp4' : 'video/webm',
-      buffer,
-      width: 0,
-      height: 0,
-    });
-    console.log(`[video-upload] uploaded ${path.basename(request.videoPath)}`);
+    const uploadPath = await prepareVideoForUpload(request.videoPath);
+    if (uploadPath !== request.videoPath && !/\.mp4$/i.test(request.videoPath)) {
+      await fs.rm(request.videoPath, { force: true });
+    }
+    const buffer = await fs.readFile(uploadPath);
+    if (buffer.byteLength > VIDEO_UPLOAD_MAX_BYTES) {
+      throw new Error(`Video is ${formatMegabytes(buffer.byteLength)}, over upload limit ${formatMegabytes(VIDEO_UPLOAD_MAX_BYTES)}.`);
+    }
+    const isMp4 = /\.mp4$/i.test(uploadPath);
+    const filename = path.basename(uploadPath);
+    let lastUploadError: unknown = null;
+    for (let attempt = 1; attempt <= VIDEO_UPLOAD_MAX_ATTEMPTS; attempt += 1) {
+      setGalleryUploadStatus({
+        state: 'uploading',
+        message: `Uploading ${filename} (${attempt}/${VIDEO_UPLOAD_MAX_ATTEMPTS})...`,
+        lastError: undefined
+      });
+      try {
+        console.log(`[video-upload] POST video ${filename} ${buffer.byteLength} bytes (attempt ${attempt}/${VIDEO_UPLOAD_MAX_ATTEMPTS})`);
+        await uploadGalleryBuffer(settings, request.ticketId, {
+          kind: 'video',
+          filename,
+          contentType: isMp4 ? 'video/mp4' : 'video/webm',
+          buffer,
+          width: 0,
+          height: 0,
+        });
+        lastUploadError = null;
+        break;
+      } catch (error) {
+        lastUploadError = error;
+        const message = error instanceof Error ? error.message : 'Video upload failed.';
+        console.warn(`[video-upload] attempt ${attempt}/${VIDEO_UPLOAD_MAX_ATTEMPTS} failed`, message);
+        if (attempt < VIDEO_UPLOAD_MAX_ATTEMPTS) {
+          setGalleryUploadStatus({
+            state: 'uploading',
+            message: `Video upload failed. Retrying ${attempt + 1}/${VIDEO_UPLOAD_MAX_ATTEMPTS}...`,
+            lastError: message
+          });
+          await sleep(VIDEO_UPLOAD_RETRY_DELAY_MS * attempt);
+        }
+      }
+    }
+    if (lastUploadError) throw lastUploadError;
+    console.log(`[video-upload] uploaded ${path.basename(uploadPath)}`);
     galleryUploadStatus.active = Math.max(0, galleryUploadStatus.active - 1);
     setGalleryUploadStatus({
       state: galleryUploadStatus.active > 0 ? 'uploading' : 'done',
-      message: `Uploaded ${path.basename(request.videoPath)}.`,
+      message: `Uploaded ${path.basename(uploadPath)}.`,
       lastError: undefined,
     });
     return { ok: true };
@@ -2773,9 +2840,9 @@ app.whenReady().then(async () => {
       desktopCapturer
         .getSources({ types: ['window', 'screen'] })
         .then((sources) => {
-          const guestTitle = guestWindow?.getTitle();
-          const match =
-            (guestTitle ? sources.find((source) => source.name === guestTitle) : undefined) ?? sources[0];
+          const guestSourceId = guestWindow?.getMediaSourceId();
+          const match = guestSourceId ? sources.find((source) => source.id === guestSourceId) : undefined;
+          if (!match) console.warn('[video] guest window capture source not found.');
           callback(match ? { video: match } : {});
         })
         .catch(() => callback({}));
