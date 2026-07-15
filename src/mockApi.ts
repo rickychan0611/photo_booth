@@ -388,6 +388,7 @@ export function installMockApi() {
         template: { ...current.template, selectedTemplateId: normalized.id, layouts }
       });
     },
+    uploadTemplateLayoutPreview: async () => readSettings(),
     deleteTemplateLayout: async (templateId) => {
       const current = readSettings();
       return writeSettings({

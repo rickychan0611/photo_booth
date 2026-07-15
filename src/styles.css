@@ -1025,6 +1025,50 @@ button:disabled {
   border: 1px solid currentColor;
 }
 
+.template-guest-preview {
+  position: relative;
+  width: 96px;
+  aspect-ratio: 2478 / 3690;
+  border: 1px solid currentColor;
+  overflow: hidden;
+  background: #050505;
+}
+
+.template-guest-preview.landscape {
+  aspect-ratio: 3690 / 2478;
+}
+
+.template-guest-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.template-guest-preview-admin {
+  margin-top: 10px;
+}
+
+.template-guest-preview-admin h3 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.template-guest-preview-admin-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.template-guest-preview-admin-row img {
+  width: 72px;
+  height: 96px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
 .custom-template-layout {
   display: grid;
   grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);

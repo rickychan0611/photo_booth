@@ -41,6 +41,8 @@ export type TemplateLayout = {
   paperHeight: number;
   photoWindows: TemplatePhotoWindow[];
   photosToTake?: number;
+  active: boolean;
+  guestPreviewPath: string;
   workflowDefaults: TemplateWorkflowSettings;
   printerName: string;
   createdAt: string;

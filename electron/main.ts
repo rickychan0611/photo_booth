@@ -969,6 +969,8 @@ const normalizeTemplateLayout = (layout: TemplateLayout): TemplateLayout => {
     paperHeight: dimensions.height,
     photoWindows,
     photosToTake,
+    active: layout.active !== false,
+    guestPreviewPath: layout.guestPreviewPath ?? '',
     workflowDefaults: normalizeTemplateWorkflow(layout.workflowDefaults, photosToTake),
     printerName: normalizePrinterName(layout.printerName ?? ''),
     createdAt: layout.createdAt || new Date().toISOString(),
@@ -1339,6 +1341,30 @@ async function updateTemplateLayout(layout: TemplateLayout) {
       ...settings.template,
       selectedTemplateId: normalized.id,
       layouts: nextLayouts
+    }
+  });
+}
+
+async function uploadTemplateLayoutPreview(templateId: string) {
+  const sourcePath = await chooseTemplateAsset('preview');
+  if (!sourcePath) return readSettings();
+  const settings = await readSettings();
+  const layouts = settings.template.layouts.map(normalizeTemplateLayout);
+  const layout = layouts.find((item) => item.id === templateId);
+  if (!layout) throw new Error('Template layout not found.');
+  const now = new Date().toISOString();
+  const extension = path.extname(sourcePath).toLowerCase() || '.png';
+  const folder = path.join(settings.eventFolder, 'templates', 'custom', templateId);
+  await fs.mkdir(folder, { recursive: true });
+  const targetPath = path.join(folder, `guest-preview${extension}`);
+  await fs.copyFile(sourcePath, targetPath);
+  return writeSettings({
+    ...settings,
+    template: {
+      ...settings.template,
+      layouts: layouts.map((item) =>
+        item.id === templateId ? { ...item, guestPreviewPath: targetPath, updatedAt: now } : item
+      )
     }
   });
 }
@@ -2973,6 +2999,7 @@ app.whenReady().then(async () => {
   ipcMain.handle('template:upload', async (_event, request: TemplateUploadRequest) => uploadTemplate(request));
   ipcMain.handle('template:update', async (_event, design: TemplateDesign) => updateTemplate(design));
   ipcMain.handle('template-layout:update', async (_event, layout: TemplateLayout) => updateTemplateLayout(layout));
+  ipcMain.handle('template-layout:upload-preview', async (_event, templateId: string) => uploadTemplateLayoutPreview(templateId));
   ipcMain.handle('template-layout:delete', async (_event, templateId: string) => deleteTemplateLayout(templateId));
   ipcMain.handle('template-layout:export', async (_event, templateId: string) => exportTemplatePackage(templateId));
   ipcMain.handle('template-layout:import', async () => importTemplatePackage());

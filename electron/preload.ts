@@ -53,6 +53,8 @@ const api = {
   updateTemplate: (design: TemplateDesign) => ipcRenderer.invoke('template:update', design) as Promise<TemplateDesign>,
   updateTemplateLayout: (layout: TemplateLayout) =>
     ipcRenderer.invoke('template-layout:update', layout) as Promise<AppSettings>,
+  uploadTemplateLayoutPreview: (templateId: string) =>
+    ipcRenderer.invoke('template-layout:upload-preview', templateId) as Promise<AppSettings>,
   deleteTemplateLayout: (templateId: string) =>
     ipcRenderer.invoke('template-layout:delete', templateId) as Promise<AppSettings>,
   exportTemplate: (templateId: string) =>

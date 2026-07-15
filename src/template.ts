@@ -116,6 +116,8 @@ export const createBlankTemplateLayout = (name = 'New Template', orientation: Te
       }
     ],
     photosToTake: 1,
+    active: true,
+    guestPreviewPath: '',
     workflowDefaults: defaultTemplateWorkflow(1),
     printerName: '',
     createdAt: now,
@@ -157,6 +159,8 @@ export const normalizeTemplateLayoutForClient = (layout: TemplateLayout): Templa
     paperHeight: dimensions.height,
     photoWindows,
     photosToTake,
+    active: layout.active !== false,
+    guestPreviewPath: layout.guestPreviewPath ?? '',
     workflowDefaults,
     printerName: layout.printerName ?? '',
     createdAt: layout.createdAt || new Date().toISOString(),

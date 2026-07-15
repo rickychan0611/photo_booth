@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type InputHTMLAttributes } from 'react';
 import QRCode from 'qrcode';
 import { ArrowUp, Camera, Copy, Download, Expand, ExternalLink, FolderOpen, Globe, Image, Minimize2, Printer, RefreshCw, RotateCw, Settings, SlidersHorizontal, Sparkles, Trash2, X } from 'lucide-react';
 import type { AiPreset, AiProvider, AiQueueItem, AppSettings, AudioCue, BoothSession, CameraControlSettings, CameraRotation, Capture, ColorFilterPreset, ColorFilterValues, FaceAsset, FaceAssetPack, FaceAssetPlacement, Gallery, GalleryUploadStatus, QueueSnapshot, SavedPhoto, TemplateDesign, TemplateLayout, TemplateSlot, TemplateWorkflowSettings } from './types';
@@ -182,9 +182,10 @@ function GuestApp() {
   const sessionRunRef = useRef(0);
   const queueModeEnabled = Boolean(settings?.staffControlQueueMode);
   const templateLayouts = settings?.template.layouts.map(normalizeTemplateLayoutForClient) ?? [];
-  const activeTemplateIds = new Set(templateLayouts.map((layout) => layout.id));
+  const activeTemplateLayouts = templateLayouts.filter((layout) => layout.active);
+  const activeTemplateIds = new Set(activeTemplateLayouts.map((layout) => layout.id));
   const activeDesigns = settings?.template.designs.filter((design) => design.active && activeTemplateIds.has(design.templateId)) ?? [];
-  const selectableTemplates = templateLayouts.filter((layout) =>
+  const selectableTemplates = activeTemplateLayouts.filter((layout) =>
     activeDesigns.some((design) => design.templateId === layout.id)
   );
   const selectedTemplate = templateLayouts.find((layout) => layout.id === selectedTemplateId) ?? templateLayouts[0] ?? null;
@@ -1630,13 +1631,13 @@ function GuestApp() {
       {step === 'style' && (
         <section className="template-guest-screen">
           <p className="instruction">CHOOSE A TEMPLATE</p>
-          {activeDesigns.length === 0 && <p className="quiet">ASK ADMIN TO ADD A TEMPLATE</p>}
+          {selectableTemplates.length === 0 && <p className="quiet">ASK ADMIN TO ADD A TEMPLATE</p>}
           <div className="style-card-grid">
-            {templateLayouts.map((layout) => {
+            {selectableTemplates.map((layout) => {
               const count = activeDesigns.filter((design) => design.templateId === layout.id).length;
               return (
                 <KioskButton key={layout.id} className="style-card" onPress={() => chooseTemplate(layout.id)} disabled={count === 0}>
-                  <TemplateMini layout={layout} />
+                  <TemplateGuestPreview layout={layout} />
                   <span>{layout.name.toUpperCase()}</span>
                   <small>{layout.photoWindows.length} PHOTO{layout.photoWindows.length === 1 ? '' : 'S'}</small>
                   <small>{count} DESIGN{count === 1 ? '' : 'S'}</small>
@@ -2171,6 +2172,37 @@ function TemplateMini({ layout }: { layout: TemplateLayout }) {
   );
 }
 
+function TemplateGuestPreview({ layout }: { layout: TemplateLayout }) {
+  const [src, setSrc] = useState('');
+  useEffect(() => {
+    let active = true;
+    if (!layout.guestPreviewPath) {
+      setSrc('');
+      return undefined;
+    }
+    void window.photoBooth
+      .getImageDataUrl(layout.guestPreviewPath)
+      .then((dataUrl) => {
+        if (active) setSrc(dataUrl);
+      })
+      .catch(() => {
+        if (active) setSrc('');
+      });
+    return () => {
+      active = false;
+    };
+  }, [layout.guestPreviewPath]);
+
+  if (src) {
+    return (
+      <div className={`template-guest-preview ${layout.orientation}`}>
+        <img src={src} alt={layout.name} />
+      </div>
+    );
+  }
+  return <TemplateMini layout={layout} />;
+}
+
 function TemplateImagePreview({ design }: { design: TemplateDesign }) {
   const [src, setSrc] = useState('');
   useEffect(() => {
@@ -2354,17 +2386,17 @@ function ColorFilterStudio({
             <div className="compact-settings-grid">
               <label>
                 Countdown
-                <input
+                <DraftInput
                   type="number"
                   min="5"
                   max="120"
                   step="1"
                   value={Math.round(settings.beautyFilter.previewTimeoutMs / 1000)}
-                  onChange={(event) =>
-                    void onSaveSettings({
+                  onSave={(value) =>
+                    onSaveSettings({
                       beautyFilter: {
                         ...settings.beautyFilter,
-                        previewTimeoutMs: Math.max(5, Number(event.target.value || 30)) * 1000
+                        previewTimeoutMs: Math.max(5, Number(value || 30)) * 1000
                       }
                     }, 'Filter countdown saved.')
                   }
@@ -2416,9 +2448,9 @@ function ColorFilterStudio({
               <div className="color-filter-edit-header">
                 <label>
                   Name
-                  <input
+                  <DraftInput
                     value={selectedPreset.name}
-                    onChange={(event) => void onSavePreset({ ...selectedPreset, name: event.target.value })}
+                    onSave={(value) => onSavePreset({ ...selectedPreset, name: value })}
                   />
                 </label>
                 <label className="check-row">
@@ -2493,10 +2525,7 @@ function TemplateDesignAdminCard({
   return (
     <article className="template-design-admin">
       <TemplateImagePreview design={design} />
-      <input
-        value={design.name}
-        onChange={(event) => void onSave({ ...design, name: event.target.value })}
-      />
+      <DraftInput value={design.name} onSave={(value) => onSave({ ...design, name: value })} />
       <label className="check-row">
         <input
           type="checkbox"
@@ -2641,15 +2670,15 @@ function TemplateWorkflowEditor({
       <div className="workflow-grid">
         <label>
           Intro message
-          <input
+          <DraftInput
             value={normalized.introMessage}
-            onChange={(event) =>
+            onSave={(value) =>
               onChange({
                 ...normalized,
-                introMessage: event.target.value,
+                introMessage: value,
                 screenCues: {
                   ...normalized.screenCues,
-                  intro: { ...screenCue('intro'), text: event.target.value }
+                  intro: { ...screenCue('intro'), text: value }
                 }
               })
             }
@@ -2657,28 +2686,28 @@ function TemplateWorkflowEditor({
         </label>
         <label>
           Intro seconds
-          <input type="number" min="0" step="0.5" value={msToSeconds(normalized.introMs)} onChange={(event) => onChange({ ...normalized, introMs: secondsToMs(event.target.value) })} />
+          <DraftInput type="number" min="0" step="0.5" value={msToSeconds(normalized.introMs)} onSave={(value) => onChange({ ...normalized, introMs: secondsToMs(value) })} />
         </label>
         <label>
           Auto print seconds
-          <input type="number" min="0" step="1" value={msToSeconds(normalized.printAutoSelectMs)} onChange={(event) => onChange({ ...normalized, printAutoSelectMs: secondsToMs(event.target.value) })} />
+          <DraftInput type="number" min="0" step="1" value={msToSeconds(normalized.printAutoSelectMs)} onSave={(value) => onChange({ ...normalized, printAutoSelectMs: secondsToMs(value) })} />
         </label>
         <label>
           Thank you seconds
-          <input type="number" min="1" step="0.5" value={msToSeconds(normalized.thankYouMs)} onChange={(event) => onChange({ ...normalized, thankYouMs: secondsToMs(event.target.value) })} />
+          <DraftInput type="number" min="1" step="0.5" value={msToSeconds(normalized.thankYouMs)} onSave={(value) => onChange({ ...normalized, thankYouMs: secondsToMs(value) })} />
         </label>
       </div>
       <label>
         Thank you message
-        <input
+        <DraftInput
           value={normalized.thankYouMessage}
-          onChange={(event) =>
+          onSave={(value) =>
             onChange({
               ...normalized,
-              thankYouMessage: event.target.value,
+              thankYouMessage: value,
               screenCues: {
                 ...normalized.screenCues,
-                thanks: { ...screenCue('thanks'), text: event.target.value }
+                thanks: { ...screenCue('thanks'), text: value }
               }
             })
           }
@@ -2710,26 +2739,26 @@ function TemplateWorkflowEditor({
             <h2>Picture {index + 1}</h2>
             <label>
               Message
-              <input
+              <DraftInput
                 value={shot.message}
-                onChange={(event) => {
+                onSave={(value) => {
                   const cue = shotCue(shot, index);
-                  updateShot(index, { message: event.target.value, audioCue: { ...cue, text: event.target.value } });
+                  updateShot(index, { message: value, audioCue: { ...cue, text: value } });
                 }}
               />
             </label>
             <div className="workflow-grid">
               <label>
                 Camera before message
-                <input type="number" min="0" step="0.5" value={msToSeconds(shot.cameraBeforeMessageMs)} onChange={(event) => updateShot(index, { cameraBeforeMessageMs: secondsToMs(event.target.value) })} />
+                <DraftInput type="number" min="0" step="0.5" value={msToSeconds(shot.cameraBeforeMessageMs)} onSave={(value) => updateShot(index, { cameraBeforeMessageMs: secondsToMs(value) })} />
               </label>
               <label>
                 Message time
-                <input type="number" min="0" step="0.5" value={msToSeconds(shot.messageMs)} onChange={(event) => updateShot(index, { messageMs: secondsToMs(event.target.value) })} />
+                <DraftInput type="number" min="0" step="0.5" value={msToSeconds(shot.messageMs)} onSave={(value) => updateShot(index, { messageMs: secondsToMs(value) })} />
               </label>
               <label>
                 Camera before countdown
-                <input type="number" min="0" step="0.5" value={msToSeconds(shot.cameraBeforeCountdownMs)} onChange={(event) => updateShot(index, { cameraBeforeCountdownMs: secondsToMs(event.target.value) })} />
+                <DraftInput type="number" min="0" step="0.5" value={msToSeconds(shot.cameraBeforeCountdownMs)} onSave={(value) => updateShot(index, { cameraBeforeCountdownMs: secondsToMs(value) })} />
               </label>
             </div>
             <AudioCueCard
@@ -3290,6 +3319,16 @@ function AdminApp() {
     }
   };
 
+  const uploadTemplateLayoutPreview = async (templateId: string) => {
+    try {
+      const next = await window.photoBooth.uploadTemplateLayoutPreview(templateId);
+      await updateSettings(next);
+      setMessage('Template guest preview uploaded.');
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Template guest preview upload failed.');
+    }
+  };
+
   const deleteTemplateDesign = async (design: TemplateDesign) => {
     await window.photoBooth.deleteTemplate(design.id);
     await refreshSettings();
@@ -3615,7 +3654,7 @@ function AdminApp() {
             </div>
             <label>
               Event name
-              <input value={settings.eventName} onChange={(event) => void saveMessage({ eventName: event.target.value }, 'Event name saved.')} />
+              <DraftInput value={settings.eventName} onSave={(value) => saveMessage({ eventName: value }, 'Event name saved.')} />
             </label>
             <label>
               Event folder
@@ -3630,11 +3669,11 @@ function AdminApp() {
             </label>
             <label>
               Admin password
-              <input
+              <DraftInput
                 type="password"
                 value={settings.adminPassword}
                 placeholder="Optional for later"
-                onChange={(event) => void saveMessage({ adminPassword: event.target.value }, 'Password saved.')}
+                onSave={(value) => saveMessage({ adminPassword: value }, 'Password saved.')}
               />
             </label>
             <label className="check-row">
@@ -3647,43 +3686,43 @@ function AdminApp() {
             </label>
             <label>
               Web API base URL
-              <input
+              <DraftInput
                 value={settings.webApiBaseUrl}
                 placeholder="http://localhost:3000"
-                onChange={(event) => void saveMessage({ webApiBaseUrl: event.target.value }, 'Web API URL saved.')}
+                onSave={(value) => saveMessage({ webApiBaseUrl: value }, 'Web API URL saved.')}
               />
             </label>
             <label>
               Supabase URL
-              <input
+              <DraftInput
                 value={settings.supabaseUrl}
                 placeholder="https://your-project.supabase.co"
-                onChange={(event) => void saveMessage({ supabaseUrl: event.target.value }, 'Supabase URL saved.')}
+                onSave={(value) => saveMessage({ supabaseUrl: value }, 'Supabase URL saved.')}
               />
             </label>
             <label>
               Supabase publishable key
-              <input
+              <DraftInput
                 value={settings.supabasePublishableKey}
                 placeholder="sb_publishable_..."
-                onChange={(event) => void saveMessage({ supabasePublishableKey: event.target.value }, 'Supabase key saved.')}
+                onSave={(value) => saveMessage({ supabasePublishableKey: value }, 'Supabase key saved.')}
               />
             </label>
             <label>
               Event ID
-              <input
+              <DraftInput
                 value={settings.eventId}
                 placeholder="Supabase event UUID"
-                onChange={(event) => void saveMessage({ eventId: event.target.value }, 'Event ID saved.')}
+                onSave={(value) => saveMessage({ eventId: value }, 'Event ID saved.')}
               />
             </label>
             <label>
               Booth secret
-              <input
+              <DraftInput
                 type="password"
                 value={settings.boothSecret}
                 placeholder="Matches BOOTH_SHARED_SECRET"
-                onChange={(event) => void saveMessage({ boothSecret: event.target.value }, 'Booth secret saved.')}
+                onSave={(value) => saveMessage({ boothSecret: value }, 'Booth secret saved.')}
               />
             </label>
             <div className="admin-actions">
@@ -3858,17 +3897,17 @@ function AdminApp() {
               <div className="workflow-grid">
                 <label>
                   Left crop
-                  <input
+                  <DraftInput
                     type="number"
                     min="0"
                     step="0.01"
                     value={settings.printCalibration.leftBleedIn}
-                    onChange={(event) =>
-                      void saveMessage(
+                    onSave={(value) =>
+                      saveMessage(
                         {
                           printCalibration: {
                             ...settings.printCalibration,
-                            leftBleedIn: Number(event.target.value)
+                            leftBleedIn: Number(value)
                           }
                         },
                         'Print calibration saved.'
@@ -3878,17 +3917,17 @@ function AdminApp() {
                 </label>
                 <label>
                   Right crop
-                  <input
+                  <DraftInput
                     type="number"
                     min="0"
                     step="0.01"
                     value={settings.printCalibration.rightBleedIn}
-                    onChange={(event) =>
-                      void saveMessage(
+                    onSave={(value) =>
+                      saveMessage(
                         {
                           printCalibration: {
                             ...settings.printCalibration,
-                            rightBleedIn: Number(event.target.value)
+                            rightBleedIn: Number(value)
                           }
                         },
                         'Print calibration saved.'
@@ -3898,17 +3937,17 @@ function AdminApp() {
                 </label>
                 <label>
                   Top crop
-                  <input
+                  <DraftInput
                     type="number"
                     min="0"
                     step="0.01"
                     value={settings.printCalibration.topBleedIn}
-                    onChange={(event) =>
-                      void saveMessage(
+                    onSave={(value) =>
+                      saveMessage(
                         {
                           printCalibration: {
                             ...settings.printCalibration,
-                            topBleedIn: Number(event.target.value)
+                            topBleedIn: Number(value)
                           }
                         },
                         'Print calibration saved.'
@@ -3918,17 +3957,17 @@ function AdminApp() {
                 </label>
                 <label>
                   Bottom crop
-                  <input
+                  <DraftInput
                     type="number"
                     min="0"
                     step="0.01"
                     value={settings.printCalibration.bottomBleedIn}
-                    onChange={(event) =>
-                      void saveMessage(
+                    onSave={(value) =>
+                      saveMessage(
                         {
                           printCalibration: {
                             ...settings.printCalibration,
-                            bottomBleedIn: Number(event.target.value)
+                            bottomBleedIn: Number(value)
                           }
                         },
                         'Print calibration saved.'
@@ -3950,23 +3989,21 @@ function AdminApp() {
           <AdminSection>
             <label>
               Intro message
-              <input
+              <DraftInput
                 value={settings.workflow.introMessage}
-                onChange={(event) =>
-                  void saveMessage({ workflow: { ...settings.workflow, introMessage: event.target.value } }, 'Workflow saved.')
-                }
+                onSave={(value) => saveMessage({ workflow: { ...settings.workflow, introMessage: value } }, 'Workflow saved.')}
               />
             </label>
             <label>
               Intro seconds
-              <input
+              <DraftInput
                 type="number"
                 min="0"
                 step="0.5"
                 value={msToSeconds(settings.workflow.introMs)}
-                onChange={(event) =>
-                  void saveMessage(
-                    { workflow: { ...settings.workflow, introMs: secondsToMs(event.target.value) } },
+                onSave={(value) =>
+                  saveMessage(
+                    { workflow: { ...settings.workflow, introMs: secondsToMs(value) } },
                     'Workflow saved.'
                   )
                 }
@@ -3974,14 +4011,14 @@ function AdminApp() {
             </label>
             <label>
               Auto print seconds
-              <input
+              <DraftInput
                 type="number"
                 min="0"
                 step="1"
                 value={msToSeconds(settings.workflow.printAutoSelectMs)}
-                onChange={(event) =>
-                  void saveMessage(
-                    { workflow: { ...settings.workflow, printAutoSelectMs: secondsToMs(event.target.value) } },
+                onSave={(value) =>
+                  saveMessage(
+                    { workflow: { ...settings.workflow, printAutoSelectMs: secondsToMs(value) } },
                     'Workflow saved.'
                   )
                 }
@@ -3989,23 +4026,19 @@ function AdminApp() {
             </label>
             <label>
               Thank you message
-              <input
+              <DraftInput
                 value={settings.workflow.thankYouMessage}
-                onChange={(event) =>
-                  void saveMessage({ workflow: { ...settings.workflow, thankYouMessage: event.target.value } }, 'Workflow saved.')
-                }
+                onSave={(value) => saveMessage({ workflow: { ...settings.workflow, thankYouMessage: value } }, 'Workflow saved.')}
               />
             </label>
             <label>
               Thank you seconds
-              <input
+              <DraftInput
                 type="number"
                 min="1"
                 step="0.5"
                 value={msToSeconds(settings.workflow.thankYouMs)}
-                onChange={(event) =>
-                  void saveMessage({ workflow: { ...settings.workflow, thankYouMs: secondsToMs(event.target.value) } }, 'Workflow saved.')
-                }
+                onSave={(value) => saveMessage({ workflow: { ...settings.workflow, thankYouMs: secondsToMs(value) } }, 'Workflow saved.')}
               />
             </label>
 
@@ -4035,16 +4068,16 @@ function AdminApp() {
                 ].map(([key, label]) => (
                   <label key={key}>
                     {label}
-                    <input
+                    <DraftInput
                       type="number"
                       min={key === 'speed' ? 0.5 : key === 'welcomeRepeatSeconds' ? 3 : 0}
                       max={key === 'speed' ? 2 : key === 'welcomeRepeatSeconds' ? 60 : 1}
                       step={key === 'welcomeRepeatSeconds' ? 1 : 0.05}
                       value={settings.audio[key as keyof AppSettings['audio']] as number}
-                      onChange={(event) =>
-                        void saveAudioSettings({
+                      onSave={(value) =>
+                        saveAudioSettings({
                           ...settings.audio,
-                          [key]: Number(event.target.value)
+                          [key]: Number(value)
                         })
                       }
                     />
@@ -4064,12 +4097,10 @@ function AdminApp() {
                 </label>
                 <label>
                   Voice name
-                  <input
+                  <DraftInput
                     value={settings.audio.voiceName}
                     placeholder={settings.audio.voiceEngine === 'kokoro' ? 'af_heart' : 'en_US-lessac-medium'}
-                    onChange={(event) =>
-                      void saveAudioSettings({ ...settings.audio, voiceName: event.target.value })
-                    }
+                    onSave={(value) => saveAudioSettings({ ...settings.audio, voiceName: value })}
                   />
                 </label>
               </div>
@@ -4154,7 +4185,10 @@ function AdminApp() {
                         >
                           <TemplateMini layout={layout} />
                           <span>{layout.name}</span>
-                          <small>{layout.orientation} / {layout.photoWindows.length} photo{layout.photoWindows.length === 1 ? '' : 's'}</small>
+                          <small>
+                            {layout.active ? 'Active' : 'Inactive'} / {layout.orientation} / {layout.photoWindows.length} photo
+                            {layout.photoWindows.length === 1 ? '' : 's'}
+                          </small>
                         </button>
                       ))}
                       {layouts.length === 0 && <p className="muted">Create or import a template to begin.</p>}
@@ -4167,19 +4201,42 @@ function AdminApp() {
                             <h2>{selectedLayout.name}</h2>
                             <p>{selectedLayout.photoWindows.length} photos / {selectedLayout.orientation}</p>
                             <p>{selectedLayout.paperWidth} x {selectedLayout.paperHeight} frame PNG.</p>
+                            <label className="check-row">
+                              <input
+                                type="checkbox"
+                                checked={selectedLayout.active}
+                                onChange={(event) =>
+                                  void saveTemplateLayout({ ...selectedLayout, active: event.target.checked })
+                                }
+                              />
+                              Active (show in guest template chooser)
+                            </label>
+                            <div className="template-guest-preview-admin">
+                              <h3>Guest chooser preview</h3>
+                              <div className="template-guest-preview-admin-row">
+                                {selectedLayout.guestPreviewPath ? (
+                                  <ImagePathThumb path={selectedLayout.guestPreviewPath} label={selectedLayout.name} />
+                                ) : (
+                                  <p className="muted">Optional. Upload an image for the guest template choosing screen.</p>
+                                )}
+                                <button onClick={() => void uploadTemplateLayoutPreview(selectedLayout.id)}>
+                                  Upload guest preview
+                                </button>
+                              </div>
+                            </div>
                             {(() => {
                               const slotCount = selectedLayout.photoWindows.length;
                               const photosToTake = normalizePhotosToTake(selectedLayout.photosToTake, slotCount);
                               return (
                                 <label className="template-photos-to-take">
                                   <span>Photos to take</span>
-                                  <input
+                                  <DraftInput
                                     type="number"
                                     min={slotCount}
                                     max={MAX_PHOTOS_TO_TAKE}
                                     value={photosToTake}
-                                    onChange={(event) => {
-                                      const next = normalizePhotosToTake(Number(event.target.value), slotCount);
+                                    onSave={(value) => {
+                                      const next = normalizePhotosToTake(Number(value), slotCount);
                                       void saveTemplateLayout({ ...selectedLayout, photosToTake: next });
                                     }}
                                   />
@@ -4292,9 +4349,9 @@ function AdminApp() {
                       <div className="workflow-grid">
                         <label>
                           Pack name
-                          <input
+                          <DraftInput
                             value={selectedFaceAssetPack.name}
-                            onChange={(event) => void saveFaceAssetPack({ ...selectedFaceAssetPack, name: event.target.value })}
+                            onSave={(value) => saveFaceAssetPack({ ...selectedFaceAssetPack, name: value })}
                           />
                         </label>
                         <label className="check-row">
@@ -4343,13 +4400,13 @@ function AdminApp() {
                             <FaceAssetThumb asset={asset} />
                             <div className="face-asset-fields">
                               <div className="face-asset-header">
-                                <input
+                                <DraftInput
                                   value={asset.name}
-                                  onChange={(event) =>
-                                    void saveFaceAssetPack({
+                                  onSave={(value) =>
+                                    saveFaceAssetPack({
                                       ...selectedFaceAssetPack,
                                       assets: selectedFaceAssetPack.assets.map((item) =>
-                                        item.id === asset.id ? { ...item, name: event.target.value, updatedAt: new Date().toISOString() } : item
+                                        item.id === asset.id ? { ...item, name: value, updatedAt: new Date().toISOString() } : item
                                       )
                                     })
                                   }
@@ -4433,9 +4490,9 @@ function AdminApp() {
                 </label>
                 <label>
                   Model
-                  <input
+                  <DraftInput
                     value={settings.ai.providers[settings.ai.provider].model}
-                    onChange={(event) => void updateAiProvider(settings.ai.provider, { model: event.target.value })}
+                    onSave={(value) => updateAiProvider(settings.ai.provider, { model: value })}
                   />
                 </label>
                 <label>
@@ -4487,17 +4544,17 @@ function AdminApp() {
               </div>
               <label>
                 API key
-                <input
+                <DraftInput
                   type="password"
                   value={settings.ai.providers[settings.ai.provider].apiKey}
-                  onChange={(event) => void updateAiProvider(settings.ai.provider, { apiKey: event.target.value })}
+                  onSave={(value) => updateAiProvider(settings.ai.provider, { apiKey: value })}
                 />
               </label>
               <label>
                 API URL
-                <input
+                <DraftInput
                   value={settings.ai.providers[settings.ai.provider].apiUrl}
-                  onChange={(event) => void updateAiProvider(settings.ai.provider, { apiUrl: event.target.value })}
+                  onSave={(value) => updateAiProvider(settings.ai.provider, { apiUrl: value })}
                 />
               </label>
               <label>
@@ -4530,7 +4587,7 @@ function AdminApp() {
               {settings.template.aiPresets.map((preset) => (
                 <article className="ai-preset-card" key={preset.id}>
                   <div className="ai-preset-fields">
-                    <input value={preset.name} onChange={(event) => void saveAiPreset({ ...preset, name: event.target.value })} />
+                    <DraftInput value={preset.name} onSave={(value) => saveAiPreset({ ...preset, name: value })} />
                     <DraftTextarea value={preset.prompt} onSave={(value) => saveAiPreset({ ...preset, prompt: value })} />
                   </div>
                   <label className="check-row">
@@ -4632,13 +4689,13 @@ function AudioCueCard({
         </label>
         <label>
           Volume
-          <input
+          <DraftInput
             type="number"
             min="0"
             max="1"
             step="0.05"
             value={cue.volume}
-            onChange={(event) => void onSave({ ...cue, volume: Number(event.target.value) })}
+            onSave={(value) => onSave({ ...cue, volume: Number(value) })}
           />
         </label>
         <label className="check-row compact-check">
@@ -4653,7 +4710,7 @@ function AudioCueCard({
       {cue.channel === 'voice' && (
         <label>
           Spoken text
-          <input value={cue.text} onChange={(event) => void onSave({ ...cue, text: event.target.value })} />
+          <DraftInput value={cue.text} onSave={(value) => onSave({ ...cue, text: value })} />
         </label>
       )}
       <div className="audio-file-row">
@@ -4798,6 +4855,42 @@ function FaceAssetPreviewApp() {
   );
 }
 
+function DraftInput({
+  value,
+  onSave,
+  onFocus,
+  onBlur,
+  ...rest
+}: {
+  value: string | number;
+  onSave: (value: string) => void | Promise<unknown>;
+} & Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'defaultValue' | 'onChange'>) {
+  const valueText = String(value);
+  const [draft, setDraft] = useState(valueText);
+  const [isFocused, setIsFocused] = useState(false);
+
+  useEffect(() => {
+    if (!isFocused) setDraft(valueText);
+  }, [isFocused, valueText]);
+
+  return (
+    <input
+      {...rest}
+      value={draft}
+      onFocus={(event) => {
+        setIsFocused(true);
+        onFocus?.(event);
+      }}
+      onChange={(event) => setDraft(event.target.value)}
+      onBlur={(event) => {
+        setIsFocused(false);
+        onBlur?.(event);
+        if (draft !== valueText) void onSave(draft);
+      }}
+    />
+  );
+}
+
 function DraftTextarea({
   value,
   placeholder,
@@ -4921,13 +5014,13 @@ function FaceAssetNumberField({
   return (
     <label>
       <span>{label}</span>
-      <input
+      <DraftInput
         type="number"
         min={min}
         max={max}
         step={step}
         value={value}
-        onChange={(event) => void onChange(Number(event.target.value))}
+        onSave={(next) => onChange(Number(next))}
       />
     </label>
   );
@@ -5152,13 +5245,13 @@ function CameraControlPanel({
             value={value}
             onChange={(event) => onChange(key, Number(event.target.value))}
           />
-          <input
+          <DraftInput
             type="number"
             min={min}
             max={max}
             step={step}
             value={value}
-            onChange={(event) => onChange(key, Number(event.target.value))}
+            onSave={(next) => onChange(key, Number(next))}
           />
         </div>
       </label>
