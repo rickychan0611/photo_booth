@@ -983,7 +983,7 @@ button:disabled {
   display: grid;
   gap: clamp(8px, 1.4vh, 14px);
   justify-items: center;
-  padding: clamp(78px, 10vh, 96px) clamp(56px, 8vw, 84px) 0;
+  padding: clamp(78px, 10vh, 96px) clamp(20px, 3vw, 32px) 0;
   pointer-events: none;
 }
 
@@ -1009,7 +1009,7 @@ button:disabled {
   flex-wrap: wrap;
   justify-content: center;
   align-items: start;
-  gap: 10px 14px;
+  gap: 10px;
 }
 
 .design-card-grid.face-pack-card-grid {
@@ -1031,10 +1031,10 @@ button:disabled {
 }
 
 .face-pack-card-grid .face-pack-choice span {
-  width: calc(var(--face-pack-btn-size) + 24px);
-  margin-inline: -12px;
+  width: calc(var(--face-pack-btn-size));
+  margin-inline: -6px;
   min-height: 1.8em;
-  font-size: clamp(8px, 1.1vw, 11px);
+  font-size: clamp(10px, 1.1vw, 11px);
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.85);
   -webkit-line-clamp: 2;
 }
@@ -3878,8 +3878,8 @@ button:disabled {
 
   .face-pack-top {
     padding-top: clamp(88px, 12vh, 112px);
-    padding-left: clamp(64px, 9vw, 96px);
-    padding-right: clamp(64px, 9vw, 96px);
+    padding-left: clamp(20px, 3vw, 36px);
+    padding-right: clamp(20px, 3vw, 36px);
   }
 
   .selection-screen {

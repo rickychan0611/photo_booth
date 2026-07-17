@@ -130,6 +130,7 @@ function GuestApp() {
   const [selectedTemplateId, setSelectedTemplateId] = useState('');
   const [selectedDesignId, setSelectedDesignId] = useState('');
   const [guestFaceAssetPackId, setGuestFaceAssetPackId] = useState<string | null>(null);
+  const facePackShowcaseGenRef = useRef(0);
   const [pendingPrint, setPendingPrint] = useState<PendingPrint | null>(null);
   const [selectedBeautyLevel, setSelectedBeautyLevel] = useState(0);
   const [selectedColorFilterId, setSelectedColorFilterId] = useState('normal');
@@ -1052,6 +1053,50 @@ function GuestApp() {
   }, [settings?.template.faceAssetPacks]);
 
   useEffect(() => {
+    if (step !== 'facePack' || !settings) return undefined;
+    const packs = settings.template.faceAssetPacks.filter(isGuestSelectableFacePack);
+    if (packs.length === 0) {
+      setGuestFaceAssetPackId(null);
+      return undefined;
+    }
+
+    const gen = ++facePackShowcaseGenRef.current;
+    let index = 0;
+    let timer = 0;
+
+    const applyPack = (packId: string | null) => {
+      if (facePackShowcaseGenRef.current !== gen) return;
+      void playAudioCue(settings, 'button');
+      setGuestFaceAssetPackId(packId);
+      faceOverlayStabilizerRef.current.reset();
+      if (packId) {
+        const pack = packs.find((candidate) => candidate.id === packId);
+        void preloadFaceAssetPack(pack).catch((error) => {
+          console.warn('Showcase face assets preload skipped.', error);
+        });
+      }
+    };
+
+    const tick = () => {
+      if (facePackShowcaseGenRef.current !== gen) return;
+      if (index < packs.length) {
+        applyPack(packs[index].id);
+        index += 1;
+        timer = window.setTimeout(tick, 400);
+        return;
+      }
+      applyPack(null);
+    };
+
+    timer = window.setTimeout(tick, 2000);
+
+    return () => {
+      window.clearTimeout(timer);
+      if (facePackShowcaseGenRef.current === gen) facePackShowcaseGenRef.current += 1;
+    };
+  }, [settings, step]);
+
+  useEffect(() => {
     const canvas = faceOverlayCanvasRef.current;
     const showFaceOverlay = step === 'capture' || step === 'facePack';
     if (!settings || !canvas || !showFaceOverlay) {
@@ -1144,6 +1189,7 @@ function GuestApp() {
   };
 
   const selectFacePack = (packId: string | null) => {
+    facePackShowcaseGenRef.current += 1;
     if (settings) void playAudioCue(settings, 'button');
     setGuestFaceAssetPackId(packId);
     if (settings && packId) {
@@ -1157,6 +1203,7 @@ function GuestApp() {
 
   const confirmFacePack = () => {
     if (isBusy) return;
+    facePackShowcaseGenRef.current += 1;
     if (settings) void playAudioCue(settings, 'button');
     setStep('intro');
     void startSession(selectedTemplateId, selectedDesign);
