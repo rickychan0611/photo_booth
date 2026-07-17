@@ -285,12 +285,6 @@ button:disabled {
   outline-color: rgba(255, 255, 255, 0.72);
 }
 
-.face-pack-ok-button.kiosk-button--pressed:not(:disabled) {
-  background: #fff;
-  color: #000;
-  outline: none;
-}
-
 @media (hover: none) {
   .booth-button.kiosk-button:hover:not(:disabled),
   .booth-button.primary.kiosk-button:hover:not(:disabled),
@@ -298,11 +292,26 @@ button:disabled {
   .fullscreen-button.kiosk-button:hover,
   .face-debug-toggle.kiosk-button:hover,
   .queue-keypad .kiosk-button:hover:not(:disabled),
-  .phone-keypad .kiosk-button:hover:not(:disabled),
   .queue-keypad-panel .booth-button.primary.kiosk-button:hover:not(:disabled),
   .style-card.kiosk-button:hover:not(:disabled) {
     background: transparent;
     color: #fff;
+  }
+
+  .phone-keypad .kiosk-button:hover:not(:disabled):not(.kiosk-button--pressed) {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+  }
+
+  .phone-action-row .phone-submit-button:hover:not(:disabled),
+  .phone-action-row .phone-skip-button:hover:not(:disabled) {
+    background: transparent;
+    color: #fff;
+  }
+
+  .phone-action-row .phone-submit-button.ready:hover:not(:disabled) {
+    background: #fff;
+    color: #000;
   }
 
   .thanks-restart-button.kiosk-button:hover,
@@ -483,8 +492,21 @@ button:disabled {
   letter-spacing: 0.06em;
 }
 
-.queue-keypad button:hover:not(:disabled),
-.queue-keypad button:focus-visible,
+.phone-keypad .kiosk-button:hover:not(:disabled),
+.phone-keypad .kiosk-button:focus-visible:not(.kiosk-button--pressed) {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  outline: none;
+}
+
+.phone-keypad .kiosk-button.kiosk-button--pressed:not(:disabled) {
+  background: #fff;
+  color: #000;
+  outline: none;
+}
+
+.queue-keypad:not(.phone-keypad) button:hover:not(:disabled),
+.queue-keypad:not(.phone-keypad) button:focus-visible,
 .queue-refresh-button:hover:not(:disabled),
 .queue-refresh-button:focus-visible {
   background: #fff;
@@ -875,7 +897,7 @@ button:disabled {
 
 .design-card.selected .design-preview,
 .design-card.selected .face-pack-none-preview {
-  outline: 2px solid #fff;
+  outline: 2px solid #ffd400;
   outline-offset: 2px;
 }
 
@@ -933,18 +955,18 @@ button:disabled {
   pointer-events: none;
   background: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0.42) 0%,
-    rgba(0, 0, 0, 0.08) 22%,
+    rgba(0, 0, 0, 0.62) 0%,
+    rgba(0, 0, 0, 0.28) 18%,
     rgba(0, 0, 0, 0) 42%,
-    rgba(0, 0, 0, 0.55) 78%,
-    rgba(0, 0, 0, 0.82) 100%
+    rgba(0, 0, 0, 0) 100%
   );
 }
 
 .face-pack-ui .guest-back-button {
   position: absolute;
-  top: clamp(16px, 3vh, 32px);
+  top: 24px;
   left: clamp(12px, 3vw, 24px);
+  z-index: 5;
   pointer-events: auto;
   background: rgba(0, 0, 0, 0.45);
 }
@@ -953,51 +975,99 @@ button:disabled {
   pointer-events: auto;
 }
 
-.face-pack-ui .face-pack-instruction {
+.face-pack-top {
   position: absolute;
-  top: clamp(72px, 9vh, 96px);
-  left: 50%;
-  transform: translateX(-50%);
+  top: 0;
+  left: 0;
+  right: 0;
+  display: grid;
+  gap: clamp(8px, 1.4vh, 14px);
+  justify-items: center;
+  padding: clamp(78px, 10vh, 96px) clamp(56px, 8vw, 84px) 0;
+  pointer-events: none;
+}
+
+.face-pack-top > * {
+  pointer-events: auto;
+}
+
+.face-pack-ui .face-pack-instruction {
+  position: static;
+  transform: none;
   margin: 0;
   width: min(80vw, 560px);
   text-align: center;
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.9);
   pointer-events: none;
-}
-
-.face-pack-controls {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: grid;
-  gap: clamp(12px, 2vh, 20px);
-  justify-items: center;
-  padding: 0 clamp(12px, 3vw, 24px) clamp(18px, 4vh, 36px);
-  pointer-events: none;
-}
-
-.face-pack-controls > * {
-  pointer-events: auto;
+  font-size: clamp(14px, 2.2vw, 20px);
 }
 
 .face-pack-card-grid {
-  width: min(1040px, 100%);
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
+  --face-pack-btn-size: 46px;
+  width: min(1080px, 100%);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: start;
+  gap: 10px 14px;
 }
 
 .design-card-grid.face-pack-card-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: none;
 }
 
-.face-pack-card-grid .design-card span {
+.face-pack-card-grid .face-pack-choice {
+  width: var(--face-pack-btn-size);
+  gap: 4px;
+}
+
+.face-pack-card-grid .face-pack-choice .design-preview,
+.face-pack-card-grid .face-pack-choice .face-pack-none-preview {
+  width: var(--face-pack-btn-size);
+  height: var(--face-pack-btn-size);
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.face-pack-card-grid .face-pack-choice span {
+  width: calc(var(--face-pack-btn-size) + 24px);
+  margin-inline: -12px;
+  min-height: 1.8em;
+  font-size: clamp(8px, 1.1vw, 11px);
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.85);
+  -webkit-line-clamp: 2;
+}
+
+.face-pack-ok-row {
+  width: min(1080px, 100%);
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
 }
 
 .face-pack-ok-button {
-  min-width: min(280px, 80vw);
+  min-height: 42px;
+  padding: 10px 20px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 300;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+  text-shadow: none;
+  box-sizing: border-box;
+}
+
+.face-pack-ok-button.kiosk-button--pressed:not(:disabled) {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+  opacity: 1;
 }
 
 .design-card span {
@@ -2109,6 +2179,43 @@ button:disabled {
   padding: 14px 20px;
   font-size: clamp(14px, 2vw, 16px);
   letter-spacing: 0.14em;
+}
+
+.phone-action-row .phone-submit-button.ready:not(:disabled) {
+  background: #fff;
+  color: #000;
+}
+
+.phone-action-row .phone-submit-button:hover:not(:disabled),
+.phone-action-row .phone-submit-button:focus-visible,
+.phone-action-row .phone-submit-button.ready:hover:not(:disabled),
+.phone-action-row .phone-submit-button.ready:focus-visible,
+.phone-action-row .phone-skip-button:hover:not(:disabled),
+.phone-action-row .phone-skip-button:focus-visible {
+  background: transparent;
+  color: #fff;
+  outline: none;
+}
+
+.phone-action-row .phone-submit-button.ready:hover:not(:disabled),
+.phone-action-row .phone-submit-button.ready:focus-visible {
+  background: #fff;
+  color: #000;
+}
+
+.phone-action-row .phone-submit-button.kiosk-button--pressed:not(:disabled),
+.phone-action-row .phone-skip-button.kiosk-button--pressed:not(:disabled) {
+  background: #fff;
+  color: #000;
+}
+
+.phone-keypad .phone-key-icon-button {
+  display: grid;
+  place-items: center;
+}
+
+.phone-keypad .phone-key-icon-button svg {
+  display: block;
 }
 
 .phone-consent-list {
@@ -3695,11 +3802,6 @@ button:disabled {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .design-card-grid.face-pack-card-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 8px;
-  }
-
   .workflow-grid {
     grid-template-columns: 1fr;
   }
@@ -3763,6 +3865,21 @@ button:disabled {
     right: clamp(20px, 4vw, 42px);
     width: 56px;
     height: 56px;
+  }
+
+  .face-pack-card-grid {
+    --face-pack-btn-size: 56px;
+  }
+
+  .face-pack-ui .guest-back-button {
+    top: clamp(20px, 3vh, 42px);
+    left: clamp(20px, 4vw, 42px);
+  }
+
+  .face-pack-top {
+    padding-top: clamp(88px, 12vh, 112px);
+    padding-left: clamp(64px, 9vw, 96px);
+    padding-right: clamp(64px, 9vw, 96px);
   }
 
   .selection-screen {

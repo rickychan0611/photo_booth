@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type InputHTMLAttributes } from 'react';
 import QRCode from 'qrcode';
-import { ArrowUp, Camera, Copy, Download, Expand, ExternalLink, FolderOpen, Globe, Image, Minimize2, Printer, RefreshCw, RotateCw, Settings, SlidersHorizontal, Sparkles, Trash2, X } from 'lucide-react';
+import { ArrowLeft, ArrowUp, Camera, Copy, Download, Expand, ExternalLink, FolderOpen, Globe, Image, Minimize2, Printer, RefreshCw, RotateCw, Settings, SlidersHorizontal, Sparkles, Trash2, X } from 'lucide-react';
 import type { AiPreset, AiProvider, AiQueueItem, AppSettings, AudioCue, BoothSession, CameraControlSettings, CameraRotation, Capture, ColorFilterPreset, ColorFilterValues, FaceAsset, FaceAssetPack, FaceAssetPlacement, Gallery, GalleryUploadStatus, QueueSnapshot, SavedPhoto, TemplateDesign, TemplateLayout, TemplateSlot, TemplateWorkflowSettings } from './types';
 import { createBlankTemplateLayout, createGuideTemplateImage, createTemplatedPhotoLayer, createTemplatedPrintImage, createTemplatedPrintImageFromLayer, defaultTemplateScreenCue, defaultTemplateShotAudioCue, getPrimarySlot, MAX_PHOTOS_TO_TAKE, normalizePhotosToTake, normalizeTemplateLayoutForClient, normalizeTemplateWorkflow, templateDimensions } from './template';
 import { FaceAssetStabilizer, FaceTracker, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceDebugInfo, isGuestSelectableFacePack, loadFaceLandmarker, preloadFaceAssetPack, resolveGuestFaceAssetPack } from './faceAssets';
@@ -1692,13 +1692,21 @@ function GuestApp() {
             >
               {buttonText('BACK')}
             </KioskButton>
-            <p className="instruction face-pack-instruction">CHOOSE YOUR STICKERS</p>
-            <div className="face-pack-controls">
+            <div className="face-pack-top">
+              <p className="instruction face-pack-instruction">CHOOSE YOUR STICKERS</p>
               <div className="design-card-grid face-pack-card-grid">
+                <KioskButton
+                  className={`design-card face-pack-choice face-pack-none-card${guestFaceAssetPackId === null ? ' selected' : ''}`}
+                  onPress={() => selectFacePack(null)}
+                  disabled={isBusy}
+                >
+                  <div className="design-preview face-pack-none-preview" />
+                  <span>NO Stickers</span>
+                </KioskButton>
                 {selectableGuestFacePacks.map((pack) => (
                   <KioskButton
                     key={pack.id}
-                    className={`design-card${guestFaceAssetPackId === pack.id ? ' selected' : ''}`}
+                    className={`design-card face-pack-choice${guestFaceAssetPackId === pack.id ? ' selected' : ''}`}
                     onPress={() => selectFacePack(pack.id)}
                     disabled={isBusy}
                   >
@@ -1706,22 +1714,16 @@ function GuestApp() {
                     <span>{pack.name.toUpperCase()}</span>
                   </KioskButton>
                 ))}
+              </div>
+              <div className="face-pack-ok-row">
                 <KioskButton
-                  className={`design-card face-pack-none-card${guestFaceAssetPackId === null ? ' selected' : ''}`}
-                  onPress={() => selectFacePack(null)}
+                  className="face-pack-ok-button"
+                  onPress={confirmFacePack}
                   disabled={isBusy}
                 >
-                  <div className="design-preview face-pack-none-preview" />
-                  <span>NO Stickers</span>
+                  NEXT
                 </KioskButton>
               </div>
-              <KioskButton
-                className="booth-button primary face-pack-ok-button"
-                onPress={confirmFacePack}
-                disabled={isBusy}
-              >
-                {buttonText('OK')}
-              </KioskButton>
             </div>
           </div>
         </section>
@@ -1951,12 +1953,17 @@ function GuestApp() {
                   className="phone-keypad"
                   disabled={isBusy}
                   value={phoneNumber}
-                  onDigit={appendPhoneDigit}
+                  onDigit={(digit) => {
+                    void playAudioCue(settings, 'button');
+                    appendPhoneDigit(digit);
+                  }}
                   onClear={() => {
+                    void playAudioCue(settings, 'button');
                     setPhoneNumber('');
                     setPhoneEntryMessage('');
                   }}
                   onBackspace={() => {
+                    void playAudioCue(settings, 'button');
                     setPhoneEntryMessage('');
                     setPhoneNumber((current) => current.slice(0, -1));
                   }}
@@ -1989,7 +1996,20 @@ function GuestApp() {
                 </div>
                 <div className="phone-action-row">
                   <KioskButton
-                    className="booth-button"
+                    className="booth-button phone-skip-button"
+                    onPress={skipPhoneEntry}
+                    disabled={isBusy}
+                  >
+                    Skip
+                  </KioskButton>
+                  <KioskButton
+                    className={`booth-button phone-submit-button${
+                      !isBusy &&
+                      phoneNumber.replace(/\D/g, '').length >= 7 &&
+                      (galleryConsent || marketingConsent)
+                        ? ' ready'
+                        : ''
+                    }`}
                     onPress={submitPhoneNumber}
                     disabled={
                       isBusy ||
@@ -1998,13 +2018,6 @@ function GuestApp() {
                     }
                   >
                     Submit
-                  </KioskButton>
-                  <KioskButton
-                    className="booth-button"
-                    onPress={skipPhoneEntry}
-                    disabled={isBusy}
-                  >
-                    Skip
                   </KioskButton>
                 </div>
                 {phoneEntryMessage && <p className="phone-entry-message">{phoneEntryMessage}</p>}
@@ -2056,6 +2069,7 @@ function DigitKeypad({
   onBackspace: () => void;
   onClear: () => void;
 }) {
+  const useIcons = className.includes('phone-keypad');
   return (
     <div className={`queue-keypad${className ? ` ${className}` : ''}`}>
       {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((digit) => (
@@ -2063,11 +2077,25 @@ function DigitKeypad({
           {digit}
         </KioskButton>
       ))}
-      <KioskButton onPress={onClear} disabled={disabled || !value}>Clear</KioskButton>
+      <KioskButton
+        className={useIcons ? 'phone-key-icon-button' : undefined}
+        onPress={onClear}
+        disabled={disabled || !value}
+        aria-label="Clear"
+      >
+        {useIcons ? <X size={22} strokeWidth={2} /> : 'Clear'}
+      </KioskButton>
       <KioskButton onPress={() => onDigit('0')} disabled={disabled}>
         0
       </KioskButton>
-      <KioskButton onPress={onBackspace} disabled={disabled || !value}>Back</KioskButton>
+      <KioskButton
+        className={useIcons ? 'phone-key-icon-button' : undefined}
+        onPress={onBackspace}
+        disabled={disabled || !value}
+        aria-label="Back"
+      >
+        {useIcons ? <ArrowLeft size={22} strokeWidth={2} /> : 'Back'}
+      </KioskButton>
     </div>
   );
 }
