@@ -2836,6 +2836,17 @@ button:disabled {
   letter-spacing: 0.04em;
 }
 
+.phone-entry-hint {
+  margin: -2px 0 0;
+  max-width: min(360px, 88vw);
+  color: #fff;
+  font-size: clamp(15px, 2.1vw, 20px);
+  font-weight: 300;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
 .phone-action-row {
   display: flex;
   align-items: center;

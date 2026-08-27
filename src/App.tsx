@@ -1187,11 +1187,6 @@ function GuestApp() {
     setSelectedDesignId(design.id);
     setGuestFaceAssetPackId(null);
     setSelectedCaptureIndexes([]);
-    const hasSelectablePacks = settings?.template.faceAssetPacks.some(isGuestSelectableFacePack) ?? false;
-    if (hasSelectablePacks) {
-      setStep('facePack');
-      return;
-    }
     setStep('intro');
     void startSession(design.templateId, design);
   };
@@ -2035,8 +2030,9 @@ function GuestApp() {
           <div className="thanks-content">
             {!phoneSubmitted ? (
               <>
-                <p className="thanks-copy">Enter your phone # to view / download your photo at <span className="thanks-site">vibobooth.com</span>.</p>
+                <p className="thanks-copy">Enter your phone # to access / share your photo at <span className="thanks-site">vibobooth.com</span>.</p>
                 <div className="phone-entry-display">{formatPhoneNumber(phoneNumber) || 'Phone number'}</div>
+                <p className="phone-entry-hint">Please press slowly. The sensor may be delayed.</p>
                 <DigitKeypad
                   className="phone-keypad"
                   disabled={isBusy}
@@ -5781,7 +5777,7 @@ const addQrToPrintDataUrl = async (printDataUrl: string, qrDataUrl: string) => {
   const y = canvas.height - qrSize - paddingBottom;
 
   const line1 = ' ';
-  const line2 = 'Scan to Download Photo/Video @ ViboBooth.com';
+  const line2 = 'Scan to Download';
   const textGap = Math.max(2, Math.round(qrSize * 0.04));
   const lineHeight = (qrSize - textGap) / 2;
   const fontSize = Math.max(5, Math.round(lineHeight * 0.78 * 0.5));
