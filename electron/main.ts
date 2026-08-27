@@ -34,7 +34,8 @@ import type {
   TemplateDesign,
   TemplateLayout,
   TemplateStyleId,
-  TemplateUploadRequest
+  TemplateUploadRequest,
+  WorkflowShotSettings
 } from './types';
 
 let guestWindow: BrowserWindow | null = null;
@@ -169,10 +170,19 @@ const defaultAudioSettings = (): AppSettings['audio'] => ({
     intro: defaultAudioCue('intro', 'Intro screen', "Let's take pictures."),
     select: defaultAudioCue('select', 'Photo selection screen', 'Please choose your favorite pictures to print.'),
     thanks: defaultAudioCue('thanks', 'Finish screen', 'Thank you. Please pick up your print.'),
+    facePack: defaultAudioCue('facePack', 'Face assets screen', 'Please choose your face accessories.'),
     shot0: defaultAudioCue('shot0', 'Picture 1 message', 'Get ready!'),
     shot1: defaultAudioCue('shot1', 'Picture 2 message', 'Smile!'),
     shot2: defaultAudioCue('shot2', 'Picture 3 message', 'Switch it up!'),
     shot3: defaultAudioCue('shot3', 'Picture 4 message', 'Final pose!'),
+    shot4: defaultAudioCue('shot4', 'Picture 5 message', 'New pose!'),
+    shot5: defaultAudioCue('shot5', 'Picture 6 message', 'Big smile!'),
+    shot6: defaultAudioCue('shot6', 'Picture 7 message', 'Something silly!'),
+    shot7: defaultAudioCue('shot7', 'Picture 8 message', 'Strike a pose!'),
+    shot8: defaultAudioCue('shot8', 'Picture 9 message', 'One more!'),
+    shot9: defaultAudioCue('shot9', 'Picture 10 message', 'Change it up!'),
+    shot10: defaultAudioCue('shot10', 'Picture 11 message', 'Almost there!'),
+    shot11: defaultAudioCue('shot11', 'Picture 12 message', 'Final pose!'),
     countdown3: defaultAudioCue('countdown3', 'Countdown 3', '3'),
     countdown2: defaultAudioCue('countdown2', 'Countdown 2', '2'),
     countdown1: defaultAudioCue('countdown1', 'Countdown 1', '1'),
@@ -182,12 +192,45 @@ const defaultAudioSettings = (): AppSettings['audio'] => ({
   }
 });
 
-const defaultWorkflowShots = (): AppSettings['workflow']['shots'] => [
-  { message: 'Get Ready!', cameraBeforeMessageMs: 3000, messageMs: 2000, cameraBeforeCountdownMs: 3000 },
-  { message: 'Smile!', cameraBeforeMessageMs: 3000, messageMs: 2000, cameraBeforeCountdownMs: 3000 },
-  { message: 'Switch It Up!', cameraBeforeMessageMs: 3000, messageMs: 2000, cameraBeforeCountdownMs: 3000 },
-  { message: 'Final Pose!', cameraBeforeMessageMs: 3000, messageMs: 2000, cameraBeforeCountdownMs: 3000 }
+const defaultWorkflowShots = (): WorkflowShotSettings[] => [
+  { message: 'Get Ready!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+  { message: 'Smile!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+  { message: 'Switch It Up!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+  { message: 'Final Pose!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+  { message: 'New Pose!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+  { message: 'Big Smile!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+  { message: 'Something Silly!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+  { message: 'Strike A Pose!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+  { message: 'One More!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+  { message: 'Change It Up!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+  { message: 'Almost There!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+  { message: 'Final Pose!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 }
 ];
+
+const defaultWorkflowSettings = (): AppSettings['workflow'] => ({
+  introMessage: "Let's take pictures!",
+  introMs: 2000,
+  printAutoSelectMs: 20000,
+  thankYouMessage: 'THANK YOU!',
+  thankYouMs: 3000,
+  shots: defaultWorkflowShots()
+});
+
+const normalizeWorkflowSettings = (
+  workflow?: Partial<AppSettings['workflow']>
+): AppSettings['workflow'] => {
+  const fallback = defaultWorkflowSettings();
+  const sourceShots = workflow?.shots?.length ? workflow.shots : workflow?.photo ? [workflow.photo] : [];
+  const { photo: _legacyPhoto, shots: _sourceShots, ...current } = workflow ?? {};
+  return {
+    ...fallback,
+    ...current,
+    shots: fallback.shots.map((shot, index) => ({
+      ...shot,
+      ...(sourceShots[index] ?? {})
+    }))
+  };
+};
 
 const defaultTemplateShotAudioCue = (scopeId: string, index: number, text: string): AppSettings['audio']['cues'][string] => ({
   id: `${scopeId}-shot-${index}`,
@@ -289,14 +332,7 @@ const defaultSettings = (): AppSettings => ({
     colorFilterPresets: defaultColorFilterPresets(),
     designs: []
   },
-  workflow: {
-    introMessage: "Let's take 4 pictures!",
-    introMs: 2000,
-    printAutoSelectMs: 20000,
-    thankYouMessage: 'THANK YOU!',
-    thankYouMs: 3000,
-    shots: defaultWorkflowShots()
-  },
+  workflow: defaultWorkflowSettings(),
   printPicker: {
     showSingle: true,
     showGrid: true,
@@ -310,6 +346,12 @@ const defaultSettings = (): AppSettings => ({
     bottomBleedIn: 0.26
   }
 });
+
+const eventStoredPath = (eventFolder: string, candidatePath: string) => {
+  if (!candidatePath) return '';
+  const relative = path.relative(path.resolve(eventFolder), path.resolve(candidatePath));
+  return relative && !relative.startsWith('..') && !path.isAbsolute(relative) ? candidatePath : '';
+};
 
 async function ensureEventFolders(eventFolder: string) {
   await fs.mkdir(path.join(eventFolder, 'originals'), { recursive: true });
@@ -371,14 +413,7 @@ const normalizeLoadedSettings = (parsed: Partial<AppSettings>, fallback = defaul
         normalizeTemplateDesign(design, isLegacyTemplateStyle)
       )
     },
-    workflow: {
-      ...fallback.workflow,
-      ...(parsed.workflow ?? {}),
-      shots: fallback.workflow.shots.map((shot, index) => ({
-        ...shot,
-        ...(parsed.workflow?.shots?.[index] ?? {})
-      }))
-    },
+    workflow: normalizeWorkflowSettings(parsed.workflow),
     printPicker: {
       ...fallback.printPicker,
       ...(parsed.printPicker ?? {})
@@ -403,7 +438,8 @@ const normalizeLoadedSettings = (parsed: Partial<AppSettings>, fallback = defaul
 async function readSettingsFile(filePath: string): Promise<AppSettings> {
   const raw = await fs.readFile(filePath, 'utf8');
   const parsed = JSON.parse(raw) as Partial<AppSettings>;
-  const merged = normalizeLoadedSettings(parsed);
+  const merged = dropStaleHostVoiceFiles(normalizeLoadedSettings(parsed));
+  merged.template.logoPath = eventStoredPath(merged.eventFolder, merged.template.logoPath);
   if ((parsed.template?.styleVersion ?? 0) < 2) await migrateLegacyTemplateFolders(merged.eventFolder);
   await ensureEventFolders(merged.eventFolder);
   return merged;
@@ -436,8 +472,10 @@ async function writeSettings(settings: AppSettings): Promise<AppSettings> {
     beautyFilter: normalizeBeautyFilterSettings(settings.beautyFilter),
     ai: normalizeAiSettings(settings.ai),
     audio: normalizeAudioSettings(settings.audio),
+    workflow: normalizeWorkflowSettings(settings.workflow),
     template: {
       ...settings.template,
+      logoPath: eventStoredPath(settings.eventFolder, settings.template.logoPath),
       styleVersion: 3,
       layouts: (settings.template.layouts ?? []).map(normalizeTemplateLayout),
       aiPresets: settings.template.aiPresets.map(normalizeAiPreset),
@@ -451,14 +489,18 @@ async function writeSettings(settings: AppSettings): Promise<AppSettings> {
     printerEnabled: settings.printerEnabled !== false,
     printCalibration: normalizePrintCalibration(settings.printCalibration)
   };
-  await ensureEventFolders(normalized.eventFolder);
-  const serialized = `${JSON.stringify(normalized, null, 2)}${os.EOL}`;
+  const cleaned = dropStaleHostVoiceFiles(normalized);
+  await ensureEventFolders(cleaned.eventFolder);
+  const serialized = `${JSON.stringify(cleaned, null, 2)}${os.EOL}`;
   await fs.writeFile(settingsTempPath(), serialized, 'utf8');
   if (await fileExists(settingsPath())) {
     await fs.copyFile(settingsPath(), settingsBackupPath());
   }
   await fs.rename(settingsTempPath(), settingsPath());
-  return normalized;
+  for (const win of BrowserWindow.getAllWindows()) {
+    if (!win.isDestroyed()) win.webContents.send('settings:changed', cleaned);
+  }
+  return cleaned;
 }
 
 type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
@@ -745,6 +787,31 @@ const hostVoiceOutputPath = (settings: AppSettings, cue: AppSettings['audio']['c
     safeTemplateName(settings.audio.voiceName || 'voice'),
     `${safeAudioCueId(cue.id)}-${hostVoiceHash(settings, cue, text)}.wav`
   );
+
+const isGeneratedHostVoicePath = (filePath: string) => /[\\/]audio[\\/]generated[\\/]/i.test(filePath);
+
+// A generated file name embeds a hash of the engine, voice, speed and text, so
+// a path that no longer matches the cue points at a recording of different
+// words or a different voice. Drop it rather than let the booth speak it.
+const hasStaleHostVoiceFile = (settings: AppSettings, cue: AppSettings['audio']['cues'][string]) => {
+  if (cue.mode !== 'host' || !cue.filePath || !isGeneratedHostVoicePath(cue.filePath)) return false;
+  const expected = hostVoiceOutputPath(settings, cue, cue.text.trim());
+  return path.normalize(cue.filePath).toLowerCase() !== path.normalize(expected).toLowerCase();
+};
+
+const dropStaleHostVoiceFiles = (settings: AppSettings): AppSettings => {
+  const entries = Object.entries(settings.audio.cues);
+  if (!entries.some(([, cue]) => hasStaleHostVoiceFile(settings, cue))) return settings;
+  return {
+    ...settings,
+    audio: {
+      ...settings.audio,
+      cues: Object.fromEntries(
+        entries.map(([id, cue]) => [id, hasStaleHostVoiceFile(settings, cue) ? { ...cue, filePath: '' } : cue])
+      )
+    }
+  };
+};
 
 const resolveTtsExecutable = async (settings: AppSettings) => {
   const engine = settings.audio.voiceEngine;
@@ -2921,11 +2988,11 @@ app.whenReady().then(async () => {
         colorFilterPresets: normalizeColorFilterPresets(partial.template?.colorFilterPresets ?? current.template.colorFilterPresets),
         designs: (partial.template?.designs ?? current.template.designs).map((design) => normalizeTemplateDesign(design))
       },
-      workflow: {
+      workflow: normalizeWorkflowSettings({
         ...current.workflow,
         ...(partial.workflow ?? {}),
         shots: partial.workflow?.shots ?? current.workflow.shots
-      },
+      }),
       printPicker: {
         ...current.printPicker,
         ...(partial.printPicker ?? {})
@@ -2988,6 +3055,27 @@ app.whenReady().then(async () => {
     };
     const result = parent ? await dialog.showOpenDialog(parent, options) : await dialog.showOpenDialog(options);
     return result.canceled ? '' : result.filePaths[0];
+  });
+  ipcMain.handle('event:upload-idle-logo', async () => {
+    const parent = modalParent();
+    const options = {
+      properties: ['openFile'] as Array<'openFile'>,
+      filters: [{ name: 'Logo Images', extensions: ['png', 'jpg', 'jpeg', 'webp'] }]
+    };
+    const result = parent ? await dialog.showOpenDialog(parent, options) : await dialog.showOpenDialog(options);
+    const sourcePath = result.canceled ? '' : result.filePaths[0] ?? '';
+    if (!sourcePath) return null;
+
+    const settings = await readSettings();
+    const brandingFolder = path.join(settings.eventFolder, 'branding');
+    await fs.mkdir(brandingFolder, { recursive: true });
+    const extension = path.extname(sourcePath).toLowerCase() || '.png';
+    const targetPath = path.join(brandingFolder, `idle-logo-${Date.now()}${extension}`);
+    await fs.copyFile(sourcePath, targetPath);
+    return writeSettings({
+      ...settings,
+      template: { ...settings.template, logoPath: targetPath }
+    });
   });
   ipcMain.handle('audio:upload-cue', async (_event, cueId: string) => uploadAudioCue(cueId));
   ipcMain.handle('audio:remove-cue', async (_event, cueId: string) => removeAudioCue(cueId));

@@ -29,10 +29,10 @@ const DEFAULT_PRINT_CALIBRATION: PrintCalibrationSettings = {
 };
 
 export const DEFAULT_WORKFLOW_SHOTS: WorkflowShotSettings[] = [
-  { message: 'Get Ready!', cameraBeforeMessageMs: 3000, messageMs: 2000, cameraBeforeCountdownMs: 3000 },
-  { message: 'Smile!', cameraBeforeMessageMs: 3000, messageMs: 2000, cameraBeforeCountdownMs: 3000 },
-  { message: 'Switch It Up!', cameraBeforeMessageMs: 3000, messageMs: 2000, cameraBeforeCountdownMs: 3000 },
-  { message: 'Final Pose!', cameraBeforeMessageMs: 3000, messageMs: 2000, cameraBeforeCountdownMs: 3000 }
+  { message: 'Get Ready!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+  { message: 'Smile!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+  { message: 'Switch It Up!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+  { message: 'Final Pose!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 }
 ];
 
 export const defaultTemplateShotAudioCue = (scopeId: string, index: number, text: string): AudioCue => ({

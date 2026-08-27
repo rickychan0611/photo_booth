@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, 
 import QRCode from 'qrcode';
 import { ArrowLeft, ArrowUp, Camera, Copy, Download, Expand, ExternalLink, FolderOpen, Globe, Image, Minimize2, Printer, RefreshCw, RotateCw, Settings, SlidersHorizontal, Sparkles, Trash2, X } from 'lucide-react';
 import type { AiPreset, AiProvider, AiQueueItem, AppSettings, AudioCue, BoothSession, CameraControlSettings, CameraRotation, Capture, ColorFilterPreset, ColorFilterValues, FaceAsset, FaceAssetPack, FaceAssetPlacement, Gallery, GalleryUploadStatus, QueueSnapshot, SavedPhoto, TemplateDesign, TemplateLayout, TemplateSlot, TemplateWorkflowSettings } from './types';
-import { createBlankTemplateLayout, createGuideTemplateImage, createTemplatedPhotoLayer, createTemplatedPrintImage, createTemplatedPrintImageFromLayer, defaultTemplateScreenCue, defaultTemplateShotAudioCue, getPrimarySlot, MAX_PHOTOS_TO_TAKE, normalizePhotosToTake, normalizeTemplateLayoutForClient, normalizeTemplateWorkflow, templateDimensions } from './template';
+import { createBlankTemplateLayout, createGuideTemplateImage, createTemplatedPhotoLayer, createTemplatedPrintImage, createTemplatedPrintImageFromLayer, getPrimarySlot, MAX_PHOTOS_TO_TAKE, normalizePhotosToTake, normalizeTemplateLayoutForClient, normalizeTemplateWorkflow, templateDimensions } from './template';
 import { FaceAssetStabilizer, FaceTracker, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceDebugInfo, isGuestSelectableFacePack, loadFaceLandmarker, preloadFaceAssetPack, resolveGuestFaceAssetPack } from './faceAssets';
 import { applyFaceBeauty } from './beauty';
 import {
@@ -89,6 +89,7 @@ function useSettings() {
 
   useEffect(() => {
     void window.photoBooth.getSettings().then(setSettings);
+    return window.photoBooth.onSettingsChanged(setSettings);
   }, []);
 
   const refreshSettings = async () => {
@@ -118,6 +119,7 @@ function GuestApp() {
   const query = new URLSearchParams(window.location.search);
   const shouldOpenPickerPreview = query.get('preview') === 'picker';
   const { settings } = useSettings();
+  const [welcomeLogoSrc, setWelcomeLogoSrc] = useState('');
   const [step, setStep] = useState<GuestStep>('welcome');
   const [countdown, setCountdown] = useState<number | null>(null);
   const [captureMessage, setCaptureMessage] = useState('');
@@ -191,8 +193,29 @@ function GuestApp() {
   );
   const selectedTemplate = templateLayouts.find((layout) => layout.id === selectedTemplateId) ?? templateLayouts[0] ?? null;
   const selectedDesign = activeDesigns.find((design) => design.id === selectedDesignId) ?? null;
-  const selectedWorkflow = selectedTemplate ? workflowForDesign(selectedTemplate, selectedDesign) : null;
+  const selectedWorkflow = settings && selectedTemplate ? workflowForTemplate(settings, selectedTemplate) : null;
   const selectableGuestFacePacks = settings?.template.faceAssetPacks.filter(isGuestSelectableFacePack) ?? [];
+
+  useEffect(() => {
+    let active = true;
+    const logoPath = settings?.template.logoPath;
+    if (!logoPath) {
+      setWelcomeLogoSrc('');
+      return undefined;
+    }
+    setWelcomeLogoSrc('');
+    void window.photoBooth
+      .getImageDataUrl(logoPath)
+      .then((dataUrl) => {
+        if (active) setWelcomeLogoSrc(dataUrl);
+      })
+      .catch(() => {
+        if (active) setWelcomeLogoSrc('');
+      });
+    return () => {
+      active = false;
+    };
+  }, [settings?.template.logoPath]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -293,12 +316,7 @@ function GuestApp() {
     const layout = settings.template.layouts
       .map(normalizeTemplateLayoutForClient)
       .find((item) => item.id === selectedTemplateId);
-    const activeTemplateIds = new Set(settings.template.layouts.map((item) => item.id));
-    const design =
-      settings.template.designs.find(
-        (item) => item.active && activeTemplateIds.has(item.templateId) && item.id === selectedDesignId
-      ) ?? null;
-    const workflow = layout ? workflowForDesign(layout, design) : null;
+    const workflow = layout ? workflowForTemplate(settings, layout) : null;
 
     if (step === 'intro') void playAudioCueObject(settings, workflow?.screenCues?.intro, workflow?.introMessage);
     if (step === 'facePack') void playAudioCueObject(settings, workflow?.screenCues?.facePack, 'Please choose your face accessories.');
@@ -1164,17 +1182,7 @@ function GuestApp() {
     };
   }, [activeFacePack, settings?.cameraRotation, settings?.mirrorPreview, step]);
 
-  const chooseTemplate = (templateId: string) => {
-    if (settings) void playAudioCue(settings, 'button');
-    const firstDesign = activeDesigns.find((design) => design.templateId === templateId);
-    setSelectedTemplateId(templateId);
-    setSelectedDesignId(firstDesign?.id ?? '');
-    setSelectedCaptureIndexes([]);
-    setStep(firstDesign ? 'design' : 'style');
-  };
-
-  const chooseDesign = (design: TemplateDesign) => {
-    if (settings) void playAudioCue(settings, 'button');
+  const continueAfterDesignSelection = (design: TemplateDesign) => {
     setSelectedTemplateId(design.templateId);
     setSelectedDesignId(design.id);
     setGuestFaceAssetPackId(null);
@@ -1186,6 +1194,39 @@ function GuestApp() {
     }
     setStep('intro');
     void startSession(design.templateId, design);
+  };
+
+  const stepBeforeFacePack = () => {
+    const templateDesignCount = activeDesigns.filter((design) => design.templateId === selectedTemplateId).length;
+    if (templateDesignCount > 1) return 'design' as const;
+    if (selectableTemplates.length === 1) return 'welcome' as const;
+    return 'style' as const;
+  };
+
+  const chooseTemplate = (templateId: string) => {
+    if (settings) void playAudioCue(settings, 'button');
+    const templateDesigns = activeDesigns.filter((design) => design.templateId === templateId);
+    const firstDesign = templateDesigns[0];
+    if (!firstDesign) {
+      setSelectedTemplateId(templateId);
+      setSelectedDesignId('');
+      setSelectedCaptureIndexes([]);
+      setStep('style');
+      return;
+    }
+    if (templateDesigns.length === 1) {
+      continueAfterDesignSelection(firstDesign);
+      return;
+    }
+    setSelectedTemplateId(templateId);
+    setSelectedDesignId(firstDesign.id);
+    setSelectedCaptureIndexes([]);
+    setStep('design');
+  };
+
+  const chooseDesign = (design: TemplateDesign) => {
+    if (settings) void playAudioCue(settings, 'button');
+    continueAfterDesignSelection(design);
   };
 
   const selectFacePack = (packId: string | null) => {
@@ -1255,7 +1296,7 @@ function GuestApp() {
     if (!settings || isBusy) return;
     const layout = templateLayouts.find((item) => item.id === templateId);
     if (!layout) return;
-    const workflow = workflowForDesign(layout, design);
+    const workflow = workflowForTemplate(settings, layout);
     const runId = sessionRunRef.current + 1;
     sessionRunRef.current = runId;
     setError('');
@@ -1669,8 +1710,8 @@ function GuestApp() {
             TAP TO START
           </KioskButton>
           <div className="welcome-brand-stack">
-            <img className="welcome-logo" src={`${import.meta.env.BASE_URL}vibo-logo.png`} alt="Vibo Booth" />
-            <p className="welcome-site">vibobooth.com</p>
+            {welcomeLogoSrc && <img className="welcome-logo" src={welcomeLogoSrc} alt="Event logo" />}
+            <p className="welcome-tagline">welcome</p>
           </div>
         </section>
       )}
@@ -1682,12 +1723,12 @@ function GuestApp() {
           <div className="style-card-grid">
             {selectableTemplates.map((layout) => {
               const count = activeDesigns.filter((design) => design.templateId === layout.id).length;
+              const shots = normalizePhotosToTake(layout.photosToTake, layout.photoWindows.length);
               return (
                 <KioskButton key={layout.id} className="style-card" onPress={() => chooseTemplate(layout.id)} disabled={count === 0}>
                   <TemplateGuestPreview layout={layout} />
                   <span>{layout.name.toUpperCase()}</span>
-                  <small>{layout.photoWindows.length} PHOTO{layout.photoWindows.length === 1 ? '' : 'S'}</small>
-                  <small>{count} DESIGN{count === 1 ? '' : 'S'}</small>
+                  <small>{shots} SHOT{shots === 1 ? '' : 'S'}</small>
                 </KioskButton>
               );
             })}
@@ -1733,7 +1774,7 @@ function GuestApp() {
               className="guest-back-button"
               onPress={() => {
                 void playAudioCue(settings, 'button');
-                setStep('design');
+                setStep(stepBeforeFacePack());
               }}
               disabled={isBusy}
             >
@@ -2578,25 +2619,16 @@ function ColorFilterStudio({
 function TemplateDesignAdminCard({
   design,
   settings,
-  layout,
   onSave,
   onUpdateAsset,
-  onDelete,
-  onUploadTemplateAudioCue,
-  onRemoveTemplateAudioCue,
-  onGenerateTemplateCue
+  onDelete
 }: {
   design: TemplateDesign;
   settings: AppSettings;
-  layout: TemplateLayout;
   onSave: (design: TemplateDesign) => Promise<void>;
   onUpdateAsset: (design: TemplateDesign, role: 'preview' | 'frame') => Promise<void>;
   onDelete: (design: TemplateDesign) => Promise<void>;
-  onUploadTemplateAudioCue: (cue: AudioCue) => Promise<AudioCue>;
-  onRemoveTemplateAudioCue: (cue: AudioCue) => Promise<AudioCue>;
-  onGenerateTemplateCue: (cue: AudioCue, playAfterGenerate?: boolean) => Promise<AudioCue>;
 }) {
-  const workflow = workflowForDesign(layout, design);
   return (
     <article className="template-design-admin">
       <TemplateImagePreview design={design} />
@@ -2641,32 +2673,6 @@ function TemplateDesignAdminCard({
         />
         Record session video
       </label>
-      <label className="check-row">
-        <input
-          type="checkbox"
-          checked={Boolean(design.workflowOverrideEnabled)}
-          onChange={(event) =>
-            void onSave({
-              ...design,
-              workflowOverrideEnabled: event.target.checked,
-              workflowOverride: event.target.checked ? workflow : undefined
-            })
-          }
-        />
-        Override workflow
-      </label>
-      {design.workflowOverrideEnabled && (
-        <TemplateWorkflowEditor
-          workflow={workflow}
-          shotCount={normalizePhotosToTake(layout.photosToTake, layout.photoWindows.length)}
-          cueScopeId={`design-${design.id}`}
-          settings={settings}
-          onChange={(workflowOverride) => void onSave({ ...design, workflowOverride })}
-          onUploadCue={onUploadTemplateAudioCue}
-          onRemoveCue={onRemoveTemplateAudioCue}
-          onGenerateCue={onGenerateTemplateCue}
-        />
-      )}
       <div className="template-path-note">
         <span>Preview: {shortPath(templatePreviewPath(design))}</span>
         <span>Print frame: {shortPath(templateFramePath(design))}</span>
@@ -2681,177 +2687,6 @@ function TemplateDesignAdminCard({
   );
 }
 
-function TemplateWorkflowEditor({
-  workflow,
-  shotCount,
-  cueScopeId,
-  settings,
-  onChange,
-  onUploadCue,
-  onRemoveCue,
-  onGenerateCue
-}: {
-  workflow: TemplateWorkflowSettings;
-  shotCount: number;
-  cueScopeId: string;
-  settings: AppSettings;
-  onChange: (workflow: TemplateWorkflowSettings) => void;
-  onUploadCue: (cue: AudioCue) => Promise<AudioCue>;
-  onRemoveCue: (cue: AudioCue) => Promise<AudioCue>;
-  onGenerateCue: (cue: AudioCue, playAfterGenerate?: boolean) => Promise<AudioCue>;
-}) {
-  const normalized = normalizeTemplateWorkflow(workflow, shotCount);
-  const updateShot = (index: number, partial: Partial<TemplateWorkflowSettings['shots'][number]>) => {
-    const shots = normalized.shots.map((shot, shotIndex) => (shotIndex === index ? { ...shot, ...partial } : shot));
-    onChange({ ...normalized, shots });
-  };
-  const screenCue = (cueId: 'intro' | 'select' | 'thanks' | 'facePack') => {
-    const defaults = {
-      intro: defaultTemplateScreenCue(cueScopeId, 'intro', 'Intro screen voice', normalized.introMessage),
-      select: defaultTemplateScreenCue(cueScopeId, 'select', 'Photo selection voice', 'Please choose your favorite pictures to print.'),
-      thanks: defaultTemplateScreenCue(cueScopeId, 'thanks', 'Finish screen voice', normalized.thankYouMessage),
-      facePack: defaultTemplateScreenCue(cueScopeId, 'facePack', 'Face assets screen voice', 'Please choose your face accessories.')
-    };
-    return {
-      ...defaults[cueId],
-      ...(normalized.screenCues?.[cueId] ?? {}),
-      id: normalized.screenCues?.[cueId]?.id || `${cueScopeId}-${cueId}`,
-      channel: 'voice' as const
-    };
-  };
-  const saveScreenCue = async (cueId: 'intro' | 'select' | 'thanks' | 'facePack', cue: AudioCue) => {
-    onChange({
-      ...normalized,
-      screenCues: {
-        ...normalized.screenCues,
-        [cueId]: { ...cue, updatedAt: new Date().toISOString() }
-      }
-    });
-  };
-  const shotCue = (shot: TemplateWorkflowSettings['shots'][number], index: number) => ({
-    ...defaultTemplateShotAudioCue(cueScopeId, index, shot.message),
-    ...(shot.audioCue ?? {}),
-    id: shot.audioCue?.id || `${cueScopeId}-shot-${index}`,
-    label: `Picture ${index + 1} voice`,
-    channel: 'voice' as const,
-    text: shot.audioCue?.text ?? shot.message
-  });
-  const saveShotCue = async (index: number, cue: AudioCue) => {
-    updateShot(index, { audioCue: { ...cue, updatedAt: new Date().toISOString() } });
-  };
-  return (
-    <div className="workflow-shot template-workflow-panel">
-      <h2>Template workflow</h2>
-      <div className="workflow-grid">
-        <label>
-          Intro message
-          <DraftInput
-            value={normalized.introMessage}
-            onSave={(value) =>
-              onChange({
-                ...normalized,
-                introMessage: value,
-                screenCues: {
-                  ...normalized.screenCues,
-                  intro: { ...screenCue('intro'), text: value }
-                }
-              })
-            }
-          />
-        </label>
-        <label>
-          Intro seconds
-          <DraftInput type="number" min="0" step="0.5" value={msToSeconds(normalized.introMs)} onSave={(value) => onChange({ ...normalized, introMs: secondsToMs(value) })} />
-        </label>
-        <label>
-          Auto print seconds
-          <DraftInput type="number" min="0" step="1" value={msToSeconds(normalized.printAutoSelectMs)} onSave={(value) => onChange({ ...normalized, printAutoSelectMs: secondsToMs(value) })} />
-        </label>
-        <label>
-          Thank you seconds
-          <DraftInput type="number" min="1" step="0.5" value={msToSeconds(normalized.thankYouMs)} onSave={(value) => onChange({ ...normalized, thankYouMs: secondsToMs(value) })} />
-        </label>
-      </div>
-      <label>
-        Thank you message
-        <DraftInput
-          value={normalized.thankYouMessage}
-          onSave={(value) =>
-            onChange({
-              ...normalized,
-              thankYouMessage: value,
-              screenCues: {
-                ...normalized.screenCues,
-                thanks: { ...screenCue('thanks'), text: value }
-              }
-            })
-          }
-        />
-      </label>
-      <div className="audio-cue-group template-screen-cues">
-        <h2>Screen voice</h2>
-        <div className="audio-cue-grid">
-          {(['intro', 'select', 'thanks', 'facePack'] as const).map((cueId) => {
-            const cue = screenCue(cueId);
-            return (
-              <AudioCueCard
-                key={cueId}
-                cue={cue}
-                settings={settings}
-                onSave={(updatedCue) => saveScreenCue(cueId, updatedCue)}
-                onUpload={async () => saveScreenCue(cueId, await onUploadCue(cue))}
-                onRemove={async () => saveScreenCue(cueId, await onRemoveCue(cue))}
-                onGenerate={async (_cueId, playAfterGenerate) => saveScreenCue(cueId, await onGenerateCue(cue, playAfterGenerate))}
-                onTest={(updatedCue) => updatedCue.mode === 'host' && !updatedCue.filePath ? void onGenerateCue(updatedCue, true).then((generated) => saveScreenCue(cueId, generated)) : playAudioCueObject(settings, updatedCue)}
-              />
-            );
-          })}
-        </div>
-      </div>
-      <div className="workflow-shots compact">
-        {normalized.shots.map((shot, index) => (
-          <div className="workflow-shot" key={index}>
-            <h2>Picture {index + 1}</h2>
-            <label>
-              Message
-              <DraftInput
-                value={shot.message}
-                onSave={(value) => {
-                  const cue = shotCue(shot, index);
-                  updateShot(index, { message: value, audioCue: { ...cue, text: value } });
-                }}
-              />
-            </label>
-            <div className="workflow-grid">
-              <label>
-                Camera before message
-                <DraftInput type="number" min="0" step="0.5" value={msToSeconds(shot.cameraBeforeMessageMs)} onSave={(value) => updateShot(index, { cameraBeforeMessageMs: secondsToMs(value) })} />
-              </label>
-              <label>
-                Message time
-                <DraftInput type="number" min="0" step="0.5" value={msToSeconds(shot.messageMs)} onSave={(value) => updateShot(index, { messageMs: secondsToMs(value) })} />
-              </label>
-              <label>
-                Camera before countdown
-                <DraftInput type="number" min="0" step="0.5" value={msToSeconds(shot.cameraBeforeCountdownMs)} onSave={(value) => updateShot(index, { cameraBeforeCountdownMs: secondsToMs(value) })} />
-              </label>
-            </div>
-            <AudioCueCard
-              cue={shotCue(shot, index)}
-              settings={settings}
-              onSave={(cue) => saveShotCue(index, cue)}
-              onUpload={async () => saveShotCue(index, await onUploadCue(shotCue(shot, index)))}
-              onRemove={async () => saveShotCue(index, await onRemoveCue(shotCue(shot, index)))}
-              onGenerate={async (_cueId, playAfterGenerate) => saveShotCue(index, await onGenerateCue(shotCue(shot, index), playAfterGenerate))}
-              onTest={(cue) => cue.mode === 'host' && !cue.filePath ? void onGenerateCue(cue, true).then((updated) => saveShotCue(index, updated)) : playAudioCueObject(settings, cue, shot.message)}
-            />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 function TemplateCreator({
   initialLayout,
   onCancel,
@@ -2862,6 +2697,10 @@ function TemplateCreator({
   onSave: (layout: TemplateLayout) => void;
 }) {
   const [layout, setLayout] = useState(() => normalizeTemplateLayoutForClient(initialLayout));
+  const [selectedWindowIndexes, setSelectedWindowIndexes] = useState<number[]>([]);
+  const [guideImage, setGuideImage] = useState<{ src: string; name: string } | null>(null);
+  const [guideVisible, setGuideVisible] = useState(true);
+  const [guideOpacity, setGuideOpacity] = useState(50);
   const [drag, setDrag] = useState<null | {
     id: number;
     mode: 'move' | 'resize';
@@ -2870,6 +2709,7 @@ function TemplateCreator({
     slot: TemplateSlot;
   }>(null);
   const paperRef = useRef<HTMLDivElement>(null);
+  const guideInputRef = useRef<HTMLInputElement>(null);
 
   const updateWindows = (updater: (windows: TemplateSlot[]) => TemplateSlot[]) => {
     setLayout((current) => {
@@ -2936,34 +2776,91 @@ function TemplateCreator({
       };
       return [...windows.slice(0, index + 1), duplicate, ...windows.slice(index + 1)];
     });
+    setSelectedWindowIndexes((selected) => selected.map((selectedIndex) => selectedIndex > index ? selectedIndex + 1 : selectedIndex));
   };
 
-  const alignTop = () => {
-    updateWindows((windows) => {
-      if (windows.length < 2) return windows;
-      const top = Math.min(...windows.map((slot) => slot.y));
-      return windows.map((slot) => ({ ...slot, y: top }));
-    });
+  const removeWindow = (index: number) => {
+    updateWindows((windows) => windows.filter((_item, itemIndex) => itemIndex !== index));
+    setSelectedWindowIndexes((selected) => selected[0] === index
+      ? []
+      : selected
+        .filter((selectedIndex) => selectedIndex !== index)
+        .map((selectedIndex) => selectedIndex > index ? selectedIndex - 1 : selectedIndex));
   };
 
-  const distributeSameGap = () => {
+  const clamp = (value: number, maximum: number) => Math.max(0, Math.min(maximum, value));
+
+  const alignSelected = (alignment: 'left' | 'horizontalCenter' | 'right' | 'top' | 'verticalCenter' | 'bottom') => {
     updateWindows((windows) => {
-      if (windows.length < 3) return windows;
-      const sorted = [...windows].sort((a, b) => a.x - b.x);
-      const first = sorted[0];
-      const last = sorted[sorted.length - 1];
-      const left = first.x;
-      const right = last.x + last.width;
-      const totalWidth = sorted.reduce((sum, slot) => sum + slot.width, 0);
-      const gap = Math.max(0, (right - left - totalWidth) / (sorted.length - 1));
-      let nextX = left;
-      const positions = new Map<TemplateSlot, number>();
-      sorted.forEach((slot) => {
-        positions.set(slot, Math.max(0, Math.min(layout.paperWidth - slot.width, nextX)));
-        nextX += slot.width + gap;
+      const [masterIndex, ...followerIndexes] = selectedWindowIndexes;
+      const master = windows[masterIndex];
+      if (!master || followerIndexes.length === 0) return windows;
+      const followers = new Set(followerIndexes);
+      return windows.map((slot, index) => {
+        if (!followers.has(index)) return slot;
+        if (alignment === 'left') return { ...slot, x: clamp(master.x, layout.paperWidth - slot.width) };
+        if (alignment === 'horizontalCenter') return { ...slot, x: clamp(master.x + (master.width - slot.width) / 2, layout.paperWidth - slot.width) };
+        if (alignment === 'right') return { ...slot, x: clamp(master.x + master.width - slot.width, layout.paperWidth - slot.width) };
+        if (alignment === 'top') return { ...slot, y: clamp(master.y, layout.paperHeight - slot.height) };
+        if (alignment === 'verticalCenter') return { ...slot, y: clamp(master.y + (master.height - slot.height) / 2, layout.paperHeight - slot.height) };
+        return { ...slot, y: clamp(master.y + master.height - slot.height, layout.paperHeight - slot.height) };
       });
-      return windows.map((slot) => ({ ...slot, x: positions.get(slot) ?? slot.x }));
     });
+  };
+
+  const matchSelectedDimension = (dimension: 'width' | 'height') => {
+    updateWindows((windows) => {
+      const [masterIndex, ...followerIndexes] = selectedWindowIndexes;
+      const master = windows[masterIndex];
+      if (!master || followerIndexes.length === 0) return windows;
+      const followers = new Set(followerIndexes);
+      return windows.map((slot, index) => {
+        if (!followers.has(index)) return slot;
+        if (dimension === 'width') {
+          return {
+            ...slot,
+            width: master.width,
+            x: clamp(slot.x, layout.paperWidth - master.width)
+          };
+        }
+        return {
+          ...slot,
+          height: master.height,
+          y: clamp(slot.y, layout.paperHeight - master.height)
+        };
+      });
+    });
+  };
+
+  const toggleWindowSelection = (index: number) => {
+    setSelectedWindowIndexes((selected) => {
+      if (selected[0] === index) return selected;
+      return selected.includes(index)
+        ? selected.filter((selectedIndex) => selectedIndex !== index)
+        : [...selected, index];
+    });
+  };
+
+  const openGuidePicker = () => {
+    if (!guideInputRef.current) return;
+    guideInputRef.current.value = '';
+    guideInputRef.current.click();
+  };
+
+  const loadGuideImage = (file: File | undefined) => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result !== 'string') return;
+      setGuideImage({ src: reader.result, name: file.name });
+      setGuideVisible(true);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const removeGuideImage = () => {
+    setGuideImage(null);
+    if (guideInputRef.current) guideInputRef.current.value = '';
   };
 
   const paperPoint = (event: React.PointerEvent) => {
@@ -2996,6 +2893,7 @@ function TemplateCreator({
   };
 
   const saveDisabled = layout.name.trim().length === 0 || layout.photoWindows.length === 0;
+  const selectionReady = selectedWindowIndexes.length >= 2;
 
   return (
     <div className="template-creator-overlay">
@@ -3007,8 +2905,48 @@ function TemplateCreator({
           </label>
           <button onClick={rotatePaper}><RotateCw size={16} />Rotate paper</button>
           <button onClick={addWindow}><Image size={16} />Add photo window</button>
-          <button onClick={alignTop} disabled={layout.photoWindows.length < 2}>Align top</button>
-          <button onClick={distributeSameGap} disabled={layout.photoWindows.length < 3}>Same gap</button>
+          <section className="template-selection-tools" aria-label="Photo window alignment">
+            <div>
+              <strong>Align selection</strong>
+              <span>{selectionReady ? `Master + ${selectedWindowIndexes.length - 1} follower${selectedWindowIndexes.length === 2 ? '' : 's'}` : 'Shift-click a master, then followers'}</span>
+            </div>
+            <div className="template-alignment-grid">
+              <button disabled={!selectionReady} onClick={() => alignSelected('left')}>Left</button>
+              <button disabled={!selectionReady} onClick={() => alignSelected('horizontalCenter')}>H center</button>
+              <button disabled={!selectionReady} onClick={() => alignSelected('right')}>Right</button>
+              <button disabled={!selectionReady} onClick={() => alignSelected('top')}>Top</button>
+              <button disabled={!selectionReady} onClick={() => alignSelected('verticalCenter')}>V center</button>
+              <button disabled={!selectionReady} onClick={() => alignSelected('bottom')}>Bottom</button>
+            </div>
+            <div className="template-match-grid">
+              <button disabled={!selectionReady} onClick={() => matchSelectedDimension('width')}>Match width</button>
+              <button disabled={!selectionReady} onClick={() => matchSelectedDimension('height')}>Match height</button>
+            </div>
+          </section>
+          <section className="template-guide-tools" aria-label="Tracing guide">
+            <div>
+              <strong>Tracing guide</strong>
+              <span>{guideImage?.name ?? 'Session only — never saved'}</span>
+            </div>
+            <input
+              ref={guideInputRef}
+              className="template-guide-input"
+              type="file"
+              accept="image/*"
+              onChange={(event) => loadGuideImage(event.target.files?.[0])}
+            />
+            <button onClick={openGuidePicker}>{guideImage ? 'Replace guide' : 'Upload guide'}</button>
+            {guideImage && (
+              <>
+                <button onClick={() => setGuideVisible((visible) => !visible)}>{guideVisible ? 'Hide guide' : 'Show guide'}</button>
+                <label className="template-guide-opacity">
+                  Opacity {guideOpacity}%
+                  <input type="range" min="5" max="100" value={guideOpacity} onChange={(event) => setGuideOpacity(Number(event.target.value))} />
+                </label>
+                <button onClick={removeGuideImage}>Remove guide</button>
+              </>
+            )}
+          </section>
           <button disabled={saveDisabled} onClick={() => onSave(normalizeTemplateLayoutForClient(layout))}>Save template</button>
           <button onClick={onCancel}>Cancel</button>
         </aside>
@@ -3019,11 +2957,25 @@ function TemplateCreator({
             onPointerMove={onPointerMove}
             onPointerUp={() => setDrag(null)}
             onPointerLeave={() => setDrag(null)}
+            onPointerDown={(event) => {
+              if (event.target !== event.currentTarget) return;
+              setSelectedWindowIndexes([]);
+              setDrag(null);
+            }}
           >
+            {guideImage && guideVisible && (
+              <img
+                className="template-guide-image"
+                src={guideImage.src}
+                alt=""
+                draggable={false}
+                style={{ opacity: guideOpacity / 100 }}
+              />
+            )}
             {layout.photoWindows.map((slot, index) => (
               <div
                 key={index}
-                className="template-window-box"
+                className={`template-window-box${selectedWindowIndexes[0] === index ? ' is-master' : selectedWindowIndexes.includes(index) ? ' is-follower' : ''}${guideImage && guideVisible ? ' has-guide' : ''}`}
                 style={{
                   left: `${(slot.x / layout.paperWidth) * 100}%`,
                   top: `${(slot.y / layout.paperHeight) * 100}%`,
@@ -3031,11 +2983,19 @@ function TemplateCreator({
                   height: `${(slot.height / layout.paperHeight) * 100}%`
                 }}
                 onPointerDown={(event) => {
+                  if (event.shiftKey) {
+                    event.preventDefault();
+                    toggleWindowSelection(index);
+                    setDrag(null);
+                    return;
+                  }
                   const point = paperPoint(event);
                   setDrag({ id: index, mode: 'move', startX: point.x, startY: point.y, slot });
                 }}
               >
                 <span className="template-window-number">{index + 1}</span>
+                {selectedWindowIndexes[0] === index && <span className="template-window-selection-role">Master</span>}
+                {selectedWindowIndexes[0] !== index && selectedWindowIndexes.includes(index) && <span className="template-window-selection-role">Follower</span>}
                 <button
                   className="template-window-rotate"
                   onPointerDown={(event) => event.stopPropagation()}
@@ -3059,7 +3019,7 @@ function TemplateCreator({
                 <button
                   className="template-window-delete"
                   onPointerDown={(event) => event.stopPropagation()}
-                  onClick={() => updateWindows((windows) => windows.filter((_item, itemIndex) => itemIndex !== index))}
+                  onClick={() => removeWindow(index)}
                 >
                   <Trash2 size={14} />
                 </button>
@@ -3102,6 +3062,7 @@ function AdminApp() {
   const [editingTemplate, setEditingTemplate] = useState<TemplateLayout | null>(null);
   const [selectedFaceAssetPackId, setSelectedFaceAssetPackId] = useState('');
   const [selectedColorFilterId, setSelectedColorFilterId] = useState('');
+  const [selectedWorkflowShotIndex, setSelectedWorkflowShotIndex] = useState(0);
   const [aiPresetDraft, setAiPresetDraft] = useState({ name: '', prompt: '' });
   const [galleryUploadStatus, setGalleryUploadStatus] = useState<GalleryUploadStatus>({
     state: 'idle',
@@ -3219,13 +3180,30 @@ function AdminApp() {
     return next;
   };
 
+  const saveWorkflowShot = (index: number, partial: Partial<TemplateWorkflowSettings['shots'][number]>) => {
+    const shots = settings.workflow.shots.map((shot, shotIndex) =>
+      shotIndex === index ? { ...shot, ...partial } : shot
+    );
+    return saveMessage({ workflow: { ...settings.workflow, shots } }, `Photo ${index + 1} workflow saved.`);
+  };
+
   const saveAudioSettings = async (audio: AppSettings['audio'], text = 'Audio saved.') => {
+    const voiceChanged =
+      audio.voiceEngine !== settings.audio.voiceEngine ||
+      audio.voiceName !== settings.audio.voiceName ||
+      audio.speed !== settings.audio.speed;
     const next = await saveMessage({ audio }, text);
+    // Changing the voice invalidates every cached recording, so the lines stay
+    // silent until they are rebuilt.
+    if (voiceChanged && Object.values(next.audio.cues).some((cue) => cue.mode === 'host' && !cue.filePath)) {
+      setMessage('Voice changed. Press "Generate all host lines" to rebuild the spoken lines.');
+    }
     return next.audio;
   };
 
   const saveAudioCue = async (cue: AudioCue, text = 'Audio cue saved.') => {
-    await saveAudioSettings(
+    const textChanged = (settings.audio.cues[cue.id]?.text ?? '') !== cue.text;
+    const nextAudio = await saveAudioSettings(
       {
         ...settings.audio,
         cues: {
@@ -3235,6 +3213,19 @@ function AdminApp() {
       },
       text
     );
+    // New words mean the cached recording was discarded; rebuild it now so the
+    // cue does not fall silent mid-event.
+    const savedCue = nextAudio.cues[cue.id];
+    if (
+      textChanged &&
+      nextAudio.enableHostVoice &&
+      savedCue?.mode === 'host' &&
+      savedCue.channel === 'voice' &&
+      savedCue.text.trim() &&
+      !savedCue.filePath
+    ) {
+      await generateHostVoiceCue(cue.id);
+    }
   };
 
   const uploadAudioCue = async (cueId: string) => {
@@ -3270,31 +3261,6 @@ function AdminApp() {
     const result = await window.photoBooth.generateAllHostVoiceCues();
     await updateSettings(result.settings);
     setMessage(result.ok ? 'All host voice lines generated.' : result.error ?? 'Host voice generation failed.');
-  };
-
-  const uploadTemplateAudioCue = async (cue: AudioCue) => {
-    const updated = await window.photoBooth.uploadTemplateAudioCue(cue);
-    if (!updated) return cue;
-    setMessage('Template audio uploaded.');
-    return updated;
-  };
-
-  const removeTemplateAudioCue = async (cue: AudioCue) => {
-    const updated = await window.photoBooth.removeTemplateAudioCue(cue);
-    setMessage('Template audio cleared.');
-    return updated;
-  };
-
-  const generateTemplateHostVoiceCue = async (cue: AudioCue, playAfterGenerate = false) => {
-    setMessage('Generating template host voice...');
-    const result = await window.photoBooth.generateTemplateHostVoiceCue(cue);
-    if (!result.ok || !result.cue) {
-      setMessage(result.error ?? 'Host voice generation failed.');
-      return cue;
-    }
-    setMessage('Template host voice generated.');
-    if (playAfterGenerate) void playAudioCueObject(settings, result.cue);
-    return result.cue;
   };
 
   const saveCameraControl = async (key: CameraControlKey, value: number) => {
@@ -3689,7 +3655,7 @@ function AdminApp() {
 
       <section className="admin-panel">
         <header className="admin-header">
-          <h1>{tab.toUpperCase()}</h1>
+          <h1>{adminTabLabel(tab)}</h1>
           {tab === 'template' && (
             <button className="admin-action" onClick={() => setTab('aiPresets')}>
               <Sparkles size={16} />AI Presets
@@ -3740,6 +3706,20 @@ function AdminApp() {
                   if (folder) await saveMessage({ eventFolder: folder }, 'Event folder saved.');
                   await refreshGallery();
                 }}>Choose</button>
+              </div>
+            </label>
+            <label>
+              Guest idle screen logo
+              <div className="inline-field">
+                <input value={settings.template.logoPath ? shortPath(settings.template.logoPath) : 'No logo uploaded'} readOnly />
+                <button onClick={async () => {
+                  const next = await window.photoBooth.uploadEventIdleLogo();
+                  if (next) {
+                    setMessage('Guest logo copied to the event folder.');
+                  }
+                }}>
+                  <Image size={16} />Upload logo
+                </button>
               </div>
             </label>
             <label>
@@ -4062,7 +4042,15 @@ function AdminApp() {
 
         {tab === 'workflow' && (
           <AdminSection>
-            <label>
+            <div className="admin-card workflow-session-card">
+              <div className="admin-card-header">
+                <div>
+                  <h2>Session flow</h2>
+                  <p>Shared by every template and design.</p>
+                </div>
+              </div>
+              <div className="workflow-grid workflow-session-grid">
+              <label>
               Intro message
               <DraftInput
                 value={settings.workflow.introMessage}
@@ -4116,10 +4104,97 @@ function AdminApp() {
                 onSave={(value) => saveMessage({ workflow: { ...settings.workflow, thankYouMs: secondsToMs(value) } }, 'Workflow saved.')}
               />
             </label>
+              </div>
+            </div>
 
-            <div className="workflow-shot audio-settings-panel">
+            {(() => {
+              const shots = settings.workflow.shots;
+              const shotIndex = Math.min(Math.max(selectedWorkflowShotIndex, 0), Math.max(shots.length - 1, 0));
+              const shot = shots[shotIndex];
+              if (!shot) return null;
+              const shotCue = settings.audio.cues[`shot${shotIndex}`];
+              return (
+                <div className="admin-card workflow-photo-card">
+                  <div className="admin-card-header workflow-photo-header">
+                    <div>
+                      <h2>Photo messages and voices</h2>
+                      <p>Each photo has its own message, timing, and voice. Templates use the first settings in order for their photo count.</p>
+                    </div>
+                    <label className="workflow-photo-picker">
+                      Editing
+                      <select
+                        value={shotIndex}
+                        onChange={(event) => setSelectedWorkflowShotIndex(Number(event.target.value))}
+                      >
+                        {shots.map((_item, index) => (
+                          <option key={index} value={index}>{`Photo ${index + 1} of ${shots.length}`}</option>
+                        ))}
+                      </select>
+                    </label>
+                  </div>
+                  <div className="workflow-photo-body">
+                    <div className="workflow-photo-settings">
+                      <label>
+                        Message
+                        <DraftInput
+                          value={shot.message}
+                          onSave={(value) => saveWorkflowShot(shotIndex, { message: value })}
+                        />
+                      </label>
+                      <div className="workflow-grid workflow-photo-timing-grid">
+                        <label>
+                          Camera before message
+                          <DraftInput
+                            type="number"
+                            min="0"
+                            step="0.5"
+                            value={msToSeconds(shot.cameraBeforeMessageMs)}
+                            onSave={(value) => saveWorkflowShot(shotIndex, { cameraBeforeMessageMs: secondsToMs(value) })}
+                          />
+                        </label>
+                        <label>
+                          Message time
+                          <DraftInput
+                            type="number"
+                            min="0"
+                            step="0.5"
+                            value={msToSeconds(shot.messageMs)}
+                            onSave={(value) => saveWorkflowShot(shotIndex, { messageMs: secondsToMs(value) })}
+                          />
+                        </label>
+                        <label>
+                          Camera before countdown
+                          <DraftInput
+                            type="number"
+                            min="0"
+                            step="0.5"
+                            value={msToSeconds(shot.cameraBeforeCountdownMs)}
+                            onSave={(value) => saveWorkflowShot(shotIndex, { cameraBeforeCountdownMs: secondsToMs(value) })}
+                          />
+                        </label>
+                      </div>
+                    </div>
+                    <div className="workflow-photo-voice">
+                      <AudioCueCard
+                        cue={shotCue ? { ...shotCue, label: `Photo ${shotIndex + 1} voice` } : undefined}
+                        settings={settings}
+                        onSave={saveAudioCue}
+                        onUpload={uploadAudioCue}
+                        onRemove={removeAudioCue}
+                        onGenerate={generateHostVoiceCue}
+                        onTest={(cue) => cue.mode === 'host' && !cue.filePath ? generateHostVoiceCue(cue.id, true) : playAudioCue(settings, cue.id)}
+                      />
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+            <div className="admin-card audio-settings-panel">
               <div className="panel-title-row">
-                <h2>Voice, music, and sound effects</h2>
+                <div>
+                  <h2>Voice engine and volume</h2>
+                  <p>Global playback levels and offline host voice settings.</p>
+                </div>
                 <label className="check-row compact-check">
                   <input
                     type="checkbox"
@@ -4197,10 +4272,15 @@ function AdminApp() {
               </p>
             </div>
 
-            <div className="audio-cue-group">
-              <h2>Screen voice</h2>
+            <div className="admin-card audio-cue-group">
+              <div className="admin-card-header">
+                <div>
+                  <h2>Screen voice</h2>
+                  <p>These voice cues are shared across every template.</p>
+                </div>
+              </div>
               <div className="audio-cue-grid">
-                {['welcome', 'style', 'design'].map((cueId) => (
+                {['welcome', 'style', 'design', 'intro', 'facePack', 'select', 'thanks'].map((cueId) => (
                   <AudioCueCard
                     key={cueId}
                     cue={settings.audio.cues[cueId]}
@@ -4215,8 +4295,13 @@ function AdminApp() {
               </div>
             </div>
 
-            <div className="audio-cue-group">
-              <h2>Countdown, music, and SFX</h2>
+            <div className="admin-card audio-cue-group">
+              <div className="admin-card-header">
+                <div>
+                  <h2>Countdown, music, and sound effects</h2>
+                  <p>Shared countdown voice, interface sounds, shutter, and background music.</p>
+                </div>
+              </div>
               <div className="audio-cue-grid">
                 {['countdown3', 'countdown2', 'countdown1', 'button', 'shutter', 'backgroundMusic'].map((cueId) => (
                   <AudioCueCard
@@ -4252,14 +4337,18 @@ function AdminApp() {
                   </div>
                   <div className="custom-template-layout">
                     <div className="template-list-panel">
+                      <div className="template-list-heading">
+                        <strong>Templates</strong>
+                        <span>{layouts.length}</span>
+                      </div>
                       {layouts.map((layout) => (
                         <button
                           key={layout.id}
                           className={selectedLayout?.id === layout.id ? 'active template-list-item' : 'template-list-item'}
                           onClick={() => setSelectedAdminTemplateId(layout.id)}
                         >
-                          <TemplateMini layout={layout} />
                           <span>{layout.name}</span>
+                          <TemplateMini layout={layout} />
                           <small>
                             {layout.active ? 'Active' : 'Inactive'} / {layout.orientation} / {layout.photoWindows.length} photo
                             {layout.photoWindows.length === 1 ? '' : 's'}
@@ -4332,29 +4421,15 @@ function AdminApp() {
                             </div>
                           </div>
                         </div>
-                        <TemplateWorkflowEditor
-                          workflow={selectedLayout.workflowDefaults}
-                          shotCount={normalizePhotosToTake(selectedLayout.photosToTake, selectedLayout.photoWindows.length)}
-                          cueScopeId={`template-${selectedLayout.id}`}
-                          settings={settings}
-                          onChange={(workflowDefaults) => void saveTemplateLayout({ ...selectedLayout, workflowDefaults })}
-                          onUploadCue={uploadTemplateAudioCue}
-                          onRemoveCue={removeTemplateAudioCue}
-                          onGenerateCue={generateTemplateHostVoiceCue}
-                        />
                         <div className="template-design-grid">
                           {selectedDesigns.map((design) => (
                             <TemplateDesignAdminCard
                               key={design.id}
                               design={design}
                               settings={settings}
-                              layout={selectedLayout}
                               onSave={saveTemplateDesign}
                               onUpdateAsset={updateTemplateAsset}
                               onDelete={deleteTemplateDesign}
-                              onUploadTemplateAudioCue={uploadTemplateAudioCue}
-                              onRemoveTemplateAudioCue={removeTemplateAudioCue}
-                              onGenerateTemplateCue={generateTemplateHostVoiceCue}
                             />
                           ))}
                         </div>
@@ -5814,6 +5889,19 @@ const msToSeconds = (ms: number) => Number((ms / 1000).toFixed(1));
 
 const secondsToMs = (value: string) => Math.max(0, Math.round(Number(value || 0) * 1000));
 
+const adminTabLabel = (tab: string) => ({
+  event: 'Event',
+  camera: 'Camera',
+  printer: 'Printer',
+  workflow: 'Workflow',
+  template: 'Template',
+  colorFilters: 'Color filters',
+  faceAssets: 'Face assets',
+  aiPresets: 'AI presets',
+  aiQueue: 'AI queue',
+  gallery: 'Gallery'
+} as Record<string, string>)[tab] ?? tab;
+
 const photoNumber = (name: string) => name.replace(/\.[^.]+$/, '');
 
 const displayedPhotoNumber = (savedName: string, session: BoothSession | null | undefined) =>
@@ -5828,11 +5916,28 @@ const shortPath = (filePath: string) => filePath.split(/[\\/]/).slice(-2).join('
 const printerForTemplate = (settings: AppSettings, layout: TemplateLayout) =>
   layout.printerName || settings.defaultPrinter;
 
-const workflowForDesign = (layout: TemplateLayout, design: TemplateDesign | null): TemplateWorkflowSettings => {
+const workflowForTemplate = (settings: AppSettings, layout: TemplateLayout): TemplateWorkflowSettings => {
   const shotCount = normalizePhotosToTake(layout.photosToTake, layout.photoWindows.length);
-  return design?.workflowOverrideEnabled && design.workflowOverride
-    ? normalizeTemplateWorkflow(design.workflowOverride, shotCount)
-    : normalizeTemplateWorkflow(layout.workflowDefaults, shotCount);
+  return {
+    introMessage: settings.workflow.introMessage,
+    introMs: settings.workflow.introMs,
+    printAutoSelectMs: settings.workflow.printAutoSelectMs,
+    thankYouMessage: settings.workflow.thankYouMessage,
+    thankYouMs: settings.workflow.thankYouMs,
+    screenCues: {
+      intro: settings.audio.cues.intro,
+      select: settings.audio.cues.select,
+      thanks: settings.audio.cues.thanks,
+      facePack: settings.audio.cues.facePack
+    },
+    shots: Array.from({ length: shotCount }, (_item, index) => {
+      const shot = settings.workflow.shots[index] ?? settings.workflow.shots[settings.workflow.shots.length - 1];
+      return {
+        ...shot,
+        audioCue: settings.audio.cues[`shot${index}`] ?? settings.audio.cues[`shot${settings.workflow.shots.length - 1}`]
+      };
+    })
+  };
 };
 
 const aiQueueStatusLabel = (item: AiQueueItem) => {

@@ -27,12 +27,20 @@ const api = {
   getSettings: () => ipcRenderer.invoke('settings:get') as Promise<AppSettings>,
   updateSettings: (settings: Partial<AppSettings>) =>
     ipcRenderer.invoke('settings:update', settings) as Promise<AppSettings>,
+  onSettingsChanged: (callback: (settings: AppSettings) => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, settings: AppSettings) => callback(settings);
+    ipcRenderer.on('settings:changed', listener);
+    return () => {
+      ipcRenderer.removeListener('settings:changed', listener);
+    };
+  },
   exportSettings: () =>
     ipcRenderer.invoke('settings:export') as Promise<{ ok: boolean; filePath?: string; error?: string }>,
   importSettings: () =>
     ipcRenderer.invoke('settings:import') as Promise<{ ok: boolean; filePath?: string; settings?: AppSettings; error?: string }>,
   chooseFolder: () => ipcRenderer.invoke('dialog:choose-folder') as Promise<string>,
   chooseImage: () => ipcRenderer.invoke('dialog:choose-image') as Promise<string>,
+  uploadEventIdleLogo: () => ipcRenderer.invoke('event:upload-idle-logo') as Promise<AppSettings | null>,
   uploadAudioCue: (cueId: string) =>
     ipcRenderer.invoke('audio:upload-cue', cueId) as Promise<AppSettings>,
   removeAudioCue: (cueId: string) =>

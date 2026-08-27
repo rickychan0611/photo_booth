@@ -307,6 +307,8 @@ export type WorkflowSettings = {
   thankYouMessage: string;
   thankYouMs: number;
   shots: WorkflowShotSettings[];
+  /** Compatibility with the temporary shared-photo settings format. */
+  photo?: WorkflowShotSettings;
 };
 
 export type PrintPickerSettings = {

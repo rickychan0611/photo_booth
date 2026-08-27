@@ -75,10 +75,19 @@ const fallbackSettings: AppSettings = {
       intro: { id: 'intro', label: 'Intro screen', mode: 'host', channel: 'voice', text: "Let's take pictures.", filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       select: { id: 'select', label: 'Photo selection screen', mode: 'host', channel: 'voice', text: 'Please choose your favorite pictures to print.', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       thanks: { id: 'thanks', label: 'Finish screen', mode: 'host', channel: 'voice', text: 'Thank you. Please pick up your print.', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      facePack: { id: 'facePack', label: 'Face assets screen', mode: 'host', channel: 'voice', text: 'Please choose your face accessories.', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       shot0: { id: 'shot0', label: 'Picture 1 message', mode: 'host', channel: 'voice', text: 'Get ready!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       shot1: { id: 'shot1', label: 'Picture 2 message', mode: 'host', channel: 'voice', text: 'Smile!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       shot2: { id: 'shot2', label: 'Picture 3 message', mode: 'host', channel: 'voice', text: 'Switch it up!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       shot3: { id: 'shot3', label: 'Picture 4 message', mode: 'host', channel: 'voice', text: 'Final pose!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      shot4: { id: 'shot4', label: 'Picture 5 message', mode: 'host', channel: 'voice', text: 'New pose!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      shot5: { id: 'shot5', label: 'Picture 6 message', mode: 'host', channel: 'voice', text: 'Big smile!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      shot6: { id: 'shot6', label: 'Picture 7 message', mode: 'host', channel: 'voice', text: 'Something silly!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      shot7: { id: 'shot7', label: 'Picture 8 message', mode: 'host', channel: 'voice', text: 'Strike a pose!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      shot8: { id: 'shot8', label: 'Picture 9 message', mode: 'host', channel: 'voice', text: 'One more!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      shot9: { id: 'shot9', label: 'Picture 10 message', mode: 'host', channel: 'voice', text: 'Change it up!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      shot10: { id: 'shot10', label: 'Picture 11 message', mode: 'host', channel: 'voice', text: 'Almost there!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      shot11: { id: 'shot11', label: 'Picture 12 message', mode: 'host', channel: 'voice', text: 'Final pose!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       countdown3: { id: 'countdown3', label: 'Countdown 3', mode: 'host', channel: 'voice', text: '3', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       countdown2: { id: 'countdown2', label: 'Countdown 2', mode: 'host', channel: 'voice', text: '2', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       countdown1: { id: 'countdown1', label: 'Countdown 1', mode: 'host', channel: 'voice', text: '1', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
@@ -111,16 +120,24 @@ const fallbackSettings: AppSettings = {
     designs: []
   },
   workflow: {
-    introMessage: "Let's take 4 pictures!",
+    introMessage: "Let's take pictures!",
     introMs: 2000,
     printAutoSelectMs: 20000,
     thankYouMessage: 'THANK YOU!',
     thankYouMs: 3000,
     shots: [
-      { message: 'Get Ready!', cameraBeforeMessageMs: 3000, messageMs: 2000, cameraBeforeCountdownMs: 3000 },
-      { message: 'Smile!', cameraBeforeMessageMs: 3000, messageMs: 2000, cameraBeforeCountdownMs: 3000 },
-      { message: 'Switch It Up!', cameraBeforeMessageMs: 3000, messageMs: 2000, cameraBeforeCountdownMs: 3000 },
-      { message: 'Final Pose!', cameraBeforeMessageMs: 3000, messageMs: 2000, cameraBeforeCountdownMs: 3000 }
+      { message: 'Get Ready!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+      { message: 'Smile!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+      { message: 'Switch It Up!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+      { message: 'Final Pose!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+      { message: 'New Pose!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+      { message: 'Big Smile!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+      { message: 'Something Silly!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+      { message: 'Strike A Pose!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+      { message: 'One More!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+      { message: 'Change It Up!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+      { message: 'Almost There!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+      { message: 'Final Pose!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 }
     ]
   },
   printPicker: {
@@ -139,6 +156,21 @@ const fallbackSettings: AppSettings = {
 
 const settingsKey = 'preview-settings';
 const gallery: Gallery = { originals: [], finals: [] };
+
+const normalizeWorkflowSettings = (
+  workflow?: Partial<AppSettings['workflow']>
+): AppSettings['workflow'] => {
+  const sourceShots = workflow?.shots?.length ? workflow.shots : workflow?.photo ? [workflow.photo] : [];
+  const { photo: _legacyPhoto, shots: _sourceShots, ...current } = workflow ?? {};
+  return {
+    ...fallbackSettings.workflow,
+    ...current,
+    shots: fallbackSettings.workflow.shots.map((shot, index) => ({
+      ...shot,
+      ...(sourceShots[index] ?? {})
+    }))
+  };
+};
 const aiQueue: AiQueueItem[] = [];
 let photoSequence = 0;
 
@@ -233,14 +265,7 @@ export function installMockApi() {
           workflowOverrideEnabled: Boolean(design.workflowOverrideEnabled)
         }))
       },
-      workflow: {
-        ...fallbackSettings.workflow,
-        ...(parsed.workflow ?? {}),
-        shots: fallbackSettings.workflow.shots.map((shot, index) => ({
-          ...shot,
-          ...(parsed.workflow?.shots?.[index] ?? {})
-        }))
-      },
+      workflow: normalizeWorkflowSettings(parsed.workflow),
       printPicker: { ...fallbackSettings.printPicker, ...(parsed.printPicker ?? {}) },
       cameraControls: { ...fallbackSettings.cameraControls, ...(parsed.cameraControls ?? {}) },
       cameraPreviewOverlay: normalizeCameraPreviewOverlay((parsed as { cameraPreviewOverlay?: unknown }).cameraPreviewOverlay),
@@ -254,6 +279,7 @@ export function installMockApi() {
       ...settings,
       defaultPrinter: normalizePrinterName(settings.defaultPrinter),
       stylePrinters: normalizeStylePrinters(settings.stylePrinters),
+      workflow: normalizeWorkflowSettings(settings.workflow),
       printCalibration: normalizePrintCalibration(settings.printCalibration)
     };
     window.localStorage.setItem(settingsKey, JSON.stringify(normalized));
@@ -285,11 +311,11 @@ export function installMockApi() {
             ...(partial.audio?.cues ?? {})
           }
         },
-        workflow: {
+        workflow: normalizeWorkflowSettings({
           ...current.workflow,
           ...(partial.workflow ?? {}),
           shots: partial.workflow?.shots ?? current.workflow.shots
-        },
+        }),
         printPicker: { ...current.printPicker, ...(partial.printPicker ?? {}) },
         cameraControls: { ...current.cameraControls, ...(partial.cameraControls ?? {}) },
         cameraPreviewOverlay:
@@ -300,6 +326,7 @@ export function installMockApi() {
         printCalibration: normalizePrintCalibration({ ...current.printCalibration, ...(partial.printCalibration ?? {}) })
       });
     },
+    onSettingsChanged: () => () => undefined,
     exportSettings: async () => ({ ok: false, error: 'Settings export is available in Electron.' }),
     importSettings: async () => ({ ok: false, error: 'Settings import is available in Electron.' }),
     chooseFolder: async () => {
@@ -313,6 +340,7 @@ export function installMockApi() {
       }
     },
     chooseImage: async () => '',
+    uploadEventIdleLogo: async () => null,
     uploadAudioCue: async () => readSettings(),
     removeAudioCue: async () => readSettings(),
     uploadTemplateAudioCue: async (cue: AudioCue) => cue,
