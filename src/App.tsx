@@ -476,6 +476,38 @@ function GuestApp() {
     await videoRef.current.play();
   };
 
+  const openCameraStream = async (quality: 'preview' | 'capture') => {
+    const preferred: MediaTrackConstraints = quality === 'preview'
+      ? { width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 30 } }
+      : { width: { ideal: 3840 }, height: { ideal: 2160 }, frameRate: { ideal: 30 } };
+    const relaxed: MediaTrackConstraints = { width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 30 } };
+    const attempts: MediaStreamConstraints[] = [];
+    const pushAttempt = (video: MediaTrackConstraints | boolean) => {
+      attempts.push({ video, audio: false });
+    };
+    if (settings?.cameraId) {
+      pushAttempt({ ...preferred, deviceId: { exact: settings.cameraId } });
+    }
+    pushAttempt(preferred);
+    if (quality === 'capture') {
+      if (settings?.cameraId) pushAttempt({ ...relaxed, deviceId: { exact: settings.cameraId } });
+      pushAttempt(relaxed);
+    }
+    pushAttempt(true);
+
+    let lastError: unknown;
+    for (let index = 0; index < attempts.length; index += 1) {
+      if (index > 0) await delay(400);
+      try {
+        return await navigator.mediaDevices.getUserMedia(attempts[index]);
+      } catch (error) {
+        lastError = error;
+        console.warn('Camera open attempt failed.', error);
+      }
+    }
+    throw lastError instanceof Error ? lastError : new Error('Camera not ready.');
+  };
+
   const startCamera = async (quality: 'preview' | 'capture' = 'capture', options: { forceRestart?: boolean } = {}) => {
     if (!settings) throw new Error('Settings not ready.');
     if (streamRef.current && !options.forceRestart) {
@@ -483,22 +515,7 @@ function GuestApp() {
       return;
     }
     stopCamera();
-    const videoSettings: MediaTrackConstraints = quality === 'preview'
-      ? {
-          width: { ideal: 1280 },
-          height: { ideal: 720 },
-          frameRate: { ideal: 30 }
-        }
-      : {
-          width: { ideal: 3840 },
-          height: { ideal: 2160 },
-          frameRate: { ideal: 30 }
-        };
-    const constraints: MediaStreamConstraints = {
-      video: settings.cameraId ? { ...videoSettings, deviceId: { exact: settings.cameraId } } : videoSettings,
-      audio: false
-    };
-    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    const stream = await openCameraStream(quality);
     setCameraCapabilities(getCameraCapabilities(stream));
     await applyCameraControls(stream, settings.cameraControls);
     streamRef.current = stream;
@@ -508,10 +525,12 @@ function GuestApp() {
   useEffect(() => {
     if (!settings) return undefined;
     const needsPreviewCamera = step === 'welcome' || step === 'facePack';
-    if (!needsPreviewCamera) {
-      if (step !== 'intro' && step !== 'capture') stopCamera();
+    const retainCamera = needsPreviewCamera || step === 'style' || step === 'design' || step === 'intro' || step === 'capture';
+    if (!retainCamera) {
+      stopCamera();
       return undefined;
     }
+    if (!needsPreviewCamera) return undefined;
     let active = true;
     void startCamera('preview').catch((error) => {
       if (active) console.warn('Guest camera preview unavailable.', error);
@@ -880,7 +899,6 @@ function GuestApp() {
     }
     if (final.length < context.slotCount) return;
     setSelectedCaptureIndexes(final);
-    setSelectContext(null);
     setSelectCountdown(null);
     if (settings) void playAudioCue(settings, 'button');
     void prepareFilterPreview(captures, final, context.templateId, context.design);
@@ -919,7 +937,6 @@ function GuestApp() {
     const request = pendingPrint;
     const beautyLevel = selectedBeautyLevel;
     const colorPreset = selectedColorPreset;
-    setPendingPrint(null);
     void printCaptures(request.captures, request.indexes, request.templateId, request.design, undefined, {
       beautyLevel,
       colorPreset
@@ -1318,7 +1335,12 @@ function GuestApp() {
       if (sessionRunRef.current !== runId) return;
       setStep('capture');
       await delay(100);
+      if (sessionRunRef.current !== runId) return;
       await startCamera('capture', { forceRestart: true });
+      if (sessionRunRef.current !== runId) {
+        stopCamera();
+        return;
+      }
       if (design?.videoRecordingEnabled) {
         await startSessionRecording();
       }
@@ -1373,11 +1395,15 @@ function GuestApp() {
       } else {
         setStep('thanks');
       }
-    } catch {
+    } catch (error) {
+      console.error('Photo session failed.', error);
       stopSessionRecording();
       stopCamera();
-      setError('CAMERA NOT READY');
-      setStep('welcome');
+      const message = error instanceof Error ? error.message : 'Photo session failed.';
+      setError(message);
+      setCaptureMessage('');
+      setCountdown(null);
+      setStep(selectableTemplates.length > 1 ? 'style' : 'welcome');
     } finally {
       setCaptureMessage('');
       setCountdown(null);
@@ -1653,6 +1679,68 @@ function GuestApp() {
     }
   };
 
+  const cancelRunningSession = () => {
+    sessionRunRef.current += 1;
+    stopSessionRecording();
+    stopCamera();
+    stopAllAudio();
+    setCountdown(null);
+    setCaptureMessage('');
+    setIsCapturing(false);
+    setIsBusy(false);
+    setIsFlashing(false);
+    setSelectCountdown(null);
+    setFilterCountdown(null);
+  };
+
+  const goBack = () => {
+    if (settings) void playAudioCue(settings, 'button');
+    if (step === 'welcome') {
+      setStep('queue');
+      return;
+    }
+    if (step === 'style') {
+      setStep('welcome');
+      return;
+    }
+    if (step === 'design') {
+      setStep(selectableTemplates.length === 1 ? 'welcome' : 'style');
+      return;
+    }
+    if (step === 'facePack') {
+      facePackShowcaseGenRef.current += 1;
+      setStep(stepBeforeFacePack());
+      return;
+    }
+    if (step === 'intro' || step === 'capture') {
+      cancelRunningSession();
+      setStep(stepBeforeFacePack());
+      return;
+    }
+    if (step === 'select') {
+      setSelectCountdown(null);
+      setStep(stepBeforeFacePack());
+      return;
+    }
+    if (step === 'filterPreview') {
+      setFilterCountdown(null);
+      setStep(selectContext ? 'select' : stepBeforeFacePack());
+      return;
+    }
+    if (step === 'thanks') {
+      if (!phoneSubmitted) {
+        confirmPrintLockRef.current = false;
+        setIsBusy(false);
+        setIsFinalPreparing(false);
+        setStep('filterPreview');
+        return;
+      }
+      resetGuestSession();
+    }
+  };
+
+  const showGuestBack = step !== 'queue' && !(step === 'welcome' && !queueModeEnabled);
+
   if (!settings) return <GuestShell><p className="quiet">LOADING</p></GuestShell>;
 
   const guestCameraStyle = getCameraVideoStyle(settings.cameraControls, cameraCapabilities);
@@ -1660,6 +1748,11 @@ function GuestApp() {
   return (
     <GuestScreenLockProvider step={step}>
     <GuestShell flash={isFlashing} compactTop={step === 'queue'} thanksLayout={step === 'thanks' || step === 'filterPreview'} filterLayout={step === 'filterPreview'}>
+      {showGuestBack && (
+        <KioskButton className="guest-back-button" onPress={goBack}>
+          {buttonText('BACK')}
+        </KioskButton>
+      )}
       {!isFullscreen && step !== 'capture' && (
         <KioskButton
           className="fullscreen-button"
@@ -1733,15 +1826,6 @@ function GuestApp() {
 
       {step === 'design' && (
         <section className="template-guest-screen">
-          <KioskButton
-            className="guest-back-button"
-            onPress={() => {
-              void playAudioCue(settings, 'button');
-              setStep(selectableTemplates.length === 1 ? 'welcome' : 'style');
-            }}
-          >
-            {buttonText('BACK')}
-          </KioskButton>
           <p className="instruction">CHOOSE A DESIGN</p>
           <div className="design-card-grid">
             {activeDesigns
@@ -1765,16 +1849,6 @@ function GuestApp() {
             aria-hidden="true"
           />
           <div className="face-pack-ui">
-            <KioskButton
-              className="guest-back-button"
-              onPress={() => {
-                void playAudioCue(settings, 'button');
-                setStep(stepBeforeFacePack());
-              }}
-              disabled={isBusy}
-            >
-              {buttonText('BACK')}
-            </KioskButton>
             <div className="face-pack-top">
               <p className="instruction face-pack-instruction">CHOOSE YOUR STICKERS</p>
               <div className="design-card-grid face-pack-card-grid">
@@ -2006,19 +2080,6 @@ function GuestApp() {
 
       {step === 'thanks' && (
         <section className="thanks-screen">
-          <div className="thanks-top-actions">
-            {phoneSubmitted && !isFinalPreparing && (
-              <KioskButton
-                className="thanks-restart-button"
-                onPress={() => {
-                  void playAudioCue(settings, 'button');
-                  resetGuestSession();
-                }}
-              >
-                Restart
-              </KioskButton>
-            )}
-          </div>
           {phoneSubmitted && (printedPreview || isAiGenerating || isFinalPreparing) && (
             <div className={`thanks-preview ${isAiGenerating || isFinalPreparing ? 'generating' : ''}${!printedPreview && isFinalPreparing ? ' loading' : ''}`}>
               {printedNumber && <p className="thanks-photo-number">Photo# {printedNumber}</p>}

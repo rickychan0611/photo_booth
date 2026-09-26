@@ -57,7 +57,7 @@ button:disabled {
 
 .guest-shell.thanks-layout {
   place-items: start center;
-  padding: clamp(46px, 5vh, 54px) clamp(14px, 3vw, 28px) clamp(10px, 1.5vh, 18px);
+  padding: 96px clamp(14px, 3vw, 28px) clamp(10px, 1.5vh, 18px);
 }
 
 .guest-shell.filter-layout {
@@ -66,7 +66,7 @@ button:disabled {
   place-items: start center;
   align-content: start;
   overflow: hidden;
-  padding-top: clamp(18px, 2.5vh, 28px);
+  padding-top: 96px;
   padding-bottom: 12px;
   box-sizing: border-box;
 }
@@ -185,7 +185,7 @@ button:disabled {
 .welcome-screen > .brand {
   position: absolute;
   left: 50%;
-  top: clamp(64px, 12vh, 150px);
+  top: clamp(96px, 14vh, 168px);
   z-index: 3;
   width: min(900px, 88vw);
   transform: translateX(-50%);
@@ -723,7 +723,7 @@ button:disabled {
 .capture-guide-layer {
   position: absolute;
   left: 50%;
-  top: 72px;
+  top: 96px;
   width: min(94vw, calc((100vh - 92px) * var(--slot-aspect, 1.5)));
   transform: translateX(-50%);
   z-index: 2;
@@ -845,20 +845,20 @@ button:disabled {
 }
 
 .template-guest-screen {
-  width: min(1040px, 100%);
+  width: 100%;
   min-height: calc(100vh - 112px);
   display: grid;
   align-content: start;
   justify-items: center;
   gap: 34px;
-  padding-top: clamp(28px, 6vh, 86px);
+  padding-top: clamp(88px, 11vh, 120px);
   text-align: center;
 }
 
 .style-card-grid {
-  width: min(920px, 100%);
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 22px;
 }
 
@@ -1003,7 +1003,7 @@ button:disabled {
   display: grid;
   gap: clamp(8px, 1.4vh, 14px);
   justify-items: center;
-  padding: clamp(78px, 10vh, 96px) clamp(20px, 3vw, 32px) 0;
+  padding: clamp(96px, 12vh, 120px) clamp(20px, 3vw, 32px) 0;
   pointer-events: none;
 }
 
@@ -2031,9 +2031,12 @@ button:disabled {
 }
 
 .guest-back-button {
-  justify-self: start;
+  position: fixed;
+  top: 22px;
+  left: 22px;
+  z-index: 30;
   border: 1px solid rgba(255, 255, 255, 0.62);
-  background: transparent;
+  background: rgba(0, 0, 0, 0.45);
   color: #fff;
   min-height: 42px;
   padding: 10px 20px;
@@ -2159,7 +2162,7 @@ button:disabled {
   align-content: start;
   justify-items: center;
   gap: clamp(10px, 1.4vh, 16px);
-  padding-top: 0;
+  padding-top: 8px;
   text-align: center;
   box-sizing: border-box;
   overflow: hidden;
@@ -2512,7 +2515,7 @@ button:disabled {
   justify-items: center;
   gap: clamp(12px, 2vh, 22px);
   padding-inline: clamp(14px, 3vw, 40px);
-  padding-top: clamp(8px, 2vh, 20px);
+  padding-top: clamp(72px, 8vh, 96px);
   overflow-y: auto;
   text-align: center;
 }
@@ -2607,7 +2610,7 @@ button:disabled {
   align-content: start;
   justify-items: center;
   gap: clamp(10px, 1.4vh, 16px);
-  padding-top: 0;
+  padding-top: 8px;
   text-align: center;
 }
 
