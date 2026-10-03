@@ -1111,21 +1111,21 @@ button:disabled {
 .template-mini {
   position: relative;
   width: 96px;
-  aspect-ratio: 2478 / 3690;
+  aspect-ratio: 1200 / 1800;
   border: 1px solid currentColor;
 }
 
 .template-guest-preview {
   position: relative;
   width: 96px;
-  aspect-ratio: 2478 / 3690;
+  aspect-ratio: 1200 / 1800;
   border: 1px solid currentColor;
   overflow: hidden;
   background: #050505;
 }
 
 .template-guest-preview.landscape {
-  aspect-ratio: 3690 / 2478;
+  aspect-ratio: 1800 / 1200;
 }
 
 .template-guest-preview img {
@@ -1857,7 +1857,7 @@ button:disabled {
 .template-paper {
   position: relative;
   width: min(62vh, 560px);
-  aspect-ratio: 2478 / 3690;
+  aspect-ratio: 1200 / 1800;
   border: 2px solid rgba(255, 255, 255, 0.78);
   background: rgba(255, 255, 255, 0.02);
   touch-action: none;
@@ -1875,7 +1875,7 @@ button:disabled {
 
 .template-paper.landscape {
   width: min(78vw, 820px);
-  aspect-ratio: 3690 / 2478;
+  aspect-ratio: 1800 / 1200;
 }
 
 .template-window-box {
@@ -1986,7 +1986,7 @@ button:disabled {
 }
 
 .template-mini.landscape {
-  aspect-ratio: 3690 / 2478;
+  aspect-ratio: 1800 / 1200;
 }
 
 .template-mini span {
@@ -1997,7 +1997,7 @@ button:disabled {
 
 .design-preview {
   width: min(100%, 170px);
-  aspect-ratio: 2478 / 3690;
+  aspect-ratio: 1200 / 1800;
   border: 0.5px solid rgba(255, 255, 255, 0.58);
   border-radius: 6px;
   overflow: hidden;

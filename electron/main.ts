@@ -6,6 +6,7 @@ import { exec, execFile, spawn } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import crypto from 'node:crypto';
 import ffmpegStatic from 'ffmpeg-static';
+import { captureCanonStill, connectCanon, stopCanonService } from './canon';
 import type {
   AiGenerateRequest,
   AiGenerateResult,
@@ -25,6 +26,7 @@ import type {
   Gallery,
   GalleryUploadStatus,
   HostVoiceGenerateResult,
+  CanonStillCrop,
   SaveImageRequest,
   SaveImageResult,
   SaveVideoRequest,
@@ -44,12 +46,12 @@ let facePreviewWindow: BrowserWindow | null = null;
 let lastFinalPath = '';
 let galleryUploadStatus: GalleryUploadStatus = { state: 'idle', message: 'No active upload.', active: 0 };
 
-const PRINT_PREVIEW_WIDTH = 1239;
-const PRINT_PREVIEW_HEIGHT = 1845;
-const TEMPLATE_WIDTH = 2478;
-const TEMPLATE_HEIGHT = 3690;
-const LANDSCAPE_TEMPLATE_WIDTH = TEMPLATE_HEIGHT;
-const LANDSCAPE_TEMPLATE_HEIGHT = TEMPLATE_WIDTH;
+const PRINT_PREVIEW_WIDTH = 1200;
+const PRINT_PREVIEW_HEIGHT = 1800;
+const TEMPLATE_WIDTH = 1200;
+const TEMPLATE_HEIGHT = 1800;
+const LANDSCAPE_TEMPLATE_WIDTH = 1800;
+const LANDSCAPE_TEMPLATE_HEIGHT = 1200;
 const STYLE4_HALFCUT_PRINTER = 'DS-RX1-HalfCut';
 const PRINTER_ALIASES = new Map<string, string>([['DS-RX1-HaflCut', STYLE4_HALFCUT_PRINTER]]);
 
@@ -296,6 +298,8 @@ const defaultSettings = (): AppSettings => ({
   boothSecret: '',
   staffControlQueueMode: false,
   cameraId: '',
+  canonEnabled: false,
+  canonFraming: 'cover',
   mirrorPreview: true,
   cameraRotation: 0,
   cameraPreviewOverlay: 'none',
@@ -423,6 +427,8 @@ const normalizeLoadedSettings = (parsed: Partial<AppSettings>, fallback = defaul
       ...(parsed.cameraControls ?? {})
     },
     cameraPreviewOverlay: normalizeCameraPreviewOverlay(parsed.cameraPreviewOverlay),
+    canonEnabled: parsed.canonEnabled === true,
+    canonFraming: parsed.canonFraming === 'contain' ? 'contain' : 'cover',
     stylePrinters: normalizeStylePrinters({
       ...fallback.stylePrinters,
       ...(parsed.stylePrinters ?? {})
@@ -1015,15 +1021,29 @@ const normalizeTemplateWorkflow = (
 const normalizeTemplateLayout = (layout: TemplateLayout): TemplateLayout => {
   const orientation = layout.orientation === 'landscape' ? 'landscape' : 'portrait';
   const dimensions = templateDimensions(orientation);
-  const photoWindows = (layout.photoWindows ?? []).map((slot, index) => ({
-    x: finiteNumber(slot.x, dimensions.width * 0.1),
-    y: finiteNumber(slot.y, dimensions.height * 0.1),
-    width: Math.max(40, finiteNumber(slot.width, dimensions.width / 3)),
-    height: Math.max(40, finiteNumber(slot.height, dimensions.height / 3)),
-    sourceIndex: index,
-    cropY: slot.cropY === 'top' ? 'top' as const : 'center' as const,
-    rotation: normalizeRotation(slot.rotation)
-  }));
+  const sourceWidth = finiteNumber(layout.paperWidth, 0);
+  const sourceHeight = finiteNumber(layout.paperHeight, 0);
+  const scaleX = sourceWidth > 0 ? dimensions.width / sourceWidth : 1;
+  const scaleY = sourceHeight > 0 ? dimensions.height / sourceHeight : 1;
+  const photoWindows = (layout.photoWindows ?? []).map((slot, index) => {
+    let x = Number.isFinite(slot.x) ? slot.x * scaleX : dimensions.width * 0.1;
+    let y = Number.isFinite(slot.y) ? slot.y * scaleY : dimensions.height * 0.1;
+    let width = Math.max(1, Number.isFinite(slot.width) ? slot.width * scaleX : dimensions.width / 3);
+    let height = Math.max(1, Number.isFinite(slot.height) ? slot.height * scaleY : dimensions.height / 3);
+    if (x < 0) x = 0;
+    if (y < 0) y = 0;
+    if (x + width > dimensions.width) width = Math.max(1, dimensions.width - x);
+    if (y + height > dimensions.height) height = Math.max(1, dimensions.height - y);
+    return {
+      x,
+      y,
+      width,
+      height,
+      sourceIndex: index,
+      cropY: slot.cropY === 'top' ? 'top' as const : 'center' as const,
+      rotation: normalizeRotation(slot.rotation)
+    };
+  });
   const shotCount = Math.max(1, photoWindows.length);
   const requestedPhotos = Number.isFinite(layout.photosToTake) ? Math.round(layout.photosToTake as number) : shotCount;
   const photosToTake = Math.min(12, Math.max(shotCount, requestedPhotos));
@@ -1277,13 +1297,20 @@ const chooseTemplateAsset = async (role: TemplateAssetRole) => {
   return result.canceled ? '' : result.filePaths[0] ?? '';
 };
 
+const requiredDesignSize = (layout?: TemplateLayout) =>
+  templateDimensions(layout?.orientation === 'landscape' ? 'landscape' : 'portrait');
+
+const assertDesignImageSize = async (filePath: string, layout?: TemplateLayout) => {
+  const size = await getImageSize(filePath);
+  const expected = requiredDesignSize(layout);
+  if (size.width !== expected.width || size.height !== expected.height) {
+    throw new Error(`Background must be ${expected.width} × ${expected.height}. This file is ${size.width} × ${size.height}.`);
+  }
+};
+
 const copyTemplateAsset = async (sourcePath: string, designFolder: string, role: TemplateAssetRole, layout?: TemplateLayout) => {
-  if (role === 'frame') {
-    const size = await getImageSize(sourcePath);
-    const expected = templateDimensions(layout?.orientation ?? 'portrait');
-    if (size.width !== expected.width || size.height !== expected.height) {
-      throw new Error(`Print frame must be ${expected.width} x ${expected.height}. This file is ${size.width} x ${size.height}.`);
-    }
+  if (role === 'frame' || role === 'preview') {
+    await assertDesignImageSize(sourcePath, layout);
   }
   const extension = role === 'frame' ? '.png' : path.extname(sourcePath).toLowerCase() || '.png';
   const targetPath = path.join(designFolder, `${role}${extension}`);
@@ -1408,6 +1435,27 @@ async function updateTemplateLayout(layout: TemplateLayout) {
       ...settings.template,
       selectedTemplateId: normalized.id,
       layouts: nextLayouts
+    }
+  });
+}
+
+async function saveTemplateSlotPreview(templateId: string, dataUrl: string) {
+  assertDataUrl(dataUrl, 'Template thumbnail');
+  const settings = await readSettings();
+  const layouts = settings.template.layouts.map(normalizeTemplateLayout);
+  const layout = layouts.find((item) => item.id === templateId);
+  if (!layout) throw new Error('Template layout not found.');
+  const folder = path.join(settings.eventFolder, 'templates', 'custom', templateId);
+  await fs.mkdir(folder, { recursive: true });
+  const targetPath = path.join(folder, 'guest-preview.png');
+  await fs.writeFile(targetPath, dataUrlToBuffer(dataUrl));
+  return writeSettings({
+    ...settings,
+    template: {
+      ...settings.template,
+      layouts: layouts.map((item) =>
+        item.id === templateId ? { ...item, guestPreviewPath: targetPath, updatedAt: new Date().toISOString() } : item
+      )
     }
   });
 }
@@ -1552,11 +1600,12 @@ async function writeImportedAsset(dataUrl: string, folder: string, filename: str
   await fs.mkdir(folder, { recursive: true });
   const filePath = path.join(folder, filename);
   await fs.writeFile(filePath, dataUrlToBuffer(dataUrl));
-  if (role === 'frame') {
-    const size = await getImageSize(filePath);
-    if (size.width !== layout.paperWidth || size.height !== layout.paperHeight) {
+  if (role === 'frame' || role === 'preview') {
+    try {
+      await assertDesignImageSize(filePath, layout);
+    } catch (error) {
       await fs.rm(filePath, { force: true }).catch(() => undefined);
-      throw new Error(`Imported print frame must be ${layout.paperWidth} x ${layout.paperHeight}. This file is ${size.width} x ${size.height}.`);
+      throw error;
     }
   }
   return filePath;
@@ -2825,7 +2874,7 @@ async function printImage(imagePath: string, printerName?: string, silent = fals
   const printImage = nativeImage.createFromPath(imagePath);
   const printSize = printImage.getSize();
   const isLandscape = printSize.width > printSize.height;
-  const pageSize = isLandscape ? '6.15in 4.13in' : '4.13in 6.15in';
+  const pageSize = isLandscape ? '6in 4in' : '4in 6in';
   const imageUrl = pathToFileURL(imagePath).toString();
   const printHtmlPath = path.join(app.getPath('temp'), `print-${Date.now()}.html`);
   const printWindow = new BrowserWindow({
@@ -3088,6 +3137,9 @@ app.whenReady().then(async () => {
   ipcMain.handle('template:update', async (_event, design: TemplateDesign) => updateTemplate(design));
   ipcMain.handle('template-layout:update', async (_event, layout: TemplateLayout) => updateTemplateLayout(layout));
   ipcMain.handle('template-layout:upload-preview', async (_event, templateId: string) => uploadTemplateLayoutPreview(templateId));
+  ipcMain.handle('template-layout:save-slot-preview', async (_event, templateId: string, dataUrl: string) =>
+    saveTemplateSlotPreview(templateId, dataUrl)
+  );
   ipcMain.handle('template-layout:delete', async (_event, templateId: string) => deleteTemplateLayout(templateId));
   ipcMain.handle('template-layout:export', async (_event, templateId: string) => exportTemplatePackage(templateId));
   ipcMain.handle('template-layout:import', async () => importTemplatePackage());
@@ -3178,6 +3230,13 @@ app.whenReady().then(async () => {
   ipcMain.handle('image:save', async (_event, request: SaveImageRequest): Promise<SaveImageResult> => {
     return saveImageData(request);
   });
+  ipcMain.handle('canon:connect', () => connectCanon());
+  ipcMain.handle('canon:capture', async (_event, crop: CanonStillCrop) => {
+    const captured = await captureCanonStill(crop);
+    const dataUrl = await imageFileToDataUrl(captured.path);
+    await fs.unlink(captured.path).catch(() => undefined);
+    return { dataUrl, width: captured.width, height: captured.height };
+  });
   ipcMain.handle('image:update-gallery-url', async (_event, filePath: string, galleryUrl: string) => {
     return updatePhotoGalleryUrl(filePath, galleryUrl);
   });
@@ -3246,4 +3305,8 @@ app.whenReady().then(async () => {
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin' && !adminWindow) app.quit();
+});
+
+app.on('will-quit', () => {
+  stopCanonService();
 });

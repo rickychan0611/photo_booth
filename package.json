@@ -31,6 +31,21 @@
         "filter": [
           "**/*"
         ]
+      },
+      {
+        "from": "python",
+        "to": "python",
+        "filter": [
+          "**/*.py",
+          "requirements.txt"
+        ]
+      },
+      {
+        "from": "EDSDK_v13.20.21_Windows/EDSDK_64/Dll",
+        "to": "edsdk",
+        "filter": [
+          "*.dll"
+        ]
       }
     ],
     "asar": true,

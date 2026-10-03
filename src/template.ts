@@ -11,16 +11,17 @@ import type {
   WorkflowShotSettings
 } from './types';
 
-export const TEMPLATE_WIDTH = 2478;
-export const TEMPLATE_HEIGHT = 3690;
-export const LANDSCAPE_TEMPLATE_WIDTH = TEMPLATE_HEIGHT;
-export const LANDSCAPE_TEMPLATE_HEIGHT = TEMPLATE_WIDTH;
-export const PRINT_WIDTH = 1239;
-export const PRINT_HEIGHT = 1845;
-export const LANDSCAPE_PRINT_WIDTH = PRINT_HEIGHT;
-export const LANDSCAPE_PRINT_HEIGHT = PRINT_WIDTH;
+// 4×6 inch design canvas at 300 dpi. Print output uses the same pixels.
+export const TEMPLATE_WIDTH = 1200;
+export const TEMPLATE_HEIGHT = 1800;
+export const LANDSCAPE_TEMPLATE_WIDTH = 1800;
+export const LANDSCAPE_TEMPLATE_HEIGHT = 1200;
+export const PRINT_WIDTH = TEMPLATE_WIDTH;
+export const PRINT_HEIGHT = TEMPLATE_HEIGHT;
+export const LANDSCAPE_PRINT_WIDTH = LANDSCAPE_TEMPLATE_WIDTH;
+export const LANDSCAPE_PRINT_HEIGHT = LANDSCAPE_TEMPLATE_HEIGHT;
 
-const TEMPLATE_DPI = TEMPLATE_WIDTH / 4.13;
+const TEMPLATE_DPI = 300;
 const DEFAULT_PRINT_CALIBRATION: PrintCalibrationSettings = {
   leftBleedIn: 0.16,
   rightBleedIn: 0.16,
@@ -139,15 +140,29 @@ export const normalizePhotosToTake = (photosToTake: number | undefined, slotCoun
 export const normalizeTemplateLayoutForClient = (layout: TemplateLayout): TemplateLayout => {
   const orientation = layout.orientation === 'landscape' ? 'landscape' : 'portrait';
   const dimensions = templateDimensions(orientation);
-  const photoWindows = (layout.photoWindows ?? []).map((slot, index) => ({
-    x: finite(slot.x, dimensions.width * 0.1),
-    y: finite(slot.y, dimensions.height * 0.1),
-    width: Math.max(40, finite(slot.width, dimensions.width / 3)),
-    height: Math.max(40, finite(slot.height, dimensions.height / 3)),
-    sourceIndex: index,
-    cropY: slot.cropY === 'top' ? 'top' as const : 'center' as const,
-    rotation: normalizeRotation(slot.rotation)
-  }));
+  const sourceWidth = finite(layout.paperWidth, 0);
+  const sourceHeight = finite(layout.paperHeight, 0);
+  const scaleX = sourceWidth > 0 ? dimensions.width / sourceWidth : 1;
+  const scaleY = sourceHeight > 0 ? dimensions.height / sourceHeight : 1;
+  const photoWindows = (layout.photoWindows ?? []).map((slot, index) => {
+    let x = (Number.isFinite(slot.x) ? slot.x * scaleX : dimensions.width * 0.1);
+    let y = (Number.isFinite(slot.y) ? slot.y * scaleY : dimensions.height * 0.1);
+    let width = Math.max(1, Number.isFinite(slot.width) ? slot.width * scaleX : dimensions.width / 3);
+    let height = Math.max(1, Number.isFinite(slot.height) ? slot.height * scaleY : dimensions.height / 3);
+    if (x < 0) x = 0;
+    if (y < 0) y = 0;
+    if (x + width > dimensions.width) width = Math.max(1, dimensions.width - x);
+    if (y + height > dimensions.height) height = Math.max(1, dimensions.height - y);
+    return {
+      x,
+      y,
+      width,
+      height,
+      sourceIndex: index,
+      cropY: slot.cropY === 'top' ? 'top' as const : 'center' as const,
+      rotation: normalizeRotation(slot.rotation)
+    };
+  });
   const photosToTake = normalizePhotosToTake(layout.photosToTake, photoWindows.length);
   const workflowDefaults = normalizeTemplateWorkflow(layout.workflowDefaults, photosToTake);
   return {
@@ -346,8 +361,6 @@ export async function createTemplatedPhotoLayer(
   const { canvas, ctx } = createPrintCanvas(normalizedLayout.orientation, options.maxLongEdge);
   const photos = await Promise.all(photoDataUrls.slice(0, normalizedLayout.photoWindows.length).map((dataUrl) => loadImage(dataUrl)));
 
-  ctx.fillStyle = '#000';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
   normalizedLayout.photoWindows.forEach((slot) => {
     const photo = photos[slot.sourceIndex];
     if (photo) fillImageClipped(ctx, photo, scaleSlotForPrint(slot, normalizedLayout, canvas));
@@ -365,13 +378,15 @@ export async function createTemplatedPrintImageFromLayer(
 ) {
   const normalizedLayout = normalizeTemplateLayoutForClient(layout);
   const { canvas, ctx } = createPrintCanvas(normalizedLayout.orientation, options.maxLongEdge);
-  const photoLayer = await loadImage(photoLayerDataUrl);
-  ctx.drawImage(photoLayer, 0, 0, canvas.width, canvas.height);
-
   if (design && templateDataUrl) {
     const frame = await loadImage(templateDataUrl);
     ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
+  } else {
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
+  const photoLayer = await loadImage(photoLayerDataUrl);
+  ctx.drawImage(photoLayer, 0, 0, canvas.width, canvas.height);
 
   return canvas.toDataURL('image/png');
 }

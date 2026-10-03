@@ -11,6 +11,8 @@ const fallbackSettings: AppSettings = {
   boothSecret: '',
   staffControlQueueMode: false,
   cameraId: '',
+  canonEnabled: false,
+  canonFraming: 'cover',
   mirrorPreview: true,
   cameraRotation: 0,
   cameraPreviewOverlay: 'none',
@@ -417,6 +419,7 @@ export function installMockApi() {
       });
     },
     uploadTemplateLayoutPreview: async () => readSettings(),
+    saveTemplateSlotPreview: async () => readSettings(),
     deleteTemplateLayout: async (templateId) => {
       const current = readSettings();
       return writeSettings({
@@ -505,7 +508,7 @@ export function installMockApi() {
       aiQueue.unshift(item);
       return { item, fallback: true };
     },
-    getImageSize: async () => ({ width: 2478, height: 3690 }),
+    getImageSize: async () => ({ width: 1200, height: 1800 }),
     saveGuideTemplate: async (templateId) => `Browser preview - ${templateId}-blank-guide.png`,
     openAdmin: async () => {
       window.open(`${window.location.origin}?window=admin`, '_blank');
@@ -537,6 +540,10 @@ export function installMockApi() {
     },
     onOpenGuestPickerPreview: () => () => undefined,
     listPrinters: async () => [],
+    canonConnect: async () => ({ ok: false, error: 'Canon camera is only available in the Electron app.' }),
+    canonCapture: async () => {
+      throw new Error('Canon camera is only available in the Electron app.');
+    },
     saveImage: async (request: SaveImageRequest): Promise<SaveImageResult> => {
       photoSequence += 1;
       const name = `${photoSequence}.png`;

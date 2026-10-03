@@ -17,6 +17,8 @@ import type {
   TemplateExportResult,
   TemplateLayout,
   TemplateUploadRequest,
+  CanonConnectResult,
+  CanonStillCrop,
   SaveImageRequest,
   SaveImageResult,
   SaveVideoRequest,
@@ -63,6 +65,8 @@ const api = {
     ipcRenderer.invoke('template-layout:update', layout) as Promise<AppSettings>,
   uploadTemplateLayoutPreview: (templateId: string) =>
     ipcRenderer.invoke('template-layout:upload-preview', templateId) as Promise<AppSettings>,
+  saveTemplateSlotPreview: (templateId: string, dataUrl: string) =>
+    ipcRenderer.invoke('template-layout:save-slot-preview', templateId, dataUrl) as Promise<AppSettings>,
   deleteTemplateLayout: (templateId: string) =>
     ipcRenderer.invoke('template-layout:delete', templateId) as Promise<AppSettings>,
   exportTemplate: (templateId: string) =>
@@ -124,6 +128,9 @@ const api = {
   },
   listPrinters: () => ipcRenderer.invoke('printers:list') as Promise<Electron.PrinterInfo[]>,
   saveImage: (request: SaveImageRequest) => ipcRenderer.invoke('image:save', request) as Promise<SaveImageResult>,
+  canonConnect: () => ipcRenderer.invoke('canon:connect') as Promise<CanonConnectResult>,
+  canonCapture: (crop: CanonStillCrop) =>
+    ipcRenderer.invoke('canon:capture', crop) as Promise<{ dataUrl: string; width: number; height: number }>,
   updatePhotoGalleryUrl: (filePath: string, galleryUrl: string) =>
     ipcRenderer.invoke('image:update-gallery-url', filePath, galleryUrl) as Promise<boolean>,
   updatePhotoPhoneNumber: (filePath: string, phoneNumber: string) =>

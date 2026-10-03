@@ -2,7 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, 
 import QRCode from 'qrcode';
 import { ArrowLeft, ArrowUp, Camera, Copy, Download, Expand, ExternalLink, FolderOpen, Globe, Image, Minimize2, Printer, RefreshCw, RotateCw, Settings, SlidersHorizontal, Sparkles, Trash2, X } from 'lucide-react';
 import type { AiPreset, AiProvider, AiQueueItem, AppSettings, AudioCue, BoothSession, CameraControlSettings, CameraRotation, Capture, ColorFilterPreset, ColorFilterValues, FaceAsset, FaceAssetPack, FaceAssetPlacement, Gallery, GalleryUploadStatus, QueueSnapshot, SavedPhoto, TemplateDesign, TemplateLayout, TemplateSlot, TemplateWorkflowSettings } from './types';
-import { createBlankTemplateLayout, createGuideTemplateImage, createTemplatedPhotoLayer, createTemplatedPrintImage, createTemplatedPrintImageFromLayer, getPrimarySlot, MAX_PHOTOS_TO_TAKE, normalizePhotosToTake, normalizeTemplateLayoutForClient, normalizeTemplateWorkflow, templateDimensions } from './template';
+import { detectPhotoSlots, layoutFromDetectedSlots, loadRasterFromFile, renderSlotMapThumbnail } from './templateMap';
+import { createGuideTemplateImage, createTemplatedPhotoLayer, createTemplatedPrintImage, createTemplatedPrintImageFromLayer, getPrimarySlot, MAX_PHOTOS_TO_TAKE, normalizePhotosToTake, normalizeTemplateLayoutForClient, normalizeTemplateWorkflow, templateDimensions } from './template';
 import { FaceAssetStabilizer, FaceTracker, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceDebugInfo, isGuestSelectableFacePack, loadFaceLandmarker, preloadFaceAssetPack, resolveGuestFaceAssetPack } from './faceAssets';
 import { applyFaceBeauty } from './beauty';
 import {
@@ -678,6 +679,33 @@ function GuestApp() {
 
     try {
       const video = videoRef.current;
+      if (settings.canonEnabled && !useFullLiveView) {
+        if (!captureGuideRef.current || !video.videoWidth || !video.videoHeight) {
+          throw new Error('Capture card is not ready.');
+        }
+        const frame = captureFrameGeometry(video, settings, window.innerWidth, window.innerHeight);
+        const bounds = captureGuideRef.current.getBoundingClientRect();
+        const captured = await window.photoBooth.canonCapture({
+          x: bounds.left * frame.outputScale,
+          y: bounds.top * frame.outputScale,
+          width: bounds.width * frame.outputScale,
+          height: bounds.height * frame.outputScale,
+          frameWidth: frame.width,
+          frameHeight: frame.height,
+          videoWidth: video.videoWidth,
+          videoHeight: video.videoHeight,
+          rotation: settings.cameraRotation,
+          mirror: settings.mirrorPreview,
+          framing: settings.canonFraming === 'contain' ? 'contain' : 'cover',
+          slotAspect: slot.width / Math.max(1, slot.height),
+          cropY: slot.cropY === 'top' ? 'top' : 'center'
+        });
+        setIsFlashing(true);
+        window.setTimeout(() => setIsFlashing(false), 180);
+        const saved = await window.photoBooth.saveImage({ dataUrl: captured.dataUrl, kind: 'original', filenamePrefix: 'original' });
+        return { dataUrl: captured.dataUrl, ...saved };
+      }
+
       const composed = captureNativeResolutionFrame(video, settings, window.innerWidth, window.innerHeight);
 
       let dataUrl: string;
@@ -3127,7 +3155,9 @@ function AdminApp() {
     active: 0
   });
   const cameraPreviewRef = useRef<HTMLVideoElement>(null);
+  const slotMapInputRef = useRef<HTMLInputElement>(null);
   const [adminStream, setAdminStream] = useState<MediaStream | null>(null);
+  const [canonStatus, setCanonStatus] = useState('');
 
   const refreshGallery = async () => setGallery(await window.photoBooth.listGallery());
   const refreshAiQueue = async () => setAiQueue(await window.photoBooth.listAiQueue());
@@ -3368,6 +3398,27 @@ function AdminApp() {
 
   const refreshSettings = async () => {
     await updateSettings({});
+  };
+
+  const importSlotMap = async (file?: File) => {
+    if (!file) return;
+    try {
+      const raster = await loadRasterFromFile(file);
+      const slots = detectPhotoSlots(raster);
+      const name = file.name.replace(/\.png$/i, '').trim() || 'Template';
+      const layout = normalizeTemplateLayoutForClient(layoutFromDetectedSlots(name, raster.width, raster.height, slots));
+      const thumbnail = renderSlotMapThumbnail(layout);
+      await saveTemplateLayout(layout);
+      const next = await window.photoBooth.saveTemplateSlotPreview(layout.id, thumbnail);
+      await updateSettings(next);
+      setMessage(
+        `Saved ${slots.length} photo slot${slots.length === 1 ? '' : 's'}. Background designs must be ${layout.paperWidth} × ${layout.paperHeight}.`
+      );
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Could not read the template map.');
+    } finally {
+      if (slotMapInputRef.current) slotMapInputRef.current.value = '';
+    }
   };
 
   const saveTemplateLayout = async (layout: TemplateLayout) => {
@@ -3879,7 +3930,7 @@ function AdminApp() {
             <div className="camera-admin-layout">
               <div className="camera-settings-column">
                 <label>
-                  Camera
+                  {settings.canonEnabled ? 'Capture card' : 'Camera'}
                   <select value={settings.cameraId} onChange={(event) => void saveMessage({ cameraId: event.target.value }, 'Camera saved.')}>
                     <option value="">Default camera</option>
                     {cameras.map((camera) => (
@@ -3887,6 +3938,44 @@ function AdminApp() {
                     ))}
                   </select>
                 </label>
+                <label className="check-row">
+                  <input
+                    type="checkbox"
+                    checked={settings.canonEnabled}
+                    onChange={(event) => void saveMessage({ canonEnabled: event.target.checked }, 'Canon capture saved.')}
+                  />
+                  Take photos with the Canon camera
+                </label>
+                <p className="muted">
+                  The capture card is the live picture. The Canon USB connection focuses and takes the full-resolution photo, then that photo is cropped to this viewfinder.
+                </p>
+                <label>
+                  Capture card framing
+                  <select
+                    value={settings.canonFraming === 'contain' ? 'contain' : 'cover'}
+                    onChange={(event) =>
+                      void saveMessage(
+                        { canonFraming: event.target.value === 'contain' ? 'contain' : 'cover' },
+                        'Capture card framing saved.'
+                      )
+                    }
+                  >
+                    <option value="cover">HDMI fills the frame</option>
+                    <option value="contain">HDMI shows the whole photo with bars</option>
+                  </select>
+                </label>
+                <div className="admin-actions">
+                  <button
+                    onClick={async () => {
+                      setCanonStatus('Connecting to the Canon camera...');
+                      const result = await window.photoBooth.canonConnect();
+                      setCanonStatus(result.ok ? `Connected: ${result.model || 'Canon EOS'}` : result.error || 'Canon camera not found.');
+                    }}
+                  >
+                    Connect Canon
+                  </button>
+                </div>
+                {canonStatus && <p className="muted">{canonStatus}</p>}
                 <label className="check-row">
                   <input
                     type="checkbox"
@@ -4389,9 +4478,20 @@ function AdminApp() {
               return (
                 <div className="template-manager custom-template-manager">
                   <div className="admin-actions">
-                    <button onClick={() => setEditingTemplate(createBlankTemplateLayout())}>Create Template</button>
+                    <button onClick={() => slotMapInputRef.current?.click()}>Create template from map</button>
                     <button onClick={() => void importTemplate()}>Import Template</button>
+                    <input
+                      ref={slotMapInputRef}
+                      type="file"
+                      accept="image/png,.png"
+                      hidden
+                      onChange={(event) => void importSlotMap(event.target.files?.[0])}
+                    />
                   </div>
+                  <p className="muted">
+                    Upload a PNG map: solid black rectangles on white, with white gaps between them. No outlines, text, or artwork.
+                    Slots are saved on a {templateDimensions('portrait').width} × {templateDimensions('portrait').height} portrait canvas, or {templateDimensions('landscape').width} × {templateDimensions('landscape').height} for a wide map. Each background design must use that same size.
+                  </p>
                   <div className="custom-template-layout">
                     <div className="template-list-panel">
                       <div className="template-list-heading">
@@ -4421,7 +4521,7 @@ function AdminApp() {
                           <div>
                             <h2>{selectedLayout.name}</h2>
                             <p>{selectedLayout.photoWindows.length} photos / {selectedLayout.orientation}</p>
-                            <p>{selectedLayout.paperWidth} x {selectedLayout.paperHeight} frame PNG.</p>
+                            <p>Background designs must be {selectedLayout.paperWidth} × {selectedLayout.paperHeight}.</p>
                             <label className="check-row">
                               <input
                                 type="checkbox"
@@ -4472,7 +4572,7 @@ function AdminApp() {
                             <div className="admin-actions">
                               <button onClick={() => setEditingTemplate(selectedLayout)}>Edit layout</button>
                               <button onClick={() => void saveGuide(selectedLayout)}>Download blank guide</button>
-                              <button onClick={() => void uploadTemplate(selectedLayout.id)}>Add print frame PNG</button>
+                              <button onClick={() => void uploadTemplate(selectedLayout.id)}>Add background design</button>
                               <button onClick={() => void exportTemplate(selectedLayout.id)}>Export JSON</button>
                               <button className="danger" onClick={() => void deleteTemplateLayout(selectedLayout.id)}>Delete template</button>
                             </div>
@@ -5520,9 +5620,34 @@ const drawCameraViewToCanvas = (video: HTMLVideoElement, width: number, height: 
 
 // Upper bound on the composited capture's long edge, in pixels. Generous
 // enough to fully cover the print pipeline's highest-res template space
-// (2478x3690 / ~600dpi) with headroom, while keeping PNG encode time and
+// (1200x1800 at 300 dpi) with headroom, while keeping PNG encode time and
 // memory usage reasonable on kiosk hardware.
 const CAPTURE_NATIVE_MAX_LONG_EDGE = 3600;
+
+const captureFrameGeometry = (
+  video: HTMLVideoElement,
+  settings: AppSettings,
+  viewportWidth: number,
+  viewportHeight: number
+) => {
+  const rotation = settings.cameraRotation;
+  const sideways = rotation === 90 || rotation === 270;
+  const visualWidth = sideways ? video.videoHeight : video.videoWidth;
+  const visualHeight = sideways ? video.videoWidth : video.videoHeight;
+  const baseCoverScale = Math.max(viewportWidth / visualWidth, viewportHeight / visualHeight);
+  let outputScale = baseCoverScale > 0 && Number.isFinite(baseCoverScale) ? 1 / baseCoverScale : 1;
+  outputScale = Math.max(0.1, outputScale);
+  let width = Math.round(viewportWidth * outputScale);
+  let height = Math.round(viewportHeight * outputScale);
+  const longEdge = Math.max(width, height);
+  if (longEdge > CAPTURE_NATIVE_MAX_LONG_EDGE) {
+    const clamp = CAPTURE_NATIVE_MAX_LONG_EDGE / longEdge;
+    width = Math.max(1, Math.round(width * clamp));
+    height = Math.max(1, Math.round(height * clamp));
+    outputScale *= clamp;
+  }
+  return { width, height, outputScale };
+};
 
 // Renders the capture-screen camera view at up to native resolution instead of
 // the guest window's physical pixel density. Returns null if the video frame
@@ -5537,28 +5662,12 @@ const captureNativeResolutionFrame = (
   const nativeHeight = video.videoHeight;
   if (!nativeWidth || !nativeHeight || viewportWidth <= 0 || viewportHeight <= 0) return null;
 
-  const rotation = settings.cameraRotation;
-  const isSideways = rotation === 90 || rotation === 270;
-  const visualWidth = isSideways ? nativeHeight : nativeWidth;
-  const visualHeight = isSideways ? nativeWidth : nativeHeight;
-
-  // The CSS "cover" scale factor currently used to fit the video into the
-  // screen. Its inverse renders the video at native pixel density (1 camera
-  // pixel ~= 1 canvas pixel along the dominant axis) instead of being
-  // downsampled to whatever resolution the screen happens to be.
-  const baseCoverScale = Math.max(viewportWidth / visualWidth, viewportHeight / visualHeight);
-  let outputScale = baseCoverScale > 0 && Number.isFinite(baseCoverScale) ? 1 / baseCoverScale : 1;
-  outputScale = Math.max(0.1, outputScale);
-
-  let targetWidth = Math.round(viewportWidth * outputScale);
-  let targetHeight = Math.round(viewportHeight * outputScale);
-  const longEdge = Math.max(targetWidth, targetHeight);
-  if (longEdge > CAPTURE_NATIVE_MAX_LONG_EDGE) {
-    const clamp = CAPTURE_NATIVE_MAX_LONG_EDGE / longEdge;
-    targetWidth = Math.max(1, Math.round(targetWidth * clamp));
-    targetHeight = Math.max(1, Math.round(targetHeight * clamp));
-    outputScale *= clamp;
-  }
+  const { width: targetWidth, height: targetHeight, outputScale } = captureFrameGeometry(
+    video,
+    settings,
+    viewportWidth,
+    viewportHeight
+  );
   if (targetWidth < 1 || targetHeight < 1) return null;
 
   const canvas = drawCameraViewToCanvas(video, targetWidth, targetHeight, settings);
