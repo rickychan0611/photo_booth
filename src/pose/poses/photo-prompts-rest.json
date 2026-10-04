@@ -1,0 +1,1536 @@
+{
+  "version": 1,
+  "kind": "photo-cutout-prompt-manifest",
+  "description": "Generation jobs for pose-library scenes without the twelve pilot cutouts.",
+  "pilotExcluded": [
+    "peace-and-wink",
+    "runway-cross-step",
+    "superhero-landing",
+    "vogue-geometry",
+    "back-to-back-agents",
+    "forehead-touch",
+    "secret-and-shock",
+    "anime-squad-three",
+    "family-superhero-team",
+    "emotion-explosion-four",
+    "action-movie-diamond",
+    "many-armed-idol"
+  ],
+  "sharedStyle": {
+    "visualReference": "Colorful photorealistic sticker cutouts like the supplied collage.",
+    "title": "One exact uppercase video-game title integrated into the artwork.",
+    "graphics": "Thick white edge, one colored outline, two or three small accents, transparent background.",
+    "diversity": "Vary race, skin tone, hair texture, body shape and styling across jobs; use mixed-race groups naturally.",
+    "framing": "Vertical slots use full body; horizontal slots use half body.",
+    "negativePrompt": "No extra people, unreadable text, misspelled title, logo, watermark, scenery, opaque panel, gradient background, excessive decoration, unsafe pose."
+  },
+  "jobs": [
+    {
+      "poseId": "relaxed-confidence",
+      "title": "RELAXED CONFIDENCE",
+      "name": "Relaxed Confidence",
+      "category": "professional",
+      "people": "1",
+      "styles": [
+        "solo"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Confident eyes",
+      "assetFile": "pose-guides/relaxed-confidence.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"RELAXED CONFIDENCE\". Show 1 person in a full or half body pair composition inspired by the pose name \"Relaxed Confidence\". The final readable action is: Confident eyes. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "power-stance",
+      "title": "POWER STANCE",
+      "name": "Power Stance",
+      "category": "professional",
+      "people": "1",
+      "styles": [
+        "solo"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Own the camera",
+      "assetFile": "pose-guides/power-stance.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"POWER STANCE\". Show 1 person in a full body pair composition inspired by the pose name \"Power Stance\". The final readable action is: Own the camera. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "editorial-s-curve",
+      "title": "EDITORIAL SCURVE",
+      "name": "Editorial S-Curve",
+      "category": "glamour",
+      "people": "1",
+      "styles": [
+        "solo"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": false,
+      "adultOnly": true,
+      "formation": "pair",
+      "instruction": "Soft model eyes",
+      "assetFile": "pose-guides/editorial-s-curve.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"EDITORIAL SCURVE\". Show 1 person in a full body pair composition inspired by the pose name \"Editorial S-Curve\". The final readable action is: Soft model eyes. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Adults only, tasteful editorial styling. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "pocket-angle",
+      "title": "POCKET ANGLE",
+      "name": "Pocket Angle",
+      "category": "professional",
+      "people": "1",
+      "styles": [
+        "solo"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": false,
+      "adultOnly": true,
+      "formation": "pair",
+      "instruction": "Give a small smirk",
+      "assetFile": "pose-guides/pocket-angle.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"POCKET ANGLE\". Show 1 person in a full or half body pair composition inspired by the pose name \"Pocket Angle\". The final readable action is: Give a small smirk. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Adults only, tasteful editorial styling. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "shoulder-turn",
+      "title": "SHOULDER TURN",
+      "name": "Shoulder Turn",
+      "category": "glamour",
+      "people": "1",
+      "styles": [
+        "solo"
+      ],
+      "framing": [
+        "half"
+      ],
+      "childSafe": false,
+      "adultOnly": true,
+      "formation": "pair",
+      "instruction": "Hold that gaze",
+      "assetFile": "pose-guides/shoulder-turn.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"SHOULDER TURN\". Show 1 person in a half body pair composition inspired by the pose name \"Shoulder Turn\". The final readable action is: Hold that gaze. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Adults only, tasteful editorial styling. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "crossed-arms-cool",
+      "title": "CROSSED ARMS COOL",
+      "name": "Crossed Arms Cool",
+      "category": "professional",
+      "people": "1",
+      "styles": [
+        "solo"
+      ],
+      "framing": [
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Cool confident face",
+      "assetFile": "pose-guides/crossed-arms-cool.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"CROSSED ARMS COOL\". Show 1 person in a half body pair composition inspired by the pose name \"Crossed Arms Cool\". The final readable action is: Cool confident face. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "walking-camera",
+      "title": "WALK TO CAMERA",
+      "name": "Walk to Camera",
+      "category": "solo",
+      "people": "1",
+      "styles": [
+        "solo"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Smile as you walk",
+      "assetFile": "pose-guides/walking-camera.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"WALK TO CAMERA\". Show 1 person in a full body pair composition inspired by the pose name \"Walk to Camera\". The final readable action is: Smile as you walk. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "double-peace",
+      "title": "DOUBLE PEACE",
+      "name": "Double Peace",
+      "category": "cute",
+      "people": "1",
+      "styles": [
+        "solo"
+      ],
+      "framing": [
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Big happy eyes",
+      "assetFile": "pose-guides/double-peace.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"DOUBLE PEACE\". Show 1 person in a half body pair composition inspired by the pose name \"Double Peace\". The final readable action is: Big happy eyes. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "hands-on-cheeks",
+      "title": "HANDS ON CHEEKS",
+      "name": "Hands on Cheeks",
+      "category": "cute",
+      "people": "1",
+      "styles": [
+        "solo"
+      ],
+      "framing": [
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Big surprise",
+      "assetFile": "pose-guides/hands-on-cheeks.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"HANDS ON CHEEKS\". Show 1 person in a half body pair composition inspired by the pose name \"Hands on Cheeks\". The final readable action is: Big surprise. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "heart-hands",
+      "title": "HEART HANDS",
+      "name": "Heart Hands",
+      "category": "cute",
+      "people": "1",
+      "styles": [
+        "solo"
+      ],
+      "framing": [
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Smile through it",
+      "assetFile": "pose-guides/heart-hands.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"HEART HANDS\". Show 1 person in a half body pair composition inspired by the pose name \"Heart Hands\". The final readable action is: Smile through it. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "shy-toe-turn",
+      "title": "SHY TOE TURN",
+      "name": "Shy Toe Turn",
+      "category": "cute",
+      "people": "1",
+      "styles": [
+        "solo"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Give a shy smile",
+      "assetFile": "pose-guides/shy-toe-turn.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"SHY TOE TURN\". Show 1 person in a full body pair composition inspired by the pose name \"Shy Toe Turn\". The final readable action is: Give a shy smile. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "anime-power-up",
+      "title": "ANIME POWERUP",
+      "name": "Anime Power-Up",
+      "category": "party",
+      "people": "1",
+      "styles": [
+        "solo"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Power up!",
+      "assetFile": "pose-guides/anime-power-up.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"ANIME POWERUP\". Show 1 person in a full body pair composition inspired by the pose name \"Anime Power-Up\". The final readable action is: Power up!. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "magical-transformation",
+      "title": "MAGICAL TRANSFORMATION",
+      "name": "Magical Transformation",
+      "category": "party",
+      "people": "1",
+      "styles": [
+        "solo"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Transformation finish!",
+      "assetFile": "pose-guides/magical-transformation.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"MAGICAL TRANSFORMATION\". Show 1 person in a full body pair composition inspired by the pose name \"Magical Transformation\". The final readable action is: Transformation finish!. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "cool-villain",
+      "title": "COOL VILLAIN",
+      "name": "Cool Villain",
+      "category": "funny",
+      "people": "1",
+      "styles": [
+        "solo"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Give a villain smirk",
+      "assetFile": "pose-guides/cool-villain.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"COOL VILLAIN\". Show 1 person in a full or half body pair composition inspired by the pose name \"Cool Villain\". The final readable action is: Give a villain smirk. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "secret-agent-dodge",
+      "title": "SECRET AGENT DODGE",
+      "name": "Secret Agent Dodge",
+      "category": "funny",
+      "people": "1",
+      "styles": [
+        "solo"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Dodge the laser!",
+      "assetFile": "pose-guides/secret-agent-dodge.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"SECRET AGENT DODGE\". Show 1 person in a full body pair composition inspired by the pose name \"Secret Agent Dodge\". The final readable action is: Dodge the laser!. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "comic-hero-punch",
+      "title": "COMIC HERO PUNCH",
+      "name": "Comic Hero Punch",
+      "category": "party",
+      "people": "1",
+      "styles": [
+        "solo"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Hero face",
+      "assetFile": "pose-guides/comic-hero-punch.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"COMIC HERO PUNCH\". Show 1 person in a full or half body pair composition inspired by the pose name \"Comic Hero Punch\". The final readable action is: Hero face. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "broken-doll-fashion",
+      "title": "BROKENDOLL FASHION",
+      "name": "Broken-Doll Fashion",
+      "category": "glamour",
+      "people": "1",
+      "styles": [
+        "solo"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": false,
+      "adultOnly": true,
+      "formation": "pair",
+      "instruction": "Blank fashion face",
+      "assetFile": "pose-guides/broken-doll-fashion.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"BROKENDOLL FASHION\". Show 1 person in a full body pair composition inspired by the pose name \"Broken-Doll Fashion\". The final readable action is: Blank fashion face. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Adults only, tasteful editorial styling. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "pop-star-finish",
+      "title": "POPSTAR FINISH",
+      "name": "Pop-Star Finish",
+      "category": "party",
+      "people": "1",
+      "styles": [
+        "solo"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Big stage smile",
+      "assetFile": "pose-guides/pop-star-finish.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"POPSTAR FINISH\". Show 1 person in a full body pair composition inspired by the pose name \"Pop-Star Finish\". The final readable action is: Big stage smile. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "drama-queen",
+      "title": "DRAMA QUEEN",
+      "name": "Drama Queen",
+      "category": "funny",
+      "people": "1",
+      "styles": [
+        "solo"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Maximum drama!",
+      "assetFile": "pose-guides/drama-queen.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"DRAMA QUEEN\". Show 1 person in a full or half body pair composition inspired by the pose name \"Drama Queen\". The final readable action is: Maximum drama!. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "rock-star-lean",
+      "title": "ROCKSTAR LEAN",
+      "name": "Rock-Star Lean",
+      "category": "party",
+      "people": "1",
+      "styles": [
+        "solo"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Rock-star face",
+      "assetFile": "pose-guides/rock-star-lean.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"ROCKSTAR LEAN\". Show 1 person in a full body pair composition inspired by the pose name \"Rock-Star Lean\". The final readable action is: Rock-star face. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "anime-rivals",
+      "title": "ANIME RIVALS",
+      "name": "Anime Rivals",
+      "category": "friends",
+      "people": "2",
+      "styles": [
+        "couple",
+        "friends"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Rival eyes",
+      "assetFile": "pose-guides/anime-rivals.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"ANIME RIVALS\". Show 2 people in a full body pair composition inspired by the pose name \"Anime Rivals\". The final readable action is: Rival eyes. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "hero-and-sidekick",
+      "title": "HERO AND SIDEKICK",
+      "name": "Hero and Sidekick",
+      "category": "friends",
+      "people": "2",
+      "styles": [
+        "friends",
+        "family"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Save the world",
+      "assetFile": "pose-guides/hero-and-sidekick.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"HERO AND SIDEKICK\". Show 2 people in a full or half body pair composition inspired by the pose name \"Hero and Sidekick\". The final readable action is: Save the world. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "power-couple",
+      "title": "POWER COUPLE",
+      "name": "Power Couple",
+      "category": "couple",
+      "people": "2",
+      "styles": [
+        "couple"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": false,
+      "adultOnly": true,
+      "formation": "pair",
+      "instruction": "Power-couple eyes",
+      "assetFile": "pose-guides/power-couple.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"POWER COUPLE\". Show 2 people in a full or half body pair composition inspired by the pose name \"Power Couple\". The final readable action is: Power-couple eyes. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Adults only, tasteful editorial styling. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "cinematic-almost-kiss",
+      "title": "CINEMATIC ALMOST KISS",
+      "name": "Cinematic Almost Kiss",
+      "category": "couple",
+      "people": "2",
+      "styles": [
+        "couple"
+      ],
+      "framing": [
+        "half"
+      ],
+      "childSafe": false,
+      "adultOnly": true,
+      "formation": "pair",
+      "instruction": "Almost kiss",
+      "assetFile": "pose-guides/cinematic-almost-kiss.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"CINEMATIC ALMOST KISS\". Show 2 people in a half body pair composition inspired by the pose name \"Cinematic Almost Kiss\". The final readable action is: Almost kiss. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Adults only, tasteful editorial styling. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "dip-and-laugh",
+      "title": "DIP AND LAUGH",
+      "name": "Dip and Laugh",
+      "category": "couple",
+      "people": "2",
+      "styles": [
+        "couple"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": false,
+      "adultOnly": true,
+      "formation": "pair",
+      "instruction": "Laugh together",
+      "assetFile": "pose-guides/dip-and-laugh.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"DIP AND LAUGH\". Show 2 people in a full body pair composition inspired by the pose name \"Dip and Laugh\". The final readable action is: Laugh together. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Adults only, tasteful editorial styling. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "kneeling-proposal",
+      "title": "KNEELING PROPOSAL",
+      "name": "Kneeling Proposal",
+      "category": "couple",
+      "people": "2",
+      "styles": [
+        "couple"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": false,
+      "adultOnly": true,
+      "formation": "pair",
+      "instruction": "Big surprise!",
+      "assetFile": "pose-guides/kneeling-proposal.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"KNEELING PROPOSAL\". Show 2 people in a full body pair composition inspired by the pose name \"Kneeling Proposal\". The final readable action is: Big surprise!. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Adults only, tasteful editorial styling. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "royal-and-bodyguard",
+      "title": "ROYAL AND BODYGUARD",
+      "name": "Royal and Bodyguard",
+      "category": "friends",
+      "people": "2",
+      "styles": [
+        "friends",
+        "couple"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Regal and serious",
+      "assetFile": "pose-guides/royal-and-bodyguard.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"ROYAL AND BODYGUARD\". Show 2 people in a full body pair composition inspired by the pose name \"Royal and Bodyguard\". The final readable action is: Regal and serious. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "mirror-twins",
+      "title": "MIRROR TWINS",
+      "name": "Mirror Twins",
+      "category": "friends",
+      "people": "2",
+      "styles": [
+        "friends",
+        "couple"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Twin fashion faces",
+      "assetFile": "pose-guides/mirror-twins.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"MIRROR TWINS\". Show 2 people in a full or half body pair composition inspired by the pose name \"Mirror Twins\". The final readable action is: Twin fashion faces. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "fashion-push-pull",
+      "title": "FASHION PUSHPULL",
+      "name": "Fashion Push-Pull",
+      "category": "glamour",
+      "people": "2",
+      "styles": [
+        "couple",
+        "friends"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": false,
+      "adultOnly": true,
+      "formation": "pair",
+      "instruction": "Model eyes",
+      "assetFile": "pose-guides/fashion-push-pull.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"FASHION PUSHPULL\". Show 2 people in a full body pair composition inspired by the pose name \"Fashion Push-Pull\". The final readable action is: Model eyes. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Adults only, tasteful editorial styling. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "spy-trio",
+      "title": "SPY TRIO",
+      "name": "Spy Trio",
+      "category": "friends",
+      "people": "3",
+      "styles": [
+        "friends",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "triangle",
+      "instruction": "Spy faces",
+      "assetFile": "pose-guides/spy-trio.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"SPY TRIO\". Show 3 people in a full or half body triangle composition inspired by the pose name \"Spy Trio\". The final readable action is: Spy faces. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "editorial-triangle",
+      "title": "EDITORIAL TRIANGLE",
+      "name": "Editorial Triangle",
+      "category": "glamour",
+      "people": "3",
+      "styles": [
+        "friends",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": false,
+      "adultOnly": true,
+      "formation": "triangle",
+      "instruction": "Fashion stillness",
+      "assetFile": "pose-guides/editorial-triangle.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"EDITORIAL TRIANGLE\". Show 3 people in a full or half body triangle composition inspired by the pose name \"Editorial Triangle\". The final readable action is: Fashion stillness. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Adults only, tasteful editorial styling. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "face-totem-three",
+      "title": "THREEFACE TOTEM",
+      "name": "Three-Face Totem",
+      "category": "funny",
+      "people": "3",
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "triangle",
+      "instruction": "Three wild reactions",
+      "assetFile": "pose-guides/face-totem-three.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"THREEFACE TOTEM\". Show 3 people in a half body triangle composition inspired by the pose name \"Three-Face Totem\". The final readable action is: Three wild reactions. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "center-superstar-three",
+      "title": "CENTER SUPERSTAR",
+      "name": "Center Superstar",
+      "category": "party",
+      "people": "3",
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "triangle",
+      "instruction": "Star stays cool",
+      "assetFile": "pose-guides/center-superstar-three.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"CENTER SUPERSTAR\". Show 3 people in a half body triangle composition inspired by the pose name \"Center Superstar\". The final readable action is: Star stays cool. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "three-level-fashion",
+      "title": "THREELEVEL FASHION",
+      "name": "Three-Level Fashion",
+      "category": "glamour",
+      "people": "3",
+      "styles": [
+        "friends",
+        "group"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": false,
+      "adultOnly": true,
+      "formation": "triangle",
+      "instruction": "Editorial faces",
+      "assetFile": "pose-guides/three-level-fashion.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"THREELEVEL FASHION\". Show 3 people in a full body triangle composition inspired by the pose name \"Three-Level Fashion\". The final readable action is: Editorial faces. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Adults only, tasteful editorial styling. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "see-hear-speak-chaos",
+      "title": "SEE HEAR SPEAK CHAOS",
+      "name": "See Hear Speak Chaos",
+      "category": "funny",
+      "people": "3",
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "triangle",
+      "instruction": "Make it chaotic",
+      "assetFile": "pose-guides/see-hear-speak-chaos.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"SEE HEAR SPEAK CHAOS\". Show 3 people in a half body triangle composition inspired by the pose name \"See Hear Speak Chaos\". The final readable action is: Make it chaotic. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "domino-lean-three",
+      "title": "DOMINO LEAN",
+      "name": "Domino Lean",
+      "category": "funny",
+      "people": "3",
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "triangle",
+      "instruction": "Hold the domino",
+      "assetFile": "pose-guides/domino-lean-three.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"DOMINO LEAN\". Show 3 people in a full or half body triangle composition inspired by the pose name \"Domino Lean\". The final readable action is: Hold the domino. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "fashion-album-cover",
+      "title": "FASHION ALBUM COVER",
+      "name": "Fashion Album Cover",
+      "category": "glamour",
+      "people": "4",
+      "styles": [
+        "friends",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": false,
+      "adultOnly": true,
+      "formation": "diamond",
+      "instruction": "Album-cover faces",
+      "assetFile": "pose-guides/fashion-album-cover.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"FASHION ALBUM COVER\". Show 4 people in a full or half body diamond composition inspired by the pose name \"Fashion Album Cover\". The final readable action is: Album-cover faces. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Adults only, tasteful editorial styling. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "human-picture-frame",
+      "title": "HUMAN PICTURE FRAME",
+      "name": "Human Picture Frame",
+      "category": "friends",
+      "people": "4",
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "diamond",
+      "instruction": "Everyone reacts",
+      "assetFile": "pose-guides/human-picture-frame.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"HUMAN PICTURE FRAME\". Show 4 people in a half body diamond composition inspired by the pose name \"Human Picture Frame\". The final readable action is: Everyone reacts. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "anime-team-four",
+      "title": "ANIME TEAM FOUR",
+      "name": "Anime Team Four",
+      "category": "party",
+      "people": "4",
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "diamond",
+      "instruction": "Final battle faces",
+      "assetFile": "pose-guides/anime-team-four.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"ANIME TEAM FOUR\". Show 4 people in a full body diamond composition inspired by the pose name \"Anime Team Four\". The final readable action is: Final battle faces. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "accusation-circle-four",
+      "title": "ACCUSATION CIRCLE",
+      "name": "Accusation Circle",
+      "category": "funny",
+      "people": "4",
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "diamond",
+      "instruction": "Who did it?",
+      "assetFile": "pose-guides/accusation-circle-four.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"ACCUSATION CIRCLE\". Show 4 people in a half body diamond composition inspired by the pose name \"Accusation Circle\". The final readable action is: Who did it?. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "red-carpet-drama-four",
+      "title": "REDCARPET DRAMA",
+      "name": "Red-Carpet Drama",
+      "category": "party",
+      "people": "4",
+      "styles": [
+        "friends",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": false,
+      "adultOnly": true,
+      "formation": "diamond",
+      "instruction": "Fan loses control",
+      "assetFile": "pose-guides/red-carpet-drama-four.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"REDCARPET DRAMA\". Show 4 people in a full or half body diamond composition inspired by the pose name \"Red-Carpet Drama\". The final readable action is: Fan loses control. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Adults only, tasteful editorial styling. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "sit-kneel-lean-stand",
+      "title": "FOURLEVEL EDITORIAL",
+      "name": "Four-Level Editorial",
+      "category": "glamour",
+      "people": "4",
+      "styles": [
+        "friends",
+        "group"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": false,
+      "adultOnly": true,
+      "formation": "diamond",
+      "instruction": "Freeze like fashion",
+      "assetFile": "pose-guides/sit-kneel-lean-stand.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"FOURLEVEL EDITORIAL\". Show 4 people in a full body diamond composition inspired by the pose name \"Four-Level Editorial\". The final readable action is: Freeze like fashion. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Adults only, tasteful editorial styling. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "ensemble-movie-poster",
+      "title": "ENSEMBLE MOVIE POSTER",
+      "name": "Ensemble Movie Poster",
+      "category": "group",
+      "people": "5+",
+      "styles": [
+        "group",
+        "friends"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "layers",
+      "instruction": "Movie-poster finish",
+      "assetFile": "pose-guides/ensemble-movie-poster.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"ENSEMBLE MOVIE POSTER\". Show 5+ people in a full or half body layers composition inspired by the pose name \"Ensemble Movie Poster\". The final readable action is: Movie-poster finish. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "fashion-dynasty",
+      "title": "FASHION DYNASTY",
+      "name": "Fashion Dynasty",
+      "category": "glamour",
+      "people": "5+",
+      "styles": [
+        "group",
+        "friends"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": false,
+      "adultOnly": true,
+      "formation": "layers",
+      "instruction": "Dynasty faces",
+      "assetFile": "pose-guides/fashion-dynasty.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"FASHION DYNASTY\". Show 5+ people in a full or half body layers composition inspired by the pose name \"Fashion Dynasty\". The final readable action is: Dynasty faces. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Adults only, tasteful editorial styling. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "celebration-eruption",
+      "title": "CELEBRATION ERUPTION",
+      "name": "Celebration Eruption",
+      "category": "party",
+      "people": "5+",
+      "styles": [
+        "group",
+        "friends",
+        "family"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "layers",
+      "instruction": "Celebration erupts!",
+      "assetFile": "pose-guides/celebration-eruption.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"CELEBRATION ERUPTION\". Show 5+ people in a full or half body layers composition inspired by the pose name \"Celebration Eruption\". The final readable action is: Celebration erupts!. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "group-power-up",
+      "title": "GROUP POWERUP",
+      "name": "Group Power-Up",
+      "category": "party",
+      "people": "5+",
+      "styles": [
+        "group",
+        "friends",
+        "family"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "layers",
+      "instruction": "Power up together!",
+      "assetFile": "pose-guides/group-power-up.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"GROUP POWERUP\". Show 5+ people in a full body layers composition inspired by the pose name \"Group Power-Up\". The final readable action is: Power up together!. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "human-wave",
+      "title": "HUMAN WAVE",
+      "name": "Human Wave",
+      "category": "funny",
+      "people": "5+",
+      "styles": [
+        "group",
+        "friends",
+        "family"
+      ],
+      "framing": [
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "layers",
+      "instruction": "Hold the wave",
+      "assetFile": "pose-guides/human-wave.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"HUMAN WAVE\". Show 5+ people in a half body layers composition inspired by the pose name \"Human Wave\". The final readable action is: Hold the wave. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "royal-court",
+      "title": "ROYAL COURT",
+      "name": "Royal Court",
+      "category": "funny",
+      "people": "5+",
+      "styles": [
+        "group",
+        "friends",
+        "family"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "layers",
+      "instruction": "Royal drama",
+      "assetFile": "pose-guides/royal-court.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"ROYAL COURT\". Show 5+ people in a full or half body layers composition inspired by the pose name \"Royal Court\". The final readable action is: Royal drama. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "heroes-vs-villains",
+      "title": "HEROES VERSUS VILLAINS",
+      "name": "Heroes Versus Villains",
+      "category": "party",
+      "people": "5+",
+      "styles": [
+        "group",
+        "friends",
+        "family"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "layers",
+      "instruction": "Heroes versus villains!",
+      "assetFile": "pose-guides/heroes-vs-villains.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"HEROES VERSUS VILLAINS\". Show 5+ people in a full or half body layers composition inspired by the pose name \"Heroes Versus Villains\". The final readable action is: Heroes versus villains!. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "parents-as-bodyguards",
+      "title": "PARENTS AS BODYGUARDS",
+      "name": "Parents as Bodyguards",
+      "category": "family",
+      "people": "3+",
+      "styles": [
+        "family"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "triangle",
+      "instruction": "Cool family faces",
+      "assetFile": "pose-guides/parents-as-bodyguards.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"PARENTS AS BODYGUARDS\". Show 3+ people in a full or half body triangle composition inspired by the pose name \"Parents as Bodyguards\". The final readable action is: Cool family faces. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "kids-take-over",
+      "title": "KIDS TAKE OVER",
+      "name": "Kids Take Over",
+      "category": "family",
+      "people": "3+",
+      "styles": [
+        "family"
+      ],
+      "framing": [
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "triangle",
+      "instruction": "Adults look worried",
+      "assetFile": "pose-guides/kids-take-over.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"KIDS TAKE OVER\". Show 3+ people in a half body triangle composition inspired by the pose name \"Kids Take Over\". The final readable action is: Adults look worried. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "family-squeeze-attack",
+      "title": "FAMILY SQUEEZE ATTACK",
+      "name": "Family Squeeze Attack",
+      "category": "family",
+      "people": "3+",
+      "styles": [
+        "family"
+      ],
+      "framing": [
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "triangle",
+      "instruction": "Laugh at the camera",
+      "assetFile": "pose-guides/family-squeeze-attack.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"FAMILY SQUEEZE ATTACK\". Show 3+ people in a half body triangle composition inspired by the pose name \"Family Squeeze Attack\". The final readable action is: Laugh at the camera. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "tiny-hero-big-villains",
+      "title": "TINY HERO BIG VILLAINS",
+      "name": "Tiny Hero Big Villains",
+      "category": "kids",
+      "people": "3",
+      "styles": [
+        "family"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "triangle",
+      "instruction": "Villains are defeated",
+      "assetFile": "pose-guides/tiny-hero-big-villains.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"TINY HERO BIG VILLAINS\". Show 3 people in a full or half body triangle composition inspired by the pose name \"Tiny Hero Big Villains\". The final readable action is: Villains are defeated. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "copy-the-child",
+      "title": "COPY THE CHILD",
+      "name": "Copy the Child",
+      "category": "kids",
+      "people": "3",
+      "styles": [
+        "family"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "triangle",
+      "instruction": "Child does it best",
+      "assetFile": "pose-guides/copy-the-child.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"COPY THE CHILD\". Show 3 people in a full or half body triangle composition inspired by the pose name \"Copy the Child\". The final readable action is: Child does it best. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "animal-family",
+      "title": "ANIMAL FAMILY",
+      "name": "Animal Family",
+      "category": "kids",
+      "people": "3",
+      "styles": [
+        "family",
+        "friends",
+        "group"
+      ],
+      "framing": [
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "triangle",
+      "instruction": "Animal faces!",
+      "assetFile": "pose-guides/animal-family.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"ANIMAL FAMILY\". Show 3 people in a half body triangle composition inspired by the pose name \"Animal Family\". The final readable action is: Animal faces!. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "parent-puppet-show",
+      "title": "PARENT PUPPET SHOW",
+      "name": "Parent Puppet Show",
+      "category": "kids",
+      "people": "3",
+      "styles": [
+        "family"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "triangle",
+      "instruction": "Freeze!",
+      "assetFile": "pose-guides/parent-puppet-show.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"PARENT PUPPET SHOW\". Show 3 people in a full or half body triangle composition inspired by the pose name \"Parent Puppet Show\". The final readable action is: Freeze!. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "family-duo-power",
+      "title": "FAMILY DUO POWERUP",
+      "name": "Family Duo Power-Up",
+      "category": "family",
+      "people": "2",
+      "styles": [
+        "family"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Family power-up!",
+      "assetFile": "pose-guides/family-duo-power.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"FAMILY DUO POWERUP\". Show 2 people in a full or half body pair composition inspired by the pose name \"Family Duo Power-Up\". The final readable action is: Family power-up!. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "family-duo-squeeze",
+      "title": "FAMILY DUO SQUEEZE",
+      "name": "Family Duo Squeeze",
+      "category": "family",
+      "people": "2",
+      "styles": [
+        "family"
+      ],
+      "framing": [
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Squeeze and smile",
+      "assetFile": "pose-guides/family-duo-squeeze.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"FAMILY DUO SQUEEZE\". Show 2 people in a half body pair composition inspired by the pose name \"Family Duo Squeeze\". The final readable action is: Squeeze and smile. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "parent-child-agents",
+      "title": "PARENT AND CHILD AGENTS",
+      "name": "Parent and Child Agents",
+      "category": "family",
+      "people": "2",
+      "styles": [
+        "family"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Secret-agent faces",
+      "assetFile": "pose-guides/parent-child-agents.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"PARENT AND CHILD AGENTS\". Show 2 people in a full or half body pair composition inspired by the pose name \"Parent and Child Agents\". The final readable action is: Secret-agent faces. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "copy-the-child-duo",
+      "title": "COPY THE CHILD DUO",
+      "name": "Copy the Child Duo",
+      "category": "kids",
+      "people": "2",
+      "styles": [
+        "family"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Child wins!",
+      "assetFile": "pose-guides/copy-the-child-duo.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"COPY THE CHILD DUO\". Show 2 people in a full or half body pair composition inspired by the pose name \"Copy the Child Duo\". The final readable action is: Child wins!. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "cinematic-back-hug",
+      "title": "CINEMATIC BACK HUG",
+      "name": "Cinematic Back Hug",
+      "category": "wedding",
+      "people": "2",
+      "styles": [
+        "couple"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": false,
+      "adultOnly": true,
+      "formation": "pair",
+      "instruction": "Soft cinematic eyes",
+      "assetFile": "pose-guides/cinematic-back-hug.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"CINEMATIC BACK HUG\". Show 2 people in a full or half body pair composition inspired by the pose name \"Cinematic Back Hug\". The final readable action is: Soft cinematic eyes. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Adults only, tasteful editorial styling. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "runaway-newlyweds",
+      "title": "RUNAWAY NEWLYWEDS",
+      "name": "Runaway Newlyweds",
+      "category": "wedding",
+      "people": "2",
+      "styles": [
+        "couple"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": false,
+      "adultOnly": true,
+      "formation": "pair",
+      "instruction": "Laugh toward camera",
+      "assetFile": "pose-guides/runaway-newlyweds.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"RUNAWAY NEWLYWEDS\". Show 2 people in a full body pair composition inspired by the pose name \"Runaway Newlyweds\". The final readable action is: Laugh toward camera. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Adults only, tasteful editorial styling. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "spy-newlyweds",
+      "title": "SPY NEWLYWEDS",
+      "name": "Spy Newlyweds",
+      "category": "wedding",
+      "people": "2",
+      "styles": [
+        "couple"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": false,
+      "adultOnly": true,
+      "formation": "pair",
+      "instruction": "Wedding spies",
+      "assetFile": "pose-guides/spy-newlyweds.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"SPY NEWLYWEDS\". Show 2 people in a full or half body pair composition inspired by the pose name \"Spy Newlyweds\". The final readable action is: Wedding spies. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Adults only, tasteful editorial styling. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "kiss-with-reaction",
+      "title": "KISS WITH GROUP REACTION",
+      "name": "Kiss with Group Reaction",
+      "category": "wedding",
+      "people": "5+",
+      "styles": [
+        "group"
+      ],
+      "framing": [
+        "half"
+      ],
+      "childSafe": false,
+      "adultOnly": true,
+      "formation": "layers",
+      "instruction": "Everyone reacts!",
+      "assetFile": "pose-guides/kiss-with-reaction.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"KISS WITH GROUP REACTION\". Show 5+ people in a half body layers composition inspired by the pose name \"Kiss with Group Reaction\". The final readable action is: Everyone reacts!. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Adults only, tasteful editorial styling. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "dance-battle-freeze",
+      "title": "DANCE BATTLE FREEZE",
+      "name": "Dance Battle Freeze",
+      "category": "party",
+      "people": "4",
+      "styles": [
+        "friends",
+        "group"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "diamond",
+      "instruction": "Dance faces",
+      "assetFile": "pose-guides/dance-battle-freeze.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"DANCE BATTLE FREEZE\". Show 4 people in a full body diamond composition inspired by the pose name \"Dance Battle Freeze\". The final readable action is: Dance faces. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "invisible-roller-coaster",
+      "title": "INVISIBLE ROLLER COASTER",
+      "name": "Invisible Roller Coaster",
+      "category": "funny",
+      "people": "4",
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "diamond",
+      "instruction": "Roller-coaster faces!",
+      "assetFile": "pose-guides/invisible-roller-coaster.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"INVISIBLE ROLLER COASTER\". Show 4 people in a half body diamond composition inspired by the pose name \"Invisible Roller Coaster\". The final readable action is: Roller-coaster faces!. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "zombie-fashion-show",
+      "title": "ZOMBIE FASHION SHOW",
+      "name": "Zombie Fashion Show",
+      "category": "funny",
+      "people": "4",
+      "styles": [
+        "friends",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "diamond",
+      "instruction": "Dead-serious fashion",
+      "assetFile": "pose-guides/zombie-fashion-show.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"ZOMBIE FASHION SHOW\". Show 4 people in a full or half body diamond composition inspired by the pose name \"Zombie Fashion Show\". The final readable action is: Dead-serious fashion. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "alien-abduction",
+      "title": "ALIEN ABDUCTION",
+      "name": "Alien Abduction",
+      "category": "funny",
+      "people": "4",
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "diamond",
+      "instruction": "Alien panic!",
+      "assetFile": "pose-guides/alien-abduction.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"ALIEN ABDUCTION\". Show 4 people in a full body diamond composition inspired by the pose name \"Alien Abduction\". The final readable action is: Alien panic!. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "couple-heart",
+      "title": "COUPLE HEART",
+      "name": "Couple Heart",
+      "category": "couple",
+      "people": "2",
+      "styles": [
+        "couple"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": false,
+      "adultOnly": true,
+      "formation": "pair",
+      "instruction": "Smile together",
+      "assetFile": "pose-guides/couple-heart.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"COUPLE HEART\". Show 2 people in a full or half body pair composition inspired by the pose name \"Couple Heart\". The final readable action is: Smile together. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Adults only, tasteful editorial styling. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "couple-peace",
+      "title": "PEACE TOGETHER",
+      "name": "Peace Together",
+      "category": "couple",
+      "people": "2",
+      "styles": [
+        "couple"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": false,
+      "adultOnly": true,
+      "formation": "pair",
+      "instruction": "Smile and wink",
+      "assetFile": "pose-guides/couple-peace.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"PEACE TOGETHER\". Show 2 people in a full or half body pair composition inspired by the pose name \"Peace Together\". The final readable action is: Smile and wink. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Adults only, tasteful editorial styling. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "friends-peace",
+      "title": "PEACE PARTY",
+      "name": "Peace Party",
+      "category": "friends",
+      "people": "2",
+      "styles": [
+        "friends",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Party smiles",
+      "assetFile": "pose-guides/friends-peace.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"PEACE PARTY\". Show 2 people in a full or half body pair composition inspired by the pose name \"Peace Party\". The final readable action is: Party smiles. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "friends-cheeks",
+      "title": "CHEEKY SMILES",
+      "name": "Cheeky Smiles",
+      "category": "friends",
+      "people": "2",
+      "styles": [
+        "friends",
+        "group"
+      ],
+      "framing": [
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "pair",
+      "instruction": "Cheeky faces",
+      "assetFile": "pose-guides/friends-cheeks.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"CHEEKY SMILES\". Show 2 people in a half body pair composition inspired by the pose name \"Cheeky Smiles\". The final readable action is: Cheeky faces. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "family-heart",
+      "title": "FAMILY HEARTS",
+      "name": "Family Hearts",
+      "category": "family",
+      "people": "3+",
+      "styles": [
+        "family"
+      ],
+      "framing": [
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "triangle",
+      "instruction": "Family smiles",
+      "assetFile": "pose-guides/family-heart.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"FAMILY HEARTS\". Show 3+ people in a half body triangle composition inspired by the pose name \"Family Hearts\". The final readable action is: Family smiles. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "family-peace",
+      "title": "FAMILY PEACE",
+      "name": "Family Peace",
+      "category": "family",
+      "people": "3+",
+      "styles": [
+        "family"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "triangle",
+      "instruction": "Smile together",
+      "assetFile": "pose-guides/family-peace.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"FAMILY PEACE\". Show 3+ people in a full or half body triangle composition inspired by the pose name \"Family Peace\". The final readable action is: Smile together. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    },
+    {
+      "poseId": "group-freestyle",
+      "title": "GROUP FREESTYLE",
+      "name": "Group Freestyle",
+      "category": "friends",
+      "people": "5+",
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true,
+      "adultOnly": false,
+      "formation": "layers",
+      "instruction": "Freeze the chaos",
+      "assetFile": "pose-guides/group-freestyle.webp",
+      "prompt": "Create an original transparent photo-booth sticker cutout titled exactly \"GROUP FREESTYLE\". Show 5+ people in a full or half body layers composition inspired by the pose name \"Group Freestyle\". The final readable action is: Freeze the chaos. Use clear cooperative body language, visible hands, readable faces and achievable posture. Use varied races, skin tones, hair textures and body types across the library; do not stereotype category, gender or ethnicity. Family-safe styling suitable for the selected group. Photorealistic studio photography with bright modern clothing, thick white sticker border and one controlled colored outer outline. Render the exact title once in bold video-game lettering behind or beside the cutout, correctly spelled, with a hard shadow. Use only two or three small accent marks. Genuinely transparent background. No extra people, extra words, logo, watermark, scenery, gradient, rectangle, glow, unsafe lifting or jumping."
+    }
+  ]
+}

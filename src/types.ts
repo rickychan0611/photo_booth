@@ -1,3 +1,4 @@
+import type { PoseGuideSettings } from '../electron/poseTypes';
 export type TemplateStyleId = 'style1' | 'style2' | 'style3' | 'style4';
 
 export type TemplateOrientation = 'portrait' | 'landscape';
@@ -29,7 +30,7 @@ export type TemplateWorkflowSettings = {
   printAutoSelectMs: number;
   thankYouMessage: string;
   thankYouMs: number;
-  screenCues?: Partial<Record<'intro' | 'select' | 'thanks' | 'facePack', AudioCue>>;
+  screenCues?: Partial<Record<'intro' | 'select' | 'thanks', AudioCue>>;
   shots: WorkflowShotSettings[];
 };
 
@@ -82,6 +83,10 @@ export type AiSettings = {
   systemPrompt: string;
   thinkingLevel: 'none' | 'low' | 'medium' | 'high';
   providers: Record<AiProvider, AiProviderConfig>;
+  poseGenerator: {
+    provider: AiProvider;
+    providers: Record<AiProvider, Pick<AiProviderConfig, 'apiUrl' | 'model'>>;
+  };
 };
 
 export type BeautyFilterMode = 'off' | 'print' | 'live';
@@ -89,31 +94,6 @@ export type BeautyFilterMode = 'off' | 'print' | 'live';
 export type BeautyFilterSettings = {
   enabledMode: BeautyFilterMode;
   previewTimeoutMs: number;
-};
-
-export type ColorFilterValues = {
-  intensity: number;
-  brightness: number;
-  contrast: number;
-  saturation: number;
-  warmth: number;
-  tint: number;
-  hue: number;
-  fade: number;
-  highlights: number;
-  shadows: number;
-  vignette: number;
-  blur: number;
-};
-
-export type ColorFilterPreset = {
-  id: string;
-  name: string;
-  active: boolean;
-  thumbnailPath: string;
-  filter: ColorFilterValues;
-  createdAt: string;
-  updatedAt: string;
 };
 
 export type AiQueueStatus = 'queued' | 'generating' | 'requested' | 'done' | 'failed' | 'printed' | 'print_failed';
@@ -149,40 +129,9 @@ export type TemplateDesign = {
   active: boolean;
   usesAi: boolean;
   aiPresetId: string;
-  faceTrackingEnabled: boolean;
-  faceAssetPackId: string;
   videoRecordingEnabled: boolean;
   workflowOverrideEnabled?: boolean;
   workflowOverride?: TemplateWorkflowSettings;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type FaceAssetPlacement = 'glasses' | 'hat' | 'nose' | 'mouth' | 'face';
-
-export type FaceAsset = {
-  id: string;
-  name: string;
-  path: string;
-  placement: FaceAssetPlacement;
-  scale: number;
-  xOffset: number;
-  yOffset: number;
-  rotation: number;
-  opacity: number;
-  active: boolean;
-  order: number;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type FaceAssetPack = {
-  id: string;
-  name: string;
-  active: boolean;
-  assignPerFace: boolean;
-  guestPreviewPath: string;
-  assets: FaceAsset[];
   createdAt: string;
   updatedAt: string;
 };
@@ -197,10 +146,6 @@ export type TemplateSettings = {
   selectedDesignId: string;
   layouts: TemplateLayout[];
   aiPresets: AiPreset[];
-  faceAssetPacks: FaceAssetPack[];
-  colorFilterExamplePath: string;
-  colorFilterPresetVersion?: number;
-  colorFilterPresets: ColorFilterPreset[];
   designs: TemplateDesign[];
 };
 
@@ -219,6 +164,7 @@ export type AppSettings = {
   /** How the capture-card picture sits inside the Canon still. */
   canonFraming: 'cover' | 'contain';
   mirrorPreview: boolean;
+  poseGuide: PoseGuideSettings;
   cameraRotation: CameraRotation;
   cameraPreviewOverlay: CameraPreviewOverlay;
   cameraControls: CameraControlSettings;
@@ -297,6 +243,7 @@ export type CameraControlSettings = {
 };
 
 export type WorkflowShotSettings = {
+  poseId?: string;
   message: string;
   cameraBeforeMessageMs: number;
   messageMs: number;

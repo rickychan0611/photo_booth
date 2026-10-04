@@ -1,4 +1,8 @@
+import { normalizePoseGuide } from './pose/types';
 import { createBlankTemplateLayout, normalizeTemplateLayoutForClient } from './template';
+import { validateScene } from './pose/validation';
+import { BUNDLED_SCENES } from './pose/scenes';
+import type { PoseAiProvider, PoseScene } from './pose/types';
 import type { AiQueueItem, AppSettings, AudioCue, Gallery, SaveImageRequest, SaveImageResult, TemplateLayout } from './types';
 
 const fallbackSettings: AppSettings = {
@@ -14,6 +18,7 @@ const fallbackSettings: AppSettings = {
   canonEnabled: false,
   canonFraming: 'cover',
   mirrorPreview: true,
+  poseGuide: normalizePoseGuide(undefined),
   cameraRotation: 0,
   cameraPreviewOverlay: 'none',
   cameraControls: {},
@@ -56,6 +61,14 @@ const fallbackSettings: AppSettings = {
         apiUrl: 'https://api.x.ai/v1/images/edits',
         model: 'grok-imagine-image-quality'
       }
+    },
+    poseGenerator: {
+      provider: 'openai',
+      providers: {
+        openai: { apiUrl: 'https://api.openai.com/v1/responses', model: 'gpt-5.6-luna' },
+        gemini: { apiUrl: 'https://generativelanguage.googleapis.com/v1beta/interactions', model: 'gemini-3.8-flash' },
+        xai: { apiUrl: 'https://api.x.ai/v1/responses', model: 'grok-4.7' }
+      }
     }
   },
   audio: {
@@ -77,7 +90,6 @@ const fallbackSettings: AppSettings = {
       intro: { id: 'intro', label: 'Intro screen', mode: 'host', channel: 'voice', text: "Let's take pictures.", filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       select: { id: 'select', label: 'Photo selection screen', mode: 'host', channel: 'voice', text: 'Please choose your favorite pictures to print.', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       thanks: { id: 'thanks', label: 'Finish screen', mode: 'host', channel: 'voice', text: 'Thank you. Please pick up your print.', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
-      facePack: { id: 'facePack', label: 'Face assets screen', mode: 'host', channel: 'voice', text: 'Please choose your face accessories.', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       shot0: { id: 'shot0', label: 'Picture 1 message', mode: 'host', channel: 'voice', text: 'Get ready!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       shot1: { id: 'shot1', label: 'Picture 2 message', mode: 'host', channel: 'voice', text: 'Smile!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       shot2: { id: 'shot2', label: 'Picture 3 message', mode: 'host', channel: 'voice', text: 'Switch it up!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
@@ -108,17 +120,6 @@ const fallbackSettings: AppSettings = {
     selectedDesignId: '',
     layouts: [],
     aiPresets: [],
-    faceAssetPacks: [],
-    colorFilterExamplePath: '',
-    colorFilterPresetVersion: 2,
-    colorFilterPresets: [
-      { id: 'golden-hour-glow', name: 'Golden Hour Glow', active: true, thumbnailPath: '', filter: { intensity: 75, brightness: 8, contrast: 12, saturation: 10, warmth: 22, tint: 4, hue: 2, fade: 5, highlights: -10, shadows: 8, vignette: 12, blur: 0 }, createdAt: '', updatedAt: '' },
-      { id: 'clean-bright-blogger', name: 'Clean Bright Blogger', active: true, thumbnailPath: '', filter: { intensity: 60, brightness: 18, contrast: 5, saturation: 6, warmth: 4, tint: 0, hue: 0, fade: 3, highlights: -18, shadows: 14, vignette: 4, blur: 0 }, createdAt: '', updatedAt: '' },
-      { id: 'moody-street', name: 'Moody Street', active: true, thumbnailPath: '', filter: { intensity: 80, brightness: -6, contrast: 24, saturation: -8, warmth: -6, tint: 3, hue: -2, fade: 12, highlights: -22, shadows: -10, vignette: 20, blur: 0 }, createdAt: '', updatedAt: '' },
-      { id: 'soft-pastel-dream', name: 'Soft Pastel Dream', active: true, thumbnailPath: '', filter: { intensity: 65, brightness: 12, contrast: -10, saturation: -12, warmth: 6, tint: 8, hue: 1, fade: 25, highlights: -12, shadows: 18, vignette: 6, blur: 2 }, createdAt: '', updatedAt: '' },
-      { id: 'vintage-film', name: 'Vintage Film', active: true, thumbnailPath: '', filter: { intensity: 85, brightness: -2, contrast: 10, saturation: -6, warmth: 14, tint: 6, hue: 3, fade: 30, highlights: -20, shadows: 10, vignette: 18, blur: 1 }, createdAt: '', updatedAt: '' },
-      { id: 'cool-urban-blue', name: 'Cool Urban Blue', active: true, thumbnailPath: '', filter: { intensity: 70, brightness: 4, contrast: 16, saturation: -4, warmth: -18, tint: -6, hue: -5, fade: 8, highlights: 0, shadows: 0, vignette: 0, blur: 0 }, createdAt: '', updatedAt: '' }
-    ],
     designs: []
   },
   workflow: {
@@ -241,6 +242,15 @@ export function installMockApi() {
           openai: { ...fallbackSettings.ai.providers.openai, ...(parsed.ai?.providers?.openai ?? {}) },
           gemini: { ...fallbackSettings.ai.providers.gemini, ...(parsed.ai?.providers?.gemini ?? {}) },
           xai: { ...fallbackSettings.ai.providers.xai, ...(parsed.ai?.providers?.xai ?? {}) }
+        },
+        poseGenerator: {
+          ...fallbackSettings.ai.poseGenerator,
+          ...(parsed.ai?.poseGenerator ?? {}),
+          providers: {
+            openai: { ...fallbackSettings.ai.poseGenerator.providers.openai, ...(parsed.ai?.poseGenerator?.providers?.openai ?? {}) },
+            gemini: { ...fallbackSettings.ai.poseGenerator.providers.gemini, ...(parsed.ai?.poseGenerator?.providers?.gemini ?? {}) },
+            xai: { ...fallbackSettings.ai.poseGenerator.providers.xai, ...(parsed.ai?.poseGenerator?.providers?.xai ?? {}) }
+          }
         }
       },
       audio: {
@@ -257,17 +267,15 @@ export function installMockApi() {
         styleVersion: 3,
         selectedTemplateId: parsed.template?.selectedTemplateId ?? '',
         layouts: (parsed.template?.layouts ?? []).map((layout) => normalizeTemplateLayoutForClient(layout)),
-        faceAssetPacks: parsed.template?.faceAssetPacks ?? fallbackSettings.template.faceAssetPacks,
         designs: (parsed.template?.designs ?? fallbackSettings.template.designs).map((design) => ({
           ...design,
           templateId: design.templateId ?? design.styleId ?? '',
-          faceTrackingEnabled: Boolean(design.faceTrackingEnabled),
-          faceAssetPackId: design.faceAssetPackId ?? '',
           videoRecordingEnabled: Boolean(design.videoRecordingEnabled),
           workflowOverrideEnabled: Boolean(design.workflowOverrideEnabled)
         }))
       },
       workflow: normalizeWorkflowSettings(parsed.workflow),
+      poseGuide: normalizePoseGuide(parsed.poseGuide),
       printPicker: { ...fallbackSettings.printPicker, ...(parsed.printPicker ?? {}) },
       cameraControls: { ...fallbackSettings.cameraControls, ...(parsed.cameraControls ?? {}) },
       cameraPreviewOverlay: normalizeCameraPreviewOverlay((parsed as { cameraPreviewOverlay?: unknown }).cameraPreviewOverlay),
@@ -282,6 +290,7 @@ export function installMockApi() {
       defaultPrinter: normalizePrinterName(settings.defaultPrinter),
       stylePrinters: normalizeStylePrinters(settings.stylePrinters),
       workflow: normalizeWorkflowSettings(settings.workflow),
+      poseGuide: normalizePoseGuide(settings.poseGuide),
       printCalibration: normalizePrintCalibration(settings.printCalibration)
     };
     window.localStorage.setItem(settingsKey, JSON.stringify(normalized));
@@ -289,12 +298,47 @@ export function installMockApi() {
   };
 
   window.photoBooth = {
+    listPoses: async () => {
+      const poses: PoseScene[] = [], errors: string[] = [];
+      for (let index = 0; index < localStorage.length; index++) {
+        const key = localStorage.key(index)!;
+        if (!key.startsWith('pose-library:pose:')) continue;
+        try { poses.push(validateScene(JSON.parse(localStorage.getItem(key)!))); } catch (error) { errors.push(`${key}: ${String(error)}`); }
+      }
+      return { poses, errors };
+    },
+    savePose: async pose => { const valid = validateScene(pose); localStorage.setItem(`pose-library:pose:${valid.id}`, JSON.stringify(valid)); return valid; },
+    deletePose: async id => { localStorage.removeItem(`pose-library:pose:${id}`); return true; },
+    exportPose: async pose => { validateScene(pose); const blob = new Blob([JSON.stringify(pose, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = `${pose.id}.json`; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); return true; },
+    importPoseImage: async () => new Promise(resolve => {
+      const input = document.createElement('input'); input.type = 'file'; input.accept = '.webp,image/webp';
+      input.oncancel = () => resolve(null);
+      input.onchange = () => { const file = input.files?.[0]; if (!file) { resolve(null); return; } const reader = new FileReader(); reader.onerror = () => resolve(null); reader.onload = () => { try { const filePath = `browser-pose-image-${crypto.randomUUID()}`; localStorage.setItem(filePath, String(reader.result)); resolve({ filePath, name: file.name }); } catch { resolve(null); } }; reader.readAsDataURL(file); };
+      input.click();
+    }),
+    importPoseAudio: async () => new Promise(resolve => {
+      const input = document.createElement('input'); input.type = 'file'; input.accept = '.mp3,.wav,.ogg,.m4a';
+      input.oncancel = () => resolve(null);
+      input.onchange = () => { const file = input.files?.[0]; if (!file) { resolve(null); return; } const reader = new FileReader(); reader.onerror = () => resolve(null); reader.onload = () => { try { const filePath = `browser-pose-audio-${crypto.randomUUID()}`; localStorage.setItem(filePath, String(reader.result)); resolve({ filePath, name: file.name }); } catch { resolve(null); } }; reader.readAsDataURL(file); };
+      input.click();
+    }),
+    generatePose: async request => {
+      if (request.description.trim().length < 12) throw new Error('Describe the pose in a little more detail.');
+      const settings = readSettings(), provider = (request.provider ?? settings.ai.poseGenerator.provider) as PoseAiProvider;
+      const scene = structuredClone(BUNDLED_SCENES[0]);
+      scene.id = `ai-browser-${crypto.randomUUID().slice(0, 8)}`;
+      scene.name = request.description.trim().split(/[.!?]/)[0].slice(0, 60) || 'AI pose';
+      scene.instruction = request.description.trim();
+      scene.tags = [...new Set([...scene.tags, 'ai-generated', provider])];
+      return { scene: validateScene(scene), provider, model: settings.ai.poseGenerator.providers[provider].model };
+    },
     getSettings: async () => readSettings(),
     updateSettings: async (partial: Partial<AppSettings>) => {
       const current = readSettings();
       return writeSettings({
         ...current,
         ...partial,
+        poseGuide: normalizePoseGuide({ ...current.poseGuide, ...partial.poseGuide }),
         template: { ...current.template, ...(partial.template ?? {}) },
         ai: {
           ...current.ai,
@@ -303,6 +347,15 @@ export function installMockApi() {
             openai: { ...current.ai.providers.openai, ...(partial.ai?.providers?.openai ?? {}) },
             gemini: { ...current.ai.providers.gemini, ...(partial.ai?.providers?.gemini ?? {}) },
             xai: { ...current.ai.providers.xai, ...(partial.ai?.providers?.xai ?? {}) }
+          },
+          poseGenerator: {
+            ...current.ai.poseGenerator,
+            ...(partial.ai?.poseGenerator ?? {}),
+            providers: {
+              openai: { ...current.ai.poseGenerator.providers.openai, ...(partial.ai?.poseGenerator?.providers?.openai ?? {}) },
+              gemini: { ...current.ai.poseGenerator.providers.gemini, ...(partial.ai?.poseGenerator?.providers?.gemini ?? {}) },
+              xai: { ...current.ai.poseGenerator.providers.xai, ...(partial.ai?.poseGenerator?.providers?.xai ?? {}) }
+            }
           }
         },
         audio: {
@@ -368,8 +421,6 @@ export function installMockApi() {
         active: true,
         usesAi: false,
         aiPresetId: '',
-        faceTrackingEnabled: false,
-        faceAssetPackId: '',
         videoRecordingEnabled: false,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
@@ -442,34 +493,8 @@ export function installMockApi() {
       });
     },
     updateTemplateAsset: async () => null,
-    uploadFaceAsset: async () => readSettings(),
-    uploadFaceAssetPackPreview: async () => readSettings(),
-    removeFaceAsset: async () => readSettings(),
-    deleteFaceAssetPack: async (packId: string) => {
-      const current = readSettings();
-      return writeSettings({
-        ...current,
-        template: {
-          ...current.template,
-          faceAssetPacks: current.template.faceAssetPacks.filter((pack) => pack.id !== packId),
-          designs: current.template.designs.map((design) =>
-            design.faceAssetPackId === packId ? { ...design, faceTrackingEnabled: false, faceAssetPackId: '' } : design
-          )
-        }
-      });
-    },
-    updateFaceAssetPack: async (pack) => {
-      const current = readSettings();
-      const packs = current.template.faceAssetPacks.some((item) => item.id === pack.id)
-        ? current.template.faceAssetPacks.map((item) => (item.id === pack.id ? pack : item))
-        : [...current.template.faceAssetPacks, pack];
-      return writeSettings({ ...current, template: { ...current.template, faceAssetPacks: packs } });
-    },
     uploadAiPresetImage: async () => readSettings(),
     removeAiPresetImage: async () => readSettings(),
-    uploadColorFilterThumbnail: async () => readSettings(),
-    uploadColorFilterExample: async () => readSettings(),
-    saveGeneratedColorFilterThumbnails: async () => readSettings(),
     listAiQueue: async () => aiQueue,
     retryAiQueueItem: async (itemId: string) => {
       const item = aiQueue.find((queueItem) => queueItem.id === itemId);
@@ -522,10 +547,6 @@ export function installMockApi() {
       window.open(`${window.location.origin}?preview=picker`, '_blank');
       return true;
     },
-    openFaceAssetPreview: async (packId: string) => {
-      window.open(`${window.location.origin}?window=facePreview&packId=${encodeURIComponent(packId)}`, '_blank');
-      return true;
-    },
     capturePage: async () => '',
     setGuestFullscreen: async (fullscreen: boolean) => {
       if (fullscreen && !document.fullscreenElement) await document.documentElement.requestFullscreen();
@@ -574,7 +595,7 @@ export function installMockApi() {
       return true;
     },
     getImageDataUrl: async () => '',
-    getAudioDataUrl: async () => '',
+    getAudioDataUrl: async filePath => localStorage.getItem(filePath) ?? '',
     listGallery: async () => gallery,
     uploadFinalGallery: async (request) => {
       const photo = gallery.finals.find((item) => item.path === request.finalPath);

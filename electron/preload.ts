@@ -1,4 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron';
+import type { PoseAiGenerateRequest, PoseAiGenerateResult, PoseCatalog, PoseScene } from './poseTypes';
 import type {
   AiGenerateRequest,
   AiGenerateResult,
@@ -8,7 +9,6 @@ import type {
   BackgroundGalleryUploadRequest,
   BackgroundGalleryUploadResult,
   BackgroundVideoUploadRequest,
-  FaceAssetPack,
   Gallery,
   GalleryUploadStatus,
   HostVoiceGenerateResult,
@@ -26,6 +26,13 @@ import type {
 } from './types';
 
 const api = {
+  listPoses: () => ipcRenderer.invoke('poses:list') as Promise<PoseCatalog>,
+  savePose: (pose: PoseScene) => ipcRenderer.invoke('poses:save', pose) as Promise<PoseScene>,
+  deletePose: (id: string) => ipcRenderer.invoke('poses:delete', id) as Promise<boolean>,
+  exportPose: (pose: PoseScene) => ipcRenderer.invoke('poses:export', pose) as Promise<boolean>,
+  importPoseAudio: () => ipcRenderer.invoke('poses:audio-import') as Promise<{ filePath: string; name: string } | null>,
+  importPoseImage: () => ipcRenderer.invoke('poses:image-import') as Promise<{ filePath: string; name: string } | null>,
+  generatePose: (request: PoseAiGenerateRequest) => ipcRenderer.invoke('poses:generate', request) as Promise<PoseAiGenerateResult>,
   getSettings: () => ipcRenderer.invoke('settings:get') as Promise<AppSettings>,
   updateSettings: (settings: Partial<AppSettings>) =>
     ipcRenderer.invoke('settings:update', settings) as Promise<AppSettings>,
@@ -74,26 +81,10 @@ const api = {
   importTemplate: () => ipcRenderer.invoke('template-layout:import') as Promise<AppSettings>,
   updateTemplateAsset: (designId: string, role: TemplateAssetRole) =>
     ipcRenderer.invoke('template:update-asset', designId, role) as Promise<TemplateDesign | null>,
-  uploadFaceAsset: (packId: string) =>
-    ipcRenderer.invoke('face-asset:upload', packId) as Promise<AppSettings>,
-  uploadFaceAssetPackPreview: (packId: string) =>
-    ipcRenderer.invoke('face-asset-pack:upload-preview', packId) as Promise<AppSettings>,
-  removeFaceAsset: (packId: string, assetId: string) =>
-    ipcRenderer.invoke('face-asset:remove', packId, assetId) as Promise<AppSettings>,
-  deleteFaceAssetPack: (packId: string) =>
-    ipcRenderer.invoke('face-asset-pack:delete', packId) as Promise<AppSettings>,
-  updateFaceAssetPack: (pack: FaceAssetPack) =>
-    ipcRenderer.invoke('face-asset-pack:update', pack) as Promise<AppSettings>,
   uploadAiPresetImage: (presetId: string) =>
     ipcRenderer.invoke('ai:preset-image-upload', presetId) as Promise<AppSettings>,
   removeAiPresetImage: (presetId: string, imageId: string) =>
     ipcRenderer.invoke('ai:preset-image-remove', presetId, imageId) as Promise<AppSettings>,
-  uploadColorFilterThumbnail: (presetId: string) =>
-    ipcRenderer.invoke('color-filter:upload-thumbnail', presetId) as Promise<AppSettings>,
-  uploadColorFilterExample: () =>
-    ipcRenderer.invoke('color-filter:upload-example') as Promise<AppSettings>,
-  saveGeneratedColorFilterThumbnails: (thumbnails: Array<{ presetId: string; dataUrl: string }>) =>
-    ipcRenderer.invoke('color-filter:save-generated-thumbnails', thumbnails) as Promise<AppSettings>,
   listAiQueue: () => ipcRenderer.invoke('ai:queue-list') as Promise<AiQueueItem[]>,
   retryAiQueueItem: (itemId: string) => ipcRenderer.invoke('ai:queue-retry', itemId) as Promise<AiGenerateResult>,
   printAiQueueItem: (itemId: string) => ipcRenderer.invoke('ai:queue-print', itemId) as Promise<AiQueueItem>,
@@ -105,8 +96,6 @@ const api = {
   openAdmin: () => ipcRenderer.invoke('window:open-admin') as Promise<boolean>,
   openGuest: () => ipcRenderer.invoke('window:open-guest') as Promise<boolean>,
   openGuestPickerPreview: () => ipcRenderer.invoke('window:open-guest-picker-preview') as Promise<boolean>,
-  openFaceAssetPreview: (packId: string) =>
-    ipcRenderer.invoke('window:open-face-asset-preview', packId) as Promise<boolean>,
   capturePage: (rect?: { x: number; y: number; width: number; height: number }) =>
     ipcRenderer.invoke('window:capture-page', rect) as Promise<string>,
   setGuestFullscreen: (fullscreen: boolean) =>

@@ -22,6 +22,11 @@ const channelVolume = (settings: AppSettings, channel: AudioChannel) => {
 const cueVolume = (settings: AppSettings, cue: AudioCue) =>
   Math.min(1, Math.max(0, settings.audio.masterVolume * channelVolume(settings, cue.channel) * cue.volume));
 
+// Editor transport shares the existing cue registry, channel levels and cleanup.
+export function seekAudioCue(id: string, seconds: number) { const audio = activeAudio.get(id); if (audio && Number.isFinite(seconds)) audio.currentTime = Math.max(0, Math.min(Number.isFinite(audio.duration) ? audio.duration : seconds, seconds)); }
+export function pauseAudioCue(id: string) { activeAudio.get(id)?.pause(); }
+export async function resumeAudioCue(id: string) { await activeAudio.get(id)?.play(); }
+
 export const stopAudioCue = (cueId: string) => {
   invalidateCue(cueId);
   const timer = activeLoopTimers.get(cueId);
@@ -51,7 +56,7 @@ export const stopAllAudio = () => {
   [...activeAudio.keys()].forEach(stopAudioCue);
 };
 
-export const playAudioCueObject = async (settings: AppSettings, cue: AudioCue | undefined, fallbackText = '') => {
+export const playAudioCueObject = async (settings: AppSettings, cue: AudioCue | undefined, fallbackText = '', preparedDataUrl?: string) => {
   const cueId = cue?.id ?? '';
   if (!settings.audio.enabled || !cue?.enabled || cue.mode === 'off') {
     if (cue?.channel === 'voice') stopAudioChannel('voice');
@@ -69,7 +74,7 @@ export const playAudioCueObject = async (settings: AppSettings, cue: AudioCue | 
   if (cue.mode === 'host' && (!settings.audio.enableHostVoice || !cue.filePath)) return;
 
   if ((cue.mode === 'mp3' || cue.mode === 'host') && cue.filePath) {
-    const dataUrl = await window.photoBooth.getAudioDataUrl(cue.filePath);
+    const dataUrl = preparedDataUrl ?? await window.photoBooth.getAudioDataUrl(cue.filePath);
     if (!isCueCurrent(cueId, token)) return;
     if (!dataUrl) return;
     const audio = new Audio(dataUrl);

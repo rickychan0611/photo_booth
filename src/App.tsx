@@ -1,11 +1,9 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type InputHTMLAttributes } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type InputHTMLAttributes } from 'react';
 import QRCode from 'qrcode';
 import { ArrowLeft, ArrowUp, Camera, Copy, Download, Expand, ExternalLink, FolderOpen, Globe, Image, Minimize2, Printer, RefreshCw, RotateCw, Settings, SlidersHorizontal, Sparkles, Trash2, X } from 'lucide-react';
-import type { AiPreset, AiProvider, AiQueueItem, AppSettings, AudioCue, BoothSession, CameraControlSettings, CameraRotation, Capture, ColorFilterPreset, ColorFilterValues, FaceAsset, FaceAssetPack, FaceAssetPlacement, Gallery, GalleryUploadStatus, QueueSnapshot, SavedPhoto, TemplateDesign, TemplateLayout, TemplateSlot, TemplateWorkflowSettings } from './types';
+import type { AiPreset, AiProvider, AiQueueItem, AppSettings, AudioCue, BoothSession, CameraControlSettings, CameraRotation, Capture, Gallery, GalleryUploadStatus, QueueSnapshot, SavedPhoto, TemplateDesign, TemplateLayout, TemplateSlot, TemplateWorkflowSettings } from './types';
 import { detectPhotoSlots, layoutFromDetectedSlots, loadRasterFromFile, renderSlotMapThumbnail } from './templateMap';
-import { createGuideTemplateImage, createTemplatedPhotoLayer, createTemplatedPrintImage, createTemplatedPrintImageFromLayer, getPrimarySlot, MAX_PHOTOS_TO_TAKE, normalizePhotosToTake, normalizeTemplateLayoutForClient, normalizeTemplateWorkflow, templateDimensions } from './template';
-import { FaceAssetStabilizer, FaceTracker, clearFaceAssetCanvas, detectFaces, drawFaceAssets, drawFaceDebugInfo, isGuestSelectableFacePack, loadFaceLandmarker, preloadFaceAssetPack, resolveGuestFaceAssetPack } from './faceAssets';
-import { applyFaceBeauty } from './beauty';
+import { createGuideTemplateImage, createTemplatedPhotoLayer, createTemplatedPrintImageFromLayer, getPrimarySlot, MAX_PHOTOS_TO_TAKE, normalizePhotosToTake, normalizeTemplateLayoutForClient, normalizeTemplateWorkflow, templateDimensions } from './template';
 import {
   getCameraVideoStyle,
   SOFTWARE_CAMERA_DEFAULT,
@@ -17,8 +15,14 @@ import {
 import { GuestScreenLockProvider, KioskButton } from './KioskButton';
 import { playAudioCue, playAudioCueObject, stopAllAudio, stopAudioChannel, stopAudioCue } from './audio';
 import { createBoothGallerySession, createQueueRealtimeClient, fetchQueueSnapshot, isRealtimeConfigured, isWebQueueConfigured, publicWebUrl, validateBoothCode } from './webBackend';
+import { PoseGuideOverlay, type PoseGuideHandle } from './pose/PoseGuideOverlay';
+import { GuestCompositionScreen, CompositionControls } from './pose/GuestCompositionScreen';
+import { EMPTY_COMPOSITION, RandomSceneSelector, slotFraming, slotGeometry, validateComposition } from './pose/scenes';
+import { loadPhotoGuideCatalog } from './pose/repository';
+import { normalizePoseGuide, type GuestComposition } from './pose/types';
+const PoseEditor = lazy(() => import('./pose/editor/PoseEditor').then(module => ({ default: module.PoseEditor })));
 
-type GuestStep = 'queue' | 'welcome' | 'style' | 'design' | 'facePack' | 'intro' | 'capture' | 'select' | 'filterPreview' | 'thanks';
+type GuestStep = 'queue' | 'welcome' | 'style' | 'design' | 'people' | 'intro' | 'capture' | 'select' | 'thanks';
 
 type PendingPrint = {
   captures: Capture[];
@@ -39,43 +43,9 @@ type SelectContext = {
   autoSelectMs: number;
 };
 
-type FilterPreviewAssets = {
-  layout: TemplateLayout;
-  photoDataUrls: string[];
-  templateDataUrl: string;
-  facePack: FaceAssetPack | null;
-};
-
 const buttonText = (value: string) => `[ ${value} ]`;
 const PHONE_MAX_DIGITS = 15;
-const FILTER_PREVIEW_MAX_LONG_EDGE = 900;
 const SELECT_PREVIEW_MAX_LONG_EDGE = 600;
-const COLOR_FILTER_FIELDS: Array<{ key: keyof ColorFilterValues; label: string; min: number; max: number; step?: number }> = [
-  { key: 'intensity', label: 'Intensity', min: 0, max: 100 },
-  { key: 'brightness', label: 'Brightness', min: -50, max: 50 },
-  { key: 'contrast', label: 'Contrast', min: -50, max: 50 },
-  { key: 'saturation', label: 'Saturation', min: -50, max: 50 },
-  { key: 'warmth', label: 'Warmth', min: -50, max: 50 },
-  { key: 'tint', label: 'Tint', min: -50, max: 50 },
-  { key: 'hue', label: 'Hue', min: -180, max: 180 },
-  { key: 'fade', label: 'Fade', min: 0, max: 50 },
-  { key: 'highlights', label: 'Highlights', min: -50, max: 50 },
-  { key: 'shadows', label: 'Shadows', min: -50, max: 50 },
-  { key: 'vignette', label: 'Vignette', min: 0, max: 50 },
-  { key: 'blur', label: 'Blur', min: 0, max: 20 }
-];
-
-const colorFilterPreviewCacheKey = (preset: ColorFilterPreset | null) =>
-  preset
-    ? [
-        preset.id,
-        preset.updatedAt,
-        ...COLOR_FILTER_FIELDS.map(({ key }) => preset.filter[key])
-      ].join('|')
-    : 'normal';
-
-const filterPreviewCacheKey = (beautyLevel: number, preset: ColorFilterPreset | null) =>
-  `beauty:${beautyLevel}|color:${colorFilterPreviewCacheKey(preset)}`;
 
 function formatPhoneNumber(value: string) {
   const digits = value.replace(/\D/g, '').slice(0, PHONE_MAX_DIGITS);
@@ -112,7 +82,6 @@ export function App() {
   const query = new URLSearchParams(window.location.search);
   const windowKind = query.get('window');
   if (windowKind === 'admin') return <AdminApp />;
-  if (windowKind === 'facePreview') return <FaceAssetPreviewApp />;
   return <GuestApp />;
 }
 
@@ -122,6 +91,8 @@ function GuestApp() {
   const { settings } = useSettings();
   const [welcomeLogoSrc, setWelcomeLogoSrc] = useState('');
   const [step, setStep] = useState<GuestStep>('welcome');
+  const [composition, setComposition] = useState<GuestComposition>({ ...EMPTY_COMPOSITION });
+  const pendingDesignRef = useRef<TemplateDesign | null>(null);
   const [countdown, setCountdown] = useState<number | null>(null);
   const [captureMessage, setCaptureMessage] = useState('');
   const [captureMessageFadeMs, setCaptureMessageFadeMs] = useState(2000);
@@ -132,18 +103,8 @@ function GuestApp() {
   const [selectCountdown, setSelectCountdown] = useState<number | null>(null);
   const [selectedTemplateId, setSelectedTemplateId] = useState('');
   const [selectedDesignId, setSelectedDesignId] = useState('');
-  const [guestFaceAssetPackId, setGuestFaceAssetPackId] = useState<string | null>(null);
-  const facePackShowcaseGenRef = useRef(0);
   const [pendingPrint, setPendingPrint] = useState<PendingPrint | null>(null);
-  const [selectedBeautyLevel, setSelectedBeautyLevel] = useState(0);
-  const [selectedColorFilterId, setSelectedColorFilterId] = useState('normal');
-  const [filterThumbs, setFilterThumbs] = useState<Record<string, string>>({});
   const [selectPreviewUrls, setSelectPreviewUrls] = useState<Record<number, string>>({});
-  const [filterPreviewDataUrl, setFilterPreviewDataUrl] = useState('');
-  const [filterCountdown, setFilterCountdown] = useState<number | null>(null);
-  const filterPreviewSessionRef = useRef(0);
-  const filterPreviewAssetsRef = useRef<Promise<FilterPreviewAssets | null> | null>(null);
-  const filterPreviewCacheRef = useRef<Map<string, Promise<string>>>(new Map());
   const [thankYouCountdown, setThankYouCountdown] = useState<number | null>(null);
   const [printedPreview, setPrintedPreview] = useState('');
   const [printedNumber, setPrintedNumber] = useState('');
@@ -166,9 +127,7 @@ function GuestApp() {
   const [galleryConsent, setGalleryConsent] = useState(true);
   const [marketingConsent, setMarketingConsent] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const faceOverlayCanvasRef = useRef<HTMLCanvasElement>(null);
   const captureGuideRef = useRef<HTMLDivElement>(null);
-  const faceOverlayStabilizerRef = useRef(new FaceAssetStabilizer());
   const streamRef = useRef<MediaStream | null>(null);
   const [cameraCapabilities, setCameraCapabilities] = useState<CameraCapabilitiesMap>({});
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -184,6 +143,10 @@ function GuestApp() {
   const pendingPhoneSubmissionRef = useRef<PendingPhoneSubmission | null>(null);
   const lastShortcutRef = useRef('');
   const sessionRunRef = useRef(0);
+  const poseGuideRef = useRef<PoseGuideHandle>(null);
+  const poseAbortRef = useRef<AbortController | null>(null);
+  const [poseShot, setPoseShot] = useState({ number: 1, total: 1 });
+  const [poseSessionEnabled, setPoseSessionEnabled] = useState(false);
   const queueModeEnabled = Boolean(settings?.staffControlQueueMode);
   const templateLayouts = settings?.template.layouts.map(normalizeTemplateLayoutForClient) ?? [];
   const activeTemplateLayouts = templateLayouts.filter((layout) => layout.active);
@@ -195,7 +158,6 @@ function GuestApp() {
   const selectedTemplate = templateLayouts.find((layout) => layout.id === selectedTemplateId) ?? templateLayouts[0] ?? null;
   const selectedDesign = activeDesigns.find((design) => design.id === selectedDesignId) ?? null;
   const selectedWorkflow = settings && selectedTemplate ? workflowForTemplate(settings, selectedTemplate) : null;
-  const selectableGuestFacePacks = settings?.template.faceAssetPacks.filter(isGuestSelectableFacePack) ?? [];
 
   useEffect(() => {
     let active = true;
@@ -320,7 +282,6 @@ function GuestApp() {
     const workflow = layout ? workflowForTemplate(settings, layout) : null;
 
     if (step === 'intro') void playAudioCueObject(settings, workflow?.screenCues?.intro, workflow?.introMessage);
-    if (step === 'facePack') void playAudioCueObject(settings, workflow?.screenCues?.facePack, 'Please choose your face accessories.');
     if (step === 'select') void playAudioCueObject(settings, workflow?.screenCues?.select);
     if (step === 'thanks') void playAudioCueObject(settings, workflow?.screenCues?.thanks, workflow?.thankYouMessage);
   }, [settings, settings?.audio, step, selectedTemplateId, selectedDesignId]);
@@ -348,10 +309,6 @@ function GuestApp() {
     setPrintedPreview('');
     setPrintedNumber('');
     setPendingPrint(null);
-    setSelectedBeautyLevel(0);
-    setSelectedColorFilterId('normal');
-    setFilterPreviewDataUrl('');
-    setFilterCountdown(null);
     setIsAiGenerating(false);
     setIsFinalPreparing(false);
     setCountdown(null);
@@ -372,11 +329,15 @@ function GuestApp() {
     pendingPhoneSubmissionRef.current = null;
     confirmPrintLockRef.current = false;
     setThankYouCountdown(null);
-    setGuestFaceAssetPackId(null);
     setStep(queueModeEnabled ? 'queue' : 'welcome');
   }, [queueModeEnabled, step, thankYouCountdown]);
 
   const resetGuestSession = () => {
+    setComposition({ ...EMPTY_COMPOSITION });
+    pendingDesignRef.current = null;
+    poseAbortRef.current?.abort();
+    poseAbortRef.current = null;
+    poseGuideRef.current?.stop();
     setCaptures([]);
     setSelectedCaptureIndexes([]);
     setSelectContext(null);
@@ -384,10 +345,6 @@ function GuestApp() {
     setPrintedPreview('');
     setPrintedNumber('');
     setPendingPrint(null);
-    setSelectedBeautyLevel(0);
-    setSelectedColorFilterId('normal');
-    setFilterPreviewDataUrl('');
-    setFilterCountdown(null);
     setSelectPreviewUrls({});
     setIsAiGenerating(false);
     setIsFinalPreparing(false);
@@ -406,7 +363,6 @@ function GuestApp() {
     setGalleryConsent(true);
     setMarketingConsent(true);
     setThankYouCountdown(null);
-    setGuestFaceAssetPackId(null);
     pendingGalleryUploadRef.current = null;
     pendingPhoneSubmissionRef.current = null;
     confirmPrintLockRef.current = false;
@@ -436,6 +392,8 @@ function GuestApp() {
   useEffect(() => {
     const releaseCamera = () => {
       sessionRunRef.current += 1;
+      poseAbortRef.current?.abort();
+      poseGuideRef.current?.stop();
       if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
         try {
           mediaRecorderRef.current.stop();
@@ -509,7 +467,7 @@ function GuestApp() {
     throw lastError instanceof Error ? lastError : new Error('Camera not ready.');
   };
 
-  const startCamera = async (quality: 'preview' | 'capture' = 'capture', options: { forceRestart?: boolean } = {}) => {
+  const startCamera = async (quality: 'preview' | 'capture' = 'capture', options: { forceRestart?: boolean; runId?: number } = {}) => {
     if (!settings) throw new Error('Settings not ready.');
     if (streamRef.current && !options.forceRestart) {
       await attachCameraStream(streamRef.current);
@@ -517,16 +475,24 @@ function GuestApp() {
     }
     stopCamera();
     const stream = await openCameraStream(quality);
+    if (options.runId !== undefined && sessionRunRef.current !== options.runId) {
+      stream.getTracks().forEach((track) => track.stop());
+      return;
+    }
     setCameraCapabilities(getCameraCapabilities(stream));
     await applyCameraControls(stream, settings.cameraControls);
+    if (options.runId !== undefined && sessionRunRef.current !== options.runId) {
+      stream.getTracks().forEach((track) => track.stop());
+      return;
+    }
     streamRef.current = stream;
     await attachCameraStream(stream);
   };
 
   useEffect(() => {
     if (!settings) return undefined;
-    const needsPreviewCamera = step === 'welcome' || step === 'facePack';
-    const retainCamera = needsPreviewCamera || step === 'style' || step === 'design' || step === 'intro' || step === 'capture';
+    const needsPreviewCamera = step === 'welcome';
+    const retainCamera = needsPreviewCamera || step === 'style' || step === 'design' || step === 'people' || step === 'intro' || step === 'capture';
     if (!retainCamera) {
       stopCamera();
       return undefined;
@@ -559,8 +525,8 @@ function GuestApp() {
     recordingCleanupRef.current = null;
   };
 
-  // Captures the full on-screen composite (camera + face-asset overlays +
-  // countdown/messages) of the booth window plus microphone audio. If mirror
+  // Captures the full on-screen composite (camera, countdown, and messages)
+  // of the booth window plus microphone audio. If mirror
   // preview is enabled, the saved MP4 is flipped during transcode so playback is
   // natural while the guest can still see a mirrored live preview.
   const startSessionRecording = async () => {
@@ -667,17 +633,23 @@ function GuestApp() {
     }
   };
 
-  const captureFrame = async (slot: TemplateSlot, useFullLiveView = false) => {
+  const captureFrame = async (slot: TemplateSlot, useFullLiveView = false, runId?: number) => {
     if (!videoRef.current || !settings) throw new Error('Camera not ready.');
+    const assertCurrent = () => {
+      if (runId !== undefined && sessionRunRef.current !== runId) throw new DOMException('Session cancelled.', 'AbortError');
+    };
+    assertCurrent();
 
     // Render the camera view directly from the camera's native resolution. A
     // plain window screenshot is capped by the guest screen's physical pixel
     // density, which is usually far lower than what the camera actually
     // captures -- that mismatch is what made prints look soft/blurry.
     setIsCapturing(true);
+    poseGuideRef.current?.hide();
     await nextPaint();
 
     try {
+      assertCurrent();
       const video = videoRef.current;
       if (settings.canonEnabled && !useFullLiveView) {
         if (!captureGuideRef.current || !video.videoWidth || !video.videoHeight) {
@@ -697,12 +669,14 @@ function GuestApp() {
           rotation: settings.cameraRotation,
           mirror: settings.mirrorPreview,
           framing: settings.canonFraming === 'contain' ? 'contain' : 'cover',
-          slotAspect: slot.width / Math.max(1, slot.height),
+          slotAspect: slotGeometry(slot).width / Math.max(1, slotGeometry(slot).height),
           cropY: slot.cropY === 'top' ? 'top' : 'center'
         });
+        assertCurrent();
         setIsFlashing(true);
         window.setTimeout(() => setIsFlashing(false), 180);
         const saved = await window.photoBooth.saveImage({ dataUrl: captured.dataUrl, kind: 'original', filenamePrefix: 'original' });
+        assertCurrent();
         return { dataUrl: captured.dataUrl, ...saved };
       }
 
@@ -733,17 +707,21 @@ function GuestApp() {
           rect = { x: bounds.left, y: bounds.top, width: bounds.width, height: bounds.height };
         }
         dataUrl = await window.photoBooth.capturePage(rect);
+        assertCurrent();
       }
 
       // Cover-crop to the slot's exact aspect ratio so it drops into the print
       // frame without stretching, for every template style.
-      const finalDataUrl = await coverCropToAspect(dataUrl, slot.width / slot.height, slot.cropY);
+      const geometry = slotGeometry(slot);
+      const finalDataUrl = await coverCropToAspect(dataUrl, geometry.width / geometry.height, slot.cropY);
+      assertCurrent();
       setIsFlashing(true);
       window.setTimeout(() => setIsFlashing(false), 180);
       const saved = await window.photoBooth.saveImage({ dataUrl: finalDataUrl, kind: 'original', filenamePrefix: 'original' });
+      assertCurrent();
       return { dataUrl: finalDataUrl, ...saved };
     } finally {
-      setIsCapturing(false);
+      if (runId === undefined || sessionRunRef.current === runId) setIsCapturing(false);
     }
   };
 
@@ -754,47 +732,14 @@ function GuestApp() {
       if (settings) void playAudioCue(settings, `countdown${value}`, String(value));
       await delay(1000);
     }
+    if (sessionRunRef.current !== runId) return false;
     setCountdown(null);
     return true;
   };
 
-  const activeFacePack = settings ? resolveGuestFaceAssetPack(settings, guestFaceAssetPackId) : null;
-  const activeColorFilterPresets = settings?.template.colorFilterPresets.filter((preset) => preset.active) ?? [];
-  const selectedColorPreset = selectedColorFilterId === 'normal'
-    ? null
-    : activeColorFilterPresets.find((preset) => preset.id === selectedColorFilterId) ?? null;
-
-  const applyFaceAssetsToPhoto = async (dataUrl: string, facePack: FaceAssetPack | null) => {
-    if (!facePack) return dataUrl;
-    const image = await loadDataUrlImage(dataUrl);
-    const canvas = document.createElement('canvas');
-    canvas.width = image.naturalWidth || image.width;
-    canvas.height = image.naturalHeight || image.height;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) throw new Error('Could not apply face assets.');
-    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-    try {
-      const result = await detectFaces(canvas, performance.now());
-      await drawFaceAssets(ctx, result, facePack, canvas.width, canvas.height);
-    } catch (error) {
-      console.warn('Face assets print burn-in skipped.', error);
-    }
-    return canvas.toDataURL('image/png');
-  };
-
-  const applyFaceAssetsToPhotos = async (dataUrls: string[], facePack: FaceAssetPack | null) => {
-    const next: string[] = [];
-    for (const dataUrl of dataUrls) {
-      next.push(await applyFaceAssetsToPhoto(dataUrl, facePack));
-    }
-    return next;
-  };
-
   const createProcessedPrintImage = async (
     request: PendingPrint,
-    beautyLevel: number,
-    colorPreset: ColorFilterPreset | null,
-    options: { maxLongEdge?: number; previewPhotos?: boolean } = {}
+    options: { maxLongEdge?: number } = {}
   ) => {
     if (!settings) return '';
     const layout = templateLayouts.find((item) => item.id === request.templateId);
@@ -804,118 +749,22 @@ function GuestApp() {
       .map((index) => request.captures[index]?.dataUrl)
       .filter(Boolean) as string[];
     if (baseDataUrls.length < layout.photoWindows.length) return '';
-    const printReady = settings.mirrorPreview
+    const photoDataUrls = settings.mirrorPreview
       ? await Promise.all(baseDataUrls.map(flipPhotoForPrint))
       : baseDataUrls;
-    const photoDataUrls = options.previewPhotos
-      ? await Promise.all(printReady.map((dataUrl) => downscaleDataUrl(dataUrl, FILTER_PREVIEW_MAX_LONG_EDGE)))
-      : printReady;
-    const facePack = resolveGuestFaceAssetPack(settings, guestFaceAssetPackId);
-    const withFaceAssets = await applyFaceAssetsToPhotos(photoDataUrls, facePack);
-    const activeBeautyLevel = settings.beautyFilter.enabledMode === 'off' ? 0 : beautyLevel;
     const photoLayer = await createTemplatedPhotoLayer(
-      withFaceAssets,
+      photoDataUrls,
       layout,
       options.maxLongEdge ? { maxLongEdge: options.maxLongEdge } : undefined
     );
-    const filteredPhotoLayer = colorPreset || activeBeautyLevel > 0
-      ? await applyPhotoFilters(photoLayer, colorPreset, activeBeautyLevel)
-      : photoLayer;
     const templateDataUrl = await window.photoBooth.getImageDataUrl(templateFramePath(request.design));
     return createTemplatedPrintImageFromLayer(
-      filteredPhotoLayer,
+      photoLayer,
       layout,
       request.design,
       templateDataUrl,
       options.maxLongEdge ? { maxLongEdge: options.maxLongEdge } : undefined
     );
-  };
-
-  const getFilterPreviewAssets = () => {
-    if (filterPreviewAssetsRef.current) return filterPreviewAssetsRef.current;
-    const request = pendingPrint;
-    if (!request || !settings) return Promise.resolve(null);
-    const layout = templateLayouts.find((item) => item.id === request.templateId);
-    if (!layout) return Promise.resolve(null);
-
-    const promise = (async (): Promise<FilterPreviewAssets | null> => {
-      const baseDataUrls = request.indexes
-        .slice(0, layout.photoWindows.length)
-        .map((index) => request.captures[index]?.dataUrl)
-        .filter(Boolean) as string[];
-      if (baseDataUrls.length < layout.photoWindows.length) return null;
-      const printReady = settings.mirrorPreview
-        ? await Promise.all(baseDataUrls.map(flipPhotoForPrint))
-        : baseDataUrls;
-      const [photoDataUrls, templateDataUrl] = await Promise.all([
-        Promise.all(printReady.map((dataUrl) => downscaleDataUrl(dataUrl, FILTER_PREVIEW_MAX_LONG_EDGE))),
-        window.photoBooth.getImageDataUrl(templateFramePath(request.design))
-      ]);
-      return { layout, photoDataUrls, templateDataUrl, facePack: resolveGuestFaceAssetPack(settings, guestFaceAssetPackId) };
-    })().catch((error) => {
-      filterPreviewAssetsRef.current = null;
-      throw error;
-    });
-
-    filterPreviewAssetsRef.current = promise;
-    return promise;
-  };
-
-  const getCachedFilterPreview = (
-    beautyLevel: number,
-    colorPreset: ColorFilterPreset | null
-  ) => {
-    const activeBeautyLevel = settings?.beautyFilter.enabledMode === 'off' ? 0 : beautyLevel;
-    const key = filterPreviewCacheKey(activeBeautyLevel, colorPreset);
-    const cached = filterPreviewCacheRef.current.get(key);
-    if (cached) return cached;
-
-    const renderPromise = (async () => {
-      const assets = await getFilterPreviewAssets();
-      if (!assets) return '';
-      const withFaceAssets = await applyFaceAssetsToPhotos(assets.photoDataUrls, assets.facePack);
-      if (withFaceAssets.length < assets.layout.photoWindows.length) return '';
-      const photoLayer = await createTemplatedPhotoLayer(
-        withFaceAssets,
-        assets.layout,
-        { maxLongEdge: FILTER_PREVIEW_MAX_LONG_EDGE }
-      );
-      const filteredPhotoLayer = colorPreset || activeBeautyLevel > 0
-        ? await applyPhotoFilters(photoLayer, colorPreset, activeBeautyLevel)
-        : photoLayer;
-      return createTemplatedPrintImageFromLayer(
-        filteredPhotoLayer,
-        assets.layout,
-        pendingPrint?.design,
-        assets.templateDataUrl,
-        { maxLongEdge: FILTER_PREVIEW_MAX_LONG_EDGE }
-      );
-    })();
-
-    const cachedPromise = renderPromise.catch((error) => {
-      filterPreviewCacheRef.current.delete(key);
-      throw error;
-    });
-    filterPreviewCacheRef.current.set(key, cachedPromise);
-    return cachedPromise;
-  };
-
-  const prepareFilterPreview = async (
-    sourceCaptures: Capture[],
-    indexes: number[],
-    templateId: string,
-    design: TemplateDesign
-  ) => {
-    filterPreviewSessionRef.current += 1;
-    filterPreviewAssetsRef.current = null;
-    filterPreviewCacheRef.current.clear();
-    setPendingPrint({ captures: sourceCaptures, indexes, templateId, design });
-    setSelectedBeautyLevel(0);
-    setSelectedColorFilterId('normal');
-    setFilterThumbs({});
-    setFilterPreviewDataUrl('');
-    setFilterCountdown(Math.max(1, Math.ceil((settings?.beautyFilter.previewTimeoutMs ?? 30000) / 1000)));
-    setStep('filterPreview');
   };
 
   const finalizeSelection = (indexes: number[]) => {
@@ -929,7 +778,7 @@ function GuestApp() {
     setSelectedCaptureIndexes(final);
     setSelectCountdown(null);
     if (settings) void playAudioCue(settings, 'button');
-    void prepareFilterPreview(captures, final, context.templateId, context.design);
+    void printCaptures(captures, final, context.templateId, context.design);
   };
 
   const toggleCaptureSelection = (index: number) => {
@@ -957,65 +806,6 @@ function GuestApp() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectCountdown, step, selectContext]);
 
-  const confirmFilterPrint = async () => {
-    if (!pendingPrint || confirmPrintLockRef.current) return;
-    confirmPrintLockRef.current = true;
-    setIsBusy(true);
-    setFilterCountdown(null);
-    const request = pendingPrint;
-    const beautyLevel = selectedBeautyLevel;
-    const colorPreset = selectedColorPreset;
-    void printCaptures(request.captures, request.indexes, request.templateId, request.design, undefined, {
-      beautyLevel,
-      colorPreset
-    });
-  };
-
-  useEffect(() => {
-    if (step !== 'filterPreview' || !pendingPrint || !settings) return undefined;
-    let active = true;
-    const sessionId = filterPreviewSessionRef.current;
-    const activeBeautyLevel = settings.beautyFilter.enabledMode === 'off' ? 0 : selectedBeautyLevel;
-    const requestedKey = filterPreviewCacheKey(activeBeautyLevel, selectedColorPreset);
-    void (async () => {
-      try {
-        const preview = await getCachedFilterPreview(activeBeautyLevel, selectedColorPreset);
-        const currentBeautyLevel = settings.beautyFilter.enabledMode === 'off' ? 0 : selectedBeautyLevel;
-        const currentKey = filterPreviewCacheKey(currentBeautyLevel, selectedColorPreset);
-        if (active && preview && sessionId === filterPreviewSessionRef.current && requestedKey === currentKey) {
-          setFilterPreviewDataUrl(preview);
-        }
-      } catch (error) {
-        if (active) setError(error instanceof Error ? error.message : 'Could not preview filters.');
-      }
-    })();
-    return () => {
-      active = false;
-    };
-  }, [pendingPrint, selectedBeautyLevel, selectedColorFilterId, settings, step]);
-
-  useEffect(() => {
-    if (step !== 'filterPreview' || !pendingPrint || !settings || !filterPreviewDataUrl) return undefined;
-    let active = true;
-    const sessionId = filterPreviewSessionRef.current;
-    void (async () => {
-      try {
-        if (selectedColorFilterId !== 'normal') await getCachedFilterPreview(0, null);
-        if (!active || sessionId !== filterPreviewSessionRef.current) return;
-        for (const preset of activeColorFilterPresets) {
-          if (!active || sessionId !== filterPreviewSessionRef.current) return;
-          if (preset.id === selectedColorFilterId) continue;
-          await getCachedFilterPreview(0, preset);
-        }
-      } catch {
-        // The active preview effect reports user-facing errors; prewarm can fail silently.
-      }
-    })();
-    return () => {
-      active = false;
-    };
-  }, [filterPreviewDataUrl, guestFaceAssetPackId, pendingPrint, selectedColorFilterId, settings, step]);
-
   useEffect(() => {
     if (step !== 'select' || !settings || captures.length === 0) {
       if (step !== 'select') setSelectPreviewUrls({});
@@ -1024,16 +814,11 @@ function GuestApp() {
     let active = true;
     void (async () => {
       try {
-        const facePack = resolveGuestFaceAssetPack(settings, guestFaceAssetPackId);
         const entries = await Promise.all(
           captures.map(async (capture, index) => {
             if (!capture.dataUrl) return [index, ''] as const;
-            let source = capture.dataUrl;
-            if (settings.mirrorPreview) {
-              source = await flipPhotoForPrint(source);
-            }
-            const withFace = await applyFaceAssetsToPhoto(source, facePack);
-            const thumb = await downscaleDataUrl(withFace, SELECT_PREVIEW_MAX_LONG_EDGE);
+            const source = settings.mirrorPreview ? await flipPhotoForPrint(capture.dataUrl) : capture.dataUrl;
+            const thumb = await downscaleDataUrl(source, SELECT_PREVIEW_MAX_LONG_EDGE);
             return [index, thumb] as const;
           })
         );
@@ -1050,193 +835,20 @@ function GuestApp() {
     return () => {
       active = false;
     };
-  }, [captures, guestFaceAssetPackId, settings, step]);
-
-  // Build live per-preset thumbnails from the last captured photo (color only,
-  // small + cached) so guests preview each filter on their own picture.
-  useEffect(() => {
-    if (step !== 'filterPreview' || !pendingPrint || !settings) return undefined;
-    let active = true;
-    void (async () => {
-      try {
-        const lastCapture = pendingPrint.captures[pendingPrint.captures.length - 1];
-        if (!lastCapture?.dataUrl) return;
-        const smallDataUrl = await downscaleDataUrl(lastCapture.dataUrl, 220);
-        const facePack = resolveGuestFaceAssetPack(settings, guestFaceAssetPackId);
-        const thumbSourceDataUrl = await applyFaceAssetsToPhoto(smallDataUrl, facePack);
-        const presets = settings.template.colorFilterPresets.filter((preset) => preset.active);
-        const entries = await Promise.all([
-          (async () => ['normal', thumbSourceDataUrl] as const)(),
-          ...presets.map(async (preset) => {
-            try {
-              const thumb = await applyPhotoFilters(thumbSourceDataUrl, preset, 0);
-              return [preset.id, thumb] as const;
-            } catch {
-              return [preset.id, ''] as const;
-            }
-          })
-        ]);
-        if (!active) return;
-        const next: Record<string, string> = {};
-        entries.forEach(([id, src]) => {
-          if (src) next[id] = src;
-        });
-        setFilterThumbs(next);
-      } catch {
-        // Leave thumbnails empty; buttons fall back to static sample images.
-      }
-    })();
-    return () => {
-      active = false;
-    };
-  }, [guestFaceAssetPackId, pendingPrint, settings, step]);
-
-  useEffect(() => {
-    if (step !== 'filterPreview' || !pendingPrint || !settings) return undefined;
-    setFilterCountdown(Math.max(1, Math.ceil(settings.beautyFilter.previewTimeoutMs / 1000)));
-    const timer = window.setInterval(() => {
-      setFilterCountdown((current) => (current === null ? current : Math.max(0, current - 1)));
-    }, 1000);
-    return () => window.clearInterval(timer);
-  }, [pendingPrint?.templateId, settings?.beautyFilter.previewTimeoutMs, step]);
-
-  useEffect(() => {
-    if (step !== 'filterPreview' || filterCountdown !== 0 || !pendingPrint) return;
-    void confirmFilterPrint();
-  }, [filterCountdown, pendingPrint, step]);
-
-  useEffect(() => {
-    if (!settings || selectableGuestFacePacks.length === 0) return;
-    void Promise.all([
-      loadFaceLandmarker(),
-      ...selectableGuestFacePacks.map((pack) => preloadFaceAssetPack(pack))
-    ]).catch((error) => {
-      console.warn('Face assets preload skipped.', error);
-    });
-  }, [settings?.template.faceAssetPacks]);
-
-  useEffect(() => {
-    if (step !== 'facePack' || !settings) return undefined;
-    const packs = settings.template.faceAssetPacks.filter(isGuestSelectableFacePack);
-    if (packs.length === 0) {
-      setGuestFaceAssetPackId(null);
-      return undefined;
-    }
-
-    const gen = ++facePackShowcaseGenRef.current;
-    let index = 0;
-    let timer = 0;
-
-    const applyPack = (packId: string | null) => {
-      if (facePackShowcaseGenRef.current !== gen) return;
-      void playAudioCue(settings, 'button');
-      setGuestFaceAssetPackId(packId);
-      faceOverlayStabilizerRef.current.reset();
-      if (packId) {
-        const pack = packs.find((candidate) => candidate.id === packId);
-        void preloadFaceAssetPack(pack).catch((error) => {
-          console.warn('Showcase face assets preload skipped.', error);
-        });
-      }
-    };
-
-    const tick = () => {
-      if (facePackShowcaseGenRef.current !== gen) return;
-      if (index < packs.length) {
-        applyPack(packs[index].id);
-        index += 1;
-        timer = window.setTimeout(tick, 400);
-        return;
-      }
-      applyPack(null);
-    };
-
-    timer = window.setTimeout(tick, 2000);
-
-    return () => {
-      window.clearTimeout(timer);
-      if (facePackShowcaseGenRef.current === gen) facePackShowcaseGenRef.current += 1;
-    };
-  }, [settings, step]);
-
-  useEffect(() => {
-    const canvas = faceOverlayCanvasRef.current;
-    const showFaceOverlay = step === 'capture' || step === 'facePack';
-    if (!settings || !canvas || !showFaceOverlay) {
-      if (canvas) clearFaceAssetCanvas(canvas, canvas.width, canvas.height);
-      faceOverlayStabilizerRef.current.reset();
-      return undefined;
-    }
-
-    let animationFrame = 0;
-    let canceled = false;
-    let busy = false;
-    let lastDetectionAt = 0;
-    let missedFrames = 0;
-    const tracker = new FaceTracker();
-
-    const drawOverlay = (now: number) => {
-      if (!canceled) animationFrame = window.requestAnimationFrame(drawOverlay);
-      const video = videoRef.current;
-      const overlay = faceOverlayCanvasRef.current;
-      if (!canceled && video && overlay && video.videoWidth > 0 && video.videoHeight > 0 && !busy && now - lastDetectionAt > 66) {
-        busy = true;
-        lastDetectionAt = now;
-        void (async () => {
-          try {
-          const displayWidth = Math.max(1, Math.round(overlay.clientWidth));
-          const displayHeight = Math.max(1, Math.round(overlay.clientHeight));
-          const displayResult = await detectDisplayedFaces(video, displayWidth, displayHeight, settings, now);
-          clearFaceAssetCanvas(overlay, displayWidth, displayHeight);
-          const ctx = overlay.getContext('2d');
-          if (!activeFacePack) {
-            faceOverlayStabilizerRef.current.reset();
-            tracker.reset();
-            return;
-          }
-          if (displayResult.faceLandmarks.length === 0) {
-            missedFrames += 1;
-            if (ctx) {
-              await drawFaceAssets(ctx, displayResult, activeFacePack, overlay.width, overlay.height, faceOverlayStabilizerRef.current, tracker);
-            }
-            if (missedFrames > 60) {
-              faceOverlayStabilizerRef.current.reset();
-              tracker.reset();
-            }
-            return;
-          }
-          missedFrames = 0;
-          if (ctx) {
-            await drawFaceAssets(ctx, displayResult, activeFacePack, overlay.width, overlay.height, faceOverlayStabilizerRef.current, tracker);
-          }
-        } catch (error) {
-          console.warn('Face assets preview skipped.', error);
-        } finally {
-          busy = false;
-        }
-        })();
-      }
-    };
-
-    animationFrame = window.requestAnimationFrame(drawOverlay);
-    return () => {
-      canceled = true;
-      window.cancelAnimationFrame(animationFrame);
-      clearFaceAssetCanvas(canvas, canvas.width, canvas.height);
-      faceOverlayStabilizerRef.current.reset();
-    };
-  }, [activeFacePack, settings?.cameraRotation, settings?.mirrorPreview, step]);
+  }, [captures, settings, step]);
 
   const continueAfterDesignSelection = (design: TemplateDesign) => {
     setSelectedTemplateId(design.templateId);
     setSelectedDesignId(design.id);
-    setGuestFaceAssetPackId(null);
     setSelectedCaptureIndexes([]);
-    setStep('intro');
-    void startSession(design.templateId, design);
+    const guide = normalizePoseGuide(settings?.poseGuide);
+    if (guide.enabled && guide.selectionEnabled) {
+      pendingDesignRef.current = design;
+      setStep('people');
+    } else void startSession(design.templateId, design, guide.defaultComposition);
   };
 
-  const stepBeforeFacePack = () => {
+  const stepBeforeSession = () => {
     const templateDesignCount = activeDesigns.filter((design) => design.templateId === selectedTemplateId).length;
     if (templateDesignCount > 1) return 'design' as const;
     if (selectableTemplates.length === 1) return 'welcome' as const;
@@ -1267,27 +879,6 @@ function GuestApp() {
   const chooseDesign = (design: TemplateDesign) => {
     if (settings) void playAudioCue(settings, 'button');
     continueAfterDesignSelection(design);
-  };
-
-  const selectFacePack = (packId: string | null) => {
-    facePackShowcaseGenRef.current += 1;
-    if (settings) void playAudioCue(settings, 'button');
-    setGuestFaceAssetPackId(packId);
-    if (settings && packId) {
-      const pack = settings.template.faceAssetPacks.find((candidate) => candidate.id === packId);
-      void preloadFaceAssetPack(pack).catch((error) => {
-        console.warn('Selected face assets preload skipped.', error);
-      });
-    }
-    faceOverlayStabilizerRef.current.reset();
-  };
-
-  const confirmFacePack = () => {
-    if (isBusy) return;
-    facePackShowcaseGenRef.current += 1;
-    if (settings) void playAudioCue(settings, 'button');
-    setStep('intro');
-    void startSession(selectedTemplateId, selectedDesign);
   };
 
   const startUnqueuedFlow = () => {
@@ -1332,13 +923,21 @@ function GuestApp() {
     }
   };
 
-  const startSession = async (templateId = selectedTemplateId, design = selectedDesign) => {
-    if (!settings || isBusy) return;
+  const startSession = async (templateId = selectedTemplateId, design = selectedDesign, guests = normalizePoseGuide(settings?.poseGuide).defaultComposition!) => {
+    if (!settings || isBusy || poseAbortRef.current) return;
     const layout = templateLayouts.find((item) => item.id === templateId);
     if (!layout) return;
     const workflow = workflowForTemplate(settings, layout);
+    const guideEnabled = settings.poseGuide?.enabled !== false;
+    if (guideEnabled) {
+      try { validateComposition(guests, normalizePoseGuide(settings.poseGuide).groupCapacity); }
+      catch (error) { setError(String(error)); return; }
+    }
+    setPoseSessionEnabled(guideEnabled);
     const runId = sessionRunRef.current + 1;
     sessionRunRef.current = runId;
+    const poseController = new AbortController();
+    poseAbortRef.current = poseController;
     setError('');
     setIsBusy(true);
     setCaptures([]);
@@ -1348,25 +947,26 @@ function GuestApp() {
     setPrintedPreview('');
     setPrintedNumber('');
     setPendingPrint(null);
-    setSelectedBeautyLevel(0);
-    setSelectedColorFilterId('normal');
-    setFilterPreviewDataUrl('');
-    setFilterCountdown(null);
     setIsAiGenerating(false);
     setCaptureMessage('');
     setCountdown(null);
     confirmPrintLockRef.current = false;
 
     try {
+      const catalog = guideEnabled ? await loadPhotoGuideCatalog() : { poses: [], errors: [] };
+      if (sessionRunRef.current !== runId) return;
+      const selector = new RandomSceneSelector(structuredClone(catalog.poses));
+      const sessionGuests = { ...guests };
+      setComposition({ ...EMPTY_COMPOSITION });
+      pendingDesignRef.current = null;
       setStep('intro');
       await delay(workflow.introMs);
       if (sessionRunRef.current !== runId) return;
       setStep('capture');
       await delay(100);
       if (sessionRunRef.current !== runId) return;
-      await startCamera('capture', { forceRestart: true });
+      await startCamera('capture', { forceRestart: true, runId });
       if (sessionRunRef.current !== runId) {
-        stopCamera();
         return;
       }
       if (design?.videoRecordingEnabled) {
@@ -1379,29 +979,51 @@ function GuestApp() {
       const shotPlan = Array.from({ length: takeCount }, (_item, index) => workflow.shots[index % workflow.shots.length]);
       const nextCaptures: Capture[] = [];
 
-      for (const shot of shotPlan) {
+      for (const [shotIndex, shot] of shotPlan.entries()) {
         if (sessionRunRef.current !== runId) return;
         setCaptureMessage('');
-        await delay(shot.cameraBeforeMessageMs);
+        setPoseShot({ number: shotIndex + 1, total: takeCount });
+        const guideSlot = pickMode ? getPrimarySlot(layout, 0) : getPrimarySlot(layout, nextCaptures.length);
+        const framing = slotFraming(guideSlot);
+        const pose = guideEnabled ? selector.next(sessionGuests, framing) : null;
+        let guided = false;
+        if (pose && poseGuideRef.current) {
+          stopAudioChannel('voice');
+          const result = await poseGuideRef.current.play(pose, poseController.signal, framing);
+          if (sessionRunRef.current !== runId || result === 'cancelled') return;
+          guided = result === 'completed';
+        }
+        if (!guided) {
+          poseGuideRef.current?.stop();
+          await delay(shot.cameraBeforeMessageMs);
+          if (sessionRunRef.current !== runId) return;
+          setCaptureMessage(shot.message);
+          void playAudioCueObject(settings, shot.audioCue, shot.message);
+          setCaptureMessageFadeMs(shot.messageMs);
+          await delay(shot.messageMs);
+          if (sessionRunRef.current !== runId) return;
+          setCaptureMessage('');
+          await delay(shot.cameraBeforeCountdownMs);
+        }
         if (sessionRunRef.current !== runId) return;
-        setCaptureMessage(shot.message);
-        void playAudioCueObject(settings, shot.audioCue, shot.message);
-        setCaptureMessageFadeMs(shot.messageMs);
-        await delay(shot.messageMs);
-        if (sessionRunRef.current !== runId) return;
-        setCaptureMessage('');
-        await delay(shot.cameraBeforeCountdownMs);
+        if (guided) {
+          await poseGuideRef.current?.dismiss();
+          await nextPaint();
+        }
         if (!(await runCountdown(runId))) return;
+        poseGuideRef.current?.hide();
         // When taking more photos than slots, every shot is a candidate for any
         // slot, so crop them all to the first slot's aspect ratio for a
         // consistent selection grid. Otherwise match each slot in order.
-        const guideSlot = pickMode ? getPrimarySlot(layout, 0) : getPrimarySlot(layout, nextCaptures.length);
-        const capture = await captureFrame(guideSlot, false);
+        const capture = await captureFrame(guideSlot, false, runId);
+        if (sessionRunRef.current !== runId) return;
         void playAudioCue(settings, 'shutter');
         nextCaptures.push(capture);
         setCaptures([...nextCaptures]);
         await delay(350);
       }
+
+      if (sessionRunRef.current !== runId) return;
 
       stopSessionRecording();
       stopCamera();
@@ -1419,11 +1041,12 @@ function GuestApp() {
       const defaultIndexes = Array.from({ length: slotCount }, (_item, index) => index).filter((index) => index < nextCaptures.length);
       setSelectedCaptureIndexes(defaultIndexes);
       if (design) {
-        await prepareFilterPreview(nextCaptures, defaultIndexes, layout.id, design);
+        await printCaptures(nextCaptures, defaultIndexes, layout.id, design);
       } else {
         setStep('thanks');
       }
     } catch (error) {
+      if (sessionRunRef.current !== runId) return;
       console.error('Photo session failed.', error);
       stopSessionRecording();
       stopCamera();
@@ -1433,9 +1056,16 @@ function GuestApp() {
       setCountdown(null);
       setStep(selectableTemplates.length > 1 ? 'style' : 'welcome');
     } finally {
-      setCaptureMessage('');
-      setCountdown(null);
-      setIsBusy(false);
+      if (poseAbortRef.current === poseController) {
+        poseController.abort();
+        poseAbortRef.current = null;
+      }
+      if (sessionRunRef.current === runId) {
+        poseGuideRef.current?.stop();
+        setCaptureMessage('');
+        setCountdown(null);
+        setIsBusy(false);
+      }
     }
   };
 
@@ -1444,9 +1074,10 @@ function GuestApp() {
     indexes: number[],
     templateId: string,
     design: TemplateDesign,
-    processedPrintDataUrl?: string,
-    filterOptions: { beautyLevel?: number; colorPreset?: ColorFilterPreset | null } = {}
+    processedPrintDataUrl?: string
   ) => {
+    if (confirmPrintLockRef.current) return;
+    confirmPrintLockRef.current = true;
     if (!settings) {
       confirmPrintLockRef.current = false;
       setIsBusy(false);
@@ -1502,11 +1133,7 @@ function GuestApp() {
         setGalleryQrDataUrl(uploadQrDataUrl);
       }
 
-      let dataUrl = processedPrintDataUrl || await createProcessedPrintImage(
-        request,
-        filterOptions.beautyLevel ?? 0,
-        filterOptions.colorPreset ?? null
-      );
+      let dataUrl = processedPrintDataUrl || await createProcessedPrintImage(request);
       if (!dataUrl) return;
       if (uploadGalleryUrl && uploadQrDataUrl) {
         dataUrl = await addQrToPrintDataUrl(dataUrl, uploadQrDataUrl);
@@ -1709,6 +1336,9 @@ function GuestApp() {
 
   const cancelRunningSession = () => {
     sessionRunRef.current += 1;
+    poseAbortRef.current?.abort();
+    poseAbortRef.current = null;
+    poseGuideRef.current?.stop();
     stopSessionRecording();
     stopCamera();
     stopAllAudio();
@@ -1718,7 +1348,6 @@ function GuestApp() {
     setIsBusy(false);
     setIsFlashing(false);
     setSelectCountdown(null);
-    setFilterCountdown(null);
   };
 
   const goBack = () => {
@@ -1735,24 +1364,20 @@ function GuestApp() {
       setStep(selectableTemplates.length === 1 ? 'welcome' : 'style');
       return;
     }
-    if (step === 'facePack') {
-      facePackShowcaseGenRef.current += 1;
-      setStep(stepBeforeFacePack());
+    if (step === 'people') {
+      setStep(stepBeforeSession());
       return;
     }
     if (step === 'intro' || step === 'capture') {
       cancelRunningSession();
-      setStep(stepBeforeFacePack());
+      setComposition({ ...EMPTY_COMPOSITION });
+      pendingDesignRef.current = null;
+      setStep(stepBeforeSession());
       return;
     }
     if (step === 'select') {
       setSelectCountdown(null);
-      setStep(stepBeforeFacePack());
-      return;
-    }
-    if (step === 'filterPreview') {
-      setFilterCountdown(null);
-      setStep(selectContext ? 'select' : stepBeforeFacePack());
+      setStep(stepBeforeSession());
       return;
     }
     if (step === 'thanks') {
@@ -1760,7 +1385,7 @@ function GuestApp() {
         confirmPrintLockRef.current = false;
         setIsBusy(false);
         setIsFinalPreparing(false);
-        setStep('filterPreview');
+        setStep(selectContext ? 'select' : stepBeforeSession());
         return;
       }
       resetGuestSession();
@@ -1775,7 +1400,7 @@ function GuestApp() {
 
   return (
     <GuestScreenLockProvider step={step}>
-    <GuestShell flash={isFlashing} compactTop={step === 'queue'} thanksLayout={step === 'thanks' || step === 'filterPreview'} filterLayout={step === 'filterPreview'}>
+    <GuestShell flash={isFlashing} compactTop={step === 'queue'} thanksLayout={step === 'thanks'}>
       {showGuestBack && (
         <KioskButton className="guest-back-button" onPress={goBack}>
           {buttonText('BACK')}
@@ -1868,50 +1493,11 @@ function GuestApp() {
         </section>
       )}
 
-      {step === 'facePack' && (
-        <section className="face-pack-screen">
-          <video ref={videoRef} className={getCameraVideoClass(settings)} style={guestCameraStyle} playsInline muted />
-          <canvas
-            ref={faceOverlayCanvasRef}
-            className="face-overlay-canvas"
-            aria-hidden="true"
-          />
-          <div className="face-pack-ui">
-            <div className="face-pack-top">
-              <p className="instruction face-pack-instruction">CHOOSE YOUR STICKERS</p>
-              <div className="design-card-grid face-pack-card-grid">
-                <KioskButton
-                  className={`design-card face-pack-choice face-pack-none-card${guestFaceAssetPackId === null ? ' selected' : ''}`}
-                  onPress={() => selectFacePack(null)}
-                  disabled={isBusy}
-                >
-                  <div className="design-preview face-pack-none-preview" />
-                  <span>NO Stickers</span>
-                </KioskButton>
-                {selectableGuestFacePacks.map((pack) => (
-                  <KioskButton
-                    key={pack.id}
-                    className={`design-card face-pack-choice${guestFaceAssetPackId === pack.id ? ' selected' : ''}`}
-                    onPress={() => selectFacePack(pack.id)}
-                    disabled={isBusy}
-                  >
-                    <FaceAssetPackPreview pack={pack} />
-                    <span>{pack.name.toUpperCase()}</span>
-                  </KioskButton>
-                ))}
-              </div>
-              <div className="face-pack-ok-row">
-                <KioskButton
-                  className="face-pack-ok-button"
-                  onPress={confirmFacePack}
-                  disabled={isBusy}
-                >
-                  NEXT
-                </KioskButton>
-              </div>
-            </div>
-          </div>
-        </section>
+      {step === 'people' && (
+        <GuestCompositionScreen value={composition} onChange={setComposition} capacity={normalizePoseGuide(settings.poseGuide).groupCapacity!} onContinue={() => {
+          const design = pendingDesignRef.current;
+          if (design) void startSession(design.templateId, design, { ...composition });
+        }} />
       )}
 
       {step === 'intro' && (
@@ -1923,19 +1509,15 @@ function GuestApp() {
       {step === 'capture' && (
         <section className="capture-screen">
           <video ref={videoRef} className={getCameraVideoClass(settings)} style={guestCameraStyle} playsInline muted />
-          {activeFacePack && (
-            <canvas
-              ref={faceOverlayCanvasRef}
-              className="face-overlay-canvas"
-              aria-hidden="true"
-            />
+          {poseSessionEnabled && (
+            <PoseGuideOverlay ref={poseGuideRef} settings={settings} countdown={countdown} capturing={isCapturing} photoNumber={poseShot.number} photoCount={poseShot.total} />
           )}
           {/* {!isCapturing && (
             <div className="capture-progress">
               {selectedTemplate ? `${Math.min(captures.length + 1, selectedTemplate.photoWindows.length)} / ${selectedTemplate.photoWindows.length}` : '0 / 0'}
             </div>
           )} */}
-          <div ref={captureGuideRef} className="capture-guide-layer" style={slotGuideStyle(getPrimarySlot(selectedTemplate, captures.length))}>
+          <div ref={captureGuideRef} className="capture-guide-layer" style={slotGuideStyle(getPrimarySlot(selectedTemplate, selectedTemplate && selectedDesign && normalizePhotosToTake(selectedTemplate.photosToTake, selectedTemplate.photoWindows.length) > selectedTemplate.photoWindows.length ? 0 : captures.length))}>
             {!isCapturing && <div className="capture-print-guide" />}
           </div>
           {captureMessage && (
@@ -2010,101 +1592,6 @@ function GuestApp() {
         </section>
         );
       })()}
-
-      {step === 'filterPreview' && (
-        <section className="filter-preview-screen">
-          <div className={`filter-preview-stage${filterPreviewDataUrl ? '' : ' generating'}`}>
-            {filterPreviewDataUrl ? <img src={filterPreviewDataUrl} alt="Print preview" /> : <span>PREVIEWING</span>}
-          </div>
-          <div className="filter-content">
-            <div className="filter-controls">
-              <div className="filter-control-group">
-                <p>Color Filter</p>
-                <div className="filter-button-row color-buttons">
-                  <div className="filter-choice-item">
-                    <KioskButton
-                      className={`filter-choice-button${selectedColorFilterId === 'normal' ? ' active' : ''}`}
-                      onPress={() => {
-                        void playAudioCue(settings, 'button');
-                        setSelectedColorFilterId('normal');
-                      }}
-                      disabled={isBusy}
-                    >
-                      {filterThumbs.normal && <img src={filterThumbs.normal} alt="" />}
-                    </KioskButton>
-                    <span className="filter-choice-label">No Filter</span>
-                  </div>
-                  {activeColorFilterPresets.map((preset) => (
-                    <div className="filter-choice-item" key={preset.id}>
-                      <KioskButton
-                        className={`filter-choice-button${selectedColorFilterId === preset.id ? ' active' : ''}`}
-                        onPress={() => {
-                          void playAudioCue(settings, 'button');
-                          setSelectedColorFilterId(preset.id);
-                        }}
-                        disabled={isBusy}
-                      >
-                        {filterThumbs[preset.id] ? (
-                          <img src={filterThumbs[preset.id]} alt="" />
-                        ) : (
-                          <ImagePathThumb path={preset.thumbnailPath} label={preset.name} />
-                        )}
-                      </KioskButton>
-                      <span className="filter-choice-label">{preset.name}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              {/* {settings.beautyFilter.enabledMode !== 'off' && (
-              <div className="filter-control-group beauty-filter-group" style={{ marginBottom: '30px' }}>
-                <p style={{ marginTop: '30px' }}>Beauty Filter Level</p>
-                <div className="beauty-filter-row">
-                  <img
-                    className="beauty-filter-icon"
-                    src={`${import.meta.env.BASE_URL}beauty-icon.png`}
-                    alt=""
-                    aria-hidden="true"
-                  />
-                  <div className="filter-button-row beauty-buttons">
-                    {[0, 1, 2, 3].map((level) => (
-                      <KioskButton
-                        key={level}
-                        className={`filter-choice-button${selectedBeautyLevel === level ? ' active' : ''}`}
-                        onPress={() => {
-                          void playAudioCue(settings, 'button');
-                          setSelectedBeautyLevel(level);
-                        }}
-                      >
-                        <span>{level === 0 ? 'No Beauty' : String(level)}</span>
-                      </KioskButton>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              )} */}
-            </div>
-            <div className="filter-print-row">
-              <KioskButton
-                className="booth-button primary filter-print-button"
-                onPress={() => {
-                  void playAudioCue(settings, 'button');
-                  void confirmFilterPrint();
-                }}
-                disabled={isBusy || !filterPreviewDataUrl}
-              >
-                <span className="filter-print-button-inner">
-                  <span className="filter-print-button-label">Print Now</span>
-                  {filterCountdown !== null && (
-                    <span className="filter-countdown" aria-label={`Auto-print in ${filterCountdown} seconds`}>
-                      {filterCountdown}
-                    </span>
-                  )}
-                </span>
-              </KioskButton>
-            </div>
-          </div>
-        </section>
-      )}
 
       {step === 'thanks' && (
         <section className="thanks-screen">
@@ -2328,22 +1815,19 @@ function GuestShell({
   children,
   flash = false,
   compactTop = false,
-  thanksLayout = false,
-  filterLayout = false
+  thanksLayout = false
 }: {
   children: React.ReactNode;
   flash?: boolean;
   compactTop?: boolean;
   thanksLayout?: boolean;
-  filterLayout?: boolean;
 }) {
   return (
     <main
       className={[
         'guest-shell',
         compactTop ? 'compact-top' : '',
-        thanksLayout ? 'thanks-layout' : '',
-        filterLayout ? 'filter-layout' : ''
+        thanksLayout ? 'thanks-layout' : ''
       ]
         .filter(Boolean)
         .join(' ')}
@@ -2424,30 +1908,6 @@ function TemplateImagePreview({ design }: { design: TemplateDesign }) {
   return <div className="design-preview">{src ? <img src={src} alt={design.name} /> : null}</div>;
 }
 
-function FaceAssetPackPreview({ pack }: { pack: FaceAssetPack }) {
-  const [src, setSrc] = useState('');
-  useEffect(() => {
-    let active = true;
-    if (!pack.guestPreviewPath) {
-      setSrc('');
-      return undefined;
-    }
-    void window.photoBooth
-      .getImageDataUrl(pack.guestPreviewPath)
-      .then((dataUrl) => {
-        if (active) setSrc(dataUrl);
-      })
-      .catch(() => {
-        if (active) setSrc('');
-      });
-    return () => {
-      active = false;
-    };
-  }, [pack.guestPreviewPath]);
-
-  return <div className="design-preview">{src ? <img src={src} alt={pack.name} /> : null}</div>;
-}
-
 function ImagePathThumb({ path, label }: { path: string; label: string }) {
   const [src, setSrc] = useState('');
   useEffect(() => {
@@ -2469,236 +1929,6 @@ function ImagePathThumb({ path, label }: { path: string; label: string }) {
     };
   }, [path]);
   return src ? <img src={src} alt={label} /> : <Image size={22} />;
-}
-
-function createFilterExamplePlaceholder() {
-  const canvas = document.createElement('canvas');
-  canvas.width = 900;
-  canvas.height = 900;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return '';
-  const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-  gradient.addColorStop(0, '#f2c7a7');
-  gradient.addColorStop(0.45, '#b8d7ff');
-  gradient.addColorStop(1, '#222');
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.82)';
-  ctx.beginPath();
-  ctx.arc(450, 360, 150, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = '#1a1a1a';
-  ctx.fillRect(270, 560, 360, 120);
-  return canvas.toDataURL('image/png');
-}
-
-function ColorFilterStudio({
-  settings,
-  selectedPreset,
-  selectedPresetId,
-  onSelect,
-  onSavePreset,
-  onAddPreset,
-  onDuplicatePreset,
-  onDeletePreset,
-  onUploadThumbnail,
-  onUploadExample,
-  onGenerateAllThumbnails,
-  onGenerateThumbnail,
-  onSaveSettings
-}: {
-  settings: AppSettings;
-  selectedPreset: ColorFilterPreset | null;
-  selectedPresetId: string;
-  onSelect: (presetId: string) => void;
-  onSavePreset: (preset: ColorFilterPreset, text?: string) => Promise<void>;
-  onAddPreset: () => Promise<void>;
-  onDuplicatePreset: (preset: ColorFilterPreset) => Promise<void>;
-  onDeletePreset: (presetId: string) => Promise<void>;
-  onUploadThumbnail: (presetId: string) => Promise<void>;
-  onUploadExample: () => Promise<void>;
-  onGenerateAllThumbnails: (exampleDataUrl: string) => Promise<void>;
-  onGenerateThumbnail: (exampleDataUrl: string, preset: ColorFilterPreset) => Promise<void>;
-  onSaveSettings: (partial: Partial<AppSettings>, text?: string) => Promise<AppSettings>;
-}) {
-  const [exampleSrc, setExampleSrc] = useState('');
-  const [previewSrc, setPreviewSrc] = useState('');
-
-  useEffect(() => {
-    let active = true;
-    if (!settings.template.colorFilterExamplePath) {
-      setExampleSrc(createFilterExamplePlaceholder());
-      return undefined;
-    }
-    void window.photoBooth
-      .getImageDataUrl(settings.template.colorFilterExamplePath)
-      .then((dataUrl) => {
-        if (active) setExampleSrc(dataUrl);
-      })
-      .catch(() => {
-        if (active) setExampleSrc(createFilterExamplePlaceholder());
-      });
-    return () => {
-      active = false;
-    };
-  }, [settings.template.colorFilterExamplePath]);
-
-  useEffect(() => {
-    let active = true;
-    if (!exampleSrc || !selectedPreset) {
-      setPreviewSrc(exampleSrc);
-      return undefined;
-    }
-    void applyPhotoFilters(exampleSrc, selectedPreset, 0)
-      .then((dataUrl) => {
-        if (active) setPreviewSrc(dataUrl);
-      })
-      .catch(() => {
-        if (active) setPreviewSrc(exampleSrc);
-      });
-    return () => {
-      active = false;
-    };
-  }, [exampleSrc, selectedPreset]);
-
-  const updateFilterValue = (key: keyof ColorFilterValues, value: number) => {
-    if (!selectedPreset) return;
-    void onSavePreset({
-      ...selectedPreset,
-      filter: {
-        ...selectedPreset.filter,
-        [key]: value
-      }
-    });
-  };
-
-  return (
-    <div className="color-filter-studio">
-      <div className="color-filter-layout">
-        <aside className="color-filter-preview-panel">
-          <div className="color-filter-preview">
-            {previewSrc && <img src={previewSrc} alt="Color filter preview" />}
-          </div>
-          <div className="color-filter-settings">
-            <div className="admin-actions">
-              <button onClick={() => void onUploadExample()}>Upload example</button>
-              <button disabled={!exampleSrc} onClick={() => void onGenerateAllThumbnails(exampleSrc)}>Generate all buttons</button>
-            </div>
-            <div className="compact-settings-grid">
-              <label>
-                Countdown
-                <DraftInput
-                  type="number"
-                  min="5"
-                  max="120"
-                  step="1"
-                  value={Math.round(settings.beautyFilter.previewTimeoutMs / 1000)}
-                  onSave={(value) =>
-                    onSaveSettings({
-                      beautyFilter: {
-                        ...settings.beautyFilter,
-                        previewTimeoutMs: Math.max(5, Number(value || 30)) * 1000
-                      }
-                    }, 'Filter countdown saved.')
-                  }
-                />
-              </label>
-              <label>
-                Beauty
-                <select
-                  value={settings.beautyFilter.enabledMode}
-                  onChange={(event) =>
-                    void onSaveSettings({
-                      beautyFilter: {
-                        ...settings.beautyFilter,
-                        enabledMode: event.target.value as AppSettings['beautyFilter']['enabledMode']
-                      }
-                    }, 'Beauty mode saved.')
-                  }
-                >
-                  <option value="off">Off</option>
-                  <option value="print">Print only</option>
-                  <option value="live">Live + Print</option>
-                </select>
-              </label>
-            </div>
-          </div>
-        </aside>
-
-        <section className="color-filter-editor">
-          <div className="color-filter-list">
-            <div className="admin-actions">
-              <button onClick={() => void onAddPreset()}>Add preset</button>
-            </div>
-            <div className="color-filter-preset-strip">
-              {settings.template.colorFilterPresets.map((preset) => (
-                <button
-                  key={preset.id}
-                  className={preset.id === selectedPresetId ? 'active' : ''}
-                  onClick={() => onSelect(preset.id)}
-                >
-                  <ImagePathThumb path={preset.thumbnailPath} label={preset.name} />
-                  <span>{preset.name}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {selectedPreset ? (
-            <div className="workflow-shot color-filter-edit-card">
-              <div className="color-filter-edit-header">
-                <label>
-                  Name
-                  <DraftInput
-                    value={selectedPreset.name}
-                    onSave={(value) => onSavePreset({ ...selectedPreset, name: value })}
-                  />
-                </label>
-                <label className="check-row">
-                  <input
-                    type="checkbox"
-                    checked={selectedPreset.active}
-                    onChange={(event) => void onSavePreset({ ...selectedPreset, active: event.target.checked })}
-                  />
-                  Active
-                </label>
-              </div>
-              <div className="color-thumbnail-row">
-                <div className="color-thumbnail-preview">
-                  <ImagePathThumb path={selectedPreset.thumbnailPath} label={selectedPreset.name} />
-                </div>
-                <div className="admin-actions">
-                  <button onClick={() => void onUploadThumbnail(selectedPreset.id)}>Upload square button image</button>
-                  <button disabled={!exampleSrc} onClick={() => void onGenerateThumbnail(exampleSrc, selectedPreset)}>Update button image</button>
-                  <button onClick={() => void onSavePreset({ ...selectedPreset, filter: neutralColorFilterValues() }, 'Color filter reset.')}>Reset</button>
-                  <button onClick={() => void onDuplicatePreset(selectedPreset)}>Duplicate</button>
-                  <button className="danger" onClick={() => void onDeletePreset(selectedPreset.id)}>Delete</button>
-                </div>
-              </div>
-              <div className="color-slider-grid">
-                {COLOR_FILTER_FIELDS.map((field) => (
-                  <label key={field.key} className="color-slider">
-                    <span>{field.label}</span>
-                    <input
-                      type="range"
-                      min={field.min}
-                      max={field.max}
-                      step={field.step ?? 1}
-                      value={selectedPreset.filter[field.key]}
-                      onChange={(event) => updateFilterValue(field.key, Number(event.target.value))}
-                    />
-                    <strong>{selectedPreset.filter[field.key]}</strong>
-                  </label>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <p className="muted">Create a color preset to start.</p>
-          )}
-        </section>
-      </div>
-    </div>
-  );
 }
 
 function TemplateDesignAdminCard({
@@ -3144,9 +2374,8 @@ function AdminApp() {
   const [cameraCapabilities, setCameraCapabilities] = useState<CameraCapabilitiesMap>({});
   const [cameraDefaultControls, setCameraDefaultControls] = useState<CameraControlSettings>({});
   const [selectedAdminTemplateId, setSelectedAdminTemplateId] = useState('');
+  const [templateListGroupsOpen, setTemplateListGroupsOpen] = useState({ active: true, inactive: true });
   const [editingTemplate, setEditingTemplate] = useState<TemplateLayout | null>(null);
-  const [selectedFaceAssetPackId, setSelectedFaceAssetPackId] = useState('');
-  const [selectedColorFilterId, setSelectedColorFilterId] = useState('');
   const [selectedWorkflowShotIndex, setSelectedWorkflowShotIndex] = useState(0);
   const [aiPresetDraft, setAiPresetDraft] = useState({ name: '', prompt: '' });
   const [galleryUploadStatus, setGalleryUploadStatus] = useState<GalleryUploadStatus>({
@@ -3193,24 +2422,6 @@ function AdminApp() {
   }, [tab]);
 
   useEffect(() => {
-    if (!settings) return;
-    const packs = settings.template.faceAssetPacks;
-    if (packs.length > 0 && !packs.some((pack) => pack.id === selectedFaceAssetPackId)) {
-      setSelectedFaceAssetPackId(packs[0].id);
-    }
-    if (packs.length === 0 && selectedFaceAssetPackId) setSelectedFaceAssetPackId('');
-  }, [settings?.template.faceAssetPacks, selectedFaceAssetPackId]);
-
-  useEffect(() => {
-    if (!settings) return;
-    const presets = settings.template.colorFilterPresets;
-    if (presets.length > 0 && !presets.some((preset) => preset.id === selectedColorFilterId)) {
-      setSelectedColorFilterId(presets[0].id);
-    }
-    if (presets.length === 0 && selectedColorFilterId) setSelectedColorFilterId('');
-  }, [settings?.template.colorFilterPresets, selectedColorFilterId]);
-
-  useEffect(() => {
     if (tab !== 'aiQueue') return undefined;
     const timer = window.setInterval(() => {
       void refreshAiQueue();
@@ -3248,8 +2459,6 @@ function AdminApp() {
     };
   }, [settings?.cameraId, tab]);
 
-  const selectedFaceAssetPack = settings?.template.faceAssetPacks.find((pack) => pack.id === selectedFaceAssetPackId) ?? null;
-  const selectedColorFilter = settings?.template.colorFilterPresets.find((preset) => preset.id === selectedColorFilterId) ?? null;
 
   const latestFinal = useMemo(() => gallery.finals[0], [gallery]);
   const filteredFinals = useMemo(() => {
@@ -3501,62 +2710,6 @@ function AdminApp() {
     setMessage(`Guide saved: ${filePath}`);
   };
 
-  const addFaceAssetPack = async () => {
-    const now = new Date().toISOString();
-    const pack: FaceAssetPack = {
-      id: `face-pack-${Date.now()}`,
-      name: 'Face Asset Pack',
-      active: true,
-      assignPerFace: false,
-      guestPreviewPath: '',
-      assets: [],
-      createdAt: now,
-      updatedAt: now
-    };
-    const next = await window.photoBooth.updateFaceAssetPack(pack);
-    await updateSettings(next);
-    setSelectedFaceAssetPackId(pack.id);
-    setMessage('Face asset pack saved.');
-  };
-
-  const saveFaceAssetPack = async (pack: FaceAssetPack) => {
-    const next = await window.photoBooth.updateFaceAssetPack({ ...pack, updatedAt: new Date().toISOString() });
-    await updateSettings(next);
-    setMessage('Face asset pack saved.');
-  };
-
-  const deleteFaceAssetPack = async (packId: string) => {
-    const next = await window.photoBooth.deleteFaceAssetPack(packId);
-    await updateSettings(next);
-    setSelectedFaceAssetPackId(next.template.faceAssetPacks[0]?.id ?? '');
-    setMessage('Face asset pack deleted.');
-  };
-
-  const uploadFaceAsset = async (packId: string) => {
-    try {
-      const next = await window.photoBooth.uploadFaceAsset(packId);
-      await updateSettings(next);
-      setMessage('Face asset uploaded.');
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : 'Face asset upload failed.');
-    }
-  };
-
-  const uploadFaceAssetPackPreview = async (packId: string) => {
-    try {
-      const next = await window.photoBooth.uploadFaceAssetPackPreview(packId);
-      await updateSettings(next);
-      setMessage('Guest preview uploaded.');
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : 'Guest preview upload failed.');
-    }
-  };
-
-  const removeFaceAsset = async (packId: string, assetId: string) => {
-    const next = await window.photoBooth.removeFaceAsset(packId, assetId);
-    await updateSettings(next);
-    setMessage('Face asset removed.');
-  };
 
   const addAiPreset = async () => {
     const now = new Date().toISOString();
@@ -3600,112 +2753,6 @@ function AdminApp() {
     setMessage('AI image removed.');
   };
 
-  const saveColorFilterPreset = async (preset: ColorFilterPreset, text = 'Color filter saved.') => {
-    const colorFilterPresets = settings.template.colorFilterPresets.map((item) =>
-      item.id === preset.id ? { ...preset, filter: normalizeColorFilterValuesForClient(preset.filter), updatedAt: new Date().toISOString() } : item
-    );
-    await saveMessage({ template: { ...settings.template, colorFilterPresets } }, text);
-  };
-
-  const addColorFilterPreset = async () => {
-    const now = new Date().toISOString();
-    const preset: ColorFilterPreset = {
-      id: `color-filter-${Date.now()}`,
-      name: 'New Filter',
-      active: true,
-      thumbnailPath: '',
-      filter: neutralColorFilterValues(),
-      createdAt: now,
-      updatedAt: now
-    };
-    await saveMessage({
-      template: {
-        ...settings.template,
-        colorFilterPresets: [...settings.template.colorFilterPresets, preset]
-      }
-    }, 'Color filter added.');
-    setSelectedColorFilterId(preset.id);
-  };
-
-  const duplicateColorFilterPreset = async (preset: ColorFilterPreset) => {
-    const now = new Date().toISOString();
-    const copyPreset: ColorFilterPreset = {
-      ...preset,
-      id: `color-filter-${Date.now()}`,
-      name: `${preset.name} Copy`,
-      createdAt: now,
-      updatedAt: now
-    };
-    await saveMessage({
-      template: {
-        ...settings.template,
-        colorFilterPresets: [...settings.template.colorFilterPresets, copyPreset]
-      }
-    }, 'Color filter duplicated.');
-    setSelectedColorFilterId(copyPreset.id);
-  };
-
-  const deleteColorFilterPreset = async (presetId: string) => {
-    const colorFilterPresets = settings.template.colorFilterPresets.filter((preset) => preset.id !== presetId);
-    await saveMessage({ template: { ...settings.template, colorFilterPresets } }, 'Color filter deleted.');
-    setSelectedColorFilterId(colorFilterPresets[0]?.id ?? '');
-  };
-
-  const uploadColorFilterThumbnail = async (presetId: string) => {
-    const next = await window.photoBooth.uploadColorFilterThumbnail(presetId);
-    await updateSettings(next);
-    setMessage('Color filter thumbnail uploaded.');
-  };
-
-  const uploadColorFilterExample = async () => {
-    const next = await window.photoBooth.uploadColorFilterExample();
-    await updateSettings(next);
-    setMessage('Color filter example uploaded. Generating buttons...');
-    if (!next.template.colorFilterExamplePath) return;
-    try {
-      const exampleDataUrl = await window.photoBooth.getImageDataUrl(next.template.colorFilterExamplePath);
-      const thumbnails = await Promise.all(
-        next.template.colorFilterPresets.map(async (preset) => ({
-          presetId: preset.id,
-          dataUrl: await createSquareFilterThumbnail(exampleDataUrl, preset)
-        }))
-      );
-      const generated = await window.photoBooth.saveGeneratedColorFilterThumbnails(thumbnails);
-      await updateSettings(generated);
-      setMessage('Color filter buttons generated.');
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : 'Color filter buttons failed.');
-    }
-  };
-
-  const generateAllColorFilterThumbnails = async (exampleDataUrl: string) => {
-    try {
-      setMessage('Generating color filter buttons...');
-      const thumbnails = await Promise.all(
-        settings.template.colorFilterPresets.map(async (preset) => ({
-          presetId: preset.id,
-          dataUrl: await createSquareFilterThumbnail(exampleDataUrl, preset)
-        }))
-      );
-      const next = await window.photoBooth.saveGeneratedColorFilterThumbnails(thumbnails);
-      await updateSettings(next);
-      setMessage('Color filter buttons updated.');
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : 'Color filter buttons failed.');
-    }
-  };
-
-  const generateColorFilterThumbnail = async (exampleDataUrl: string, preset: ColorFilterPreset) => {
-    try {
-      setMessage('Updating color filter button...');
-      const dataUrl = await createSquareFilterThumbnail(exampleDataUrl, preset);
-      const next = await window.photoBooth.saveGeneratedColorFilterThumbnails([{ presetId: preset.id, dataUrl }]);
-      await updateSettings(next);
-      setMessage('Color filter button updated.');
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : 'Color filter button failed.');
-    }
-  };
 
   const updateAiProvider = async (provider: AiProvider, partial: Partial<AppSettings['ai']['providers'][AiProvider]>) => {
     await saveMessage({
@@ -3747,9 +2794,8 @@ function AdminApp() {
           ['camera', 'Camera', Camera],
           ['printer', 'Printer', Printer],
           ['workflow', 'Workflow', SlidersHorizontal],
+          ['poses', 'Poses', Camera],
           ['template', 'Template', Image],
-          ['colorFilters', 'Color Filters', SlidersHorizontal],
-          ['faceAssets', 'Face Assets', Sparkles],
           ['aiPresets', 'AI Presets', Sparkles],
           ['aiQueue', 'AI Queue', RefreshCw],
           ['gallery', 'Gallery', FolderOpen]
@@ -4186,8 +3232,19 @@ function AdminApp() {
           </AdminSection>
         )}
 
+        {tab === 'poses' && <AdminSection><Suspense fallback={<p>Loading pose editor…</p>}><PoseEditor settings={settings} /></Suspense></AdminSection>}
         {tab === 'workflow' && (
           <AdminSection>
+            <div className="admin-card">
+              <label className="admin-card-toggle-title">
+                <input type="checkbox" checked={settings.poseGuide?.enabled !== false} onChange={(event) => void saveMessage({ poseGuide: { enabled: event.target.checked } }, 'Pose guide saved.')} />
+                <span>Animated pose guide</span>
+              </label>
+              <p>Show the pose coach during photos. Random poses match the guest group and each photo slot. Edit demonstrations, captions and timing in Poses. Turn this off to use the photo messages below. Changes apply next session.</p>
+              <label className="check-row"><input type="checkbox" checked={settings.poseGuide.selectionEnabled !== false} onChange={event => void saveMessage({ poseGuide: { ...settings.poseGuide, selectionEnabled: event.target.checked } }, 'Guest selection saved.')} />Ask who's joining before photos</label>
+              <label>Maximum guests<input type="number" min="1" max="30" value={settings.poseGuide.groupCapacity ?? 12} onChange={event => void saveMessage({ poseGuide: { ...settings.poseGuide, groupCapacity: Number(event.target.value) } }, 'Group capacity saved.')} /></label>
+              {settings.poseGuide.selectionEnabled === false && <div className="fixed-composition"><h3>Event guest group</h3><CompositionControls value={normalizePoseGuide(settings.poseGuide).defaultComposition!} capacity={normalizePoseGuide(settings.poseGuide).groupCapacity} onChange={value => void saveMessage({ poseGuide: { ...settings.poseGuide, defaultComposition: value } }, 'Event group saved.')} /></div>}
+            </div>
             <div className="admin-card workflow-session-card">
               <div className="admin-card-header">
                 <div>
@@ -4280,6 +3337,7 @@ function AdminApp() {
                   </div>
                   <div className="workflow-photo-body">
                     <div className="workflow-photo-settings">
+                      <p>With the guide enabled, each photo gets a random compatible pose. These messages apply when the guide is off.</p>
                       <label>
                         Message
                         <DraftInput
@@ -4426,7 +3484,7 @@ function AdminApp() {
                 </div>
               </div>
               <div className="audio-cue-grid">
-                {['welcome', 'style', 'design', 'intro', 'facePack', 'select', 'thanks'].map((cueId) => (
+                {['welcome', 'style', 'design', 'intro', 'select', 'thanks'].map((cueId) => (
                   <AudioCueCard
                     key={cueId}
                     cue={settings.audio.cues[cueId]}
@@ -4494,24 +3552,65 @@ function AdminApp() {
                   </p>
                   <div className="custom-template-layout">
                     <div className="template-list-panel">
-                      <div className="template-list-heading">
-                        <strong>Templates</strong>
-                        <span>{layouts.length}</span>
-                      </div>
-                      {layouts.map((layout) => (
-                        <button
-                          key={layout.id}
-                          className={selectedLayout?.id === layout.id ? 'active template-list-item' : 'template-list-item'}
-                          onClick={() => setSelectedAdminTemplateId(layout.id)}
-                        >
-                          <span>{layout.name}</span>
-                          <TemplateMini layout={layout} />
-                          <small>
-                            {layout.active ? 'Active' : 'Inactive'} / {layout.orientation} / {layout.photoWindows.length} photo
-                            {layout.photoWindows.length === 1 ? '' : 's'}
-                          </small>
-                        </button>
-                      ))}
+                      {(() => {
+                        const activeLayouts = layouts.filter((layout) => layout.active);
+                        const inactiveLayouts = layouts.filter((layout) => !layout.active);
+                        const renderTemplateListItem = (layout: TemplateLayout) => (
+                          <button
+                            key={layout.id}
+                            type="button"
+                            className={selectedLayout?.id === layout.id ? 'active template-list-item' : 'template-list-item'}
+                            onClick={() => {
+                              setSelectedAdminTemplateId(layout.id);
+                              setTemplateListGroupsOpen((current) => ({
+                                active: layout.active ? true : current.active,
+                                inactive: layout.active ? current.inactive : true
+                              }));
+                            }}
+                          >
+                            <span>{layout.name}</span>
+                            <small>
+                              {layout.photoWindows.length} photo{layout.photoWindows.length === 1 ? '' : 's'}
+                            </small>
+                          </button>
+                        );
+                        const renderGroup = (
+                          key: 'active' | 'inactive',
+                          label: string,
+                          items: TemplateLayout[]
+                        ) => {
+                          const isOpen = templateListGroupsOpen[key];
+                          return (
+                            <div className={`template-list-group${isOpen ? ' open' : ''}`}>
+                              <button
+                                type="button"
+                                className="template-list-group-heading"
+                                onClick={() =>
+                                  setTemplateListGroupsOpen((current) => ({
+                                    ...current,
+                                    [key]: !current[key]
+                                  }))
+                                }
+                              >
+                                <span>{label}</span>
+                                <span>{items.length}</span>
+                              </button>
+                              {isOpen && (
+                                <div className="template-list-group-body">
+                                  {items.map(renderTemplateListItem)}
+                                  {items.length === 0 && <p className="muted">No {label.toLowerCase()} templates.</p>}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        };
+                        return (
+                          <>
+                            {renderGroup('active', 'Active', activeLayouts)}
+                            {renderGroup('inactive', 'Inactive', inactiveLayouts)}
+                          </>
+                        );
+                      })()}
                       {layouts.length === 0 && <p className="muted">Create or import a template to begin.</p>}
                     </div>
                     {selectedLayout && (
@@ -4526,9 +3625,14 @@ function AdminApp() {
                               <input
                                 type="checkbox"
                                 checked={selectedLayout.active}
-                                onChange={(event) =>
-                                  void saveTemplateLayout({ ...selectedLayout, active: event.target.checked })
-                                }
+                                onChange={(event) => {
+                                  const nextActive = event.target.checked;
+                                  setTemplateListGroupsOpen((current) => ({
+                                    active: nextActive ? true : current.active,
+                                    inactive: nextActive ? current.inactive : true
+                                  }));
+                                  void saveTemplateLayout({ ...selectedLayout, active: nextActive });
+                                }}
                               />
                               Active (show in guest template chooser)
                             </label>
@@ -4607,169 +3711,6 @@ function AdminApp() {
           </AdminSection>
         )}
 
-        {tab === 'colorFilters' && (
-          <AdminSection>
-            <ColorFilterStudio
-              settings={settings}
-              selectedPreset={selectedColorFilter}
-              selectedPresetId={selectedColorFilterId}
-              onSelect={setSelectedColorFilterId}
-              onSavePreset={saveColorFilterPreset}
-              onAddPreset={addColorFilterPreset}
-              onDuplicatePreset={duplicateColorFilterPreset}
-              onDeletePreset={deleteColorFilterPreset}
-              onUploadThumbnail={uploadColorFilterThumbnail}
-              onUploadExample={uploadColorFilterExample}
-              onGenerateAllThumbnails={generateAllColorFilterThumbnails}
-              onGenerateThumbnail={generateColorFilterThumbnail}
-              onSaveSettings={saveMessage}
-            />
-          </AdminSection>
-        )}
-
-        {tab === 'faceAssets' && (
-          <AdminSection>
-            <div className="face-assets-layout">
-              <div className="face-pack-list">
-                <div className="admin-actions">
-                  <button onClick={() => void addFaceAssetPack()}>Add pack</button>
-                </div>
-                {settings.template.faceAssetPacks.map((pack) => (
-                  <button
-                    key={pack.id}
-                    className={pack.id === selectedFaceAssetPackId ? 'active' : ''}
-                    onClick={() => setSelectedFaceAssetPackId(pack.id)}
-                  >
-                    <span>{pack.name}</span>
-                    <small>{pack.assets.length} asset{pack.assets.length === 1 ? '' : 's'}</small>
-                  </button>
-                ))}
-                {settings.template.faceAssetPacks.length === 0 && <p className="muted">No face asset packs yet.</p>}
-              </div>
-
-              <div className="face-pack-editor">
-                {!selectedFaceAssetPack && <p className="muted">Create a pack, then upload transparent PNG assets.</p>}
-                {selectedFaceAssetPack && (
-                  <>
-                    <div className="workflow-shot">
-                      <h2>Pack Settings</h2>
-                      <div className="workflow-grid">
-                        <label>
-                          Pack name
-                          <DraftInput
-                            value={selectedFaceAssetPack.name}
-                            onSave={(value) => saveFaceAssetPack({ ...selectedFaceAssetPack, name: value })}
-                          />
-                        </label>
-                        <label className="check-row">
-                          <input
-                            type="checkbox"
-                            checked={selectedFaceAssetPack.active}
-                            onChange={(event) => void saveFaceAssetPack({ ...selectedFaceAssetPack, active: event.target.checked })}
-                          />
-                          Active
-                        </label>
-                        <label className="check-row">
-                          <input
-                            type="checkbox"
-                            checked={selectedFaceAssetPack.assignPerFace}
-                            onChange={(event) => void saveFaceAssetPack({ ...selectedFaceAssetPack, assignPerFace: event.target.checked })}
-                          />
-                          Assign per person
-                        </label>
-                      </div>
-                      <div className="face-pack-guest-preview">
-                        <h3>Guest preview</h3>
-                        <div className="face-pack-guest-preview-row">
-                          {selectedFaceAssetPack.guestPreviewPath ? (
-                            <ImagePathThumb path={selectedFaceAssetPack.guestPreviewPath} label={selectedFaceAssetPack.name} />
-                          ) : (
-                            <p className="muted">Upload a preview image for the guest selection screen.</p>
-                          )}
-                          <button onClick={() => void uploadFaceAssetPackPreview(selectedFaceAssetPack.id)}>Upload guest preview</button>
-                        </div>
-                      </div>
-                      <div className="admin-actions">
-                        <button onClick={() => void uploadFaceAsset(selectedFaceAssetPack.id)}>Upload PNG asset</button>
-                        <button onClick={() => void window.photoBooth.openFaceAssetPreview(selectedFaceAssetPack.id)}>Open preview window</button>
-                        <button className="danger" onClick={() => void deleteFaceAssetPack(selectedFaceAssetPack.id)}>Delete pack</button>
-                      </div>
-                      <p className="muted">Use transparent PNGs. Good starting points: glasses centered on eyes, hats above forehead, noses on nose tip, mouths over lips, face around full face.</p>
-                      <p className="muted">Assign per person: when several faces are detected, each person gets a different asset of each kind (e.g. hats, glasses), cycling through every asset of that kind before any repeats.</p>
-                    </div>
-
-                    <div className="face-asset-list">
-                      {selectedFaceAssetPack.assets
-                        .slice()
-                        .sort((a, b) => a.order - b.order)
-                        .map((asset) => (
-                          <article className="face-asset-card" key={asset.id}>
-                            <FaceAssetThumb asset={asset} />
-                            <div className="face-asset-fields">
-                              <div className="face-asset-header">
-                                <DraftInput
-                                  value={asset.name}
-                                  onSave={(value) =>
-                                    saveFaceAssetPack({
-                                      ...selectedFaceAssetPack,
-                                      assets: selectedFaceAssetPack.assets.map((item) =>
-                                        item.id === asset.id ? { ...item, name: value, updatedAt: new Date().toISOString() } : item
-                                      )
-                                    })
-                                  }
-                                />
-                                <label>
-                                  <span>Placement</span>
-                                  <select
-                                    value={asset.placement}
-                                    onChange={(event) =>
-                                      void saveFaceAssetPack({
-                                        ...selectedFaceAssetPack,
-                                        assets: selectedFaceAssetPack.assets.map((item) =>
-                                          item.id === asset.id
-                                            ? { ...item, placement: event.target.value as FaceAssetPlacement, updatedAt: new Date().toISOString() }
-                                            : item
-                                        )
-                                      })
-                                    }
-                                  >
-                                    {FACE_ASSET_PLACEMENTS.map((placement) => (
-                                      <option key={placement} value={placement}>{placement}</option>
-                                    ))}
-                                  </select>
-                                </label>
-                                <label className="check-row face-asset-active">
-                                  <input
-                                    type="checkbox"
-                                    checked={asset.active}
-                                    onChange={(event) => void saveFaceAssetPack(updatePackAsset(selectedFaceAssetPack, asset.id, { active: event.target.checked }))}
-                                  />
-                                  Active
-                                </label>
-                              </div>
-                              <div className="face-asset-controls-grid">
-                                <FaceAssetNumberField label="Scale" value={asset.scale} step="0.05" onChange={(value) => saveFaceAssetPack(updatePackAsset(selectedFaceAssetPack, asset.id, { scale: value }))} />
-                                <FaceAssetNumberField label="X offset" value={asset.xOffset} step="0.02" onChange={(value) => saveFaceAssetPack(updatePackAsset(selectedFaceAssetPack, asset.id, { xOffset: value }))} />
-                                <FaceAssetNumberField label="Y offset" value={asset.yOffset} step="0.02" onChange={(value) => saveFaceAssetPack(updatePackAsset(selectedFaceAssetPack, asset.id, { yOffset: value }))} />
-                                <FaceAssetNumberField label="Rotation" value={asset.rotation} step="1" onChange={(value) => saveFaceAssetPack(updatePackAsset(selectedFaceAssetPack, asset.id, { rotation: value }))} />
-                                <FaceAssetNumberField label="Opacity" value={asset.opacity} step="0.05" min="0" max="1" onChange={(value) => saveFaceAssetPack(updatePackAsset(selectedFaceAssetPack, asset.id, { opacity: value }))} />
-                                <FaceAssetNumberField label="Order" value={asset.order} step="1" onChange={(value) => saveFaceAssetPack(updatePackAsset(selectedFaceAssetPack, asset.id, { order: value }))} />
-                              </div>
-                              <div className="admin-actions face-asset-actions">
-                                <button onClick={() => window.photoBooth.openFile(asset.path)}>Open</button>
-                                <button className="danger" onClick={() => void removeFaceAsset(selectedFaceAssetPack.id, asset.id)}>Remove</button>
-                              </div>
-                            </div>
-                          </article>
-                        ))}
-                      {selectedFaceAssetPack.assets.length === 0 && <p className="muted">Upload a transparent PNG to start calibrating.</p>}
-                    </div>
-                  </>
-                )}
-              </div>
-            </div>
-          </AdminSection>
-        )}
 
         {tab === 'aiPresets' && (
           <AdminSection>
@@ -5034,134 +3975,6 @@ function AdminSection({ children }: { children: React.ReactNode }) {
   return <div className="admin-section">{children}</div>;
 }
 
-function FaceAssetPreviewApp() {
-  const query = new URLSearchParams(window.location.search);
-  const packId = query.get('packId') ?? '';
-  const { settings, refreshSettings } = useSettings();
-  const [error, setError] = useState('');
-  const [showDebug, setShowDebug] = useState(true);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const overlayRef = useRef<HTMLCanvasElement>(null);
-  const stabilizerRef = useRef(new FaceAssetStabilizer());
-
-  const pack = settings?.template.faceAssetPacks.find((candidate) => candidate.id === packId) ?? null;
-
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      void refreshSettings();
-    }, 350);
-    return () => window.clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    if (!settings) return undefined;
-    let stream: MediaStream | null = null;
-    const start = async () => {
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({
-          video: settings.cameraId ? { deviceId: { exact: settings.cameraId } } : true,
-          audio: false
-        });
-        await applyCameraControls(stream, settings.cameraControls);
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          await videoRef.current.play();
-        }
-      } catch {
-        setError('Camera preview failed.');
-      }
-    };
-    void start();
-    return () => {
-      stream?.getTracks().forEach((track) => track.stop());
-    };
-  }, [settings?.cameraId]);
-
-  useEffect(() => {
-    const canvas = overlayRef.current;
-    if (!settings || !canvas || !pack?.active) {
-      if (canvas) clearFaceAssetCanvas(canvas, canvas.width, canvas.height);
-      stabilizerRef.current.reset();
-      return undefined;
-    }
-
-    let animationFrame = 0;
-    let canceled = false;
-    let busy = false;
-    let lastDetectionAt = 0;
-    let missedFrames = 0;
-    const tracker = new FaceTracker();
-
-    const drawOverlay = (now: number) => {
-      if (!canceled) animationFrame = window.requestAnimationFrame(drawOverlay);
-      const video = videoRef.current;
-      const overlay = overlayRef.current;
-      if (!canceled && video && overlay && video.videoWidth > 0 && video.videoHeight > 0 && !busy && now - lastDetectionAt > 66) {
-        busy = true;
-        lastDetectionAt = now;
-        void (async () => {
-          try {
-          const displayWidth = Math.max(1, Math.round(overlay.clientWidth));
-          const displayHeight = Math.max(1, Math.round(overlay.clientHeight));
-          const displayResult = await detectDisplayedFaces(video, displayWidth, displayHeight, settings, now);
-          clearFaceAssetCanvas(overlay, displayWidth, displayHeight);
-          const ctx = overlay.getContext('2d');
-          if (displayResult.faceLandmarks.length === 0) {
-            missedFrames += 1;
-            if (ctx) {
-              await drawFaceAssets(ctx, displayResult, pack, overlay.width, overlay.height, stabilizerRef.current, tracker);
-            }
-            if (missedFrames > 60) {
-              stabilizerRef.current.reset();
-              tracker.reset();
-            }
-            return;
-          }
-          missedFrames = 0;
-          if (ctx) {
-            await drawFaceAssets(ctx, displayResult, pack, overlay.width, overlay.height, stabilizerRef.current, tracker);
-            if (showDebug) drawFaceDebugInfo(ctx, displayResult, overlay.width, overlay.height);
-          }
-        } catch (error) {
-          console.warn('Face assets preview skipped.', error);
-        } finally {
-          busy = false;
-        }
-        })();
-      }
-    };
-
-    animationFrame = window.requestAnimationFrame(drawOverlay);
-    return () => {
-      canceled = true;
-      window.cancelAnimationFrame(animationFrame);
-      clearFaceAssetCanvas(canvas, canvas.width, canvas.height);
-      stabilizerRef.current.reset();
-    };
-  }, [pack, settings, showDebug]);
-
-  if (!settings) return <main className="face-preview-window"><p className="quiet">LOADING</p></main>;
-
-  return (
-    <main className="face-preview-window">
-      <div className="face-preview-header">
-        <strong>{pack?.name ?? 'FACE ASSET PREVIEW'}</strong>
-        <div className="face-preview-header-actions">
-          <span>{pack ? `${pack.assets.length} ASSET${pack.assets.length === 1 ? '' : 'S'}` : 'NO PACK SELECTED'}</span>
-          <button onClick={() => setShowDebug((current) => !current)}>
-            {showDebug ? 'Hide debug' : 'Show debug'}
-          </button>
-        </div>
-      </div>
-      <div className={`face-preview-stage ${getCameraOrientationClass(settings)}`}>
-        <video ref={videoRef} className={getCameraVideoClass(settings)} muted playsInline />
-        <canvas ref={overlayRef} className="face-preview-overlay" aria-hidden="true" />
-        {error && <p className="guest-error">{error}</p>}
-      </div>
-    </main>
-  );
-}
-
 function DraftInput({
   value,
   onSave,
@@ -5278,60 +4091,6 @@ function AiReferenceThumb({ path, label, onRemove }: { path: string; label: stri
   );
 }
 
-function FaceAssetThumb({ asset }: { asset: FaceAsset }) {
-  const [src, setSrc] = useState('');
-  useEffect(() => {
-    let active = true;
-    void window.photoBooth
-      .getImageDataUrl(asset.path)
-      .then((dataUrl) => {
-        if (active) setSrc(dataUrl);
-      })
-      .catch(() => {
-        if (active) setSrc('');
-      });
-    return () => {
-      active = false;
-    };
-  }, [asset.path]);
-
-  return (
-    <div className="face-asset-thumb">
-      {src ? <img src={src} alt={asset.name} /> : <Image size={18} />}
-      <span>{asset.placement}</span>
-    </div>
-  );
-}
-
-function FaceAssetNumberField({
-  label,
-  value,
-  step,
-  min,
-  max,
-  onChange
-}: {
-  label: string;
-  value: number;
-  step: string;
-  min?: string;
-  max?: string;
-  onChange: (value: number) => Promise<unknown>;
-}) {
-  return (
-    <label>
-      <span>{label}</span>
-      <DraftInput
-        type="number"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onSave={(next) => onChange(Number(next))}
-      />
-    </label>
-  );
-}
 
 function AiQueueCard({
   item,
@@ -5697,216 +4456,6 @@ const downscaleDataUrl = async (dataUrl: string, maxEdge: number) => {
   return canvas.toDataURL('image/jpeg', 0.86);
 };
 
-const clampChannel = (value: number) => Math.max(0, Math.min(255, value));
-
-const neutralColorFilterValues = (): ColorFilterValues => ({
-  intensity: 100,
-  brightness: 0,
-  contrast: 0,
-  saturation: 0,
-  warmth: 0,
-  tint: 0,
-  hue: 0,
-  fade: 0,
-  highlights: 0,
-  shadows: 0,
-  vignette: 0,
-  blur: 0
-});
-
-const normalizeColorFilterValuesForClient = (filter: Partial<ColorFilterValues> | undefined): ColorFilterValues => {
-  const fallback = neutralColorFilterValues();
-  const finite = (value: unknown, fallbackValue: number, min: number, max: number) =>
-    typeof value === 'number' && Number.isFinite(value) ? Math.min(max, Math.max(min, value)) : fallbackValue;
-  return {
-    intensity: finite(filter?.intensity, fallback.intensity, 0, 100),
-    brightness: finite(filter?.brightness, fallback.brightness, -50, 50),
-    contrast: finite(filter?.contrast, fallback.contrast, -50, 50),
-    saturation: finite(filter?.saturation, fallback.saturation, -50, 50),
-    warmth: finite(filter?.warmth, fallback.warmth, -50, 50),
-    tint: finite(filter?.tint, fallback.tint, -50, 50),
-    hue: finite(filter?.hue, fallback.hue, -180, 180),
-    fade: finite(filter?.fade, fallback.fade, 0, 50),
-    highlights: finite(filter?.highlights, fallback.highlights, -50, 50),
-    shadows: finite(filter?.shadows, fallback.shadows, -50, 50),
-    vignette: finite(filter?.vignette, fallback.vignette, 0, 50),
-    blur: finite(filter?.blur, fallback.blur, 0, 20)
-  };
-};
-
-const rgbToHsl = (r: number, g: number, b: number) => {
-  r /= 255;
-  g /= 255;
-  b /= 255;
-  const max = Math.max(r, g, b);
-  const min = Math.min(r, g, b);
-  let h = 0;
-  let s = 0;
-  const l = (max + min) / 2;
-  if (max !== min) {
-    const d = max - min;
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-    if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
-    else if (max === g) h = (b - r) / d + 2;
-    else h = (r - g) / d + 4;
-    h /= 6;
-  }
-  return { h, s, l };
-};
-
-const hueToRgb = (p: number, q: number, t: number) => {
-  if (t < 0) t += 1;
-  if (t > 1) t -= 1;
-  if (t < 1 / 6) return p + (q - p) * 6 * t;
-  if (t < 1 / 2) return q;
-  if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-  return p;
-};
-
-const hslToRgb = (h: number, s: number, l: number) => {
-  if (s === 0) {
-    const value = l * 255;
-    return { r: value, g: value, b: value };
-  }
-  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-  const p = 2 * l - q;
-  return {
-    r: hueToRgb(p, q, h + 1 / 3) * 255,
-    g: hueToRgb(p, q, h) * 255,
-    b: hueToRgb(p, q, h - 1 / 3) * 255
-  };
-};
-
-const applyPhotoFilters = async (
-  dataUrl: string,
-  preset: ColorFilterPreset | null,
-  beautyLevel = 0
-) => {
-  const image = await loadDataUrlImage(dataUrl);
-  const canvas = document.createElement('canvas');
-  canvas.width = image.naturalWidth || image.width;
-  canvas.height = image.naturalHeight || image.height;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) throw new Error('Could not apply filter.');
-  ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-
-  if (beautyLevel > 0) {
-    try {
-      await applyFaceBeauty(canvas, beautyLevel);
-    } catch (error) {
-      console.warn('Face beauty retouch failed; using original photo.', error);
-    }
-  }
-
-  const filter = normalizeColorFilterValuesForClient(preset?.filter);
-  const intensity = Math.max(0, Math.min(1, filter.intensity / 100));
-  const blurAmount = Math.max(0, filter.blur * intensity);
-  if (blurAmount > 0) {
-    const blur = document.createElement('canvas');
-    blur.width = canvas.width;
-    blur.height = canvas.height;
-    const blurCtx = blur.getContext('2d');
-    if (blurCtx) {
-      blurCtx.filter = `blur(${blurAmount}px)`;
-      blurCtx.drawImage(canvas, 0, 0);
-      ctx.globalAlpha = Math.min(0.7, 0.18 + blurAmount / 28);
-      ctx.drawImage(blur, 0, 0);
-      ctx.globalAlpha = 1;
-    }
-  }
-  if (intensity <= 0) return canvas.toDataURL('image/png');
-
-  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const data = imageData.data;
-  const brightness = filter.brightness * 2.2 * intensity;
-  const contrast = 1 + (filter.contrast / 50) * 0.45 * intensity;
-  const saturation = 1 + (filter.saturation / 50) * 0.9 * intensity;
-  const warmth = filter.warmth * 1.45 * intensity;
-  const tint = filter.tint * 1.2 * intensity;
-  const hueShift = (filter.hue / 360) * intensity;
-  const fade = (filter.fade / 50) * 42 * intensity;
-  const highlights = filter.highlights * 1.2 * intensity;
-  const shadows = filter.shadows * 1.2 * intensity;
-  const vignette = (filter.vignette / 50) * 1.35 * intensity;
-  const centerX = canvas.width / 2;
-  const centerY = canvas.height / 2;
-  const maxDistance = Math.hypot(centerX, centerY);
-
-  for (let index = 0; index < data.length; index += 4) {
-    const pixel = index / 4;
-    const x = pixel % canvas.width;
-    const y = Math.floor(pixel / canvas.width);
-    let r = data[index];
-    let g = data[index + 1];
-    let b = data[index + 2];
-
-    r = (r - 128) * contrast + 128 + brightness;
-    g = (g - 128) * contrast + 128 + brightness;
-    b = (b - 128) * contrast + 128 + brightness;
-
-    const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
-    r = luminance + (r - luminance) * saturation;
-    g = luminance + (g - luminance) * saturation;
-    b = luminance + (b - luminance) * saturation;
-
-    r += warmth + tint * 0.25;
-    g += -Math.abs(tint) * 0.25;
-    b += -warmth + tint * 0.75;
-
-    if (hueShift !== 0) {
-      const hsl = rgbToHsl(clampChannel(r), clampChannel(g), clampChannel(b));
-      const shifted = hslToRgb((hsl.h + hueShift + 1) % 1, Math.min(1, hsl.s * (1 + 0.18 * intensity)), hsl.l);
-      r = shifted.r;
-      g = shifted.g;
-      b = shifted.b;
-    }
-
-    const highWeight = Math.max(0, (luminance - 128) / 127);
-    const shadowWeight = Math.max(0, (128 - luminance) / 128);
-    r += highlights * highWeight + shadows * shadowWeight;
-    g += highlights * highWeight + shadows * shadowWeight;
-    b += highlights * highWeight + shadows * shadowWeight;
-
-    if (fade > 0) {
-      r = r + (128 - r) * (fade / 100);
-      g = g + (128 - g) * (fade / 100);
-      b = b + (128 - b) * (fade / 100);
-    }
-
-    if (vignette > 0) {
-      const distance = Math.hypot(x - centerX, y - centerY) / maxDistance;
-      const edge = Math.max(0, (distance - 0.28) / 0.72);
-      const darken = Math.max(0.08, 1 - Math.pow(edge, 1.55) * vignette);
-      r *= darken;
-      g *= darken;
-      b *= darken;
-    }
-
-    data[index] = clampChannel(r);
-    data[index + 1] = clampChannel(g);
-    data[index + 2] = clampChannel(b);
-  }
-
-  ctx.putImageData(imageData, 0, 0);
-  return canvas.toDataURL('image/png');
-};
-
-const createSquareFilterThumbnail = async (dataUrl: string, preset: ColorFilterPreset) => {
-  const filtered = await applyPhotoFilters(dataUrl, preset, 0);
-  const image = await loadDataUrlImage(filtered);
-  const size = 420;
-  const canvas = document.createElement('canvas');
-  canvas.width = size;
-  canvas.height = size;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) throw new Error('Could not generate filter button image.');
-  const scale = Math.max(size / image.width, size / image.height);
-  const drawWidth = image.width * scale;
-  const drawHeight = image.height * scale;
-  ctx.drawImage(image, (size - drawWidth) / 2, (size - drawHeight) / 2, drawWidth, drawHeight);
-  return canvas.toDataURL('image/png');
-};
-
 const flipPhotoForPrint = async (dataUrl: string) => {
   const image = await loadDataUrlImage(dataUrl);
   const canvas = document.createElement('canvas');
@@ -5977,31 +4526,6 @@ const addQrToPrintDataUrl = async (printDataUrl: string, qrDataUrl: string) => {
   return canvas.toDataURL('image/png');
 };
 
-const detectDisplayedFaces = async (
-  video: HTMLVideoElement,
-  displayWidth: number,
-  displayHeight: number,
-  settings: AppSettings,
-  timestamp: number
-) => {
-  // Always detect on the upright (rotation + mirror corrected) canvas. This is
-  // the exact coordinate space the overlay draws in, AND it keeps MediaPipe's
-  // VIDEO-mode tracker fed with a single, consistently-oriented frame. Feeding a
-  // second, differently-oriented source (e.g. the raw video) corrupts the
-  // tracker's internal state, which previously caused assets to stop following
-  // the face after tracking was briefly lost.
-  const detectionCanvas = drawCameraViewToCanvas(video, displayWidth, displayHeight, settings);
-  return detectFaces(detectionCanvas, timestamp);
-};
-
-const FACE_ASSET_PLACEMENTS: FaceAssetPlacement[] = ['glasses', 'hat', 'nose', 'mouth', 'face'];
-
-const updatePackAsset = (pack: FaceAssetPack, assetId: string, partial: Partial<FaceAsset>): FaceAssetPack => ({
-  ...pack,
-  assets: pack.assets.map((asset) =>
-    asset.id === assetId ? { ...asset, ...partial, updatedAt: new Date().toISOString() } : asset
-  )
-});
 
 const delay = (ms: number) => new Promise((resolve) => window.setTimeout(resolve, ms));
 
@@ -6061,8 +4585,6 @@ const adminTabLabel = (tab: string) => ({
   printer: 'Printer',
   workflow: 'Workflow',
   template: 'Template',
-  colorFilters: 'Color filters',
-  faceAssets: 'Face assets',
   aiPresets: 'AI presets',
   aiQueue: 'AI queue',
   gallery: 'Gallery'
@@ -6093,8 +4615,7 @@ const workflowForTemplate = (settings: AppSettings, layout: TemplateLayout): Tem
     screenCues: {
       intro: settings.audio.cues.intro,
       select: settings.audio.cues.select,
-      thanks: settings.audio.cues.thanks,
-      facePack: settings.audio.cues.facePack
+      thanks: settings.audio.cues.thanks
     },
     shots: Array.from({ length: shotCount }, (_item, index) => {
       const shot = settings.workflow.shots[index] ?? settings.workflow.shots[settings.workflow.shots.length - 1];
@@ -6198,9 +4719,7 @@ const toggleSelectedIndex = (current: number[], index: number, maxCount: number)
 };
 
 const slotGuideStyle = (slot: Pick<TemplateSlot, 'width' | 'height' | 'cropY' | 'rotation'>) => {
-  const rotated = slot.rotation === 90 || slot.rotation === 270;
-  const width = rotated ? slot.height : slot.width;
-  const height = rotated ? slot.width : slot.height;
+  const { width, height } = slotGeometry(slot);
   return {
     aspectRatio: `${width} / ${height}`,
     '--slot-aspect': width / height

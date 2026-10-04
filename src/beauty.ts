@@ -1,9 +1,7 @@
 import { FaceLandmarker, FilesetResolver, type NormalizedLandmark } from '@mediapipe/tasks-vision';
 
-// Dedicated IMAGE-mode landmarker for retouching still photos. The live face
-// asset tracker in faceAssets.ts runs in VIDEO mode, and a single landmarker
-// instance cannot mix running modes, so beauty keeps its own instance with
-// iris refinement enabled (needed for accurate eye centers/enlargement).
+// Dedicated IMAGE-mode landmarker for retouching still photos. Beauty keeps its
+// own instance with iris refinement enabled (needed for accurate eye centers).
 let beautyLandmarkerPromise: Promise<FaceLandmarker> | null = null;
 
 const mediapipeUrl = (path: string) => new URL(`./mediapipe/${path}`, window.location.href).toString();

@@ -8,6 +8,8 @@
     "postinstall": "node scripts/ensure-electron.js",
     "dev": "tsc -p tsconfig.electron.json && concurrently -k \"vite\" \"wait-on http://localhost:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron .\"",
     "build": "tsc -p tsconfig.json && vite build && tsc -p tsconfig.electron.json",
+    "generate:poses": "node scripts/generate-pose-library.cjs",
+    "test:poses": "node --test tests/pose-runtime.test.cjs tests/pose-scenes.test.cjs tests/pose-ai.test.cjs",
     "dist": "npm run build && electron-builder --win",
     "dist:portable": "npm run build && electron-builder --win portable",
     "preview": "vite preview",

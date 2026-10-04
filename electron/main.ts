@@ -1,3 +1,4 @@
+import { normalizePoseGuide } from './poseTypes';
 import { app, BrowserWindow, desktopCapturer, dialog, ipcMain, nativeImage, session, shell } from 'electron';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -7,6 +8,8 @@ import { pathToFileURL } from 'node:url';
 import crypto from 'node:crypto';
 import ffmpegStatic from 'ffmpeg-static';
 import { captureCanonStill, connectCanon, stopCanonService } from './canon';
+import { registerPoseStorage } from './poseStorage';
+import { registerPoseAi } from './poseAi';
 import type {
   AiGenerateRequest,
   AiGenerateResult,
@@ -18,11 +21,6 @@ import type {
   BackgroundGalleryUploadRequest,
   BackgroundGalleryUploadResult,
   BackgroundVideoUploadRequest,
-  ColorFilterPreset,
-  ColorFilterValues,
-  FaceAsset,
-  FaceAssetPack,
-  FaceAssetPlacement,
   Gallery,
   GalleryUploadStatus,
   HostVoiceGenerateResult,
@@ -42,7 +40,6 @@ import type {
 
 let guestWindow: BrowserWindow | null = null;
 let adminWindow: BrowserWindow | null = null;
-let facePreviewWindow: BrowserWindow | null = null;
 let lastFinalPath = '';
 let galleryUploadStatus: GalleryUploadStatus = { state: 'idle', message: 'No active upload.', active: 0 };
 
@@ -94,44 +91,16 @@ const defaultAiSettings = (): AppSettings['ai'] => ({
       apiUrl: 'https://api.x.ai/v1/images/edits',
       model: 'grok-imagine-image-quality'
     }
+  },
+  poseGenerator: {
+    provider: 'openai',
+    providers: {
+      openai: { apiUrl: 'https://api.openai.com/v1/responses', model: 'gpt-5.6-luna' },
+      gemini: { apiUrl: 'https://generativelanguage.googleapis.com/v1beta/interactions', model: 'gemini-3.8-flash' },
+      xai: { apiUrl: 'https://api.x.ai/v1/responses', model: 'grok-4.7' }
+    }
   }
 });
-
-const neutralColorFilter = (): ColorFilterValues => ({
-  intensity: 100,
-  brightness: 0,
-  contrast: 0,
-  saturation: 0,
-  warmth: 0,
-  tint: 0,
-  hue: 0,
-  fade: 0,
-  highlights: 0,
-  shadows: 0,
-  vignette: 0,
-  blur: 0
-});
-
-const defaultColorFilterPresets = (): ColorFilterPreset[] => {
-  const now = '';
-  const preset = (id: string, name: string, filter: ColorFilterValues): ColorFilterPreset => ({
-    id,
-    name,
-    active: true,
-    thumbnailPath: '',
-    filter: { ...neutralColorFilter(), ...filter },
-    createdAt: now,
-    updatedAt: now
-  });
-  return [
-    preset('golden-hour-glow', 'Golden Hour Glow', { intensity: 75, brightness: 8, contrast: 12, saturation: 10, warmth: 22, tint: 4, hue: 2, fade: 5, highlights: -10, shadows: 8, vignette: 12, blur: 0 }),
-    preset('clean-bright-blogger', 'Clean Bright Blogger', { intensity: 60, brightness: 18, contrast: 5, saturation: 6, warmth: 4, tint: 0, hue: 0, fade: 3, highlights: -18, shadows: 14, vignette: 4, blur: 0 }),
-    preset('moody-street', 'Moody Street', { intensity: 80, brightness: -6, contrast: 24, saturation: -8, warmth: -6, tint: 3, hue: -2, fade: 12, highlights: -22, shadows: -10, vignette: 20, blur: 0 }),
-    preset('soft-pastel-dream', 'Soft Pastel Dream', { intensity: 65, brightness: 12, contrast: -10, saturation: -12, warmth: 6, tint: 8, hue: 1, fade: 25, highlights: -12, shadows: 18, vignette: 6, blur: 2 }),
-    preset('vintage-film', 'Vintage Film', { intensity: 85, brightness: -2, contrast: 10, saturation: -6, warmth: 14, tint: 6, hue: 3, fade: 30, highlights: -20, shadows: 10, vignette: 18, blur: 1 }),
-    preset('cool-urban-blue', 'Cool Urban Blue', { intensity: 70, brightness: 4, contrast: 16, saturation: -4, warmth: -18, tint: -6, hue: -5, fade: 8, highlights: 0, shadows: 0, vignette: 0, blur: 0 })
-  ];
-};
 
 const defaultAudioCue = (
   id: string,
@@ -172,7 +141,6 @@ const defaultAudioSettings = (): AppSettings['audio'] => ({
     intro: defaultAudioCue('intro', 'Intro screen', "Let's take pictures."),
     select: defaultAudioCue('select', 'Photo selection screen', 'Please choose your favorite pictures to print.'),
     thanks: defaultAudioCue('thanks', 'Finish screen', 'Thank you. Please pick up your print.'),
-    facePack: defaultAudioCue('facePack', 'Face assets screen', 'Please choose your face accessories.'),
     shot0: defaultAudioCue('shot0', 'Picture 1 message', 'Get ready!'),
     shot1: defaultAudioCue('shot1', 'Picture 2 message', 'Smile!'),
     shot2: defaultAudioCue('shot2', 'Picture 3 message', 'Switch it up!'),
@@ -249,7 +217,7 @@ const defaultTemplateShotAudioCue = (scopeId: string, index: number, text: strin
 
 const defaultTemplateScreenCue = (
   scopeId: string,
-  cueId: 'intro' | 'select' | 'thanks' | 'facePack',
+  cueId: 'intro' | 'select' | 'thanks',
   label: string,
   text: string
 ): AppSettings['audio']['cues'][string] => ({
@@ -274,8 +242,7 @@ const defaultTemplateWorkflow = (shotCount = 1): TemplateLayout['workflowDefault
   screenCues: {
     intro: defaultTemplateScreenCue('template', 'intro', 'Intro screen voice', "Let's take pictures."),
     select: defaultTemplateScreenCue('template', 'select', 'Photo selection voice', 'Please choose your favorite pictures to print.'),
-    thanks: defaultTemplateScreenCue('template', 'thanks', 'Finish screen voice', 'Thank you. Please pick up your print.'),
-    facePack: defaultTemplateScreenCue('template', 'facePack', 'Face assets screen voice', 'Please choose your face accessories.')
+    thanks: defaultTemplateScreenCue('template', 'thanks', 'Finish screen voice', 'Thank you. Please pick up your print.')
   },
   shots: Array.from({ length: Math.max(1, shotCount) }, (_item, index) => {
     const shot = { ...(defaultWorkflowShots()[index] ?? defaultWorkflowShots()[defaultWorkflowShots().length - 1]) };
@@ -301,6 +268,7 @@ const defaultSettings = (): AppSettings => ({
   canonEnabled: false,
   canonFraming: 'cover',
   mirrorPreview: true,
+  poseGuide: normalizePoseGuide(undefined),
   cameraRotation: 0,
   cameraPreviewOverlay: 'none',
   cameraControls: {},
@@ -330,10 +298,6 @@ const defaultSettings = (): AppSettings => ({
     selectedDesignId: '',
     layouts: [],
     aiPresets: [],
-    faceAssetPacks: [],
-    colorFilterExamplePath: '',
-    colorFilterPresetVersion: 2,
-    colorFilterPresets: defaultColorFilterPresets(),
     designs: []
   },
   workflow: defaultWorkflowSettings(),
@@ -403,21 +367,18 @@ const normalizeLoadedSettings = (parsed: Partial<AppSettings>, fallback = defaul
     audio: normalizeAudioSettings(parsed.audio),
     template: {
       ...fallback.template,
-      ...(parsed.template ?? {}),
+      ...omitRetiredTemplateFields(parsed.template ?? {}),
       styleVersion: 3,
       selectedTemplateId: String(parsed.template?.selectedTemplateId ?? ''),
       selectedStyleId: normalizeTemplateStyleId(String(parsed.template?.selectedStyleId ?? fallback.template.selectedStyleId), isLegacyTemplateStyle),
       layouts: (parsed.template?.layouts ?? []).map((layout) => normalizeTemplateLayout(layout)),
       aiPresets: (parsed.template?.aiPresets ?? fallback.template.aiPresets).map(normalizeAiPreset),
-      faceAssetPacks: (parsed.template?.faceAssetPacks ?? fallback.template.faceAssetPacks).map(normalizeFaceAssetPack),
-      colorFilterExamplePath: String(parsed.template?.colorFilterExamplePath ?? fallback.template.colorFilterExamplePath),
-      colorFilterPresetVersion: 2,
-      colorFilterPresets: migrateColorFilterPresets(parsed.template?.colorFilterPresets, parsed.template?.colorFilterPresetVersion),
       designs: (parsed.template?.designs ?? fallback.template.designs).map((design) =>
         normalizeTemplateDesign(design, isLegacyTemplateStyle)
       )
     },
     workflow: normalizeWorkflowSettings(parsed.workflow),
+    poseGuide: normalizePoseGuide(parsed.poseGuide),
     printPicker: {
       ...fallback.printPicker,
       ...(parsed.printPicker ?? {})
@@ -479,16 +440,13 @@ async function writeSettings(settings: AppSettings): Promise<AppSettings> {
     ai: normalizeAiSettings(settings.ai),
     audio: normalizeAudioSettings(settings.audio),
     workflow: normalizeWorkflowSettings(settings.workflow),
+    poseGuide: normalizePoseGuide(settings.poseGuide),
     template: {
-      ...settings.template,
+      ...omitRetiredTemplateFields(settings.template),
       logoPath: eventStoredPath(settings.eventFolder, settings.template.logoPath),
       styleVersion: 3,
       layouts: (settings.template.layouts ?? []).map(normalizeTemplateLayout),
       aiPresets: settings.template.aiPresets.map(normalizeAiPreset),
-      faceAssetPacks: settings.template.faceAssetPacks.map(normalizeFaceAssetPack),
-      colorFilterExamplePath: String(settings.template.colorFilterExamplePath ?? ''),
-      colorFilterPresetVersion: 2,
-      colorFilterPresets: normalizeColorFilterPresets(settings.template.colorFilterPresets),
       designs: settings.template.designs.map((design) => normalizeTemplateDesign(design))
     },
     stylePrinters: normalizeStylePrinters(settings.stylePrinters),
@@ -598,7 +556,7 @@ const expandPortableSettingsForImport = (settings: Partial<AppSettings>): Partia
   return expanded;
 };
 
-type AppWindowKind = 'guest' | 'admin' | 'facePreview';
+type AppWindowKind = 'guest' | 'admin';
 
 function windowUrl(kind: AppWindowKind, extraQuery = '') {
   const query = `window=${kind}${extraQuery ? `&${extraQuery}` : ''}`;
@@ -610,11 +568,11 @@ function windowUrl(kind: AppWindowKind, extraQuery = '') {
 async function createWindow(kind: AppWindowKind, extraQuery = '') {
   const isGuestWindow = kind === 'guest';
   const win = new BrowserWindow({
-    width: isGuestWindow ? 720 : kind === 'facePreview' ? 980 : 1120,
-    height: isGuestWindow ? 1280 : kind === 'facePreview' ? 680 : 760,
+    width: isGuestWindow ? 720 : 1120,
+    height: isGuestWindow ? 1280 : 760,
     backgroundColor: '#000000',
     autoHideMenuBar: true,
-    title: isGuestWindow ? 'Photo Booth' : kind === 'facePreview' ? 'Face Asset Preview' : 'Admin',
+    title: isGuestWindow ? 'Photo Booth' : 'Admin',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -629,17 +587,14 @@ async function createWindow(kind: AppWindowKind, extraQuery = '') {
   await win.loadURL(windowUrl(kind, extraQuery));
   if (kind === 'guest') guestWindow = win;
   if (kind === 'admin') adminWindow = win;
-  if (kind === 'facePreview') facePreviewWindow = win;
   if (kind === 'guest') {
     win.on('enter-full-screen', notifyGuestFullscreen);
     win.on('leave-full-screen', notifyGuestFullscreen);
   }
   win.on('closed', () => {
     if (kind === 'guest') guestWindow = null;
-    if (kind === 'facePreview') facePreviewWindow = null;
     if (kind === 'admin') {
       adminWindow = null;
-      facePreviewWindow?.close();
       guestWindow?.close();
       if (process.platform !== 'darwin') app.quit();
     }
@@ -924,6 +879,23 @@ const migrateLegacyTemplatePath = (filePath: string, originalStyleId: string) =>
   return filePath;
 };
 
+const omitRetiredTemplateFields = (template: object): AppSettings['template'] => {
+  const {
+    faceAssetPacks: _faceAssetPacks,
+    colorFilterExamplePath: _colorFilterExamplePath,
+    colorFilterPresetVersion: _colorFilterPresetVersion,
+    colorFilterPresets: _colorFilterPresets,
+    ...rest
+  } = template as Record<string, unknown>;
+  return rest as AppSettings['template'];
+};
+
+const omitRetiredDesignFields = (design: TemplateDesign): TemplateDesign => {
+  const { faceTrackingEnabled: _faceTrackingEnabled, faceAssetPackId: _faceAssetPackId, ...rest } =
+    design as TemplateDesign & { faceTrackingEnabled?: boolean; faceAssetPackId?: string };
+  return rest;
+};
+
 const normalizeTemplateDesign = (design: TemplateDesign, migrateLegacy = false): TemplateDesign => {
   const originalStyleId = String(design.styleId);
   const styleId = normalizeTemplateStyleId(originalStyleId, migrateLegacy);
@@ -932,13 +904,11 @@ const normalizeTemplateDesign = (design: TemplateDesign, migrateLegacy = false):
   const framePath = design.framePath || legacyPath;
   const templateId = design.templateId || styleId;
   return {
-    ...design,
+    ...omitRetiredDesignFields(design),
     templateId,
     styleId,
     previewPath: migrateLegacy ? migrateLegacyTemplatePath(previewPath, originalStyleId) : previewPath,
     framePath: migrateLegacy ? migrateLegacyTemplatePath(framePath, originalStyleId) : framePath,
-    faceTrackingEnabled: Boolean(design.faceTrackingEnabled),
-    faceAssetPackId: design.faceAssetPackId ?? '',
     videoRecordingEnabled: Boolean(design.videoRecordingEnabled),
     workflowOverrideEnabled: Boolean(design.workflowOverrideEnabled),
     workflowOverride: design.workflowOverride
@@ -977,13 +947,6 @@ const normalizeTemplateWorkflow = (
         ...(workflow?.screenCues?.thanks ?? {})
       },
       defaultTemplateScreenCue('template', 'thanks', 'Finish screen voice', workflow?.thankYouMessage ?? fallback.thankYouMessage)
-    ),
-    facePack: normalizeAudioCue(
-      {
-        ...defaultTemplateScreenCue('template', 'facePack', 'Face assets screen voice', 'Please choose your face accessories.'),
-        ...(workflow?.screenCues?.facePack ?? {})
-      },
-      defaultTemplateScreenCue('template', 'facePack', 'Face assets screen voice', 'Please choose your face accessories.')
     )
   };
   return {
@@ -1065,40 +1028,8 @@ const normalizeTemplateLayout = (layout: TemplateLayout): TemplateLayout => {
   };
 };
 
-const normalizeFaceAssetPlacement = (placement: unknown): FaceAssetPlacement => {
-  if (placement === 'hat' || placement === 'nose' || placement === 'mouth' || placement === 'face') return placement;
-  return 'glasses';
-};
-
 const finiteNumber = (value: unknown, fallback: number) =>
   typeof value === 'number' && Number.isFinite(value) ? value : fallback;
-
-const normalizeFaceAsset = (asset: FaceAsset): FaceAsset => ({
-  ...asset,
-  name: asset.name?.trim() || 'Face asset',
-  path: asset.path ?? '',
-  placement: normalizeFaceAssetPlacement(asset.placement),
-  scale: finiteNumber(asset.scale, 1),
-  xOffset: finiteNumber(asset.xOffset, 0),
-  yOffset: finiteNumber(asset.yOffset, 0),
-  rotation: finiteNumber(asset.rotation, 0),
-  opacity: Math.min(1, Math.max(0, finiteNumber(asset.opacity, 1))),
-  active: asset.active !== false,
-  order: finiteNumber(asset.order, 0),
-  createdAt: asset.createdAt || new Date().toISOString(),
-  updatedAt: asset.updatedAt || new Date().toISOString()
-});
-
-const normalizeFaceAssetPack = (pack: FaceAssetPack): FaceAssetPack => ({
-  ...pack,
-  name: pack.name?.trim() || 'Face Asset Pack',
-  active: pack.active !== false,
-  assignPerFace: pack.assignPerFace === true,
-  guestPreviewPath: pack.guestPreviewPath ?? '',
-  assets: (pack.assets ?? []).map(normalizeFaceAsset),
-  createdAt: pack.createdAt || new Date().toISOString(),
-  updatedAt: pack.updatedAt || new Date().toISOString()
-});
 
 const normalizeAiProvider = (provider: string | undefined): AiProvider => {
   if (provider === 'gemini' || provider === 'xai') return provider;
@@ -1121,6 +1052,14 @@ const normalizeAiSettings = (settings?: Partial<AppSettings['ai']>): AppSettings
       openai: { ...fallback.providers.openai, ...(settings?.providers?.openai ?? {}) },
       gemini: { ...fallback.providers.gemini, ...(settings?.providers?.gemini ?? {}) },
       xai: { ...fallback.providers.xai, ...(settings?.providers?.xai ?? {}) }
+    },
+    poseGenerator: {
+      provider: normalizeAiProvider(settings?.poseGenerator?.provider),
+      providers: {
+        openai: { ...fallback.poseGenerator.providers.openai, ...(settings?.poseGenerator?.providers?.openai ?? {}) },
+        gemini: { ...fallback.poseGenerator.providers.gemini, ...(settings?.poseGenerator?.providers?.gemini ?? {}) },
+        xai: { ...fallback.poseGenerator.providers.xai, ...(settings?.poseGenerator?.providers?.xai ?? {}) }
+      }
     }
   };
 };
@@ -1156,7 +1095,8 @@ const normalizeAudioSettings = (settings?: Partial<AppSettings['audio']>): AppSe
     Object.entries(fallback.cues).map(([id, cue]) => [id, normalizeAudioCue(settings?.cues?.[id], cue)])
   );
   Object.entries(settings?.cues ?? {}).forEach(([id, cue]) => {
-    if (!cues[id]) cues[id] = normalizeAudioCue(cue, defaultAudioCue(id, cue.label || id, cue.text || ''));
+    if (id === 'facePack' || cues[id]) return;
+    cues[id] = normalizeAudioCue(cue, defaultAudioCue(id, cue.label || id, cue.text || ''));
   });
   return {
     ...fallback,
@@ -1183,57 +1123,6 @@ const normalizeAiPreset = (preset: AiPreset): AiPreset => ({
 
 const finiteRange = (value: unknown, fallback: number, min: number, max: number) =>
   typeof value === 'number' && Number.isFinite(value) ? Math.min(max, Math.max(min, value)) : fallback;
-
-const normalizeColorFilterValues = (filter: Partial<ColorFilterValues> | undefined): ColorFilterValues => {
-  const fallback = neutralColorFilter();
-  return {
-    intensity: finiteRange(filter?.intensity, fallback.intensity, 0, 100),
-    brightness: finiteRange(filter?.brightness, fallback.brightness, -50, 50),
-    contrast: finiteRange(filter?.contrast, fallback.contrast, -50, 50),
-    saturation: finiteRange(filter?.saturation, fallback.saturation, -50, 50),
-    warmth: finiteRange(filter?.warmth, fallback.warmth, -50, 50),
-    tint: finiteRange(filter?.tint, fallback.tint, -50, 50),
-    hue: finiteRange(filter?.hue, fallback.hue, -180, 180),
-    fade: finiteRange(filter?.fade, fallback.fade, 0, 50),
-    highlights: finiteRange(filter?.highlights, fallback.highlights, -50, 50),
-    shadows: finiteRange(filter?.shadows, fallback.shadows, -50, 50),
-    vignette: finiteRange(filter?.vignette, fallback.vignette, 0, 50),
-    blur: finiteRange(filter?.blur, fallback.blur, 0, 20)
-  };
-};
-
-const normalizeColorFilterPreset = (preset: Partial<ColorFilterPreset>): ColorFilterPreset => {
-  const now = new Date().toISOString();
-  return {
-    id: String(preset.id || `color-filter-${Date.now()}`),
-    name: String(preset.name || 'Color Filter'),
-    active: preset.active !== false,
-    thumbnailPath: String(preset.thumbnailPath || ''),
-    filter: normalizeColorFilterValues(preset.filter),
-    createdAt: String(preset.createdAt || now),
-    updatedAt: String(preset.updatedAt || now)
-  };
-};
-
-const normalizeColorFilterPresets = (presets: Partial<ColorFilterPreset>[] | undefined) => {
-  if (!presets) return defaultColorFilterPresets();
-  return presets
-    .map(normalizeColorFilterPreset)
-    .filter((preset) => preset.id !== 'silver-soft' || Boolean(preset.updatedAt));
-};
-
-const migrateColorFilterPresets = (
-  presets: Partial<ColorFilterPreset>[] | undefined,
-  version: number | undefined
-) => {
-  const normalized = normalizeColorFilterPresets(presets);
-  if ((version ?? 0) >= 2) return normalized;
-  const existingIds = new Set(normalized.map((preset) => preset.id));
-  return [
-    ...normalized,
-    ...defaultColorFilterPresets().filter((preset) => !existingIds.has(preset.id))
-  ];
-};
 
 const normalizeBeautyFilterSettings = (settings: Partial<AppSettings['beautyFilter']> | undefined): AppSettings['beautyFilter'] => ({
   enabledMode: settings?.enabledMode === 'off' || settings?.enabledMode === 'live' ? settings.enabledMode : 'print',
@@ -1342,8 +1231,6 @@ async function uploadTemplate(request: TemplateUploadRequest): Promise<TemplateD
     active: true,
     usesAi: false,
     aiPresetId: '',
-    faceTrackingEnabled: false,
-    faceAssetPackId: '',
     videoRecordingEnabled: false,
     createdAt: now,
     updatedAt: now
@@ -1644,7 +1531,6 @@ async function importTemplatePackage() {
   const folder = path.join(settings.eventFolder, 'templates', 'custom', templateId);
   const importedDesigns: TemplateDesign[] = [];
   const activeAiPresetIds = new Set(settings.template.aiPresets.map((preset) => preset.id));
-  const activeFacePackIds = new Set(settings.template.faceAssetPacks.map((pack) => pack.id));
 
   for (const [index, design] of parsed.designs.entries()) {
     const designId = `design-${Date.now()}-${index}`;
@@ -1655,7 +1541,6 @@ async function importTemplatePackage() {
     const framePath = await writeImportedAsset(frameDataUrl, designFolder, 'frame.png', layout, 'frame');
     const previewPath = await writeImportedAsset(previewDataUrl, designFolder, 'preview.png', layout, 'preview');
     const hasAiPreset = Boolean(design.aiPresetId && activeAiPresetIds.has(design.aiPresetId));
-    const hasFacePack = Boolean(design.faceAssetPackId && activeFacePackIds.has(design.faceAssetPackId));
     importedDesigns.push(normalizeTemplateDesign({
       ...design,
       id: designId,
@@ -1666,8 +1551,6 @@ async function importTemplatePackage() {
       active: design.active !== false,
       usesAi: Boolean(design.usesAi && hasAiPreset),
       aiPresetId: hasAiPreset ? design.aiPresetId : '',
-      faceTrackingEnabled: Boolean(design.faceTrackingEnabled && hasFacePack),
-      faceAssetPackId: hasFacePack ? design.faceAssetPackId : '',
       videoRecordingEnabled: Boolean(design.videoRecordingEnabled),
       createdAt: now,
       updatedAt: now
@@ -2174,79 +2057,6 @@ async function removeAiPresetImage(presetId: string, imageId: string) {
   });
 }
 
-async function uploadColorFilterImage(presetId: string, role: 'thumbnail' | 'example') {
-  const sourcePath = await chooseTemplateAsset('preview');
-  if (!sourcePath) return readSettings();
-  const settings = await readSettings();
-  const now = new Date().toISOString();
-  const extension = path.extname(sourcePath).toLowerCase() || '.png';
-  const folder = path.join(settings.eventFolder, 'color-filters');
-  await fs.mkdir(folder, { recursive: true });
-  const targetPath = role === 'example'
-    ? path.join(folder, `example-${Date.now()}${extension}`)
-    : path.join(folder, `${presetId}-${Date.now()}${extension}`);
-  await fs.copyFile(sourcePath, targetPath);
-  if (role === 'example') {
-    return writeSettings({
-      ...settings,
-      template: {
-        ...settings.template,
-        colorFilterExamplePath: targetPath
-      }
-    });
-  }
-  const presets = normalizeColorFilterPresets(settings.template.colorFilterPresets);
-  if (!presets.some((preset) => preset.id === presetId)) throw new Error('Color preset not found.');
-  return writeSettings({
-    ...settings,
-    template: {
-      ...settings.template,
-      colorFilterPresets: presets.map((preset) =>
-        preset.id === presetId
-          ? { ...preset, thumbnailPath: targetPath, updatedAt: now }
-          : preset
-      )
-    }
-  });
-}
-
-async function saveGeneratedColorFilterThumbnails(thumbnails: Array<{ presetId: string; dataUrl: string }>) {
-  const settings = await readSettings();
-  const presets = normalizeColorFilterPresets(settings.template.colorFilterPresets);
-  const now = new Date().toISOString();
-  const folder = path.join(settings.eventFolder, 'color-filters');
-  await fs.mkdir(folder, { recursive: true });
-  const nextPaths = new Map<string, string>();
-  for (const thumbnail of thumbnails) {
-    if (!presets.some((preset) => preset.id === thumbnail.presetId)) continue;
-    const targetPath = path.join(folder, `${thumbnail.presetId}-generated-${Date.now()}.png`);
-    await fs.writeFile(targetPath, dataUrlToBuffer(thumbnail.dataUrl));
-    nextPaths.set(thumbnail.presetId, targetPath);
-  }
-  if (nextPaths.size === 0) return settings;
-  return writeSettings({
-    ...settings,
-    template: {
-      ...settings.template,
-      colorFilterPresets: presets.map((preset) =>
-        nextPaths.has(preset.id)
-          ? { ...preset, thumbnailPath: nextPaths.get(preset.id) ?? preset.thumbnailPath, updatedAt: now }
-          : preset
-      )
-    }
-  });
-}
-
-const chooseFaceAssetImage = async () => {
-  const parent = modalParent();
-  const options = {
-    properties: ['openFile'] as Array<'openFile'>,
-    filters: [{ name: 'Transparent PNG Face Asset', extensions: ['png'] }]
-  };
-  const result = parent ? await dialog.showOpenDialog(parent, options) : await dialog.showOpenDialog(options);
-  return result.canceled ? '' : result.filePaths[0] ?? '';
-};
-
 const chooseAudioFile = async () => {
   const parent = modalParent();
   const options = {
@@ -2422,125 +2232,6 @@ async function generateAllHostVoiceCues(): Promise<HostVoiceGenerateResult> {
     if (!result.ok) return result;
   }
   return { ok: true, settings };
-}
-
-async function updateFaceAssetPack(pack: FaceAssetPack) {
-  const settings = await readSettings();
-  const now = new Date().toISOString();
-  const normalized = normalizeFaceAssetPack({ ...pack, updatedAt: now });
-  const packs = settings.template.faceAssetPacks.map(normalizeFaceAssetPack);
-  const nextPacks = packs.some((item) => item.id === normalized.id)
-    ? packs.map((item) => (item.id === normalized.id ? normalized : item))
-    : [...packs, normalized];
-  return writeSettings({
-    ...settings,
-    template: {
-      ...settings.template,
-      faceAssetPacks: nextPacks
-    }
-  });
-}
-
-async function deleteFaceAssetPack(packId: string) {
-  const settings = await readSettings();
-  const packs = settings.template.faceAssetPacks.map(normalizeFaceAssetPack);
-  const pack = packs.find((item) => item.id === packId);
-  if (pack) await fs.rm(path.join(settings.eventFolder, 'face-assets', packId), { force: true, recursive: true });
-  return writeSettings({
-    ...settings,
-    template: {
-      ...settings.template,
-      faceAssetPacks: packs.filter((item) => item.id !== packId),
-      designs: settings.template.designs.map((design) =>
-        design.faceAssetPackId === packId
-          ? normalizeTemplateDesign({ ...design, faceTrackingEnabled: false, faceAssetPackId: '', updatedAt: new Date().toISOString() })
-          : normalizeTemplateDesign(design)
-      )
-    }
-  });
-}
-
-async function uploadFaceAsset(packId: string) {
-  const sourcePath = await chooseFaceAssetImage();
-  if (!sourcePath) return readSettings();
-  const settings = await readSettings();
-  const packs = settings.template.faceAssetPacks.map(normalizeFaceAssetPack);
-  const pack = packs.find((item) => item.id === packId);
-  if (!pack) throw new Error('Face asset pack not found.');
-  const now = new Date().toISOString();
-  const id = `face-asset-${Date.now()}`;
-  const folder = path.join(settings.eventFolder, 'face-assets', packId);
-  await fs.mkdir(folder, { recursive: true });
-  const targetPath = path.join(folder, `${id}.png`);
-  await fs.copyFile(sourcePath, targetPath);
-  const asset: FaceAsset = {
-    id,
-    name: path.parse(sourcePath).name || 'Face asset',
-    path: targetPath,
-    placement: 'glasses',
-    scale: 1,
-    xOffset: 0,
-    yOffset: 0,
-    rotation: 0,
-    opacity: 1,
-    active: true,
-    order: pack.assets.length,
-    createdAt: now,
-    updatedAt: now
-  };
-  return writeSettings({
-    ...settings,
-    template: {
-      ...settings.template,
-      faceAssetPacks: packs.map((item) =>
-        item.id === packId ? { ...item, assets: [...item.assets, asset], updatedAt: now } : item
-      )
-    }
-  });
-}
-
-async function removeFaceAsset(packId: string, assetId: string) {
-  const settings = await readSettings();
-  const packs = settings.template.faceAssetPacks.map(normalizeFaceAssetPack);
-  const pack = packs.find((item) => item.id === packId);
-  const asset = pack?.assets.find((item) => item.id === assetId);
-  if (asset) await fs.rm(asset.path, { force: true });
-  const now = new Date().toISOString();
-  return writeSettings({
-    ...settings,
-    template: {
-      ...settings.template,
-      faceAssetPacks: packs.map((item) =>
-        item.id === packId
-          ? { ...item, assets: item.assets.filter((candidate) => candidate.id !== assetId), updatedAt: now }
-          : item
-      )
-    }
-  });
-}
-
-async function uploadFaceAssetPackPreview(packId: string) {
-  const sourcePath = await chooseTemplateAsset('preview');
-  if (!sourcePath) return readSettings();
-  const settings = await readSettings();
-  const packs = settings.template.faceAssetPacks.map(normalizeFaceAssetPack);
-  const pack = packs.find((item) => item.id === packId);
-  if (!pack) throw new Error('Face asset pack not found.');
-  const now = new Date().toISOString();
-  const extension = path.extname(sourcePath).toLowerCase() || '.png';
-  const folder = path.join(settings.eventFolder, 'face-assets', packId);
-  await fs.mkdir(folder, { recursive: true });
-  const targetPath = path.join(folder, `guest-preview${extension}`);
-  await fs.copyFile(sourcePath, targetPath);
-  return writeSettings({
-    ...settings,
-    template: {
-      ...settings.template,
-      faceAssetPacks: packs.map((item) =>
-        item.id === packId ? { ...item, guestPreviewPath: targetPath, updatedAt: now } : item
-      )
-    }
-  });
 }
 
 const dataUrlMimeType = (dataUrl: string) => dataUrl.match(/^data:([^;,]+)/)?.[1] ?? 'image/png';
@@ -2973,6 +2664,8 @@ function modalParent() {
 }
 
 app.whenReady().then(async () => {
+  registerPoseStorage();
+  registerPoseAi(readSettings);
   await readSettings();
 
   // Allow the guest renderer to capture its own window (composite video) and
@@ -3005,6 +2698,7 @@ app.whenReady().then(async () => {
     const next: AppSettings = {
       ...current,
       ...partial,
+      poseGuide: normalizePoseGuide({ ...current.poseGuide, ...partial.poseGuide }),
       ai: normalizeAiSettings({
         ...current.ai,
         ...(partial.ai ?? {}),
@@ -3012,6 +2706,15 @@ app.whenReady().then(async () => {
           openai: { ...current.ai.providers.openai, ...(partial.ai?.providers?.openai ?? {}) },
           gemini: { ...current.ai.providers.gemini, ...(partial.ai?.providers?.gemini ?? {}) },
           xai: { ...current.ai.providers.xai, ...(partial.ai?.providers?.xai ?? {}) }
+        },
+        poseGenerator: {
+          ...current.ai.poseGenerator,
+          ...(partial.ai?.poseGenerator ?? {}),
+          providers: {
+            openai: { ...current.ai.poseGenerator.providers.openai, ...(partial.ai?.poseGenerator?.providers?.openai ?? {}) },
+            gemini: { ...current.ai.poseGenerator.providers.gemini, ...(partial.ai?.poseGenerator?.providers?.gemini ?? {}) },
+            xai: { ...current.ai.poseGenerator.providers.xai, ...(partial.ai?.poseGenerator?.providers?.xai ?? {}) }
+          }
         }
       }),
       audio: normalizeAudioSettings({
@@ -3027,14 +2730,10 @@ app.whenReady().then(async () => {
         ...(partial.beautyFilter ?? {})
       }),
       template: {
-        ...current.template,
-        ...(partial.template ?? {}),
+        ...omitRetiredTemplateFields(current.template),
+        ...omitRetiredTemplateFields(partial.template ?? {}),
         layouts: (partial.template?.layouts ?? current.template.layouts).map(normalizeTemplateLayout),
         aiPresets: (partial.template?.aiPresets ?? current.template.aiPresets).map(normalizeAiPreset),
-        faceAssetPacks: (partial.template?.faceAssetPacks ?? current.template.faceAssetPacks).map(normalizeFaceAssetPack),
-        colorFilterExamplePath: String(partial.template?.colorFilterExamplePath ?? current.template.colorFilterExamplePath ?? ''),
-        colorFilterPresetVersion: 2,
-        colorFilterPresets: normalizeColorFilterPresets(partial.template?.colorFilterPresets ?? current.template.colorFilterPresets),
         designs: (partial.template?.designs ?? current.template.designs).map((design) => normalizeTemplateDesign(design))
       },
       workflow: normalizeWorkflowSettings({
@@ -3145,18 +2844,8 @@ app.whenReady().then(async () => {
   ipcMain.handle('template-layout:import', async () => importTemplatePackage());
   ipcMain.handle('template:update-asset', async (_event, designId: string, role: TemplateAssetRole) => updateTemplateAsset(designId, role));
   ipcMain.handle('template:delete', async (_event, designId: string) => deleteTemplate(designId));
-  ipcMain.handle('face-asset-pack:update', async (_event, pack: FaceAssetPack) => updateFaceAssetPack(pack));
-  ipcMain.handle('face-asset-pack:delete', async (_event, packId: string) => deleteFaceAssetPack(packId));
-  ipcMain.handle('face-asset:upload', async (_event, packId: string) => uploadFaceAsset(packId));
-  ipcMain.handle('face-asset-pack:upload-preview', async (_event, packId: string) => uploadFaceAssetPackPreview(packId));
-  ipcMain.handle('face-asset:remove', async (_event, packId: string, assetId: string) => removeFaceAsset(packId, assetId));
   ipcMain.handle('ai:preset-image-upload', async (_event, presetId: string) => copyAiPresetImage(presetId));
   ipcMain.handle('ai:preset-image-remove', async (_event, presetId: string, imageId: string) => removeAiPresetImage(presetId, imageId));
-  ipcMain.handle('color-filter:upload-thumbnail', async (_event, presetId: string) => uploadColorFilterImage(presetId, 'thumbnail'));
-  ipcMain.handle('color-filter:upload-example', async () => uploadColorFilterImage('', 'example'));
-  ipcMain.handle('color-filter:save-generated-thumbnails', async (_event, thumbnails: Array<{ presetId: string; dataUrl: string }>) =>
-    saveGeneratedColorFilterThumbnails(thumbnails)
-  );
   ipcMain.handle('ai:queue-list', async () => readAiQueue());
   ipcMain.handle('ai:queue-retry', async (_event, itemId: string) => processAiQueueItem(itemId, true));
   ipcMain.handle('ai:queue-print', async (_event, itemId: string) => printAiQueueItem(itemId));
@@ -3191,17 +2880,6 @@ app.whenReady().then(async () => {
       return true;
     }
     await createWindow('guest', 'preview=picker');
-    return true;
-  });
-  ipcMain.handle('window:open-face-asset-preview', async (_event, packId: string) => {
-    const query = `packId=${encodeURIComponent(packId)}`;
-    if (facePreviewWindow) {
-      await facePreviewWindow.loadURL(windowUrl('facePreview', query));
-      facePreviewWindow.show();
-      facePreviewWindow.focus();
-      return true;
-    }
-    await createWindow('facePreview', query);
     return true;
   });
   ipcMain.handle(

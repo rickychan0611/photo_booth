@@ -51,7 +51,7 @@ export const defaultTemplateShotAudioCue = (scopeId: string, index: number, text
 
 export const defaultTemplateScreenCue = (
   scopeId: string,
-  cueId: 'intro' | 'select' | 'thanks' | 'facePack',
+  cueId: 'intro' | 'select' | 'thanks',
   label: string,
   text: string
 ): AudioCue => ({
@@ -76,8 +76,7 @@ export const defaultTemplateWorkflow = (shotCount = 1): TemplateWorkflowSettings
   screenCues: {
     intro: defaultTemplateScreenCue('template', 'intro', 'Intro screen voice', "Let's take pictures."),
     select: defaultTemplateScreenCue('template', 'select', 'Photo selection voice', 'Please choose your favorite pictures to print.'),
-    thanks: defaultTemplateScreenCue('template', 'thanks', 'Finish screen voice', 'Thank you. Please pick up your print.'),
-    facePack: defaultTemplateScreenCue('template', 'facePack', 'Face assets screen voice', 'Please choose your face accessories.')
+    thanks: defaultTemplateScreenCue('template', 'thanks', 'Finish screen voice', 'Thank you. Please pick up your print.')
   },
   shots: Array.from({ length: Math.max(1, shotCount) }, (_item, index) => {
       const shot = { ...(DEFAULT_WORKFLOW_SHOTS[index] ?? DEFAULT_WORKFLOW_SHOTS[DEFAULT_WORKFLOW_SHOTS.length - 1]) };
@@ -201,10 +200,6 @@ export const normalizeTemplateWorkflow = (
     thanks: {
       ...defaultTemplateScreenCue('template', 'thanks', 'Finish screen voice', workflow?.thankYouMessage ?? fallback.thankYouMessage),
       ...(workflow?.screenCues?.thanks ?? {})
-    },
-    facePack: {
-      ...defaultTemplateScreenCue('template', 'facePack', 'Face assets screen voice', 'Please choose your face accessories.'),
-      ...(workflow?.screenCues?.facePack ?? {})
     }
   };
   return {
