@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "packId": "playful-new-poses-2026-10",
+  "status": "staged",
+  "promptRules": {
+    "camera": "eye-level portrait photography, clean studio background, no props, no religious clothing, uncovered hair, contemporary secular clothing",
+    "art": "photorealistic people as transparent cutout stickers, thin colorful outline, minimal motion accents, bold game-show title text integrated beside the cutout, no large graphic clutter",
+    "casting": "primarily East Asian and white people, varied hair and skin tones, Black representation about 10 percent across the complete pack"
+  },
+  "poses": [
+    {"id":"couple-shoulder-switch","name":"Shoulder Switch","category":"couple","people":2,"framing":["full","half"],"description":"Two partners stand back-to-back, switch shoulders toward camera, then finish with matching confident smiles.","title":"SWITCH IT UP"},
+    {"id":"couple-mirror-lean","name":"Mirror Lean","category":"couple","people":2,"framing":["half"],"description":"Partners face opposite directions, lean their heads together, and finish with synchronized playful smirks.","title":"MIRROR LEAN"},
+    {"id":"couple-crossed-path","name":"Crossed Paths","category":"couple","people":2,"framing":["full"],"description":"Partners cross past each other, turn outward, and finish shoulder-to-shoulder with one hand raised.","title":"CROSSED PATHS"},
+    {"id":"couple-dip-reverse","name":"Reverse Dip","category":"couple","people":2,"framing":["full"],"description":"One partner leans backward into a safe supported dip while the other frames them; both look up and laugh.","title":"REVERSE DIP"},
+    {"id":"friends-human-arrow","name":"Human Arrow","category":"friends","people":3,"framing":["full","half"],"description":"Three friends form an arrow composition, center person points forward while the side friends lean inward and grin.","title":"HUMAN ARROW"},
+    {"id":"friends-back-to-back-stack","name":"Stacked Cool","category":"friends","people":3,"framing":["half"],"description":"Three friends stack diagonally, shoulders touching, with alternating chin lifts and synchronized cool expressions.","title":"STACKED COOL"},
+    {"id":"friends-orbit","name":"Orbit","category":"friends","people":4,"framing":["full"],"description":"Four friends create a loose circle, each turning the next person's direction, then freeze with arms reaching inward.","title":"ORBIT"},
+    {"id":"friends-tunnel","name":"Human Tunnel","category":"friends","people":4,"framing":["full"],"description":"Two friends make an arch with their arms while two others lean through the center and point toward camera.","title":"HUMAN TUNNEL"},
+    {"id":"women-2-fashion-snap","name":"Fashion Snap","category":"women","people":2,"framing":["half"],"description":"Two women pose at offset angles, one hand near the jaw and one hand at the waist, finishing with editorial eyes.","title":"FASHION SNAP"},
+    {"id":"women-3-triangle","name":"Triangle Pose","category":"women","people":3,"framing":["full","half"],"description":"Three women make a balanced triangle, center woman steps forward while the others mirror her hand line and smile.","title":"TRIANGLE"},
+    {"id":"women-4-synchronized-tilt","name":"Synchronized Tilt","category":"women","people":4,"framing":["half"],"description":"Four women stand in a tight row, tilt together in alternating directions, and finish with different playful expressions.","title":"TILT TOGETHER"},
+    {"id":"men-2-double-hero","name":"Double Hero","category":"men","people":2,"framing":["full"],"description":"Two men step wide, turn opposite shoulders forward, and finish in a comic blockbuster hero stance.","title":"DOUBLE HERO"},
+    {"id":"men-2-shoulder-check","name":"Shoulder Check","category":"men","people":2,"framing":["half"],"description":"Friends stand shoulder-to-shoulder, glance at each other, then snap their gaze to camera with matching smirks.","title":"SHOULDER CHECK"},
+    {"id":"men-3-corner-formation","name":"Corner Formation","category":"men","people":3,"framing":["full","half"],"description":"Three men form a corner shape, center person leans in while the outer two frame him with their forearms.","title":"CORNER FORMATION"},
+    {"id":"family-3-parents-frame","name":"Parents Frame","category":"family","people":3,"framing":["half"],"description":"Two adults make a frame with their arms around a child, everyone looks through the frame with warm surprised faces.","title":"FAMILY FRAME"},
+    {"id":"family-4-wave-chain","name":"Wave Chain","category":"family","people":4,"framing":["full"],"description":"Family members stand in staggered depth, each raises one hand in a wave that travels across the group.","title":"WAVE CHAIN"},
+    {"id":"family-4-kid-director","name":"Kid Director","category":"family","people":4,"framing":["full","half"],"description":"The child stands in front giving a dramatic direction while the adults behind copy the child's pose and laugh.","title":"KID DIRECTOR"},
+    {"id":"family-5-human-sun","name":"Human Sun","category":"family","people":5,"framing":["full"],"description":"Five family members radiate from a center child, hands angled outward like sun rays, ending in bright smiles.","title":"HUMAN SUN"},
+    {"id":"group-4-stair-step","name":"Stair-Step","category":"group","people":4,"framing":["full"],"description":"Four friends form a rising diagonal with alternating levels, each points in a different direction, then freeze.","title":"STAIR-STEP"},
+    {"id":"group-4-front-back","name":"Front and Back","category":"group","people":4,"framing":["full"],"description":"Two people face camera in front while two peek from behind their shoulders, creating a layered reveal and shared grin.","title":"FRONT + BACK"},
+    {"id":"group-5-five-point-star","name":"Five-Point Star","category":"group","people":5,"framing":["full"],"description":"Five friends arrange as a star, each body angled outward while hands point toward the center.","title":"FIVE-POINT STAR"},
+    {"id":"group-5-reaction-wave","name":"Reaction Wave","category":"group","people":5,"framing":["half"],"description":"Five friends show a left-to-right reaction wave: shock, confusion, delight, laughter, then a final shared grin.","title":"REACTION WAVE"},
+    {"id":"kids-3-super-squad","name":"Super Squad","category":"kids","people":3,"framing":["full"],"description":"Three children pose at different heights with fists forward, then lift their chins in a joyful team finish.","title":"SUPER SQUAD"},
+    {"id":"party-4-freeze-frame","name":"Freeze Frame","category":"party","people":4,"framing":["full","half"],"description":"Four guests dance in different directions, then freeze in a balanced composition with big expressive faces.","title":"FREEZE FRAME"}
+  ]
+}

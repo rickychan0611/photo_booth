@@ -1,0 +1,20 @@
+{
+  "packId": "playful-new-poses-2026-10",
+  "state": "queued-image-generation",
+  "generated": 0,
+  "total": 24,
+  "stagedDirectory": "public/pose-guides-new",
+  "existingImagesPreserved": true,
+  "blockedReason": "Image generation account usage limit reached",
+  "resetAt": "2026-10-05T01:06:43-07:00",
+  "nextAction": "Generate one transparent cutout per pose in new-pose-pack.json, then review before registering in the live library",
+  "poseIds": [
+    "couple-shoulder-switch", "couple-mirror-lean", "couple-crossed-path", "couple-dip-reverse",
+    "friends-human-arrow", "friends-back-to-back-stack", "friends-orbit", "friends-tunnel",
+    "women-2-fashion-snap", "women-3-triangle", "women-4-synchronized-tilt",
+    "men-2-double-hero", "men-2-shoulder-check", "men-3-corner-formation",
+    "family-3-parents-frame", "family-4-wave-chain", "family-4-kid-director", "family-5-human-sun",
+    "group-4-stair-step", "group-4-front-back", "group-5-five-point-star", "group-5-reaction-wave",
+    "kids-3-super-squad", "party-4-freeze-frame"
+  ]
+}

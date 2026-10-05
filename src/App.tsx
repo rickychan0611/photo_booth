@@ -641,9 +641,9 @@ function GuestApp() {
 
   const pickRecorderMimeType = () => {
     const candidates = [
-      'video/webm;codecs=vp8,opus',
       'video/webm;codecs=vp9,opus',
       'video/webm;codecs=h264,opus',
+      'video/webm;codecs=vp8,opus',
       'video/webm'
     ];
     if (typeof MediaRecorder === 'undefined') return '';
@@ -657,21 +657,24 @@ function GuestApp() {
     recordingCleanupRef.current = null;
   };
 
-  // Captures the full on-screen composite (camera, countdown, and messages)
-  // of the booth window plus microphone audio. If mirror
-  // preview is enabled, the saved MP4 is flipped during transcode so playback is
-  // natural while the guest can still see a mirrored live preview.
+  // Captures the booth window (camera, countdown, and messages) plus the
+  // microphone at the window's own pixel size. The capture stays temporary
+  // until the outro writes the one saved video.
   const startSessionRecording = async () => {
     if (mediaRecorderRef.current || typeof MediaRecorder === 'undefined') return;
     try {
+      const pixelWidth = Math.max(1, Math.round(window.innerWidth * window.devicePixelRatio));
+      const pixelHeight = Math.max(1, Math.round(window.innerHeight * window.devicePixelRatio));
       const displayStream = await navigator.mediaDevices.getDisplayMedia({
         video: {
-          frameRate: { ideal: 24, max: 24 },
-          width: { ideal: 1080, max: 1920 },
-          height: { ideal: 1920, max: 1920 }
+          frameRate: { ideal: 30 },
+          width: { ideal: pixelWidth },
+          height: { ideal: pixelHeight }
         },
         audio: false
       });
+      const videoTrack = displayStream.getVideoTracks()[0];
+      if (videoTrack && 'contentHint' in videoTrack) videoTrack.contentHint = 'detail';
       const tracks = [...displayStream.getVideoTracks()];
       try {
         const micStream = await navigator.mediaDevices.getUserMedia({
@@ -693,7 +696,7 @@ function GuestApp() {
       const mimeType = pickRecorderMimeType();
       const recorder = new MediaRecorder(merged, {
         ...(mimeType ? { mimeType } : {}),
-        videoBitsPerSecond: 8_000_000,
+        videoBitsPerSecond: 20_000_000,
         audioBitsPerSecond: 128_000
       });
       recorder.ondataavailable = (event) => {
