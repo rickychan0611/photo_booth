@@ -13,6 +13,7 @@ type CanonResponse = {
   connected?: boolean;
   model?: string;
   path?: string;
+  dataUrl?: string;
   width?: number;
   height?: number;
   error?: string;
@@ -180,6 +181,19 @@ export const captureCanonStill = async (crop: CanonStillCrop) => {
   const message = await request({ cmd: 'take', dest, crop }, 35000);
   if (!message.path) throw new Error('Canon camera did not return a photo.');
   return { path: message.path, width: message.width ?? 0, height: message.height ?? 0 };
+};
+
+export const getCanonLiveViewFrame = async () => {
+  const message = await request({ cmd: 'live_frame' }, 5000);
+  return message.dataUrl ?? '';
+};
+
+export const prepareCanonCapture = async () => {
+  await request({ cmd: 'prepare_capture' }, 5000);
+};
+
+export const releaseCanonFocus = async () => {
+  await request({ cmd: 'release_focus' }, 5000);
 };
 
 export const stopCanonService = () => {

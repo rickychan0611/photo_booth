@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const OUT = path.join(__dirname, '..', 'src', 'pose', 'poses', 'scenes.json');
-const DURATION = 4000;
+const DURATION = 7000;
 
 const specs = [
   ['relaxed-confidence','Relaxed Confidence','professional',['solo'],'both',true,['confidence'],['confident'],'Turn slightly','Shift your weight','Relax your hands','Confident eyes'],
@@ -113,7 +113,7 @@ function makeScene(row) {
     schemaVersion:2, id, name, category,
     tags:['playful-library','four-second',`formation-${formation}`,`expression-${expressions[0]}`, adultOnly?'adult-only':'child-safe', count > 1?'cooperative':'solo'].filter(Boolean),
     instruction:cues.at(-1),
-    animation:{ durationMs:DURATION, captions:[{timeMs:0,text:'Find your mark'},...cues.map((text,index)=>({timeMs:(index+1)*500,text}))] },
+    animation:{ durationMs:DURATION, captions:cues.map((text,index)=>({timeMs:index*500,text})) },
     compatibility:{ minPeople:count, maxPeople:flexible?null:count, styles, framing:framing === 'both'?['full','half']:[framing], childSafe },
     roles:roles.map((role,index)=>({ role, repeatable:flexible && index === count - 1 }))
   };

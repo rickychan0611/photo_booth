@@ -28,13 +28,6 @@
     ],
     "extraResources": [
       {
-        "from": "resources/tts",
-        "to": "tts",
-        "filter": [
-          "**/*"
-        ]
-      },
-      {
         "from": "python",
         "to": "python",
         "filter": [

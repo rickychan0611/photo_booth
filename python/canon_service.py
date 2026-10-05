@@ -1,12 +1,13 @@
-"""Canon EOS still capture for the photo booth.
+"""Canon EOS USB Live View and still capture for the photo booth.
 
-The guest live view stays on the HDMI capture card. This process owns the
-Canon SDK session: autofocus, shutter, download of the camera JPEG, then a
-crop that matches the on-screen viewfinder.
+This process owns the Canon SDK session, supplies EVF JPEG frames, controls
+autofocus and shutter, downloads the full-resolution JPEG, then crops it to
+match the on-screen viewfinder.
 """
 
 from __future__ import annotations
 
+import base64
 import json
 import math
 import os
@@ -31,14 +32,20 @@ from ctypes import (
 from ctypes import Structure, WinDLL, cast
 
 EDS_ERR_OK = 0x00000000
+EDS_ERR_INTERNAL_ERROR = 0x00000002
 EDS_ERR_DEVICE_BUSY = 0x00000081
+EDS_ERR_OBJECT_NOTREADY = 0x0000A102
 PROP_PRODUCT_NAME = 0x00000002
+PROP_EVF_OUTPUT_DEVICE = 0x00000500
+EVF_OUTPUT_TFT = 1
+EVF_OUTPUT_PC = 2
 PROP_SAVE_TO = 0x0000000B
 CMD_EXTEND_SHUTDOWN = 0x00000001
 CMD_PRESS_SHUTTER = 0x00000004
 SHUTTER_OFF = 0x00000000
 SHUTTER_HALFWAY = 0x00000001
 SHUTTER_COMPLETELY = 0x00000003
+SHUTTER_COMPLETELY_NON_AF = 0x00010003
 SAVE_TO_HOST = 2
 OBJECT_EVENT_ALL = 0x00000200
 DIR_ITEM_REQUEST_TRANSFER = 0x00000208
@@ -130,6 +137,16 @@ def load_sdk():
     sdk.EdsGetDirectoryItemInfo.restype = c_uint
     sdk.EdsCreateFileStream.argtypes = [c_void_p, c_uint32, c_uint32, c_void_p]
     sdk.EdsCreateFileStream.restype = c_uint
+    sdk.EdsCreateMemoryStream.argtypes = [c_uint64, c_void_p]
+    sdk.EdsCreateMemoryStream.restype = c_uint
+    sdk.EdsCreateEvfImageRef.argtypes = [c_void_p, c_void_p]
+    sdk.EdsCreateEvfImageRef.restype = c_uint
+    sdk.EdsDownloadEvfImage.argtypes = [c_void_p, c_void_p]
+    sdk.EdsDownloadEvfImage.restype = c_uint
+    sdk.EdsGetPointer.argtypes = [c_void_p, c_void_p]
+    sdk.EdsGetPointer.restype = c_uint
+    sdk.EdsGetLength.argtypes = [c_void_p, c_void_p]
+    sdk.EdsGetLength.restype = c_uint
     sdk.EdsDownload.argtypes = [c_void_p, c_uint64, c_void_p]
     sdk.EdsDownload.restype = c_uint
     sdk.EdsDownloadComplete.argtypes = [c_void_p]
@@ -223,33 +240,62 @@ class Camera:
         self.camera_list = c_void_p()
         self.model = ""
         self.ready = False
+        self.initialized = False
+        self.focus_prepared = False
+        self.focus_attempted = False
 
     def connect(self) -> str:
         if self.ready:
             return self.model or "Canon EOS"
         sdk = self.sdk
-        check(sdk, sdk.EdsInitializeSDK(), "Start Canon SDK")
-        check(sdk, sdk.EdsGetCameraList(byref(self.camera_list)), "List Canon cameras")
-        count = c_uint32()
-        check(sdk, sdk.EdsGetChildCount(self.camera_list, byref(count)), "Count Canon cameras")
-        if count.value < 1:
-            raise RuntimeError("No Canon camera is connected. Plug in the USB cable and turn the camera on.")
-        check(sdk, sdk.EdsGetChildAtIndex(self.camera_list, 0, byref(self.camera)), "Open Canon camera")
-        check(sdk, sdk.EdsOpenSession(self.camera), "Open Canon session")
-        self._install_handlers()
-        save_to = c_uint32(SAVE_TO_HOST)
-        err = sdk.EdsSetPropertyData(self.camera, PROP_SAVE_TO, 0, 4, byref(save_to))
-        if err != EDS_ERR_OK:
-            raise RuntimeError(
-                f"Could not save photos to this computer ({err:#010x}). Set the camera USB mode to PC remote."
-            )
-        capacity = Capacity(0x7FFFFFFF, 0x1000, 1)
-        check(sdk, sdk.EdsSetCapacity(self.camera, capacity), "Set host capacity")
-        sdk.EdsSendCommand(self.camera, CMD_EXTEND_SHUTDOWN, 0)
-        self.model = self._product_name()
-        self.ready = True
-        pump(sdk, self.camera)
-        return self.model or "Canon EOS"
+        try:
+            initialize_error = sdk.EdsInitializeSDK()
+            if initialize_error == EDS_ERR_INTERNAL_ERROR:
+                raise RuntimeError("Canon SDK could not start. Close Canon EOS Utility, confirm the Canon USB cable is connected, then try again.")
+            check(sdk, initialize_error, "Start Canon SDK")
+            self.initialized = True
+            check(sdk, sdk.EdsGetCameraList(byref(self.camera_list)), "List Canon cameras")
+            count = c_uint32()
+            check(sdk, sdk.EdsGetChildCount(self.camera_list, byref(count)), "Count Canon cameras")
+            if count.value < 1:
+                raise RuntimeError("No Canon camera is connected. Plug in the USB cable and turn the camera on.")
+            check(sdk, sdk.EdsGetChildAtIndex(self.camera_list, 0, byref(self.camera)), "Open Canon camera")
+            check(sdk, sdk.EdsOpenSession(self.camera), "Open Canon session")
+            self._enable_live_view()
+            self._install_handlers()
+            save_to = c_uint32(SAVE_TO_HOST)
+            err = sdk.EdsSetPropertyData(self.camera, PROP_SAVE_TO, 0, 4, byref(save_to))
+            if err != EDS_ERR_OK:
+                raise RuntimeError(
+                    f"Could not save photos to this computer ({err:#010x}). Set the camera USB mode to PC remote."
+                )
+            capacity = Capacity(0x7FFFFFFF, 0x1000, 1)
+            check(sdk, sdk.EdsSetCapacity(self.camera, capacity), "Set host capacity")
+            sdk.EdsSendCommand(self.camera, CMD_EXTEND_SHUTDOWN, 0)
+            self.model = self._product_name()
+            self.ready = True
+            pump(sdk, self.camera)
+            return self.model or "Canon EOS"
+        except Exception:
+            self.close()
+            raise
+
+    def _enable_live_view(self) -> None:
+        """Send Live View to both the camera display/HDMI and this computer."""
+        sdk = self.sdk
+        device = c_uint32()
+        check(sdk, sdk.EdsGetPropertyData(self.camera, PROP_EVF_OUTPUT_DEVICE, 0, 4, byref(device)), "Read Canon Live View output")
+        device.value |= EVF_OUTPUT_TFT | EVF_OUTPUT_PC
+        for _ in range(10):
+            error = sdk.EdsSetPropertyData(self.camera, PROP_EVF_OUTPUT_DEVICE, 0, 4, byref(device))
+            if error == EDS_ERR_OK:
+                pump(sdk, self.camera)
+                return
+            if error != EDS_ERR_DEVICE_BUSY:
+                break
+            pump(sdk, self.camera)
+            time.sleep(0.2)
+        raise RuntimeError(f"Could not enable Canon Live View for HDMI preview ({error:#010x}).")
 
     def _install_handlers(self) -> None:
         sdk = self.sdk
@@ -281,6 +327,13 @@ class Camera:
     def close(self) -> None:
         sdk = self.sdk
         if self.camera:
+            if self.focus_prepared:
+                try:
+                    sdk.EdsSendCommand(self.camera, CMD_PRESS_SHUTTER, SHUTTER_OFF)
+                except Exception:
+                    pass
+            self.focus_prepared = False
+            self.focus_attempted = False
             try:
                 sdk.EdsCloseSession(self.camera)
             except Exception:
@@ -290,9 +343,28 @@ class Camera:
         if self.camera_list:
             sdk.EdsRelease(self.camera_list)
             self.camera_list = c_void_p()
-        if self.ready:
+        if self.initialized:
             sdk.EdsTerminateSDK()
+            self.initialized = False
         self.ready = False
+
+    def prepare_capture(self) -> None:
+        """Start autofocus early and hold the half-press through the countdown."""
+        self.connect()
+        if self.focus_prepared:
+            return
+        pump(self.sdk, self.camera)
+        self.focus_attempted = True
+        send_command(self.sdk, self.camera, CMD_PRESS_SHUTTER, SHUTTER_HALFWAY, "Autofocus")
+        self.focus_prepared = True
+
+    def release_focus(self) -> None:
+        if not self.ready:
+            return
+        if self.focus_prepared:
+            send_command(self.sdk, self.camera, CMD_PRESS_SHUTTER, SHUTTER_OFF, "Release autofocus")
+        self.focus_prepared = False
+        self.focus_attempted = False
 
     def take(self, dest_dir: str) -> str:
         self.connect()
@@ -300,16 +372,22 @@ class Camera:
         sdk = self.sdk
         pump(sdk, self.camera)
         drain(sdk, dest_dir)
+        if not self.focus_prepared and not self.focus_attempted:
+            try:
+                self.prepare_capture()
+            except RuntimeError as error:
+                sys.stderr.write(f"Half-press autofocus skipped: {error}\n")
+            deadline = time.time() + 0.8
+            while time.time() < deadline:
+                pump(sdk, self.camera)
+                time.sleep(0.05)
         try:
-            send_command(sdk, self.camera, CMD_PRESS_SHUTTER, SHUTTER_HALFWAY, "Autofocus")
-        except RuntimeError as error:
-            sys.stderr.write(f"Half-press autofocus skipped: {error}\n")
-        deadline = time.time() + 0.8
-        while time.time() < deadline:
-            pump(sdk, self.camera)
-            time.sleep(0.05)
-        send_command(sdk, self.camera, CMD_PRESS_SHUTTER, SHUTTER_COMPLETELY, "Take picture")
-        send_command(sdk, self.camera, CMD_PRESS_SHUTTER, SHUTTER_OFF, "Release shutter")
+            shutter_mode = SHUTTER_COMPLETELY if self.focus_prepared else SHUTTER_COMPLETELY_NON_AF
+            send_command(sdk, self.camera, CMD_PRESS_SHUTTER, shutter_mode, "Take picture")
+        finally:
+            send_command(sdk, self.camera, CMD_PRESS_SHUTTER, SHUTTER_OFF, "Release shutter")
+            self.focus_prepared = False
+            self.focus_attempted = False
         wait_until = time.time() + 20
         while time.time() < wait_until:
             pump(sdk, self.camera)
@@ -319,6 +397,33 @@ class Camera:
                 return jpeg
             time.sleep(0.05)
         raise RuntimeError("The Canon camera did not send a JPEG. Set image quality to JPEG and try again.")
+
+    def live_view_frame(self) -> bytes:
+        """Download one EVF JPEG. An empty result means the next frame is not ready yet."""
+        self.connect()
+        sdk = self.sdk
+        stream = c_void_p()
+        evf_image = c_void_p()
+        check(sdk, sdk.EdsCreateMemoryStream(c_uint64(0), byref(stream)), "Create Canon Live View stream")
+        try:
+            check(sdk, sdk.EdsCreateEvfImageRef(stream, byref(evf_image)), "Create Canon Live View image")
+            error = sdk.EdsDownloadEvfImage(self.camera, evf_image)
+            if error == EDS_ERR_OBJECT_NOTREADY:
+                pump(sdk, self.camera)
+                return b""
+            check(sdk, error, "Download Canon Live View image")
+            pointer = c_void_p()
+            length = c_uint64()
+            check(sdk, sdk.EdsGetPointer(stream, byref(pointer)), "Read Canon Live View buffer")
+            check(sdk, sdk.EdsGetLength(stream, byref(length)), "Read Canon Live View length")
+            if not pointer.value or length.value == 0:
+                return b""
+            return bytes((c_char * length.value).from_address(pointer.value))
+        finally:
+            if evf_image:
+                sdk.EdsRelease(evf_image)
+            if stream:
+                sdk.EdsRelease(stream)
 
 
 def guest_rect_to_video(crop: dict) -> tuple[float, float, float, float]:
@@ -420,22 +525,36 @@ def crop_still(path: str, crop: dict) -> tuple[str, int, int]:
     from PIL import Image, ImageOps
 
     with Image.open(path) as image:
-        image = ImageOps.exif_transpose(image)
-        still_w, still_h = image.size
-        video_box = guest_rect_to_video(crop)
-        left, top, width, height = video_rect_to_still(
-            video_box,
-            float(crop["videoWidth"]),
-            float(crop["videoHeight"]),
-            float(still_w),
-            float(still_h),
-            "contain" if crop.get("framing") == "contain" else "cover",
-        )
+        # EDSDK Live View and the downloaded JPEG begin in the same raw sensor
+        # orientation. Reproduce the renderer transform directly on the still:
+        # raw horizontal mirror first, then the configured clockwise rotation.
+        # Applying EXIF orientation before this calculation mixes portrait still
+        # coordinates with landscape EVF coordinates and shifts the crop.
+        transformed = image.convert("RGB")
+        if crop.get("mirror"):
+            transformed = ImageOps.mirror(transformed)
+        rotation = int(crop.get("rotation") or 0) % 360
+        if rotation:
+            transformed = transformed.rotate(-rotation, expand=True)
+
+        still_w, still_h = transformed.size
+        frame_w = max(1.0, float(crop["frameWidth"]))
+        frame_h = max(1.0, float(crop["frameHeight"]))
+        scale = max(frame_w / still_w, frame_h / still_h)
+        draw_w = still_w * scale
+        draw_h = still_h * scale
+        offset_x = (frame_w - draw_w) / 2
+        offset_y = (frame_h - draw_h) / 2
+
+        left = (float(crop["x"]) - offset_x) / scale
+        top = (float(crop["y"]) - offset_y) / scale
+        right = (float(crop["x"]) + float(crop["width"]) - offset_x) / scale
+        bottom = (float(crop["y"]) + float(crop["height"]) - offset_y) / scale
         left = max(0.0, min(left, still_w - 1))
         top = max(0.0, min(top, still_h - 1))
-        right = max(left + 1, min(still_w, left + width))
-        bottom = max(top + 1, min(still_h, top + height))
-        cropped = image.crop((int(left), int(top), int(right), int(bottom)))
+        right = max(left + 1, min(still_w, right))
+        bottom = max(top + 1, min(still_h, bottom))
+        cropped = transformed.crop((int(left), int(top), int(right), int(bottom)))
         aspect = float(crop.get("slotAspect") or 0)
         if aspect > 0:
             cropped = cover_crop(cropped, aspect, crop.get("cropY") == "top")
@@ -529,6 +648,19 @@ def main() -> None:
             elif name == "connect":
                 model = camera.connect()
                 reply({"ok": True, "id": request_id, "connected": True, "model": model})
+            elif name == "live_frame":
+                frame = camera.live_view_frame()
+                reply({
+                    "ok": True,
+                    "id": request_id,
+                    "dataUrl": f"data:image/jpeg;base64,{base64.b64encode(frame).decode('ascii')}" if frame else "",
+                })
+            elif name == "prepare_capture":
+                camera.prepare_capture()
+                reply({"ok": True, "id": request_id})
+            elif name == "release_focus":
+                camera.release_focus()
+                reply({"ok": True, "id": request_id})
             elif name == "take":
                 dest = command.get("dest") or os.path.join(os.environ.get("TEMP") or ".", "photo-booth-canon")
                 path = camera.take(dest)

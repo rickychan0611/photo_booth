@@ -11,6 +11,7 @@ const { PosePlayer } = require('../src/pose/PosePlayer.ts');
 const { captionAt, PHOTO_GUIDE_SCENES } = require('../src/pose/scenes.ts');
 const { validateScene } = require('../src/pose/validation.ts');
 const { createPoseAudioHooks } = require('../src/pose/audio.ts');
+const { fitSceneToNarration } = require('../src/pose/editor/operations.ts');
 const pose = PHOTO_GUIDE_SCENES.find(scene => scene.id === 'peace-and-wink');
 const copy = () => structuredClone(pose);
 const flush = async () => { for (let i = 0; i < 8; i++) await Promise.resolve(); };
@@ -27,12 +28,28 @@ class Clock {
 }
 
 test('photo guides teach on the scene clock and hold the final caption', () => {
-  assert.equal(pose.animation.durationMs, 4000);
+  assert.equal(pose.animation.durationMs, 7000);
   assert.equal(captionAt(pose, -100).elapsedMs, 0);
   assert.equal(captionAt(pose, 0).caption, pose.animation.captions[0].text);
   assert.notEqual(captionAt(pose, 600).caption, captionAt(pose, 0).caption);
-  assert.equal(captionAt(pose, 4000).caption, pose.animation.captions.at(-1).text);
-  assert.equal(captionAt(pose, 9000).elapsedMs, 4000);
+  assert.equal(captionAt(pose, 7000).caption, pose.animation.captions.at(-1).text);
+  assert.equal(captionAt(pose, 9000).elapsedMs, 7000);
+});
+
+test('narration automatically sets pose duration and evenly spaces captions', () => {
+  const scene = copy();
+  scene.audio = { filePath: 'C:\\poses\\peace.mp3', startMs: 700, markers: [{ id: 'old', timeMs: 900 }] };
+  scene.animation.captions = [
+    { timeMs: 0, text: 'Turn slightly', markerId: 'old', markerOffsetMs: -900 },
+    { timeMs: 800, text: 'Lift your hand' },
+    { timeMs: 2400, text: 'Wink and smile' }
+  ];
+  const fitted = fitSceneToNarration(scene, 5000);
+  assert.equal(fitted.animation.durationMs, 6000);
+  assert.deepEqual(fitted.animation.captions.map(caption => caption.timeMs), [0, 2500, 5000]);
+  assert.equal(fitted.audio.startMs, 0);
+  assert.deepEqual(fitted.audio.markers, []);
+  assert.equal('markerId' in fitted.animation.captions[0], false);
 });
 
 test('validation rejects malformed cutout scenes before they can play', () => {
@@ -52,9 +69,9 @@ test('player completes precisely at duration without an additional hold', async 
   const clock = new Clock(), frames = [];
   const player = new PosePlayer({ clock, onFrame: frame => frames.push(frame) });
   const result = player.play(pose);
-  clock.advance(3999); assert.equal(frames.at(-1).elapsedMs, 3999); assert.equal(clock.pending.size, 1);
+  clock.advance(6999); assert.equal(frames.at(-1).elapsedMs, 6999); assert.equal(clock.pending.size, 1);
   clock.advance(1); assert.equal(await result, 'completed'); assert.equal(clock.pending.size, 0);
-  assert.equal(frames.at(-1).elapsedMs, 4000);
+  assert.equal(frames.at(-1).elapsedMs, 7000);
 });
 
 test('stop and abort cancel playback and reset clears the caption', async () => {
@@ -77,7 +94,7 @@ test('pose replacement cancels the previous run and starts at the first caption'
   const second = player.play(next);
   assert.equal(await first, 'cancelled');
   assert.equal(frames.at(-1).caption, next.animation.captions[0].text);
-  clock.advance(4000); assert.equal(await second, 'completed');
+  clock.advance(next.animation.durationMs); assert.equal(await second, 'completed');
 });
 
 test('audio starts at authored time; markers fire once; completion and cancellation stop audio', async () => {
@@ -120,9 +137,9 @@ test('photo guides advance scene captions without a skeleton', async () => {
   assert.equal('participants' in frames.at(-1), false);
   clock.advance(1500);
   assert.equal(frames.at(-1).caption, pose.animation.captions.find(item => item.timeMs === 1500).text);
-  clock.advance(2500);
+  clock.advance(5500);
   assert.equal(await pending, 'completed');
-  assert.equal(frames.at(-1).elapsedMs, 4000);
+  assert.equal(frames.at(-1).elapsedMs, 7000);
   assert.equal(frames.at(-1).caption, pose.animation.captions.at(-1).text);
   player.dispose();
   const bare = structuredClone(pose); delete bare.visual;

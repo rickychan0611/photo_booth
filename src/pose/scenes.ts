@@ -1,6 +1,7 @@
 import bundledScenes from './poses/scenes.json';
+import photoAssets from './poses/photo-assets.json';
 import { validateScene } from './validation';
-import type { GuestComposition, ParticipantRole, PoseFraming, PoseRole, PoseScene, PoseStyle, SceneFrame } from './types';
+import type { GuestComposition, ParticipantRole, PoseFraming, PoseRole, PoseScene, SceneFrame } from './types';
 
 export const EMPTY_COMPOSITION: GuestComposition = { men: 0, women: 0, boys: 0, girls: 0, style: 'group' };
 export const totalPeople = (group: GuestComposition) => group.men + group.women + group.boys + group.girls;
@@ -86,26 +87,20 @@ export class RandomSceneSelector {
   }
 }
 
-const cutout = (assetPath: string, alt: string, accent: string): NonNullable<PoseScene['visual']> => ({ kind: 'photo-cutout', assetPath, alt, accent });
-const PHOTO_PILOT: Record<string, { visual: NonNullable<PoseScene['visual']>; framing?: PoseFraming[]; styles?: PoseStyle[] }> = {
-  'peace-and-wink': { visual: cutout('pose-guides/peace-power.webp', 'A smiling guest points at the camera while making a peace sign and winking.', '#1769ff'), framing: ['half'] },
-  'runway-cross-step': { visual: cutout('pose-guides/runway-step.webp', 'A confident guest crosses one leg in front while posing with one hand on the hip.', '#ff168f') },
-  'superhero-landing': { visual: cutout('pose-guides/hero-landing.webp', 'A guest holds a low superhero landing pose with one arm raised.', '#ef2929') },
-  'vogue-geometry': { visual: cutout('pose-guides/vogue-angles.webp', 'A guest creates strong fashion angles with both arms around the face.', '#7d22c9') },
-  'back-to-back-agents': { visual: cutout('pose-guides/back-to-back.webp', 'Two guests stand back-to-back and pose like playful secret agents.', '#ffd21a') },
-  'forehead-touch': { visual: cutout('pose-guides/sweet-moment.webp', 'Two guests smile with their foreheads gently touching.', '#ff665f') },
-  'secret-and-shock': { visual: cutout('pose-guides/secret-shock.webp', 'One friend whispers while the other reacts with exaggerated surprise.', '#ff8214'), styles: ['friends'] },
-  'anime-squad-three': { visual: cutout('pose-guides/anime-squad.webp', 'Three guests form a dramatic triangular hero team.', '#08cbe8') },
-  'family-superhero-team': { visual: cutout('pose-guides/family-power.webp', 'A family forms a cheerful superhero team with children in front.', '#ffd21a') },
-  'emotion-explosion-four': { visual: cutout('pose-guides/emotion-explosion.webp', 'Four friends crowd together with four exaggerated facial expressions.', '#8227d9') },
-  'action-movie-diamond': { visual: cutout('pose-guides/action-diamond.webp', 'Four guests overlap in a dramatic action-movie diamond formation.', '#ef2929'), framing: ['full'] },
-  'many-armed-idol': { visual: cutout('pose-guides/many-arms.webp', 'Six friends overlap to create a playful many-armed illusion.', '#0a9f9f') }
-};
-function withPhotoPilot(scene: PoseScene): PoseScene {
-  const pilot = PHOTO_PILOT[scene.id];
-  if (!pilot) return scene;
-  return validateScene({ ...scene, visual: pilot.visual, compatibility: { ...scene.compatibility, ...(pilot.framing ? { framing: pilot.framing } : {}), ...(pilot.styles ? { styles: pilot.styles } : {}) } });
+const photoAssetsById = new Map(photoAssets.map(asset => [asset.id, asset]));
+function withPhotoCutout(scene: PoseScene): PoseScene {
+  const asset = photoAssetsById.get(scene.id);
+  if (!asset) return scene;
+  return validateScene({
+    ...scene,
+    visual: {
+      kind: 'photo-cutout',
+      assetPath: asset.assetPath,
+      alt: asset.alt,
+      accent: asset.accent
+    }
+  });
 }
 
-export const BUNDLED_SCENES: PoseScene[] = bundledScenes.map(scene => validateScene(scene)).map(withPhotoPilot);
+export const BUNDLED_SCENES: PoseScene[] = bundledScenes.map(scene => validateScene(scene)).map(withPhotoCutout);
 export const PHOTO_GUIDE_SCENES = BUNDLED_SCENES.filter(scene => scene.visual?.kind === 'photo-cutout');

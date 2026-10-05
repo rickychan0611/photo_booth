@@ -14,26 +14,22 @@
     ],
     "instruction": "Confident eyes",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Turn slightly"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Shift your weight"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Relax your hands"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Confident eyes"
         }
       ]
@@ -72,26 +68,22 @@
     ],
     "instruction": "Own the camera",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Step wide"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Stand tall"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Set your fists"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Own the camera"
         }
       ]
@@ -129,26 +121,22 @@
     ],
     "instruction": "Soft model eyes",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Shift one hip"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Angle your shoulders"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Place one hand"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Soft model eyes"
         }
       ]
@@ -186,26 +174,22 @@
     ],
     "instruction": "Give a small smirk",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Turn your body"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Bend one knee"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Hand near pocket"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Give a small smirk"
         }
       ]
@@ -244,26 +228,22 @@
     ],
     "instruction": "Hold that gaze",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Turn away"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Bring one shoulder back"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Look over it"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold that gaze"
         }
       ]
@@ -301,26 +281,22 @@
     ],
     "instruction": "Cool confident face",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Turn slightly"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Lower your shoulders"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Cross your arms"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Cool confident face"
         }
       ]
@@ -358,26 +334,22 @@
     ],
     "instruction": "Smile as you walk",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Step forward"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Let your arms move"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Lift your chin"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Smile as you walk"
         }
       ]
@@ -415,26 +387,22 @@
     ],
     "instruction": "Smile and wink",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Raise one hand"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Make a peace sign"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Tilt your head"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Smile and wink"
         }
       ]
@@ -473,26 +441,22 @@
     ],
     "instruction": "Big happy eyes",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Lift both hands"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Make two peace signs"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Tilt your head"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Big happy eyes"
         }
       ]
@@ -530,26 +494,22 @@
     ],
     "instruction": "Big surprise",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Lift both hands"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Touch your cheeks"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Tilt your head"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Big surprise"
         }
       ]
@@ -587,26 +547,22 @@
     ],
     "instruction": "Smile through it",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Raise your hands"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Bring them together"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Make a heart"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Smile through it"
         }
       ]
@@ -644,26 +600,22 @@
     ],
     "instruction": "Give a shy smile",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Turn your toes in"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Bring hands together"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Tilt your head"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Give a shy smile"
         }
       ]
@@ -701,26 +653,22 @@
     ],
     "instruction": "Hero eyes up",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Step wide"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Drop one knee"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Plant your fist"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hero eyes up"
         }
       ]
@@ -758,26 +706,22 @@
     ],
     "instruction": "Power up!",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Step wide"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Bend your knees"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Clench your fists"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Power up!"
         }
       ]
@@ -815,26 +759,22 @@
     ],
     "instruction": "Transformation finish!",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Turn one foot"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Twist your body"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Sweep your arms up"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Transformation finish!"
         }
       ]
@@ -872,26 +812,22 @@
     ],
     "instruction": "Give a villain smirk",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Turn into shadow"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Raise one hand"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Lower your chin"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Give a villain smirk"
         }
       ]
@@ -930,26 +866,22 @@
     ],
     "instruction": "Dodge the laser!",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Step sideways"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Lean away"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Throw your arms out"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Dodge the laser!"
         }
       ]
@@ -987,26 +919,22 @@
     ],
     "instruction": "Hero face",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Set your feet"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Turn your shoulder"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Punch toward camera"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hero face"
         }
       ]
@@ -1045,26 +973,22 @@
     ],
     "instruction": "Blank fashion face",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Break your hip line"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Tilt your shoulders"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Bend your wrists"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Blank fashion face"
         }
       ]
@@ -1102,26 +1026,22 @@
     ],
     "instruction": "Runway eyes",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Cross one step"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Lengthen your body"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Relax your arms"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Runway eyes"
         }
       ]
@@ -1159,26 +1079,22 @@
     ],
     "instruction": "Editorial smirk",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Angle your shoulders"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Lift both elbows"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Frame your face"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Editorial smirk"
         }
       ]
@@ -1216,26 +1132,22 @@
     ],
     "instruction": "Big stage smile",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Step to the side"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Reach one arm high"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Grab the imaginary mic"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Big stage smile"
         }
       ]
@@ -1273,26 +1185,22 @@
     ],
     "instruction": "Maximum drama!",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Lift your chest"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Throw hands upward"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Tip your head back"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Maximum drama!"
         }
       ]
@@ -1331,26 +1239,22 @@
     ],
     "instruction": "Rock-star face",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Step wide"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Lean backward"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Play air guitar"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Rock-star face"
         }
       ]
@@ -1388,26 +1292,22 @@
     ],
     "instruction": "Secret-agent faces",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Stand back-to-back"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Cross your arms"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Look opposite ways"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Secret-agent faces"
         }
       ]
@@ -1451,26 +1351,22 @@
     ],
     "instruction": "Rival eyes",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Face each other"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Take battle stances"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Ready your fists"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Rival eyes"
         }
       ]
@@ -1513,26 +1409,22 @@
     ],
     "instruction": "Save the world",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Hero steps forward"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Sidekick peeks out"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Strike your signs"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Save the world"
         }
       ]
@@ -1576,26 +1468,22 @@
     ],
     "instruction": "Power-couple eyes",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Stand shoulder-to-shoulder"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Angle outward"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Set your hands"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Power-couple eyes"
         }
       ]
@@ -1638,26 +1526,22 @@
     ],
     "instruction": "Almost kiss",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Turn toward each other"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Move close"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Hold at the waist"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Almost kiss"
         }
       ]
@@ -1699,26 +1583,22 @@
     ],
     "instruction": "Close your eyes",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Face each other"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Step close"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Touch foreheads"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Close your eyes"
         }
       ]
@@ -1760,26 +1640,22 @@
     ],
     "instruction": "Laugh together",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Connect hands"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Support the waist"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Make a tiny dip"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Laugh together"
         }
       ]
@@ -1821,26 +1697,22 @@
     ],
     "instruction": "Big surprise!",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "One person kneels"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Present the ring"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "React with both hands"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Big surprise!"
         }
       ]
@@ -1882,26 +1754,22 @@
     ],
     "instruction": "Regal and serious",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Royal steps forward"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Guard stands behind"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Set your roles"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Regal and serious"
         }
       ]
@@ -1944,26 +1812,22 @@
     ],
     "instruction": "Twin fashion faces",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Stand shoulder-to-shoulder"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Mirror your bodies"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Match your hands"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Twin fashion faces"
         }
       ]
@@ -2007,26 +1871,22 @@
     ],
     "instruction": "Model eyes",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Connect one hand"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Lean apart"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Stretch the line"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Model eyes"
         }
       ]
@@ -2069,26 +1929,22 @@
     ],
     "instruction": "Huge shock!",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Lean together"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Whisper the secret"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Turn to camera"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Huge shock!"
         }
       ]
@@ -2131,26 +1987,22 @@
     ],
     "instruction": "Spy faces",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Make a triangle"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Turn three directions"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Ready your hands"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Spy faces"
         }
       ]
@@ -2198,26 +2050,22 @@
     ],
     "instruction": "Fashion stillness",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Build three levels"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Angle toward center"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Shape your arms"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Fashion stillness"
         }
       ]
@@ -2265,26 +2113,22 @@
     ],
     "instruction": "Squad faces",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Leader steps forward"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Teammates fan out"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Power poses ready"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Squad faces"
         }
       ]
@@ -2332,26 +2176,22 @@
     ],
     "instruction": "Three wild reactions",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Stack diagonally"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Lean into view"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Keep every face clear"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Three wild reactions"
         }
       ]
@@ -2399,26 +2239,22 @@
     ],
     "instruction": "Star stays cool",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Center takes the mark"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Sides lean inward"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Present the star"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Star stays cool"
         }
       ]
@@ -2466,26 +2302,22 @@
     ],
     "instruction": "Editorial faces",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Choose three heights"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Overlap shoulders"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Make sharp lines"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Editorial faces"
         }
       ]
@@ -2532,26 +2364,22 @@
     ],
     "instruction": "Make it chaotic",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Line up close"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Cover eyes ears mouth"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Lean together"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Make it chaotic"
         }
       ]
@@ -2599,26 +2427,22 @@
     ],
     "instruction": "Hold the domino",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Stand in a row"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Lean one direction"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Increase each angle"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the domino"
         }
       ]
@@ -2667,26 +2491,22 @@
     ],
     "instruction": "Movie-poster faces",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Build a diamond"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Turn four directions"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Ready action hands"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Movie-poster faces"
         }
       ]
@@ -2738,26 +2558,22 @@
     ],
     "instruction": "Album-cover faces",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Make four levels"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Overlap the group"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Choose different angles"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Album-cover faces"
         }
       ]
@@ -2809,26 +2625,22 @@
     ],
     "instruction": "Everyone reacts",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Outside guests frame"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Inside guests move close"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Build the picture"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Everyone reacts"
         }
       ]
@@ -2880,26 +2692,22 @@
     ],
     "instruction": "Final battle faces",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Leader steps forward"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Team fans behind"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Choose powers"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Final battle faces"
         }
       ]
@@ -2951,26 +2759,22 @@
     ],
     "instruction": "Explode at the end",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Line up tightly"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Look down the line"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Pass the reaction"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Explode at the end"
         }
       ]
@@ -3022,26 +2826,22 @@
     ],
     "instruction": "Who did it?",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Turn toward center"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Point to someone else"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Look at camera"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Who did it?"
         }
       ]
@@ -3093,26 +2893,22 @@
     ],
     "instruction": "Fan loses control",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Star takes the center"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Bodyguard steps close"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Paparazzi aims"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Fan loses control"
         }
       ]
@@ -3164,26 +2960,22 @@
     ],
     "instruction": "Freeze like fashion",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Choose four heights"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Build a diagonal"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Overlap carefully"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Freeze like fashion"
         }
       ]
@@ -3234,26 +3026,22 @@
     ],
     "instruction": "Movie-poster finish",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Choose the hero"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Build layers behind"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Give everyone a role"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Movie-poster finish"
         }
       ]
@@ -3309,26 +3097,22 @@
     ],
     "instruction": "Dynasty faces",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Build a fashion pyramid"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Overlap shoulders"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Vary every angle"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Dynasty faces"
         }
       ]
@@ -3384,26 +3168,22 @@
     ],
     "instruction": "Celebration erupts!",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Center starts calm"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Raise hands outward"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Grow the energy"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Celebration erupts!"
         }
       ]
@@ -3460,26 +3240,22 @@
     ],
     "instruction": "Power up together!",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Spread into formation"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Bend your knees"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Choose your power"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Power up together!"
         }
       ]
@@ -3535,26 +3311,22 @@
     ],
     "instruction": "Hold the wave",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Form a close line"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Start leaning outside"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Build a wave"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the wave"
         }
       ]
@@ -3610,26 +3382,22 @@
     ],
     "instruction": "Idol face",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Choose the center idol"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Hide behind in layers"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Fan every arm outward"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Idol face"
         }
       ]
@@ -3685,26 +3453,22 @@
     ],
     "instruction": "Royal drama",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Royal takes the center"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Court forms around"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Choose your court role"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Royal drama"
         }
       ]
@@ -3761,26 +3525,22 @@
     ],
     "instruction": "Heroes versus villains!",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Split into two teams"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Face the center"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Ready your powers"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Heroes versus villains!"
         }
       ]
@@ -3837,26 +3597,22 @@
     ],
     "instruction": "Family saves the day",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Adults anchor behind"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Hero steps forward"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Everyone powers up"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Family saves the day"
         }
       ]
@@ -3903,26 +3659,22 @@
     ],
     "instruction": "Cool family faces",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Star stands in front"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Guards close behind"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Set protective hands"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Cool family faces"
         }
       ]
@@ -3969,26 +3721,22 @@
     ],
     "instruction": "Adults look worried",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Kids take the center"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Adults move behind"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Kids act like bosses"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Adults look worried"
         }
       ]
@@ -4034,26 +3782,22 @@
     ],
     "instruction": "Laugh at the camera",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Move close together"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Lean toward the center"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Squeeze gently"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Laugh at the camera"
         }
       ]
@@ -4099,26 +3843,22 @@
     ],
     "instruction": "Villains are defeated",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Tiny hero steps forward"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Villains loom behind"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Hero powers up"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Villains are defeated"
         }
       ]
@@ -4165,26 +3905,22 @@
     ],
     "instruction": "Child does it best",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Child chooses the pose"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Adults copy the body"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Match every hand"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Child does it best"
         }
       ]
@@ -4231,26 +3967,22 @@
     ],
     "instruction": "Animal faces!",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Choose your animals"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Make ears and paws"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Lean into the pack"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Animal faces!"
         }
       ]
@@ -4298,26 +4030,22 @@
     ],
     "instruction": "Freeze!",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Puppet master in front"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Adults become puppets"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Bend strange angles"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Freeze!"
         }
       ]
@@ -4364,26 +4092,22 @@
     ],
     "instruction": "Family power-up!",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Stand shoulder-to-shoulder"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Take two power stances"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Ready your fists"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Family power-up!"
         }
       ]
@@ -4426,26 +4150,22 @@
     ],
     "instruction": "Squeeze and smile",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Move close together"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Lean toward the middle"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Touch shoulders"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Squeeze and smile"
         }
       ]
@@ -4487,26 +4207,22 @@
     ],
     "instruction": "Secret-agent faces",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Stand back-to-back"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Choose agent poses"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Set your hands"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Secret-agent faces"
         }
       ]
@@ -4549,26 +4265,22 @@
     ],
     "instruction": "Child wins!",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Child takes the lead"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Adult copies the body"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Match both hands"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Child wins!"
         }
       ]
@@ -4611,26 +4323,22 @@
     ],
     "instruction": "Soft cinematic eyes",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Stand front and back"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Wrap arms gently"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Turn your heads"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Soft cinematic eyes"
         }
       ]
@@ -4673,26 +4381,22 @@
     ],
     "instruction": "Laugh toward camera",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Connect inside hands"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Step forward together"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Lean into the run"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Laugh toward camera"
         }
       ]
@@ -4734,26 +4438,22 @@
     ],
     "instruction": "Wedding spies",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Stand back-to-back"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Cross your arms"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Turn opposite ways"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Wedding spies"
         }
       ]
@@ -4796,26 +4496,22 @@
     ],
     "instruction": "Everyone reacts!",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Couple takes the center"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Friends crowd around"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Couple leans in"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Everyone reacts!"
         }
       ]
@@ -4869,26 +4565,22 @@
     ],
     "instruction": "Dance faces",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Split into dance teams"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Start your moves"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Freeze mid-battle"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Dance faces"
         }
       ]
@@ -4939,26 +4631,22 @@
     ],
     "instruction": "Roller-coaster faces!",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Make one tight row"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Grab the safety bar"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Lean through the turn"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Roller-coaster faces!"
         }
       ]
@@ -5010,26 +4698,22 @@
     ],
     "instruction": "Dead-serious fashion",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Enter the runway"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Break your body lines"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Reach like zombies"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Dead-serious fashion"
         }
       ]
@@ -5081,26 +4765,22 @@
     ],
     "instruction": "Alien panic!",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Target reaches upward"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Others grab on"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Fight the tractor beam"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Alien panic!"
         }
       ]
@@ -5152,26 +4832,22 @@
     ],
     "instruction": "Smile together",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Stand close together"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Raise both hands"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Build matching hearts"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Smile together"
         }
       ]
@@ -5214,26 +4890,22 @@
     ],
     "instruction": "Smile and wink",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Stand shoulder-to-shoulder"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Raise one hand each"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Make peace signs"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Smile and wink"
         }
       ]
@@ -5276,26 +4948,22 @@
     ],
     "instruction": "Party smiles",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Move close together"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Raise your hands"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Fill the frame with peace"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Party smiles"
         }
       ]
@@ -5339,26 +5007,22 @@
     ],
     "instruction": "Cheeky faces",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Move close together"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Lift both hands"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Touch your cheeks"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Cheeky faces"
         }
       ]
@@ -5401,26 +5065,22 @@
     ],
     "instruction": "Family smiles",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Build a family cluster"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Raise your hands"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Make matching hearts"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Family smiles"
         }
       ]
@@ -5466,26 +5126,22 @@
     ],
     "instruction": "Smile together",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Build three levels"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Raise your hands"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Make peace signs"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Smile together"
         }
       ]
@@ -5532,26 +5188,22 @@
     ],
     "instruction": "Freeze the chaos",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Fill the frame"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Choose different body lines"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Make every face unique"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Freeze the chaos"
         }
       ]
@@ -5609,26 +5261,22 @@
     ],
     "instruction": "Rest your heads",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Offer one hand"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Step in together"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Sway on the spot"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Rest your heads"
         }
       ]
@@ -5671,26 +5319,22 @@
     ],
     "instruction": "Touch foreheads",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Stand toe to toe"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Hold both hands"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Lean in gently"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Touch foreheads"
         }
       ]
@@ -5733,26 +5377,22 @@
     ],
     "instruction": "Cheek to cheek",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Stand side by side"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Wrap an arm around"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Sway once"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Cheek to cheek"
         }
       ]
@@ -5795,26 +5435,22 @@
     ],
     "instruction": "Smile up at them",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Take a dance hold"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Step one foot wide"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Dip your partner"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Smile up at them"
         }
       ]
@@ -5857,26 +5493,22 @@
     ],
     "instruction": "Smirk together",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Stand back to back"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Look over one shoulder"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Cross one ankle"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Smirk together"
         }
       ]
@@ -5919,26 +5551,22 @@
     ],
     "instruction": "Freeze the big yes",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "One of you kneels"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "The other covers their mouth"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Hands to your cheeks"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Freeze the big yes"
         }
       ]
@@ -5981,26 +5609,22 @@
     ],
     "instruction": "Laugh at the camera",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Count down together"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Jump into a small lift"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Kick one foot up"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Laugh at the camera"
         }
       ]
@@ -6043,26 +5667,22 @@
     ],
     "instruction": "Freeze mid-laugh",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Start two steps apart"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Spin toward each other"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Catch hands and stop"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Freeze mid-laugh"
         }
       ]
@@ -6105,26 +5725,22 @@
     ],
     "instruction": "Hold the mirror",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Walk in the same step"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Match your arm swing"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Hit the same pose"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the mirror"
         }
       ]
@@ -6167,26 +5783,22 @@
     ],
     "instruction": "Balance and smile",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Face each other"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Hold both hands tight"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Lean back together"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Balance and smile"
         }
       ]
@@ -6229,26 +5841,22 @@
     ],
     "instruction": "Giggle and hold",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Lean in close"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Wrinkle your noses"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Boop once"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Giggle and hold"
         }
       ]
@@ -6291,26 +5899,22 @@
     ],
     "instruction": "Smile without moving",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Tilt toward each other"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Close your eyes"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Stop just before a kiss"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Smile without moving"
         }
       ]
@@ -6353,26 +5957,22 @@
     ],
     "instruction": "Share the smile",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Bring your heads together"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "One whispers"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "The other melts"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Share the smile"
         }
       ]
@@ -6415,26 +6015,22 @@
     ],
     "instruction": "Peek through and smile",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Lift your hands"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Make half a heart each"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Join them in the middle"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Peek through and smile"
         }
       ]
@@ -6477,26 +6073,22 @@
     ],
     "instruction": "Hold the movie stare",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "One hand under the chin"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Lift it just a little"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Look into the lens"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the movie stare"
         }
       ]
@@ -6539,26 +6131,22 @@
     ],
     "instruction": "Do not blink",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Same head tilt"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "One eyebrow up"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Match the smirk"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Do not blink"
         }
       ]
@@ -6601,26 +6189,22 @@
     ],
     "instruction": "Burst into a grin",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "One looks hopeful"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "The other looks shocked"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Hands on cheeks"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Burst into a grin"
         }
       ]
@@ -6663,26 +6247,22 @@
     ],
     "instruction": "Freeze the melodrama",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Clutch each other"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Gasp at the same time"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Eyes wide"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Freeze the melodrama"
         }
       ]
@@ -6725,26 +6305,22 @@
     ],
     "instruction": "Stay right there",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Press cheeks together"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Close your eyes"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Soft little smiles"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Stay right there"
         }
       ]
@@ -6787,26 +6363,22 @@
     ],
     "instruction": "Hold the wink",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Same smile first"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Count silently"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Wink the same eye"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the wink"
         }
       ]
@@ -6849,26 +6421,22 @@
     ],
     "instruction": "Land still smiling",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Lock pinkies"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Bend your knees"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Jump together"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Land still smiling"
         }
       ]
@@ -6911,26 +6479,22 @@
     ],
     "instruction": "Stop cheek to cheek",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Walk toward the camera"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Swing your joined hands"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Make a heart"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Stop cheek to cheek"
         }
       ]
@@ -6973,26 +6537,22 @@
     ],
     "instruction": "Soft smiles",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Stand shoulder to shoulder"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "One leans her head"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "The other steadies her"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Soft smiles"
         }
       ]
@@ -7035,26 +6595,22 @@
     ],
     "instruction": "Hit a cover pose",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "One foot in front"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Hands on hips"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Strut two steps"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hit a cover pose"
         }
       ]
@@ -7097,26 +6653,22 @@
     ],
     "instruction": "Cool half-smile",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Back to back"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Look over opposite shoulders"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Cross one leg"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Cool half-smile"
         }
       ]
@@ -7159,26 +6711,22 @@
     ],
     "instruction": "Laugh at the lens",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "One hops on"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Hold on tight"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Kick your feet"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Laugh at the lens"
         }
       ]
@@ -7221,26 +6769,22 @@
     ],
     "instruction": "Point at the camera",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "One tries to walk off"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "The other tugs her back"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Both stumble into pose"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Point at the camera"
         }
       ]
@@ -7283,26 +6827,22 @@
     ],
     "instruction": "Freeze the laugh",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Take a dance hold"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Dip dramatically"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Free arm in the air"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Freeze the laugh"
         }
       ]
@@ -7345,26 +6885,22 @@
     ],
     "instruction": "Hold it up",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Stand side by side"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Arms linked"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Kick the same leg"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold it up"
         }
       ]
@@ -7407,26 +6943,22 @@
     ],
     "instruction": "Hold the slap",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Run at each other"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Jump into a high five"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Stop exactly there"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the slap"
         }
       ]
@@ -7469,26 +7001,22 @@
     ],
     "instruction": "Hold the cute face",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Squish your cheeks in"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Touch noses"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Big sparkling eyes"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the cute face"
         }
       ]
@@ -7531,26 +7059,22 @@
     ],
     "instruction": "Stay sweet",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Hands under your chins"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Tilt together"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Soft eye contact"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Stay sweet"
         }
       ]
@@ -7593,26 +7117,22 @@
     ],
     "instruction": "Do not look away",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "One rests her chin"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "The other leans in"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Match the smile"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Do not look away"
         }
       ]
@@ -7655,26 +7175,22 @@
     ],
     "instruction": "Hold the reveal",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Start with glasses on"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Drop them together"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "One eyebrow up"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the reveal"
         }
       ]
@@ -7717,26 +7233,22 @@
     ],
     "instruction": "Cool stare",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Look down"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Flip your hair"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Snap up to the lens"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Cool stare"
         }
       ]
@@ -7779,26 +7291,22 @@
     ],
     "instruction": "Freeze the shock",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "One cups a hand"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Whisper one word"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "The other gasps"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Freeze the shock"
         }
       ]
@@ -7841,26 +7349,22 @@
     ],
     "instruction": "Laugh and hold",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Boop her nose"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "She boops back"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Both wrinkle your noses"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Laugh and hold"
         }
       ]
@@ -7903,26 +7407,22 @@
     ],
     "instruction": "Hold the scheme",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Lean in like a plot"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Steeple your fingers"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Slow wicked grin"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the scheme"
         }
       ]
@@ -7965,26 +7465,22 @@
     ],
     "instruction": "Hold the pair",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Peace signs up"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Tilt opposite ways"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Same smile"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the pair"
         }
       ]
@@ -8027,26 +7523,22 @@
     ],
     "instruction": "Keep the smile",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Same head angle"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Count to three"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Wink together"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Keep the smile"
         }
       ]
@@ -8089,26 +7581,22 @@
     ],
     "instruction": "Land in the hug",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Squeeze into a hug"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Bend your knees"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Little jump together"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Land in the hug"
         }
       ]
@@ -8155,26 +7643,22 @@
     ],
     "instruction": "All three smile",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Middle friend steps in"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "The others support her"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "One foot pops up"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "All three smile"
         }
       ]
@@ -8221,26 +7705,22 @@
     ],
     "instruction": "Power stare",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "One steps forward"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Two angle behind"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Hands on hips"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Power stare"
         }
       ]
@@ -8287,26 +7767,22 @@
     ],
     "instruction": "Chin up",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Link elbows"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Walk three steps"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Stop in a line"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Chin up"
         }
       ]
@@ -8353,26 +7829,22 @@
     ],
     "instruction": "Hold the nonsense",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Each pick a silly step"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "March toward the camera"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Stop at the same time"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the nonsense"
         }
       ]
@@ -8419,26 +7891,22 @@
     ],
     "instruction": "Freeze the landing",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Crouch low"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "One arm back"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Pop up into heroes"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Freeze the landing"
         }
       ]
@@ -8485,26 +7953,22 @@
     ],
     "instruction": "Freeze mid-turn",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Hold hands in a circle"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Spin once"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Break toward the camera"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Freeze mid-turn"
         }
       ]
@@ -8551,26 +8015,22 @@
     ],
     "instruction": "Hold the tower",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Stack a playful lean"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Arms out for balance"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Everyone makes a face"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the tower"
         }
       ]
@@ -8617,26 +8077,22 @@
     ],
     "instruction": "Hold the kick",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Shoulder to shoulder"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Arms around waists"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Kick in unison"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the kick"
         }
       ]
@@ -8683,26 +8139,22 @@
     ],
     "instruction": "Hold perfectly still",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Strike three different statues"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Do not wobble"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Eyes on the lens"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold perfectly still"
         }
       ]
@@ -8749,26 +8201,22 @@
     ],
     "instruction": "Hold the stack",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Lean in a staircase"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Chins almost touching"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Bright eyes"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the stack"
         }
       ]
@@ -8815,26 +8263,22 @@
     ],
     "instruction": "Soft smiles",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Each make a tiny heart"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Bring them together"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Peek over your hands"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Soft smiles"
         }
       ]
@@ -8881,26 +8325,22 @@
     ],
     "instruction": "Stay in the row",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Press cheek to cheek"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Middle friend centers it"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Close your eyes"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Stay in the row"
         }
       ]
@@ -8947,26 +8387,22 @@
     ],
     "instruction": "Hold the editorial",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Sharp chin angles"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "One hand in your hair"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Look down the lens"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the editorial"
         }
       ]
@@ -9013,26 +8449,22 @@
     ],
     "instruction": "Hold the frame",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Outside friends frame her face"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Middle friend poses"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Everyone looks through"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the frame"
         }
       ]
@@ -9079,26 +8511,22 @@
     ],
     "instruction": "Freeze the laugh",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Whisper to the next friend"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Pass it down the line"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Last friend loses it"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Freeze the laugh"
         }
       ]
@@ -9145,26 +8573,22 @@
     ],
     "instruction": "Hold the shock",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Same gasp"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Hands on cheeks"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Eyes huge"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the shock"
         }
       ]
@@ -9211,26 +8635,22 @@
     ],
     "instruction": "Hold the plot",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Lean in like a council"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "One brow up each"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Slow evil smile"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the plot"
         }
       ]
@@ -9277,26 +8697,22 @@
     ],
     "instruction": "Hold the crown",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Peace signs around one face"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Middle friend shines"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Tilt together"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the crown"
         }
       ]
@@ -9343,26 +8759,22 @@
     ],
     "instruction": "Reopen together",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Same smile"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Same head height"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Blink on one count"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Reopen together"
         }
       ]
@@ -9409,26 +8821,22 @@
     ],
     "instruction": "Smile in the bloom",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Step into one hug"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Outside friends wrap in"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Squeeze once"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Smile in the bloom"
         }
       ]
@@ -9479,26 +8887,22 @@
     ],
     "instruction": "Hold the stroll",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Walk in pairs"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Swing your arms"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Arrive in a line"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the stroll"
         }
       ]
@@ -9549,26 +8953,22 @@
     ],
     "instruction": "Hit the diamond",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "One leads"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Two flank her"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "One closes the back"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hit the diamond"
         }
       ]
@@ -9619,26 +9019,22 @@
     ],
     "instruction": "Hold the poster",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Stagger your heights"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "One arm forward each"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Lean into the shot"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the poster"
         }
       ]
@@ -9689,26 +9085,22 @@
     ],
     "instruction": "Laugh and freeze",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Pair up"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Playful lifts or leans"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Kick a free foot"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Laugh and freeze"
         }
       ]
@@ -9759,26 +9151,22 @@
     ],
     "instruction": "Hold the pile",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Kneel and lean in"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Stack the hug low"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Everyone makes a face"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the pile"
         }
       ]
@@ -9829,26 +9217,22 @@
     ],
     "instruction": "Land in a cheer",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Arms up"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Count to three"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Jump at once"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Land in a cheer"
         }
       ]
@@ -9899,26 +9283,22 @@
     ],
     "instruction": "Freeze the team",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Four low stances"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Different arm shapes"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Pop tall together"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Freeze the team"
         }
       ]
@@ -9969,26 +9349,22 @@
     ],
     "instruction": "Hold the line",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Link arms"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Same leg ready"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Kick on one count"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the line"
         }
       ]
@@ -10039,26 +9415,22 @@
     ],
     "instruction": "Hold the copy",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Copy the leader"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Same hands"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Same foot"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the copy"
         }
       ]
@@ -10109,26 +9481,22 @@
     ],
     "instruction": "Hold the bouquet",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Pack in close"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Chins level"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Bright matching eyes"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the bouquet"
         }
       ]
@@ -10179,26 +9547,22 @@
     ],
     "instruction": "Stay tucked in",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Cheek to cheek across"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Tilt the same way"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Soft smiles"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Stay tucked in"
         }
       ]
@@ -10249,26 +9613,22 @@
     ],
     "instruction": "Hold the heart",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Outside hands make a heart"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Inside friends pose inside it"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Everyone looks through"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the heart"
         }
       ]
@@ -10319,26 +9679,22 @@
     ],
     "instruction": "Hold the wall",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Glasses on"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Lower them together"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "One cool stare"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the wall"
         }
       ]
@@ -10389,26 +9745,22 @@
     ],
     "instruction": "Hold the stack",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Lean from alternating sides"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Shoulders overlap"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Chins sharp"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the stack"
         }
       ]
@@ -10459,26 +9811,22 @@
     ],
     "instruction": "Freeze the gossip",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Heads in a huddle"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "One spills the secret"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Three react differently"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Freeze the gossip"
         }
       ]
@@ -10529,26 +9877,22 @@
     ],
     "instruction": "Hold the wave",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Gasp from left to right"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Hands to cheeks"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Last friend points"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the wave"
         }
       ]
@@ -10599,26 +9943,22 @@
     ],
     "instruction": "Freeze the wildest",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Cute, cool, shocked, unhinged"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Switch on one count"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "New face each"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Freeze the wildest"
         }
       ]
@@ -10669,26 +10009,22 @@
     ],
     "instruction": "Hold the stack",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Four peace signs"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Stack them high"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Smile under them"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the stack"
         }
       ]
@@ -10739,26 +10075,22 @@
     ],
     "instruction": "Freeze together",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Hands down"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Hit pose one"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Hit pose two"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Freeze together"
         }
       ]
@@ -10809,26 +10141,22 @@
     ],
     "instruction": "Freeze the stumble",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Clasp hands"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Yank into a lean"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "One foot up"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Freeze the stumble"
         }
       ]
@@ -10871,26 +10199,22 @@
     ],
     "instruction": "Hold the joke",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "One crouches"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "The other sits tall"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Both point forward"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the joke"
         }
       ]
@@ -10933,26 +10257,22 @@
     ],
     "instruction": "Hold the poster",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Stand back to back"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Arms folded"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Look off to the sides"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the poster"
         }
       ]
@@ -10995,26 +10315,22 @@
     ],
     "instruction": "Land and hold",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Wind up"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Jump with fists up"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Shout the win"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Land and hold"
         }
       ]
@@ -11057,26 +10373,22 @@
     ],
     "instruction": "Hold the trust",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "One leans back"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "The other catches"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Stop before the fall"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the trust"
         }
       ]
@@ -11119,26 +10431,22 @@
     ],
     "instruction": "Laugh and hold",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Start the handshake"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Lose the choreography"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Blame each other"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Laugh and hold"
         }
       ]
@@ -11181,26 +10489,22 @@
     ],
     "instruction": "Stay there",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Arm across his shoulder"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Knock your heads once"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Big easy grins"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Stay there"
         }
       ]
@@ -11243,26 +10547,22 @@
     ],
     "instruction": "Do not break",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Same tilt"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Same squint"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Same smirk"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Do not break"
         }
       ]
@@ -11305,26 +10605,22 @@
     ],
     "instruction": "Hold the accusation",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Point at the lens"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Lean in hard"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Eyebrows up"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the accusation"
         }
       ]
@@ -11367,26 +10663,22 @@
     ],
     "instruction": "Hold the bump",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Raise your fists"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Meet in the middle"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Stop on contact"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the bump"
         }
       ]
@@ -11429,26 +10721,22 @@
     ],
     "instruction": "Freeze the chase",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "One runs ahead"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Two reach to grab him"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Everyone looks back"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Freeze the chase"
         }
       ]
@@ -11495,26 +10783,22 @@
     ],
     "instruction": "Hold the shout",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Huddle tight"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Hands in"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Break toward the camera"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the shout"
         }
       ]
@@ -11561,26 +10845,22 @@
     ],
     "instruction": "Cool stare",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Wide feet"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Arms crossed or in pockets"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Stagger the line"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Cool stare"
         }
       ]
@@ -11627,26 +10907,22 @@
     ],
     "instruction": "Hold the lift",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Middle friend hops"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Two friends support him"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "One fist up"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the lift"
         }
       ]
@@ -11693,26 +10969,22 @@
     ],
     "instruction": "Land in the same pose",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Line up"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Bend together"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Jump on one count"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Land in the same pose"
         }
       ]
@@ -11759,26 +11031,22 @@
     ],
     "instruction": "Hold the mess",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "One whispers"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Second cracks"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Third is already gone"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the mess"
         }
       ]
@@ -11825,26 +11093,22 @@
     ],
     "instruction": "Hold the stack",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Three peace signs"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Stack them in front"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Cheesy grins"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the stack"
         }
       ]
@@ -11891,26 +11155,22 @@
     ],
     "instruction": "Hold it",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Lean in a triangle"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Same smirk"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Eyes on the lens"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold it"
         }
       ]
@@ -11957,26 +11217,22 @@
     ],
     "instruction": "Freeze the burst",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Start stone faced"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Hold one beat"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Explode into laughs"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Freeze the burst"
         }
       ]
@@ -12023,26 +11279,22 @@
     ],
     "instruction": "Hold, then one smile",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Same chin height"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Same stare"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "No smiling yet"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold, then one smile"
         }
       ]
@@ -12090,26 +11342,22 @@
     ],
     "instruction": "Smile at the child",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Child holds both hands"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Grownups lift gently"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Swing once"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Smile at the child"
         }
       ]
@@ -12157,26 +11405,22 @@
     ],
     "instruction": "Hold the little boss",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Child steps in front"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Grownups kneel behind"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Follow the kid's pose"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the little boss"
         }
       ]
@@ -12224,26 +11468,22 @@
     ],
     "instruction": "Hold the flight",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Grownup plants their feet"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Kids stretch out like wings"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "One foot pops"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the flight"
         }
       ]
@@ -12291,26 +11531,22 @@
     ],
     "instruction": "Land laughing",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Hold hands"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Crouch together"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Small jump"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Land laughing"
         }
       ]
@@ -12357,26 +11593,22 @@
     ],
     "instruction": "Easy smiles",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Walk arm in arm"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Match your steps"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Stop in a line"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Easy smiles"
         }
       ]
@@ -12423,26 +11655,22 @@
     ],
     "instruction": "Hold the portrait",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Stagger your height"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Hands in pockets or on hips"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Look just off camera"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the portrait"
         }
       ]
@@ -12489,26 +11717,22 @@
     ],
     "instruction": "Freeze the chaos",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Someone starts dancing"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "The others join badly"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "One big spin"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Freeze the chaos"
         }
       ]
@@ -12556,26 +11780,22 @@
     ],
     "instruction": "Hold the kisses",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Lean into the child"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Kiss a cheek each"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Child beams"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the kisses"
         }
       ]
@@ -12623,26 +11843,22 @@
     ],
     "instruction": "Hold the pile",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Child in the middle"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Grownups rest chins close"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "All scrunch noses"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the pile"
         }
       ]
@@ -12690,26 +11906,22 @@
     ],
     "instruction": "Freeze the silliest",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Kids pick the faces"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Grownup copies them"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Worse is better"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Freeze the silliest"
         }
       ]
@@ -12757,26 +11969,22 @@
     ],
     "instruction": "Hold the star",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Child centers the frame"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Grownup frames them"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Hero hands on hips"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the star"
         }
       ]
@@ -12823,26 +12031,22 @@
     ],
     "instruction": "Hold the warmth",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Heads together"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Soft matching smiles"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Eyes kind"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the warmth"
         }
       ]
@@ -12889,26 +12093,22 @@
     ],
     "instruction": "Hold the laugh",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "One tells a tiny story"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "The others break"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Hands over mouths"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the laugh"
         }
       ]
@@ -12955,26 +12155,22 @@
     ],
     "instruction": "Hold the lean",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Same shoulder angle"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Same calm face"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Look into the lens"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the lean"
         }
       ]
@@ -13022,26 +12218,22 @@
     ],
     "instruction": "One family smile",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Kids in front"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Grownups behind"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Hands on shoulders"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "One family smile"
         }
       ]
@@ -13093,26 +12285,22 @@
     ],
     "instruction": "Hold the lift",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Grownups get steady"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Kids hop up for a hold"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Arms out"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the lift"
         }
       ]
@@ -13164,26 +12352,22 @@
     ],
     "instruction": "Hold the star",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Child takes the front"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Three grownups fan behind"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Copy the kid's hands"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the star"
         }
       ]
@@ -13235,26 +12419,22 @@
     ],
     "instruction": "Hold the pile",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Kids pile into a hug"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Grownup anchors them"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Everyone makes a face"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the pile"
         }
       ]
@@ -13305,26 +12485,22 @@
     ],
     "instruction": "Hold the line",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Stand shoulder to shoulder"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Mix pockets and folded arms"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Stagger one foot"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the line"
         }
       ]
@@ -13375,26 +12551,22 @@
     ],
     "instruction": "Warm smiles",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Walk toward the camera"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Arms loosely linked"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Stop in a row"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Warm smiles"
         }
       ]
@@ -13445,26 +12617,22 @@
     ],
     "instruction": "Land laughing",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Count together"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Jump like you just arrived"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Arms up"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Land laughing"
         }
       ]
@@ -13516,26 +12684,22 @@
     ],
     "instruction": "Hold the sandwich",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Kids in the middle"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Grownups wrap in"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Cheeks touching"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the sandwich"
         }
       ]
@@ -13587,26 +12751,22 @@
     ],
     "instruction": "Freeze the set",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Each pick a face"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Show them together"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Kids may go wilder"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Freeze the set"
         }
       ]
@@ -13658,26 +12818,22 @@
     ],
     "instruction": "Hold the secret",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Child whispers to one grownup"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "That face changes"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "The others lean in"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the secret"
         }
       ]
@@ -13729,26 +12885,22 @@
     ],
     "instruction": "Hold the crown",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Kids make a crown with hands"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "One child wears it"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Grownup steadies the pose"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the crown"
         }
       ]
@@ -13799,26 +12951,22 @@
     ],
     "instruction": "Hold the portrait",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Pack in tight"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Heads touching"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Kind eyes"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the portrait"
         }
       ]
@@ -13869,26 +13017,22 @@
     ],
     "instruction": "Hold the line",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "One starts laughing"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Pass it down the row"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Last person breaks"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the line"
         }
       ]
@@ -13939,26 +13083,22 @@
     ],
     "instruction": "Hold the cool",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Same lean"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Mix smiles and smirks"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Look just past the lens"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the cool"
         }
       ]
@@ -14009,26 +13149,22 @@
     ],
     "instruction": "Land with arms up",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Pack into two rows"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Bend your knees"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Jump on three"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Land with arms up"
         }
       ]
@@ -14085,26 +13221,22 @@
     ],
     "instruction": "Hold the burst",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Cluster tight"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Burst one step out"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Arms like a star"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the burst"
         }
       ]
@@ -14161,26 +13293,22 @@
     ],
     "instruction": "Look back and grin",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Hands on the shoulders ahead"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Two silly steps"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Stop in the line"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Look back and grin"
         }
       ]
@@ -14237,26 +13365,22 @@
     ],
     "instruction": "Hold the surprise",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Crouch below the frame"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Wait one beat"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Pop up together"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the surprise"
         }
       ]
@@ -14313,26 +13437,22 @@
     ],
     "instruction": "Hold the crest",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Back row starts the wave"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Front row follows"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Hands high"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the crest"
         }
       ]
@@ -14389,26 +13509,22 @@
     ],
     "instruction": "Smile across the circle",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Make a loose circle"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Hold your neighbors' hands"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Lean in"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Smile across the circle"
         }
       ]
@@ -14465,26 +13581,22 @@
     ],
     "instruction": "Hold the team",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Front row kneels"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Back row stands"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Lean in as one"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the team"
         }
       ]
@@ -14541,26 +13653,22 @@
     ],
     "instruction": "Hold the arrival",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Stagger a long line"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "One hand on a hip"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Chin up"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the arrival"
         }
       ]
@@ -14617,26 +13725,22 @@
     ],
     "instruction": "Hold the poster",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Mix low and tall stances"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Different hero arms"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Eyes fierce or grinning"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the poster"
         }
       ]
@@ -14693,26 +13797,22 @@
     ],
     "instruction": "Hold the march",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Knees up together"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Two marches"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Stop mid-step"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the march"
         }
       ]
@@ -14769,26 +13869,22 @@
     ],
     "instruction": "Hold the pile",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Front row drops to a knee"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Back row leans over"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Everyone cracks up"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the pile"
         }
       ]
@@ -14845,26 +13941,22 @@
     ],
     "instruction": "Hold the accident",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Dance for one beat"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Stop wherever you are"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Do not fix it"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the accident"
         }
       ]
@@ -14921,26 +14013,22 @@
     ],
     "instruction": "Hold the chain",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Arm on the next shoulder"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Lean the same way"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "One cool face"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the chain"
         }
       ]
@@ -14997,26 +14085,22 @@
     ],
     "instruction": "One warm portrait",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Tallest in the back"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Shortest in front"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Hands relaxed"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "One warm portrait"
         }
       ]
@@ -15073,26 +14157,22 @@
     ],
     "instruction": "Stick the landing",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Everyone shows a number on their fingers"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Drop the hands"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Jump together"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Stick the landing"
         }
       ]
@@ -15149,26 +14229,22 @@
     ],
     "instruction": "Hold the letter",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Make the letter A with your bodies"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Arms are the peak"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Feet plant the sides"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the letter"
         }
       ]
@@ -15225,26 +14301,22 @@
     ],
     "instruction": "Hold it up",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Link elbows"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Same leg ready"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Kick once"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold it up"
         }
       ]
@@ -15301,26 +14373,22 @@
     ],
     "instruction": "Hold the levels",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Some stand, some kneel, some crouch"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "No two neighbors match"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Eyes to the lens"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the levels"
         }
       ]
@@ -15377,26 +14445,22 @@
     ],
     "instruction": "Freeze with arms wide",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Fists in"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Break outward"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Roar the win"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Freeze with arms wide"
         }
       ]
@@ -15453,26 +14517,22 @@
     ],
     "instruction": "Hold your cluster",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Split into little pairs"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Each pair picks a tiny pose"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Look back at the camera"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold your cluster"
         }
       ]
@@ -15529,26 +14589,22 @@
     ],
     "instruction": "Hold the pile",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Pack your faces in"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Cheeks touching"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Bright eyes"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the pile"
         }
       ]
@@ -15605,26 +14661,22 @@
     ],
     "instruction": "Hold the heart",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Outside hands start a heart"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Everyone else tucks inside"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Look through it"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the heart"
         }
       ]
@@ -15681,26 +14733,22 @@
     ],
     "instruction": "Hold the secret",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Heads into a huddle"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "One shares a look"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Everyone softens"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the secret"
         }
       ]
@@ -15757,26 +14805,22 @@
     ],
     "instruction": "Hold the chorus",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Same gentle smile"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Same head height as you can"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Eyes kind"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the chorus"
         }
       ]
@@ -15833,26 +14877,22 @@
     ],
     "instruction": "Hold the squad",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Glasses on"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Lower them as a group"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "One eyebrow each"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the squad"
         }
       ]
@@ -15909,26 +14949,22 @@
     ],
     "instruction": "Hold the mix",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Start serious"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Hold one beat"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Let one smile slip"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the mix"
         }
       ]
@@ -15985,26 +15021,22 @@
     ],
     "instruction": "Hold the spotlight",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Center person poses"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Everyone else points at them"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Center owns it"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the spotlight"
         }
       ]
@@ -16061,26 +15093,22 @@
     ],
     "instruction": "Hold the row",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Pass a whisper across"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Each face reacts"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Last person gasps"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the row"
         }
       ]
@@ -16137,26 +15165,22 @@
     ],
     "instruction": "Freeze the worst one",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Face one"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Face two"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Face three"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Freeze the worst one"
         }
       ]
@@ -16213,26 +15237,22 @@
     ],
     "instruction": "Hold the gasp",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Hands ready"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Gasp together"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Eyes wide"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the gasp"
         }
       ]
@@ -16289,26 +15309,22 @@
     ],
     "instruction": "Hold the bubbles",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Puff your cheeks"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Lean in"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Try not to laugh"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the bubbles"
         }
       ]
@@ -16365,26 +15381,22 @@
     ],
     "instruction": "Hold the skyline",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Peace signs at different heights"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Pack the faces under them"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Big smiles"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the skyline"
         }
       ]
@@ -16441,26 +15453,22 @@
     ],
     "instruction": "Hold the tunnel",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Hands make a tunnel of hearts"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Faces peek through"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Find the lens"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the tunnel"
         }
       ]
@@ -16517,26 +15525,22 @@
     ],
     "instruction": "Hold that face",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Wink from one side to the other"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Keep it moving"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "End on the last wink"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold that face"
         }
       ]
@@ -16593,26 +15597,22 @@
     ],
     "instruction": "Hold the mess",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Pick the weirdest face you can"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Show it at once"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "No matching allowed"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the mess"
         }
       ]
@@ -16669,26 +15669,22 @@
     ],
     "instruction": "Hold the win",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Lean in hard"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Huge grins"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Someone points up"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the win"
         }
       ]
@@ -16745,26 +15741,22 @@
     ],
     "instruction": "Hold the tilt",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Tilt the same direction"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Same smile size"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Same timing"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the tilt"
         }
       ]
@@ -16821,26 +15813,22 @@
     ],
     "instruction": "Hold the frame",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Choose one person"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Everyone else frames their face"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "That person poses"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold the frame"
         }
       ]
@@ -16897,26 +15885,22 @@
     ],
     "instruction": "Reopen and smile",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Eyes open"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Count together"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "Blink once"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Reopen and smile"
         }
       ]
@@ -16973,26 +15957,22 @@
     ],
     "instruction": "Hold completely still",
     "animation": {
-      "durationMs": 4000,
+      "durationMs": 7000,
       "captions": [
         {
           "timeMs": 0,
-          "text": "Find your mark"
-        },
-        {
-          "timeMs": 500,
           "text": "Find a face"
         },
         {
-          "timeMs": 1000,
+          "timeMs": 500,
           "text": "Hands freeze"
         },
         {
-          "timeMs": 1500,
+          "timeMs": 1000,
           "text": "No wiggling"
         },
         {
-          "timeMs": 2000,
+          "timeMs": 1500,
           "text": "Hold completely still"
         }
       ]

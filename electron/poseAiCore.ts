@@ -35,7 +35,7 @@ const enumString = (values: readonly string[], description: string) => ({ type: 
 const object = (properties: Record<string, unknown>, required = Object.keys(properties)) => ({ type: 'object', additionalProperties: false, properties, required });
 
 const captionSchema = object({
-  progress: number(.15, 1, 'Position within the four-second guide. Captions must increase and the final caption must be 1, which is shown from two seconds through the hold.'),
+  progress: number(.15, 1, 'Position within the seven-second guide. Captions must increase and the final caption must be 1, which is shown from two seconds through the hold.'),
   text: string('Short guest instruction for this beat.')
 });
 const roleSchema = object({
@@ -49,7 +49,7 @@ export const POSE_AI_PLAN_SCHEMA = object({
   tags: { type: 'array', minItems: 1, maxItems: 8, items: { type: 'string' } },
   instruction: string('One-sentence summary of the complete pose.'),
   introCaption: string('First instruction, shown at the start.'),
-  durationMs: { type: 'integer', const: 4000, description: 'Four-second photo guide. The final caption is reached at two seconds and then held.' },
+  durationMs: { type: 'integer', const: 7000, description: 'Seven-second photo guide. The final caption is reached at two seconds and then held.' },
   compatibility: object({
     minPeople: { type: 'integer', minimum: 1, maximum: 12 },
     maxPeople: { type: 'integer', minimum: 0, maximum: 12, description: 'Use 0 for a flexible group.' },
@@ -63,7 +63,7 @@ export const POSE_AI_PLAN_SCHEMA = object({
 
 const SYSTEM_PROMPT = `You design safe, fun photo-booth pose challenges shown as still photo cutouts with timed captions. Return only the requested structured pose plan.
 
-Do not describe a skeleton, joints, or character animation. Write 2-4 short captions with strictly increasing progress; the final progress is exactly 1 and is displayed from 2.0 seconds through 4.0 seconds. Match roles to the people in the pose. Use child or any when the pose is child-safe, and adult when it is not. Do not include audio or an image path.`;
+Do not describe a skeleton, joints, or character animation. Write 2-4 short captions with strictly increasing progress; the final progress is exactly 1 and is displayed from 2.0 seconds through 7.0 seconds. Match roles to the people in the pose. Use child or any when the pose is child-safe, and adult when it is not. Do not include audio or an image path.`;
 
 const isRecord = (value: unknown): value is Record<string, unknown> => Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 const finite = (value: unknown, minimum: number, maximum: number): value is number => typeof value === 'number' && Number.isFinite(value) && value >= minimum && value <= maximum;
@@ -82,7 +82,7 @@ export function validatePoseAiPlan(value: unknown): PoseAiPlan {
   if (!Array.isArray(compatibility.styles) || !compatibility.styles.length || compatibility.styles.some(item => !oneOf(item, STYLES))) throw new Error('AI pose plan has invalid styles.');
   if (!Array.isArray(compatibility.framing) || !compatibility.framing.length || compatibility.framing.some(item => !oneOf(item, FRAMING))) throw new Error('AI pose plan has invalid framing.');
   if (typeof compatibility.childSafe !== 'boolean') throw new Error('AI pose plan has invalid child safety.');
-  if (value.durationMs !== 4000) throw new Error('AI pose plan duration must be 4000 ms.');
+  if (value.durationMs !== 7000) throw new Error('AI pose plan duration must be 7000 ms.');
   if (!Array.isArray(value.tags) || !value.tags.length || value.tags.length > 8) throw new Error('AI pose plan has invalid tags.');
   const tags = value.tags.map((tag, index) => text(tag, `tag ${index + 1}`, 40));
   if (!Array.isArray(value.roles) || !value.roles.length || value.roles.length > 12) throw new Error('AI pose plan has invalid roles.');

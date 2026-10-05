@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import type { AppSettings } from '../../types';
 import { pauseAudioCue, playAudioCueObject, resumeAudioCue, seekAudioCue, stopAudioCue } from '../../audio';
-import { resolvePoseAsset } from '../assets';
+import { isBundledPoseAsset, resolvePoseAsset } from '../assets';
 import { loadPhotoGuideCatalog } from '../repository';
 import { BUNDLED_SCENES, PHOTO_GUIDE_SCENES, captionAt, sceneMatches } from '../scenes';
 import { validateScene } from '../validation';
@@ -10,11 +10,50 @@ import { ScenePlayer } from '../ScenePlayer';
 import { createPoseAudioHooks } from '../audio';
 import { CompositionControls } from '../GuestCompositionScreen';
 import { NumberField, TextField } from './Fields';
-import { addStep, alignStep, cloneScene, deleteStep, moveMarker, moveStep, resizeScene } from './operations';
+import { cloneScene, fitSceneToNarration } from './operations';
 import { readNarration } from './narration';
 
 const CUE = 'pose-editor-narration';
 const newId = () => `custom-${crypto.randomUUID()}`;
+const peopleLabel = (scene: PoseScene) => `${scene.compatibility.minPeople}${scene.compatibility.maxPeople === null ? '+' : scene.compatibility.maxPeople > scene.compatibility.minPeople ? `–${scene.compatibility.maxPeople}` : ''}`;
+const spokenCue = (value: string) => value
+  .trim()
+  .replace(/^(find your mark|get ready|start|begin)\b[.!]?$/i, '')
+  .replace(/\s+/g, ' ')
+  .replace(/\s+([,.!?])/g, '$1')
+  .trim();
+const captionScript = (scene: PoseScene) => {
+  const cues = scene.animation.captions.map(frame => spokenCue(frame.text)).filter((text, index, all) => text && all.indexOf(text) === index);
+  if (!cues.length) return '';
+  return cues.map((text, index) => {
+    const line = text.charAt(0).toUpperCase() + text.slice(1).replace(/[.!?]+$/, '');
+    if (index === cues.length - 1) return `${line}!`;
+    return `${line}.`;
+  }).join(' ');
+};
+
+function PoseGalleryCard({ scene, onOpen }: { scene: PoseScene; onOpen: () => void }) {
+  const assetPath = scene.visual?.assetPath ?? '';
+  const [src, setSrc] = useState('');
+  const [failed, setFailed] = useState(false);
+  useEffect(() => {
+    setFailed(false);
+    if (!assetPath) { setSrc(''); return; }
+    if (isBundledPoseAsset(assetPath)) { setSrc(`/${assetPath}`); return; }
+    let cancelled = false;
+    void resolvePoseAsset(assetPath).then(url => { if (!cancelled) setSrc(url); });
+    return () => { cancelled = true; };
+  }, [assetPath]);
+  const framing = scene.compatibility.framing.map(mode => mode === 'full' ? 'Full' : 'Half').join(' · ');
+  return <button type="button" className="pose-gallery-card" onClick={onOpen}>
+    <span className="pose-gallery-thumb" style={{ background: scene.visual?.accent ? `color-mix(in srgb, ${scene.visual.accent} 24%, #121212)` : '#171717' }}>
+      {src && !failed ? <img src={src} alt="" onError={() => setFailed(true)} /> : <span className="pose-gallery-missing">No photo</span>}
+      <span className="pose-gallery-badge">{framing}</span>
+    </span>
+    <strong>{scene.name}</strong>
+    <small>{scene.category} · {peopleLabel(scene)}</small>
+  </button>;
+}
 export function PoseEditor({ settings }: { settings: AppSettings }) {
   const [catalog, setCatalog] = useState<PoseScene[]>(PHOTO_GUIDE_SCENES);
   const [draft, setDraft] = useState<PoseScene>(() => cloneScene(PHOTO_GUIDE_SCENES[0]));
@@ -22,12 +61,14 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
   const [past, setPast] = useState<PoseScene[]>([]), [future, setFuture] = useState<PoseScene[]>([]);
   const [time, setTime] = useState(0), [playing, setPlaying] = useState(false);
   const [framing, setFraming] = useState<'full' | 'half'>('full');
-  const [message, setMessage] = useState(''), [busy, setBusy] = useState(false), [duration, setDuration] = useState(4), [stepTime, setStepTime] = useState(.5);
+  const [message, setMessage] = useState(''), [busy, setBusy] = useState(false);
   const [librarySearch, setLibrarySearch] = useState(''), [libraryCategory, setLibraryCategory] = useState('all');
   const [narration, setNarration] = useState({ dataUrl: '', durationMs: 0 });
+  const [narrationMessage, setNarrationMessage] = useState('');
   const [previewGroup, setPreviewGroup] = useState<GuestComposition>({ men: 1, women: 0, boys: 0, girls: 0, style: 'solo' });
   const [countdownPreview, setCountdownPreview] = useState<number | null>(null);
   const [cutoutSrc, setCutoutSrc] = useState('');
+  const [page, setPage] = useState<'gallery' | 'detail'>('gallery');
   const [aiDescription, setAiDescription] = useState('');
   const [aiProvider, setAiProvider] = useState(settings.ai.poseGenerator.provider);
   const player = useRef<ScenePlayer | null>(null), countdownTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -40,9 +81,11 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
     return catalog.filter(scene => (libraryCategory === 'all' || scene.category === libraryCategory) && (!query || `${scene.name} ${scene.category} ${scene.tags.join(' ')} ${scene.instruction}`.toLowerCase().includes(query)));
   }, [catalog, libraryCategory, librarySearch]);
   const caption = captionAt(draft, time).caption;
-  const times = [...new Set(draft.animation.captions.map(frame => frame.timeMs))].sort((a, b) => a - b);
+  const [narrationScript, setNarrationScript] = useState('');
   const refresh = async () => { const result = await loadPhotoGuideCatalog(); setCatalog(result.poses); if (result.errors.length) setMessage(result.errors.join('\n')); };
   useEffect(() => { void refresh(); }, []);
+  useEffect(() => { document.querySelector('.admin-panel')?.scrollTo({ top: 0 }); }, [page, draft.id]);
+  useEffect(() => { setNarrationScript(''); }, [draft.id]);
   useEffect(() => {
     const assetPath = draft.visual?.assetPath;
     if (!assetPath) { setCutoutSrc(''); return; }
@@ -51,12 +94,18 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
     return () => { cancelled = true; };
   }, [draft.visual?.assetPath]);
   useEffect(() => { setAiProvider(settings.ai.poseGenerator.provider); }, [settings.ai.poseGenerator.provider]);
-  useEffect(() => { setDuration(draft.animation.durationMs / 1000); setTime(value => Math.min(value, draft.animation.durationMs)); }, [draft.animation.durationMs]);
+  useEffect(() => { setTime(value => Math.min(value, draft.animation.durationMs)); }, [draft.animation.durationMs]);
   useEffect(() => {
     let cancelled = false; setNarration({ dataUrl: '', durationMs: 0 });
     if (draft.audio?.filePath) void readNarration(draft.audio.filePath).then(result => { if (!cancelled) setNarration(result); }).catch(error => { if (!cancelled) setMessage(String(error)); });
     return () => { cancelled = true; stopAudioCue(CUE); };
   }, [draft.audio?.filePath]);
+  useEffect(() => {
+    if (!narration.durationMs || !draft.audio) return;
+    const fitted = fitSceneToNarration(draft, narration.durationMs);
+    if (JSON.stringify(fitted.animation) === JSON.stringify(draft.animation) && JSON.stringify(fitted.audio) === JSON.stringify(draft.audio)) return;
+    setDraft(fitted);
+  }, [narration.durationMs, draft.audio?.filePath]);
   useEffect(() => () => { stopAudioCue(CUE); player.current?.dispose(); if (countdownTimer.current) clearTimeout(countdownTimer.current); }, []);
   const stopPreview = () => { setPlaying(false); pauseAudioCue(CUE); player.current?.stop(); if (countdownTimer.current) clearTimeout(countdownTimer.current); setCountdownPreview(null); };
   function apply(operation: (scene: PoseScene) => PoseScene) {
@@ -69,8 +118,18 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
     } catch (error) { setMessage(String(error)); }
   }
   const select = (scene: PoseScene) => {
-    if (dirty && !window.confirm('Discard unsaved pose changes?')) return;
+    if (dirty && !window.confirm('Discard unsaved pose changes?')) return false;
     stopPreview(); stopAudioCue(CUE); setDraft(cloneScene(scene)); setSaved(cloneScene(scene)); setPast([]); setFuture([]); setTime(0); setMessage('');
+    return true;
+  };
+  const openScene = (scene: PoseScene) => { if (select(scene)) setPage('detail'); };
+  const backToGallery = () => {
+    if (dirty && !window.confirm('Discard unsaved pose changes?')) return;
+    stopPreview(); stopAudioCue(CUE); setDraft(cloneScene(saved)); setPast([]); setFuture([]); setTime(0); setPage('gallery');
+  };
+  const blankPose = (): PoseScene => {
+    const base = cloneScene(PHOTO_GUIDE_SCENES[0]);
+    return { ...base, id: newId(), name: 'New pose', instruction: 'Hold the pose', roles: [{ role: 'any', repeatable: false }], compatibility: { minPeople: 1, maxPeople: 1, styles: ['solo'], framing: ['half'], childSafe: true }, animation: { durationMs: 7000, captions: [{ timeMs: 0, text: 'Hold the final pose' }] } };
   };
   const setClock = (next: number) => { stopPreview(); setTime(next); seekAudioCue(CUE, Math.max(0, next - (draft.audio?.startMs ?? 0)) / 1000); };
   useEffect(() => {
@@ -112,7 +171,7 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
   const write = async (action: () => Promise<unknown>, success: string) => { setBusy(true); try { await action(); setMessage(success); } catch (error) { setMessage(String(error)); } finally { setBusy(false); } };
   const save = () => write(async () => {
     let scene = validateScene(cloneScene(draft));
-    if (narration.durationMs && (scene.audio?.startMs ?? 0) + narration.durationMs > scene.animation.durationMs) throw new Error('Narration is longer than the animation. Fit to narration or extend the duration before saving.');
+    if (narration.durationMs && scene.audio) scene = fitSceneToNarration(scene, narration.durationMs);
     if (bundled) scene = { ...scene, id: newId(), name: `${scene.name} (copy)` };
     const stored = await window.photoBooth.savePose(scene); setDraft(stored); setSaved(cloneScene(stored)); await refresh();
   }, 'Pose saved. It will be available next session.');
@@ -131,14 +190,50 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
     } catch (error) { setMessage(String(error)); }
     finally { setBusy(false); }
   };
+  const generateNarration = async () => {
+    stopPreview(); stopAudioCue(CUE); setBusy(true); setNarrationMessage('Generating narration with ElevenLabs…'); setMessage('');
+    try {
+      const result = await window.photoBooth.generatePoseNarration({ poseId: draft.id, text: narrationScript.trim() });
+      const audio = await readNarration(result.filePath);
+      apply(scene => fitSceneToNarration({ ...scene, audio: { filePath: result.filePath, startMs: 0, markers: [] } }, audio.durationMs));
+      setNarration(audio);
+      const success = `${result.cached ? 'Loaded cached' : 'Generated'} narration: ${result.name}. Pose timing and captions were set automatically.`;
+      setNarrationMessage(success); setMessage(success);
+    } catch (error) { const failure = error instanceof Error ? error.message : String(error); setNarrationMessage(failure); setMessage(failure); }
+    finally { setBusy(false); }
+  };
+  const playNarration = async () => {
+    if (!draft.audio || !narration.dataUrl) return;
+    stopPreview(); stopAudioCue(CUE);
+    try { await playAudioCueObject(settings, { id: CUE, label: draft.name, mode: 'mp3', channel: 'voice', text: narrationScript, filePath: draft.audio.filePath, enabled: true, loop: false, volume: 1, updatedAt: '' }, '', narration.dataUrl); }
+    catch (error) { setMessage(String(error)); }
+  };
+  if (page === 'gallery') return <div className="pose-editor pose-gallery">
+    <header className="pose-gallery-header">
+      <div>
+        <h2>Pose library</h2>
+        <p>Pick a photo to edit its captions, timing, and who it is for.</p>
+      </div>
+      <span>{visibleCatalog.length}/{catalog.length}</span>
+    </header>
+    <div className="pose-library-filters">
+      <input aria-label="Search poses" value={librarySearch} onChange={event => setLibrarySearch(event.target.value)} placeholder="Search poses" />
+      <select aria-label="Pose category" value={libraryCategory} onChange={event => setLibraryCategory(event.target.value)}><option value="all">All categories</option>{libraryCategories.map(category => <option key={category} value={category}>{category}</option>)}</select>
+      <button onClick={() => openScene(blankPose())}>New</button>
+    </div>
+    {message ? <p className="pose-editor-message" role="status">{message}</p> : null}
+    {visibleCatalog.length ? <div className="pose-library-list">{visibleCatalog.map(scene => <PoseGalleryCard key={scene.id} scene={scene} onOpen={() => openScene(scene)} />)}</div> : <p className="pose-gallery-empty">No poses match this filter.</p>}
+  </div>;
+
   return <div className="pose-editor">
+    <button type="button" className="pose-back" onClick={backToGallery}>Back</button>
     <header className="admin-card pose-editor-header">
       <div className="pose-editor-heading">
-        <div><h2>Pose Challenges</h2><p>Preview the photo guides and edit timing, captions, compatibility, and narration.</p></div>
+        <div><h2>{draft.name}</h2><p>Edit this guide, then save it. Guests see the photo, captions, and narration.</p></div>
         <span className={`pose-editor-status${dirty ? ' unsaved' : ''}`}>{dirty ? 'Unsaved changes' : 'Saved'}</span>
       </div>
       <div className="pose-editor-actions pose-editor-toolbar">
-        <button onClick={() => { const base = cloneScene(PHOTO_GUIDE_SCENES[0]); select({ ...base, id: newId(), name: 'New pose', instruction: 'Hold the pose', roles: [{ role: 'any', repeatable: false }], compatibility: { minPeople: 1, maxPeople: 1, styles: ['solo'], framing: ['half'], childSafe: true }, animation: { durationMs: 4000, captions: [{ timeMs: 0, text: 'Find your mark' }, { timeMs: 2000, text: 'Hold the final pose' }] } }); }}>New</button>
+        <button onClick={() => openScene(blankPose())}>New</button>
         <button onClick={() => apply(scene => ({ ...scene, id: newId(), name: `${scene.name} (copy)` }))}>Duplicate</button>
         <button className="primary" disabled={busy} onClick={save}>Save pose</button>
         <span className="pose-toolbar-divider" />
@@ -146,18 +241,12 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
         <button disabled={!future.length} onClick={() => { stopPreview(); setPast([...past, cloneScene(draft)]); setDraft(future[0]); setFuture(future.slice(1)); }}>Redo</button>
         <button onClick={() => { stopPreview(); setDraft(cloneScene(saved)); setTime(0); setPast([]); setFuture([]); }}>Reset</button>
         <button aria-label="Export JSON" onClick={() => void write(() => window.photoBooth.exportPose(draft), 'JSON exported.')}>Export</button>
-        <button className="danger" disabled={busy || bundled} onClick={() => { if (window.confirm(`Delete ${draft.name}?`)) void write(async () => { await window.photoBooth.deletePose(draft.id); setDraft(cloneScene(PHOTO_GUIDE_SCENES[0])); setSaved(cloneScene(PHOTO_GUIDE_SCENES[0])); setTime(0); setPast([]); setFuture([]); await refresh(); }, 'Pose deleted.'); }}>Delete</button>
+        <button className="danger" disabled={busy || bundled} onClick={() => { if (window.confirm(`Delete ${draft.name}?`)) void write(async () => { await window.photoBooth.deletePose(draft.id); const home = cloneScene(PHOTO_GUIDE_SCENES[0]); setDraft(home); setSaved(home); setTime(0); setPast([]); setFuture([]); setPage('gallery'); await refresh(); }, 'Pose deleted.'); }}>Delete</button>
       </div>
       {message ? <p className="pose-editor-message" role="status">{message}</p> : null}
     </header>
 
-    <div className="pose-editor-grid">
-      <aside className="admin-card pose-editor-library">
-        <div className="pose-section-title"><h3>Pose library</h3><span>{visibleCatalog.length}/{catalog.length}</span></div>
-        <div className="pose-library-filters"><input aria-label="Search poses" value={librarySearch} onChange={event => setLibrarySearch(event.target.value)} placeholder="Search poses" /><select aria-label="Pose category" value={libraryCategory} onChange={event => setLibraryCategory(event.target.value)}><option value="all">All categories</option>{libraryCategories.map(category => <option key={category} value={category}>{category}</option>)}</select></div>
-        <div className="pose-library-list">{visibleCatalog.map(scene => <button key={scene.id} className={scene.id === draft.id ? 'active' : ''} onClick={() => select(scene)}><strong>{scene.name}</strong><small>{scene.category} · {scene.compatibility.minPeople}{scene.compatibility.maxPeople === null ? '+' : scene.compatibility.maxPeople > scene.compatibility.minPeople ? `–${scene.compatibility.maxPeople}` : ''}</small></button>)}</div>
-      </aside>
-
+    <div className="pose-editor-grid pose-editor-detail">
       <main className="pose-editor-settings">
         <details className="admin-card pose-settings-card pose-ai-generator">
           <summary><span>AI Pose Generator</span><small>{aiProvider}</small></summary>
@@ -182,29 +271,6 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
           </div>
         </section>
 
-        <section className="admin-card pose-settings-card">
-          <div className="pose-section-title"><div><h3>Timeline</h3><p>Add and reposition teaching steps.</p></div><strong>{(draft.animation.durationMs / 1000).toFixed(1)}s</strong></div>
-          <div className="pose-compact-grid timeline-grid">
-            <NumberField label="Total seconds" value={duration} min={.1} max={120} onSave={setDuration} />
-            <button onClick={() => apply(scene => resizeScene(scene, duration * 1000, false))}>Set duration</button>
-            <button aria-label="Stretch animation" onClick={() => apply(scene => resizeScene(scene, duration * 1000, true))}>Stretch all</button>
-            <label>Teaching frame<select aria-label="Teaching frame" value={times.includes(time) ? time : ''} onChange={event => setClock(Number(event.target.value))}><option value="" disabled>Scrubbing</option>{times.map(frameTime => <option key={frameTime} value={frameTime}>{(frameTime / 1000).toFixed(2)}s</option>)}</select></label>
-            <NumberField label="Step seconds" value={stepTime} min={.01} max={120} onSave={setStepTime} />
-            <button onClick={() => { apply(scene => addStep(scene, Math.round(stepTime * 1000))); setTime(Math.round(stepTime * 1000)); }}>Add step</button>
-            <button disabled={time === 0} onClick={() => { apply(scene => moveStep(scene, time, Math.round(stepTime * 1000))); setTime(Math.round(stepTime * 1000)); }}>Move step</button>
-            <button disabled={time === 0} onClick={() => apply(scene => deleteStep(scene, time))}>Delete step</button>
-          </div>
-        </section>
-
-        <details className="admin-card pose-settings-card" open>
-          <summary><span>Captions</span><small>{draft.animation.captions.length} cues</small></summary>
-          <div className="pose-section-content pose-caption-list">{draft.animation.captions.map((caption, index) => <div className="pose-caption-row" key={`${caption.timeMs}-${index}`}>
-            <NumberField label="At" value={caption.timeMs / 1000} min={0} max={120} onSave={value => apply(scene => { if (index === 0 && value !== 0) throw new Error('First caption starts at zero.'); scene.animation.captions[index] = { timeMs: Math.round(value * 1000), text: caption.text }; scene.animation.captions.sort((a, b) => a.timeMs - b.timeMs); return scene; })} />
-            <TextField label="Caption" value={caption.text} onSave={value => { if (value !== caption.text) apply(scene => { scene.animation.captions[index].text = value; return scene; }); }} />
-            <button disabled={index === 0} onClick={() => apply(scene => { scene.animation.captions.splice(index, 1); return scene; })}>Remove</button>
-          </div>)}</div>
-        </details>
-
         <details className="admin-card pose-settings-card">
           <summary><span>Group compatibility</span><small>{draft.compatibility.minPeople}–{draft.compatibility.maxPeople ?? '30'} people</small></summary>
           <div className="pose-section-content">
@@ -214,9 +280,10 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
           </div>
         </details>
 
-        {photo && draft.visual ? <section className="admin-card pose-settings-card">
-          <div className="pose-section-title"><div><h3>Cutout</h3><p>Replace the artwork and place it in the safe overlay.</p></div></div>
+        {photo && draft.visual ? <details className="admin-card pose-settings-card">
+          <summary><span>Cutout</span><small>Artwork</small></summary>
           <div className="pose-section-content">
+            <p>Replace the artwork and place it in the safe overlay.</p>
             <p className="pose-audio-path">{draft.visual.assetPath}</p>
             <div className="pose-editor-actions"><button aria-label="Replace cutout image" onClick={() => void write(async () => { const file = await window.photoBooth.importPoseImage(); if (file) apply(scene => scene.visual ? { ...scene, visual: { ...scene.visual, assetPath: file.filePath } } : scene); }, 'Cutout selected.')}>Replace image</button></div>
             <div className="pose-compact-grid two-columns">
@@ -227,7 +294,7 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
               <NumberField label="Offset Y" value={draft.visual.offsetY ?? 0} min={-80} max={80} step={1} onSave={value => apply(scene => scene.visual ? { ...scene, visual: { ...scene.visual, offsetY: value } } : scene)} />
             </div>
           </div>
-        </section> : null}
+        </details> : null}
 
         <details className="admin-card pose-settings-card">
           <summary><span>Guest roles</span><small>{draft.roles.length}</small></summary>
@@ -239,9 +306,18 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
         </details>
 
         <details className="admin-card pose-settings-card">
-          <summary><span>Narration</span><small>{draft.audio ? `${(narration.durationMs / 1000).toFixed(1)}s audio` : 'Optional'}</small></summary>
-          <div className="pose-section-content"><p className="pose-audio-path">{draft.audio?.filePath ?? 'No narration assigned'}</p><div className="pose-editor-actions"><button aria-label="Assign audio file" onClick={() => void write(async () => { const file = await window.photoBooth.importPoseAudio(); if (file) apply(scene => ({ ...scene, audio: { filePath: file.filePath, startMs: 0, markers: [] } })); }, 'Narration selected.')}>Assign audio</button><button disabled={!draft.audio} onClick={() => apply(scene => { delete scene.audio; scene.animation.captions.forEach(caption => { delete caption.markerId; delete caption.markerOffsetMs; }); return scene; })}>Remove audio</button></div>
-            {draft.audio ? <><div className="pose-compact-grid two-columns"><NumberField label="Audio starts at" value={(draft.audio.startMs ?? 0) / 1000} min={0} onSave={value => apply(scene => { scene.audio!.startMs = Math.round(value * 1000); return scene; })} /><button disabled={!narration.durationMs} onClick={() => apply(scene => resizeScene(scene, (scene.audio?.startMs ?? 0) + narration.durationMs, true))}>Fit animation to narration</button></div>{(draft.audio.markers ?? []).map((marker, index) => <div className="pose-marker-row" key={marker.id}><code>{marker.id}</code><NumberField label="At" value={marker.timeMs / 1000} min={0} onSave={value => apply(scene => moveMarker(scene, index, Math.round(value * 1000)))} /><button aria-label="Align current step" disabled={time === 0} onClick={() => { apply(scene => alignStep(scene, time, marker.id)); setTime(marker.timeMs); }}>Align step</button><button onClick={() => apply(scene => { scene.audio!.markers!.splice(index, 1); scene.animation.captions.forEach(caption => { if (caption.markerId === marker.id) { delete caption.markerId; delete caption.markerOffsetMs; } }); return scene; })}>Remove</button></div>)}<button onClick={() => apply(scene => { scene.audio!.markers = [...(scene.audio!.markers ?? []), { id: `marker-${crypto.randomUUID().slice(0, 8)}`, timeMs: time }].sort((a, b) => a.timeMs - b.timeMs); return scene; })}>Add marker at current time</button></> : null}
+          <summary><span>Narration</span><small>{draft.animation.captions.length} captions{draft.audio ? ` · ${(narration.durationMs / 1000).toFixed(1)}s` : ''}</small></summary>
+          <div className="pose-section-content">
+            <div className="pose-caption-list">{draft.animation.captions.map((caption, index) => <div className="pose-caption-row" key={`${caption.timeMs}-${index}`}>
+              <strong className="pose-caption-number">{index + 1}</strong>
+              <TextField label="Caption" value={caption.text} onSave={value => { if (value !== caption.text) apply(scene => { scene.animation.captions[index].text = value; return scene; }); }} />
+              <button disabled={draft.animation.captions.length === 1} onClick={() => apply(scene => { scene.animation.captions.splice(index, 1); return narration.durationMs ? fitSceneToNarration(scene, narration.durationMs) : scene; })}>Remove</button>
+            </div>)}<button onClick={() => apply(scene => { scene.animation.captions.push({ timeMs: Math.max(1, scene.animation.durationMs - 1), text: 'New caption' }); return narration.durationMs ? fitSceneToNarration(scene, narration.durationMs) : scene; })}>Add caption</button><p className="pose-timing-note">Caption timing is automatic. Captions are spaced evenly through the narration, followed by a 1 second final-pose hold.</p></div>
+            <label className="pose-narration-script">Narration script<textarea rows={4} value={narrationScript} readOnly /></label>
+            <div className="pose-editor-actions"><button onClick={() => setNarrationScript(captionScript(draft))}>Build script</button><button className="primary" disabled={busy || !narrationScript.trim()} onClick={() => void generateNarration()}>Generate MP3</button><button disabled={!draft.audio || !narration.dataUrl} onClick={() => void playNarration()}>Play</button><button disabled={!draft.audio} onClick={() => stopAudioCue(CUE)}>Stop</button></div>
+            {narrationMessage ? <p className="pose-narration-status" role="status">{narrationMessage}</p> : null}
+            <p className="pose-audio-path">{draft.audio?.filePath ?? 'No narration assigned'}</p><div className="pose-editor-actions"><button aria-label="Assign audio file" onClick={() => void write(async () => { const file = await window.photoBooth.importPoseAudio(); if (file) { const audio = await readNarration(file.filePath); apply(scene => fitSceneToNarration({ ...scene, audio: { filePath: file.filePath, startMs: 0, markers: [] } }, audio.durationMs)); setNarration(audio); } }, 'Narration selected. Pose timing and captions were set automatically.')}>Assign audio</button><button disabled={!draft.audio} onClick={() => apply(scene => { delete scene.audio; scene.animation.captions.forEach(caption => { delete caption.markerId; delete caption.markerOffsetMs; }); return scene; })}>Remove audio</button></div>
+            {draft.audio && narration.durationMs ? <p className="pose-timing-note">{(narration.durationMs / 1000).toFixed(1)}s narration + 1.0s final hold = {(draft.animation.durationMs / 1000).toFixed(1)}s pose.</p> : null}
           </div>
         </details>
 
@@ -256,7 +332,7 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
         <div className="pose-editor-preview-visual" style={{ '--pose-scale': draft.visual?.scale ?? 1, '--pose-offset-x': `${draft.visual?.offsetX ?? 0}px`, '--pose-offset-y': `${draft.visual?.offsetY ?? 0}px` } as CSSProperties}>{photo && cutoutSrc ? <img className="pose-editor-cutout" src={cutoutSrc} alt={draft.visual?.alt ?? draft.name} /> : <p>Add a cutout image to preview this pose.</p>}{countdownPreview ? <strong className="pose-editor-countdown">{countdownPreview}</strong> : null}</div>
         <p className="pose-preview-caption">{caption}</p>
         <input aria-label="Animation position" type="range" min="0" max={draft.animation.durationMs} step="10" value={time} onInput={event => setClock(Number(event.currentTarget.value))} />
-        <div className="pose-preview-buttons"><button className="primary" onClick={() => { player.current?.stop(); setPlaying(value => !value); }}>{playing ? 'Pause' : 'Play'}</button><button onClick={() => setClock(0)}>Restart</button><button disabled={busy} onClick={() => void completePreview()}>Play + countdown</button><button onClick={stopPreview}>Stop</button></div>
+        <div className="pose-preview-buttons"><button className="primary" onClick={() => { player.current?.stop(); setPlaying(value => !value); }}>{playing ? 'Pause' : 'Play'}</button><button onClick={() => setClock(0)}>Restart</button><button disabled={busy} onClick={() => void completePreview()}>Play + countdown</button><button onClick={stopPreview}>Stop</button><button onClick={() => void window.photoBooth.previewPoseOnGuest({ scene: cloneScene(draft), framing }).then(() => setMessage('Opened on the guest screen.')).catch(error => setMessage(String(error)))}>Guest screen</button></div>
         <div className="pose-preview-options"><select aria-label="Preview framing" value={framing} onChange={event => setFraming(event.target.value as 'full' | 'half')}><option value="full">Full body</option><option value="half">Half body</option></select></div>
         <p className="pose-preview-hint">This is the offline guide guests will see. Captions and narration follow the timeline.</p>
       </aside>

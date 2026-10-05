@@ -159,7 +159,9 @@ export type AppSettings = {
   boothSecret: string;
   staffControlQueueMode: boolean;
   cameraId: string;
-  /** Capture-card live view stays on cameraId. USB stills come from the Canon SDK. */
+  /** Source used for the live mirror and session video. */
+  cameraSource: 'capture-card' | 'canon-usb';
+  /** Full-resolution USB still capture through the Canon SDK. */
   canonEnabled: boolean;
   /** How the capture-card picture sits inside the Canon still. */
   canonFraming: 'cover' | 'contain';

@@ -8,7 +8,7 @@ const { validateScene } = require('../electron/poseValidation.ts');
 const { captionAt } = require('../src/pose/scenes.ts');
 
 const plan = () => ({
-  name: 'Peaceful lean', category: 'cute', tags: ['solo', 'peace'], instruction: 'Lean left, lift a peace sign, smile and wink.', introCaption: 'Start standing', durationMs: 4000,
+  name: 'Peaceful lean', category: 'cute', tags: ['solo', 'peace'], instruction: 'Lean left, lift a peace sign, smile and wink.', introCaption: 'Start standing', durationMs: 7000,
   compatibility: { minPeople: 1, maxPeople: 1, styles: ['solo'], framing: ['full', 'half'], childSafe: true },
   roles: [{ role: 'any', repeatable: false }],
   captions: [
@@ -35,7 +35,8 @@ test('AI plan compiles into a validated cutout scene with timed captions', () =>
   assert.equal(scene.participants, undefined);
   assert.deepEqual(scene.roles, [{ role: 'any', repeatable: false }]);
   assert.deepEqual(scene.animation.captions.map(caption => caption.timeMs), [0, 800, 2000]);
-  assert.equal(captionAt(scene, 4000).caption, captionAt(scene, 2000).caption);
+  assert.equal(scene.animation.durationMs, 7000);
+  assert.equal(captionAt(scene, 7000).caption, captionAt(scene, 2000).caption);
   assert.ok(scene.tags.includes('ai-generated'));
 });
 

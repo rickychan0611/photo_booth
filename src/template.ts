@@ -30,11 +30,17 @@ const DEFAULT_PRINT_CALIBRATION: PrintCalibrationSettings = {
 };
 
 export const DEFAULT_WORKFLOW_SHOTS: WorkflowShotSettings[] = [
-  { message: 'Get Ready!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
-  { message: 'Smile!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
-  { message: 'Switch It Up!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
-  { message: 'Final Pose!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 }
+  { message: 'Pose challenge!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+  { message: 'Next one!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+  { message: 'Looking good, now do this!', cameraBeforeMessageMs: 0, messageMs: 1400, cameraBeforeCountdownMs: 2000 },
+  { message: 'Last one! Now...', cameraBeforeMessageMs: 0, messageMs: 1200, cameraBeforeCountdownMs: 2000 }
 ];
+
+const migratePoseChallengeMessage = (index: number, message: string) => {
+  const legacy = ['Get Ready!', 'Smile!', 'Switch It Up!', 'Final Pose!'];
+  const current = DEFAULT_WORKFLOW_SHOTS[index]?.message;
+  return current && message.trim().toLowerCase() === legacy[index]?.toLowerCase() ? current : message;
+};
 
 export const defaultTemplateShotAudioCue = (scopeId: string, index: number, text: string): AudioCue => ({
   id: `${scopeId}-shot-${index}`,
@@ -215,10 +221,11 @@ export const normalizeTemplateWorkflow = (
       const fallbackShot = fallback.shots[Math.min(index, fallback.shots.length - 1)];
       const sourceShot = sourceShots[index] ?? {};
       const sourceCue = sourceShot.audioCue;
-      const message = sourceShot.message ?? fallbackShot.message;
+      const message = migratePoseChallengeMessage(index, sourceShot.message ?? fallbackShot.message);
       return {
         ...fallbackShot,
         ...sourceShot,
+        message,
         audioCue: {
           ...defaultTemplateShotAudioCue('template', index, message),
           ...(sourceCue ?? {}),

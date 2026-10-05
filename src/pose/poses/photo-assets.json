@@ -1,0 +1,1532 @@
+[
+  {
+    "id": "relaxed-confidence",
+    "assetPath": "pose-guides/relaxed-confidence.webp",
+    "alt": "Confident eyes",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "power-stance",
+    "assetPath": "pose-guides/power-stance.webp",
+    "alt": "Own the camera",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "editorial-s-curve",
+    "assetPath": "pose-guides/editorial-s-curve.webp",
+    "alt": "Soft model eyes",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "pocket-angle",
+    "assetPath": "pose-guides/pocket-angle.webp",
+    "alt": "Give a small smirk",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "shoulder-turn",
+    "assetPath": "pose-guides/shoulder-turn.webp",
+    "alt": "Hold that gaze",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "crossed-arms-cool",
+    "assetPath": "pose-guides/crossed-arms-cool.webp",
+    "alt": "Cool confident face",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "walking-camera",
+    "assetPath": "pose-guides/walking-camera.webp",
+    "alt": "Smile as you walk",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "peace-and-wink",
+    "assetPath": "pose-guides/peace-and-wink.webp",
+    "alt": "Smile and wink",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "double-peace",
+    "assetPath": "pose-guides/double-peace.webp",
+    "alt": "Big happy eyes",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "hands-on-cheeks",
+    "assetPath": "pose-guides/hands-on-cheeks.webp",
+    "alt": "Big surprise",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "heart-hands",
+    "assetPath": "pose-guides/heart-hands.webp",
+    "alt": "Smile through it",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "shy-toe-turn",
+    "assetPath": "pose-guides/shy-toe-turn.webp",
+    "alt": "Give a shy smile",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "superhero-landing",
+    "assetPath": "pose-guides/superhero-landing.webp",
+    "alt": "Hero eyes up",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "anime-power-up",
+    "assetPath": "pose-guides/anime-power-up.webp",
+    "alt": "Power up!",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "magical-transformation",
+    "assetPath": "pose-guides/magical-transformation.webp",
+    "alt": "Transformation finish!",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "cool-villain",
+    "assetPath": "pose-guides/cool-villain.webp",
+    "alt": "Give a villain smirk",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "secret-agent-dodge",
+    "assetPath": "pose-guides/secret-agent-dodge.webp",
+    "alt": "Dodge the laser!",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "comic-hero-punch",
+    "assetPath": "pose-guides/comic-hero-punch.webp",
+    "alt": "Hero face",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "broken-doll-fashion",
+    "assetPath": "pose-guides/broken-doll-fashion.webp",
+    "alt": "Blank fashion face",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "runway-cross-step",
+    "assetPath": "pose-guides/runway-cross-step.webp",
+    "alt": "Runway eyes",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "vogue-geometry",
+    "assetPath": "pose-guides/vogue-geometry.webp",
+    "alt": "Editorial smirk",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "pop-star-finish",
+    "assetPath": "pose-guides/pop-star-finish.webp",
+    "alt": "Big stage smile",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "drama-queen",
+    "assetPath": "pose-guides/drama-queen.webp",
+    "alt": "Maximum drama!",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "rock-star-lean",
+    "assetPath": "pose-guides/rock-star-lean.webp",
+    "alt": "Rock-star face",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "back-to-back-agents",
+    "assetPath": "pose-guides/back-to-back-agents.webp",
+    "alt": "Secret-agent faces",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "anime-rivals",
+    "assetPath": "pose-guides/anime-rivals.webp",
+    "alt": "Rival eyes",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "hero-and-sidekick",
+    "assetPath": "pose-guides/hero-and-sidekick.webp",
+    "alt": "Save the world",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "power-couple",
+    "assetPath": "pose-guides/power-couple.webp",
+    "alt": "Power-couple eyes",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "cinematic-almost-kiss",
+    "assetPath": "pose-guides/cinematic-almost-kiss.webp",
+    "alt": "Almost kiss",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "forehead-touch",
+    "assetPath": "pose-guides/forehead-touch.webp",
+    "alt": "Close your eyes",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "dip-and-laugh",
+    "assetPath": "pose-guides/dip-and-laugh.webp",
+    "alt": "Laugh together",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "kneeling-proposal",
+    "assetPath": "pose-guides/kneeling-proposal.webp",
+    "alt": "Big surprise!",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "royal-and-bodyguard",
+    "assetPath": "pose-guides/royal-and-bodyguard.webp",
+    "alt": "Regal and serious",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "mirror-twins",
+    "assetPath": "pose-guides/mirror-twins.webp",
+    "alt": "Twin fashion faces",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "fashion-push-pull",
+    "assetPath": "pose-guides/fashion-push-pull.webp",
+    "alt": "Model eyes",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "secret-and-shock",
+    "assetPath": "pose-guides/secret-and-shock.webp",
+    "alt": "Huge shock!",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "spy-trio",
+    "assetPath": "pose-guides/spy-trio.webp",
+    "alt": "Spy faces",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "editorial-triangle",
+    "assetPath": "pose-guides/editorial-triangle.webp",
+    "alt": "Fashion stillness",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "anime-squad-three",
+    "assetPath": "pose-guides/anime-squad-three.webp",
+    "alt": "Squad faces",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "face-totem-three",
+    "assetPath": "pose-guides/face-totem-three.webp",
+    "alt": "Three wild reactions",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "center-superstar-three",
+    "assetPath": "pose-guides/center-superstar-three.webp",
+    "alt": "Star stays cool",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "three-level-fashion",
+    "assetPath": "pose-guides/three-level-fashion.webp",
+    "alt": "Editorial faces",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "see-hear-speak-chaos",
+    "assetPath": "pose-guides/see-hear-speak-chaos.webp",
+    "alt": "Make it chaotic",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "domino-lean-three",
+    "assetPath": "pose-guides/domino-lean-three.webp",
+    "alt": "Hold the domino",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "action-movie-diamond",
+    "assetPath": "pose-guides/action-movie-diamond.webp",
+    "alt": "Movie-poster faces",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "fashion-album-cover",
+    "assetPath": "pose-guides/fashion-album-cover.webp",
+    "alt": "Album-cover faces",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "human-picture-frame",
+    "assetPath": "pose-guides/human-picture-frame.webp",
+    "alt": "Everyone reacts",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "anime-team-four",
+    "assetPath": "pose-guides/anime-team-four.webp",
+    "alt": "Final battle faces",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "emotion-explosion-four",
+    "assetPath": "pose-guides/emotion-explosion-four.webp",
+    "alt": "Explode at the end",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "accusation-circle-four",
+    "assetPath": "pose-guides/accusation-circle-four.webp",
+    "alt": "Who did it?",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "red-carpet-drama-four",
+    "assetPath": "pose-guides/red-carpet-drama-four.webp",
+    "alt": "Fan loses control",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "sit-kneel-lean-stand",
+    "assetPath": "pose-guides/sit-kneel-lean-stand.webp",
+    "alt": "Freeze like fashion",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "ensemble-movie-poster",
+    "assetPath": "pose-guides/ensemble-movie-poster.webp",
+    "alt": "Movie-poster finish",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "fashion-dynasty",
+    "assetPath": "pose-guides/fashion-dynasty.webp",
+    "alt": "Dynasty faces",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "celebration-eruption",
+    "assetPath": "pose-guides/celebration-eruption.webp",
+    "alt": "Celebration erupts!",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "group-power-up",
+    "assetPath": "pose-guides/group-power-up.webp",
+    "alt": "Power up together!",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "human-wave",
+    "assetPath": "pose-guides/human-wave.webp",
+    "alt": "Hold the wave",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "many-armed-idol",
+    "assetPath": "pose-guides/many-armed-idol.webp",
+    "alt": "Idol face",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "royal-court",
+    "assetPath": "pose-guides/royal-court.webp",
+    "alt": "Royal drama",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "heroes-vs-villains",
+    "assetPath": "pose-guides/heroes-vs-villains.webp",
+    "alt": "Heroes versus villains!",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "family-superhero-team",
+    "assetPath": "pose-guides/family-superhero-team.webp",
+    "alt": "Family saves the day",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "parents-as-bodyguards",
+    "assetPath": "pose-guides/parents-as-bodyguards.webp",
+    "alt": "Cool family faces",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "kids-take-over",
+    "assetPath": "pose-guides/kids-take-over.webp",
+    "alt": "Adults look worried",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "family-squeeze-attack",
+    "assetPath": "pose-guides/family-squeeze-attack.webp",
+    "alt": "Laugh at the camera",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "tiny-hero-big-villains",
+    "assetPath": "pose-guides/tiny-hero-big-villains.webp",
+    "alt": "Villains are defeated",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "copy-the-child",
+    "assetPath": "pose-guides/copy-the-child.webp",
+    "alt": "Child does it best",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "animal-family",
+    "assetPath": "pose-guides/animal-family.webp",
+    "alt": "Animal faces!",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "parent-puppet-show",
+    "assetPath": "pose-guides/parent-puppet-show.webp",
+    "alt": "Freeze!",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "family-duo-power",
+    "assetPath": "pose-guides/family-duo-power.webp",
+    "alt": "Family power-up!",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "family-duo-squeeze",
+    "assetPath": "pose-guides/family-duo-squeeze.webp",
+    "alt": "Squeeze and smile",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "parent-child-agents",
+    "assetPath": "pose-guides/parent-child-agents.webp",
+    "alt": "Secret-agent faces",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "copy-the-child-duo",
+    "assetPath": "pose-guides/copy-the-child-duo.webp",
+    "alt": "Child wins!",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "cinematic-back-hug",
+    "assetPath": "pose-guides/cinematic-back-hug.webp",
+    "alt": "Soft cinematic eyes",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "runaway-newlyweds",
+    "assetPath": "pose-guides/runaway-newlyweds.webp",
+    "alt": "Laugh toward camera",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "spy-newlyweds",
+    "assetPath": "pose-guides/spy-newlyweds.webp",
+    "alt": "Wedding spies",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "kiss-with-reaction",
+    "assetPath": "pose-guides/kiss-with-reaction.webp",
+    "alt": "Everyone reacts!",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "dance-battle-freeze",
+    "assetPath": "pose-guides/dance-battle-freeze.webp",
+    "alt": "Dance faces",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "invisible-roller-coaster",
+    "assetPath": "pose-guides/invisible-roller-coaster.webp",
+    "alt": "Roller-coaster faces!",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "zombie-fashion-show",
+    "assetPath": "pose-guides/zombie-fashion-show.webp",
+    "alt": "Dead-serious fashion",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "alien-abduction",
+    "assetPath": "pose-guides/alien-abduction.webp",
+    "alt": "Alien panic!",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "couple-heart",
+    "assetPath": "pose-guides/couple-heart.webp",
+    "alt": "Smile together",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "couple-peace",
+    "assetPath": "pose-guides/couple-peace.webp",
+    "alt": "Smile and wink",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "friends-peace",
+    "assetPath": "pose-guides/friends-peace.webp",
+    "alt": "Party smiles",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "friends-cheeks",
+    "assetPath": "pose-guides/friends-cheeks.webp",
+    "alt": "Cheeky faces",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "family-heart",
+    "assetPath": "pose-guides/family-heart.webp",
+    "alt": "Family smiles",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "family-peace",
+    "assetPath": "pose-guides/family-peace.webp",
+    "alt": "Smile together",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "group-freestyle",
+    "assetPath": "pose-guides/group-freestyle.webp",
+    "alt": "Freeze the chaos",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "lovers-full-slow-dance",
+    "assetPath": "pose-guides/lovers-full-slow-dance.webp",
+    "alt": "Rest your heads",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "lovers-full-forehead-promise",
+    "assetPath": "pose-guides/lovers-full-forehead-promise.webp",
+    "alt": "Touch foreheads",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "lovers-full-cheek-sway",
+    "assetPath": "pose-guides/lovers-full-cheek-sway.webp",
+    "alt": "Cheek to cheek",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "lovers-full-ballroom-dip",
+    "assetPath": "pose-guides/lovers-full-ballroom-dip.webp",
+    "alt": "Smile up at them",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "lovers-full-spy-lean",
+    "assetPath": "pose-guides/lovers-full-spy-lean.webp",
+    "alt": "Smirk together",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "lovers-full-proposal-gasp",
+    "assetPath": "pose-guides/lovers-full-proposal-gasp.webp",
+    "alt": "Freeze the big yes",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "lovers-full-lift-laugh",
+    "assetPath": "pose-guides/lovers-full-lift-laugh.webp",
+    "alt": "Laugh at the camera",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "lovers-full-spin-catch",
+    "assetPath": "pose-guides/lovers-full-spin-catch.webp",
+    "alt": "Freeze mid-laugh",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "lovers-full-mirror-walk",
+    "assetPath": "pose-guides/lovers-full-mirror-walk.webp",
+    "alt": "Hold the mirror",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "lovers-full-trust-lean",
+    "assetPath": "pose-guides/lovers-full-trust-lean.webp",
+    "alt": "Balance and smile",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "lovers-half-nose-boop",
+    "assetPath": "pose-guides/lovers-half-nose-boop.webp",
+    "alt": "Giggle and hold",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "lovers-half-almost-kiss",
+    "assetPath": "pose-guides/lovers-half-almost-kiss.webp",
+    "alt": "Smile without moving",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "lovers-half-shared-secret",
+    "assetPath": "pose-guides/lovers-half-shared-secret.webp",
+    "alt": "Share the smile",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "lovers-half-heart-hands",
+    "assetPath": "pose-guides/lovers-half-heart-hands.webp",
+    "alt": "Peek through and smile",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "lovers-half-chin-lift",
+    "assetPath": "pose-guides/lovers-half-chin-lift.webp",
+    "alt": "Hold the movie stare",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "lovers-half-matching-smirk",
+    "assetPath": "pose-guides/lovers-half-matching-smirk.webp",
+    "alt": "Do not blink",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "lovers-half-proposal-face",
+    "assetPath": "pose-guides/lovers-half-proposal-face.webp",
+    "alt": "Burst into a grin",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "lovers-half-drama-gasp",
+    "assetPath": "pose-guides/lovers-half-drama-gasp.webp",
+    "alt": "Freeze the melodrama",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "lovers-half-cheek-press",
+    "assetPath": "pose-guides/lovers-half-cheek-press.webp",
+    "alt": "Stay right there",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "lovers-half-sync-wink",
+    "assetPath": "pose-guides/lovers-half-sync-wink.webp",
+    "alt": "Hold the wink",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "women-2-full-pinky-jump",
+    "assetPath": "pose-guides/women-2-full-pinky-jump.webp",
+    "alt": "Land still smiling",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "women-2-full-hand-heart-walk",
+    "assetPath": "pose-guides/women-2-full-hand-heart-walk.webp",
+    "alt": "Stop cheek to cheek",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "women-2-full-lean-on-me",
+    "assetPath": "pose-guides/women-2-full-lean-on-me.webp",
+    "alt": "Soft smiles",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "women-2-full-shopping-strut",
+    "assetPath": "pose-guides/women-2-full-shopping-strut.webp",
+    "alt": "Hit a cover pose",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "women-2-full-spy-sisters",
+    "assetPath": "pose-guides/women-2-full-spy-sisters.webp",
+    "alt": "Cool half-smile",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "women-2-full-piggyback-giggle",
+    "assetPath": "pose-guides/women-2-full-piggyback-giggle.webp",
+    "alt": "Laugh at the lens",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "women-2-full-runway-tug",
+    "assetPath": "pose-guides/women-2-full-runway-tug.webp",
+    "alt": "Point at the camera",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "women-2-full-bestie-dip",
+    "assetPath": "pose-guides/women-2-full-bestie-dip.webp",
+    "alt": "Freeze the laugh",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "women-2-full-sync-kick",
+    "assetPath": "pose-guides/women-2-full-sync-kick.webp",
+    "alt": "Hold it up",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "women-2-full-freeze-five",
+    "assetPath": "pose-guides/women-2-full-freeze-five.webp",
+    "alt": "Hold the slap",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "women-2-half-cheek-squish",
+    "assetPath": "pose-guides/women-2-half-cheek-squish.webp",
+    "alt": "Hold the cute face",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "women-2-half-heart-cheeks",
+    "assetPath": "pose-guides/women-2-half-heart-cheeks.webp",
+    "alt": "Stay sweet",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "women-2-half-chin-on-shoulder",
+    "assetPath": "pose-guides/women-2-half-chin-on-shoulder.webp",
+    "alt": "Do not look away",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "women-2-half-sunglasses-drop",
+    "assetPath": "pose-guides/women-2-half-sunglasses-drop.webp",
+    "alt": "Hold the reveal",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "women-2-half-hair-flip-duo",
+    "assetPath": "pose-guides/women-2-half-hair-flip-duo.webp",
+    "alt": "Cool stare",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "women-2-half-whisper-gasp",
+    "assetPath": "pose-guides/women-2-half-whisper-gasp.webp",
+    "alt": "Freeze the shock",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "women-2-half-boop-battle",
+    "assetPath": "pose-guides/women-2-half-boop-battle.webp",
+    "alt": "Laugh and hold",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "women-2-half-evil-grin",
+    "assetPath": "pose-guides/women-2-half-evil-grin.webp",
+    "alt": "Hold the scheme",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "women-2-half-matching-peace",
+    "assetPath": "pose-guides/women-2-half-matching-peace.webp",
+    "alt": "Hold the pair",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "women-2-half-wink-sync",
+    "assetPath": "pose-guides/women-2-half-wink-sync.webp",
+    "alt": "Keep the smile",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "women-3-full-group-hug-jump",
+    "assetPath": "pose-guides/women-3-full-group-hug-jump.webp",
+    "alt": "Land in the hug",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "women-3-full-friendship-lift",
+    "assetPath": "pose-guides/women-3-full-friendship-lift.webp",
+    "alt": "All three smile",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "women-3-full-triangle-power",
+    "assetPath": "pose-guides/women-3-full-triangle-power.webp",
+    "alt": "Power stare",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "women-3-full-linked-strut",
+    "assetPath": "pose-guides/women-3-full-linked-strut.webp",
+    "alt": "Chin up",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "women-3-full-silly-walk",
+    "assetPath": "pose-guides/women-3-full-silly-walk.webp",
+    "alt": "Hold the nonsense",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "women-3-full-super-landing",
+    "assetPath": "pose-guides/women-3-full-super-landing.webp",
+    "alt": "Freeze the landing",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "women-3-full-spin-out",
+    "assetPath": "pose-guides/women-3-full-spin-out.webp",
+    "alt": "Freeze mid-turn",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "women-3-full-piggy-chain",
+    "assetPath": "pose-guides/women-3-full-piggy-chain.webp",
+    "alt": "Hold the tower",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "women-3-full-kickline",
+    "assetPath": "pose-guides/women-3-full-kickline.webp",
+    "alt": "Hold the kick",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "women-3-full-statue-challenge",
+    "assetPath": "pose-guides/women-3-full-statue-challenge.webp",
+    "alt": "Hold perfectly still",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "women-3-half-stacked-chins",
+    "assetPath": "pose-guides/women-3-half-stacked-chins.webp",
+    "alt": "Hold the stack",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "women-3-half-three-hearts",
+    "assetPath": "pose-guides/women-3-half-three-hearts.webp",
+    "alt": "Soft smiles",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "women-3-half-cheek-row",
+    "assetPath": "pose-guides/women-3-half-cheek-row.webp",
+    "alt": "Stay in the row",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "women-3-half-glam-angles",
+    "assetPath": "pose-guides/women-3-half-glam-angles.webp",
+    "alt": "Hold the editorial",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "women-3-half-frame-the-middle",
+    "assetPath": "pose-guides/women-3-half-frame-the-middle.webp",
+    "alt": "Hold the frame",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "women-3-half-whisper-chain",
+    "assetPath": "pose-guides/women-3-half-whisper-chain.webp",
+    "alt": "Freeze the laugh",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "women-3-half-shocked-trio",
+    "assetPath": "pose-guides/women-3-half-shocked-trio.webp",
+    "alt": "Hold the shock",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "women-3-half-villain-trio",
+    "assetPath": "pose-guides/women-3-half-villain-trio.webp",
+    "alt": "Hold the plot",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "women-3-half-peace-crown",
+    "assetPath": "pose-guides/women-3-half-peace-crown.webp",
+    "alt": "Hold the crown",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "women-3-half-blink-together",
+    "assetPath": "pose-guides/women-3-half-blink-together.webp",
+    "alt": "Reopen together",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "women-4-full-flower-hug",
+    "assetPath": "pose-guides/women-4-full-flower-hug.webp",
+    "alt": "Smile in the bloom",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "women-4-full-promenade",
+    "assetPath": "pose-guides/women-4-full-promenade.webp",
+    "alt": "Hold the stroll",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "women-4-full-diamond-strut",
+    "assetPath": "pose-guides/women-4-full-diamond-strut.webp",
+    "alt": "Hit the diamond",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "women-4-full-action-line",
+    "assetPath": "pose-guides/women-4-full-action-line.webp",
+    "alt": "Hold the poster",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "women-4-full-buddy-carry",
+    "assetPath": "pose-guides/women-4-full-buddy-carry.webp",
+    "alt": "Laugh and freeze",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "women-4-full-puppy-pile",
+    "assetPath": "pose-guides/women-4-full-puppy-pile.webp",
+    "alt": "Hold the pile",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "women-4-full-cheer-jump",
+    "assetPath": "pose-guides/women-4-full-cheer-jump.webp",
+    "alt": "Land in a cheer",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "women-4-full-square-heroes",
+    "assetPath": "pose-guides/women-4-full-square-heroes.webp",
+    "alt": "Freeze the team",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "women-4-full-kick-sync",
+    "assetPath": "pose-guides/women-4-full-kick-sync.webp",
+    "alt": "Hold the line",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "women-4-full-mirror-squad",
+    "assetPath": "pose-guides/women-4-full-mirror-squad.webp",
+    "alt": "Hold the copy",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "women-4-half-four-faces",
+    "assetPath": "pose-guides/women-4-half-four-faces.webp",
+    "alt": "Hold the bouquet",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "women-4-half-cheek-train",
+    "assetPath": "pose-guides/women-4-half-cheek-train.webp",
+    "alt": "Stay tucked in",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "women-4-half-heart-frame",
+    "assetPath": "pose-guides/women-4-half-heart-frame.webp",
+    "alt": "Hold the heart",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "women-4-half-sunglasses-wall",
+    "assetPath": "pose-guides/women-4-half-sunglasses-wall.webp",
+    "alt": "Hold the wall",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "women-4-half-lean-in-row",
+    "assetPath": "pose-guides/women-4-half-lean-in-row.webp",
+    "alt": "Hold the stack",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "women-4-half-gossip-circle",
+    "assetPath": "pose-guides/women-4-half-gossip-circle.webp",
+    "alt": "Freeze the gossip",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "women-4-half-gasp-wave",
+    "assetPath": "pose-guides/women-4-half-gasp-wave.webp",
+    "alt": "Hold the wave",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "women-4-half-expression-parade",
+    "assetPath": "pose-guides/women-4-half-expression-parade.webp",
+    "alt": "Freeze the wildest",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "women-4-half-peace-stack",
+    "assetPath": "pose-guides/women-4-half-peace-stack.webp",
+    "alt": "Hold the stack",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "women-4-half-pose-on-beat",
+    "assetPath": "pose-guides/women-4-half-pose-on-beat.webp",
+    "alt": "Freeze together",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "men-2-full-bro-pull",
+    "assetPath": "pose-guides/men-2-full-bro-pull.webp",
+    "alt": "Freeze the stumble",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "men-2-full-shoulder-ride-joke",
+    "assetPath": "pose-guides/men-2-full-shoulder-ride-joke.webp",
+    "alt": "Hold the joke",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "men-2-full-back-to-back-cool",
+    "assetPath": "pose-guides/men-2-full-back-to-back-cool.webp",
+    "alt": "Hold the poster",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "men-2-full-victory-jump",
+    "assetPath": "pose-guides/men-2-full-victory-jump.webp",
+    "alt": "Land and hold",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "men-2-full-trust-catch",
+    "assetPath": "pose-guides/men-2-full-trust-catch.webp",
+    "alt": "Hold the trust",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "men-2-half-secret-handshake-face",
+    "assetPath": "pose-guides/men-2-half-secret-handshake-face.webp",
+    "alt": "Laugh and hold",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "men-2-half-arm-around-grin",
+    "assetPath": "pose-guides/men-2-half-arm-around-grin.webp",
+    "alt": "Stay there",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "men-2-half-matching-smirk",
+    "assetPath": "pose-guides/men-2-half-matching-smirk.webp",
+    "alt": "Do not break",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "men-2-half-double-point",
+    "assetPath": "pose-guides/men-2-half-double-point.webp",
+    "alt": "Hold the accusation",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "men-2-half-fist-bump-freeze",
+    "assetPath": "pose-guides/men-2-half-fist-bump-freeze.webp",
+    "alt": "Hold the bump",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "men-3-full-comedy-chase",
+    "assetPath": "pose-guides/men-3-full-comedy-chase.webp",
+    "alt": "Freeze the chase",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "men-3-full-huddle-break",
+    "assetPath": "pose-guides/men-3-full-huddle-break.webp",
+    "alt": "Hold the shout",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "men-3-full-squad-stance",
+    "assetPath": "pose-guides/men-3-full-squad-stance.webp",
+    "alt": "Cool stare",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "men-3-full-lift-the-middle",
+    "assetPath": "pose-guides/men-3-full-lift-the-middle.webp",
+    "alt": "Hold the lift",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "men-3-full-sync-jump",
+    "assetPath": "pose-guides/men-3-full-sync-jump.webp",
+    "alt": "Land in the same pose",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "men-3-half-whisper-lose-it",
+    "assetPath": "pose-guides/men-3-half-whisper-lose-it.webp",
+    "alt": "Hold the mess",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "men-3-half-stacked-peace",
+    "assetPath": "pose-guides/men-3-half-stacked-peace.webp",
+    "alt": "Hold the stack",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "men-3-half-three-smirks",
+    "assetPath": "pose-guides/men-3-half-three-smirks.webp",
+    "alt": "Hold it",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "men-3-half-serious-then-burst",
+    "assetPath": "pose-guides/men-3-half-serious-then-burst.webp",
+    "alt": "Freeze the burst",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "men-3-half-chin-up-trio",
+    "assetPath": "pose-guides/men-3-half-chin-up-trio.webp",
+    "alt": "Hold, then one smile",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "family-3-full-parent-swing",
+    "assetPath": "pose-guides/family-3-full-parent-swing.webp",
+    "alt": "Smile at the child",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "family-3-full-little-leader",
+    "assetPath": "pose-guides/family-3-full-little-leader.webp",
+    "alt": "Hold the little boss",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "family-3-full-airplane-kids",
+    "assetPath": "pose-guides/family-3-full-airplane-kids.webp",
+    "alt": "Hold the flight",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "family-3-full-family-jump",
+    "assetPath": "pose-guides/family-3-full-family-jump.webp",
+    "alt": "Land laughing",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "family-3-full-family-stroll",
+    "assetPath": "pose-guides/family-3-full-family-stroll.webp",
+    "alt": "Easy smiles",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "family-3-full-generation-pose",
+    "assetPath": "pose-guides/family-3-full-generation-pose.webp",
+    "alt": "Hold the portrait",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "family-3-full-kitchen-dance",
+    "assetPath": "pose-guides/family-3-full-kitchen-dance.webp",
+    "alt": "Freeze the chaos",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "family-3-half-cheek-kisses",
+    "assetPath": "pose-guides/family-3-half-cheek-kisses.webp",
+    "alt": "Hold the kisses",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "family-3-half-piggy-chin",
+    "assetPath": "pose-guides/family-3-half-piggy-chin.webp",
+    "alt": "Hold the pile",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "family-3-half-silly-faces-kid",
+    "assetPath": "pose-guides/family-3-half-silly-faces-kid.webp",
+    "alt": "Freeze the silliest",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "family-3-half-tiny-hero",
+    "assetPath": "pose-guides/family-3-half-tiny-hero.webp",
+    "alt": "Hold the star",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "family-3-half-three-smiles",
+    "assetPath": "pose-guides/family-3-half-three-smiles.webp",
+    "alt": "Hold the warmth",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "family-3-half-storytime-laugh",
+    "assetPath": "pose-guides/family-3-half-storytime-laugh.webp",
+    "alt": "Hold the laugh",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "family-3-half-matching-lean",
+    "assetPath": "pose-guides/family-3-half-matching-lean.webp",
+    "alt": "Hold the lean",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "family-4-full-parents-and-pair",
+    "assetPath": "pose-guides/family-4-full-parents-and-pair.webp",
+    "alt": "One family smile",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "family-4-full-hoist-the-kids",
+    "assetPath": "pose-guides/family-4-full-hoist-the-kids.webp",
+    "alt": "Hold the lift",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "family-4-full-one-kid-star",
+    "assetPath": "pose-guides/family-4-full-one-kid-star.webp",
+    "alt": "Hold the star",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "family-4-full-kid-pile",
+    "assetPath": "pose-guides/family-4-full-kid-pile.webp",
+    "alt": "Hold the pile",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "family-4-full-four-across",
+    "assetPath": "pose-guides/family-4-full-four-across.webp",
+    "alt": "Hold the line",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "family-4-full-portrait-walk",
+    "assetPath": "pose-guides/family-4-full-portrait-walk.webp",
+    "alt": "Warm smiles",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "family-4-full-reunion-jump",
+    "assetPath": "pose-guides/family-4-full-reunion-jump.webp",
+    "alt": "Land laughing",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "family-4-half-sandwich-hug",
+    "assetPath": "pose-guides/family-4-half-sandwich-hug.webp",
+    "alt": "Hold the sandwich",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "family-4-half-four-silly-faces",
+    "assetPath": "pose-guides/family-4-half-four-silly-faces.webp",
+    "alt": "Freeze the set",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "family-4-half-kid-whisper",
+    "assetPath": "pose-guides/family-4-half-kid-whisper.webp",
+    "alt": "Hold the secret",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "family-4-half-crown-the-kid",
+    "assetPath": "pose-guides/family-4-half-crown-the-kid.webp",
+    "alt": "Hold the crown",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "family-4-half-close-portrait",
+    "assetPath": "pose-guides/family-4-half-close-portrait.webp",
+    "alt": "Hold the portrait",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "family-4-half-laugh-line",
+    "assetPath": "pose-guides/family-4-half-laugh-line.webp",
+    "alt": "Hold the line",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "family-4-half-cool-generations",
+    "assetPath": "pose-guides/family-4-half-cool-generations.webp",
+    "alt": "Hold the cool",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "group-5-full-stadium-jump",
+    "assetPath": "pose-guides/group-5-full-stadium-jump.webp",
+    "alt": "Land with arms up",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "group-5-full-star-burst",
+    "assetPath": "pose-guides/group-5-full-star-burst.webp",
+    "alt": "Hold the burst",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "group-5-full-conga-freeze",
+    "assetPath": "pose-guides/group-5-full-conga-freeze.webp",
+    "alt": "Look back and grin",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "group-5-full-surprise-pop",
+    "assetPath": "pose-guides/group-5-full-surprise-pop.webp",
+    "alt": "Hold the surprise",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "group-5-full-wave-rows",
+    "assetPath": "pose-guides/group-5-full-wave-rows.webp",
+    "alt": "Hold the crest",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "group-5-full-circle-hands",
+    "assetPath": "pose-guides/group-5-full-circle-hands.webp",
+    "alt": "Smile across the circle",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "group-5-full-team-lean",
+    "assetPath": "pose-guides/group-5-full-team-lean.webp",
+    "alt": "Hold the team",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "group-5-full-red-carpet-line",
+    "assetPath": "pose-guides/group-5-full-red-carpet-line.webp",
+    "alt": "Hold the arrival",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "group-5-full-superhero-cluster",
+    "assetPath": "pose-guides/group-5-full-superhero-cluster.webp",
+    "alt": "Hold the poster",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "group-5-full-march-in-place",
+    "assetPath": "pose-guides/group-5-full-march-in-place.webp",
+    "alt": "Hold the march",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "group-5-full-laughing-kneel",
+    "assetPath": "pose-guides/group-5-full-laughing-kneel.webp",
+    "alt": "Hold the pile",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "group-5-full-freeze-dance",
+    "assetPath": "pose-guides/group-5-full-freeze-dance.webp",
+    "alt": "Hold the accident",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "group-5-full-shoulder-chain",
+    "assetPath": "pose-guides/group-5-full-shoulder-chain.webp",
+    "alt": "Hold the chain",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "group-5-full-portrait-layers",
+    "assetPath": "pose-guides/group-5-full-portrait-layers.webp",
+    "alt": "One warm portrait",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "group-5-full-countdown-jump",
+    "assetPath": "pose-guides/group-5-full-countdown-jump.webp",
+    "alt": "Stick the landing",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "group-5-full-letter-shape",
+    "assetPath": "pose-guides/group-5-full-letter-shape.webp",
+    "alt": "Hold the letter",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "group-5-full-kick-line",
+    "assetPath": "pose-guides/group-5-full-kick-line.webp",
+    "alt": "Hold it up",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "group-5-full-level-change",
+    "assetPath": "pose-guides/group-5-full-level-change.webp",
+    "alt": "Hold the levels",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "group-5-full-victory-roar",
+    "assetPath": "pose-guides/group-5-full-victory-roar.webp",
+    "alt": "Freeze with arms wide",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "group-5-full-buddy-clusters",
+    "assetPath": "pose-guides/group-5-full-buddy-clusters.webp",
+    "alt": "Hold your cluster",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "group-5-half-cheek-pile",
+    "assetPath": "pose-guides/group-5-half-cheek-pile.webp",
+    "alt": "Hold the pile",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "group-5-half-big-shared-heart",
+    "assetPath": "pose-guides/group-5-half-big-shared-heart.webp",
+    "alt": "Hold the heart",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "group-5-half-lean-in-secret",
+    "assetPath": "pose-guides/group-5-half-lean-in-secret.webp",
+    "alt": "Hold the secret",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "group-5-half-chorus-face",
+    "assetPath": "pose-guides/group-5-half-chorus-face.webp",
+    "alt": "Hold the chorus",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "group-5-half-sunglasses-squad",
+    "assetPath": "pose-guides/group-5-half-sunglasses-squad.webp",
+    "alt": "Hold the squad",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "group-5-half-cool-stare",
+    "assetPath": "pose-guides/group-5-half-cool-stare.webp",
+    "alt": "Hold the mix",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "group-5-half-point-at-center",
+    "assetPath": "pose-guides/group-5-half-point-at-center.webp",
+    "alt": "Hold the spotlight",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "group-5-half-whisper-row",
+    "assetPath": "pose-guides/group-5-half-whisper-row.webp",
+    "alt": "Hold the row",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "group-5-half-expression-countdown",
+    "assetPath": "pose-guides/group-5-half-expression-countdown.webp",
+    "alt": "Freeze the worst one",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "group-5-half-sync-gasp",
+    "assetPath": "pose-guides/group-5-half-sync-gasp.webp",
+    "alt": "Hold the gasp",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "group-5-half-bubble-cheeks",
+    "assetPath": "pose-guides/group-5-half-bubble-cheeks.webp",
+    "alt": "Hold the bubbles",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "group-5-half-peace-skyline",
+    "assetPath": "pose-guides/group-5-half-peace-skyline.webp",
+    "alt": "Hold the skyline",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "group-5-half-hand-heart-tunnel",
+    "assetPath": "pose-guides/group-5-half-hand-heart-tunnel.webp",
+    "alt": "Hold the tunnel",
+    "accent": "#0a9f9f"
+  },
+  {
+    "id": "group-5-half-wink-wave",
+    "assetPath": "pose-guides/group-5-half-wink-wave.webp",
+    "alt": "Hold that face",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "group-5-half-silly-filter",
+    "assetPath": "pose-guides/group-5-half-silly-filter.webp",
+    "alt": "Hold the mess",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "group-5-half-victory-grin",
+    "assetPath": "pose-guides/group-5-half-victory-grin.webp",
+    "alt": "Hold the win",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "group-5-half-matching-tilt",
+    "assetPath": "pose-guides/group-5-half-matching-tilt.webp",
+    "alt": "Hold the tilt",
+    "accent": "#7d22c9"
+  },
+  {
+    "id": "group-5-half-frame-one",
+    "assetPath": "pose-guides/group-5-half-frame-one.webp",
+    "alt": "Hold the frame",
+    "accent": "#ef2929"
+  },
+  {
+    "id": "group-5-half-blink-on-three",
+    "assetPath": "pose-guides/group-5-half-blink-on-three.webp",
+    "alt": "Reopen and smile",
+    "accent": "#08cbe8"
+  },
+  {
+    "id": "group-5-half-stillness-challenge",
+    "assetPath": "pose-guides/group-5-half-stillness-challenge.webp",
+    "alt": "Hold completely still",
+    "accent": "#ff8214"
+  }
+]

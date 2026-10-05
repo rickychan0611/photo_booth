@@ -47,6 +47,20 @@ export type PoseCatalog = { poses: PoseScene[]; errors: string[] };
 export type PoseAiProvider = 'openai' | 'gemini' | 'xai';
 export type PoseAiGenerateRequest = { description: string; provider?: PoseAiProvider };
 export type PoseAiGenerateResult = { scene: PoseScene; provider: PoseAiProvider; model: string };
+export type PoseNarrationModel = 'eleven_v4_turbo' | 'eleven_flash_v2_5' | 'eleven_multilingual_v2' | 'eleven_v3';
+export type PoseNarrationSettings = {
+  configured: boolean;
+  voiceId: string;
+  modelId: PoseNarrationModel;
+  stability: number;
+  similarityBoost: number;
+  style: number;
+  speed: number;
+  direction: string;
+};
+export type PoseNarrationSettingsUpdate = Omit<PoseNarrationSettings, 'configured'> & { apiKey?: string };
+export type PoseNarrationGenerateRequest = { poseId: string; text: string };
+export type PoseNarrationGenerateResult = { filePath: string; name: string; cached: boolean };
 export type PoseGuideSettings = { enabled: boolean; selectionEnabled?: boolean; groupCapacity?: number; defaultComposition?: GuestComposition };
 export function normalizePoseGuide(value: Partial<PoseGuideSettings> | undefined): PoseGuideSettings {
   const capacity = Math.max(1, Math.min(30, Math.round(Number(value?.groupCapacity) || 12)));

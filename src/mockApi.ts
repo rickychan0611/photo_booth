@@ -15,6 +15,7 @@ const fallbackSettings: AppSettings = {
   boothSecret: '',
   staffControlQueueMode: false,
   cameraId: '',
+  cameraSource: 'capture-card',
   canonEnabled: false,
   canonFraming: 'cover',
   mirrorPreview: true,
@@ -87,13 +88,14 @@ const fallbackSettings: AppSettings = {
       welcome: { id: 'welcome', label: 'Welcome idle loop', mode: 'host', channel: 'voice', text: 'Welcome. Touch start to begin.', filePath: '', loop: true, volume: 1, enabled: true, updatedAt: '' },
       style: { id: 'style', label: 'Choose style screen', mode: 'host', channel: 'voice', text: 'Please choose a style.', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       design: { id: 'design', label: 'Choose design screen', mode: 'host', channel: 'voice', text: 'Please choose a design.', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      people: { id: 'people', label: "Who's joining screen", mode: 'host', channel: 'voice', text: "Who's joining the photo? Tell me who's here, then choose your pose style.", filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       intro: { id: 'intro', label: 'Intro screen', mode: 'host', channel: 'voice', text: "Let's take pictures.", filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       select: { id: 'select', label: 'Photo selection screen', mode: 'host', channel: 'voice', text: 'Please choose your favorite pictures to print.', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       thanks: { id: 'thanks', label: 'Finish screen', mode: 'host', channel: 'voice', text: 'Thank you. Please pick up your print.', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
-      shot0: { id: 'shot0', label: 'Picture 1 message', mode: 'host', channel: 'voice', text: 'Get ready!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
-      shot1: { id: 'shot1', label: 'Picture 2 message', mode: 'host', channel: 'voice', text: 'Smile!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
-      shot2: { id: 'shot2', label: 'Picture 3 message', mode: 'host', channel: 'voice', text: 'Switch it up!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
-      shot3: { id: 'shot3', label: 'Picture 4 message', mode: 'host', channel: 'voice', text: 'Final pose!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      shot0: { id: 'shot0', label: 'Picture 1 message', mode: 'host', channel: 'voice', text: 'Pose challenge!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      shot1: { id: 'shot1', label: 'Picture 2 message', mode: 'host', channel: 'voice', text: 'Next one!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      shot2: { id: 'shot2', label: 'Picture 3 message', mode: 'host', channel: 'voice', text: 'Looking good, now do this!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      shot3: { id: 'shot3', label: 'Picture 4 message', mode: 'host', channel: 'voice', text: 'Last one! Now...', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       shot4: { id: 'shot4', label: 'Picture 5 message', mode: 'host', channel: 'voice', text: 'New pose!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       shot5: { id: 'shot5', label: 'Picture 6 message', mode: 'host', channel: 'voice', text: 'Big smile!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       shot6: { id: 'shot6', label: 'Picture 7 message', mode: 'host', channel: 'voice', text: 'Something silly!', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
@@ -129,10 +131,10 @@ const fallbackSettings: AppSettings = {
     thankYouMessage: 'THANK YOU!',
     thankYouMs: 3000,
     shots: [
-      { message: 'Get Ready!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
-      { message: 'Smile!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
-      { message: 'Switch It Up!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
-      { message: 'Final Pose!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+      { message: 'Pose challenge!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+      { message: 'Next one!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+      { message: 'Looking good, now do this!', cameraBeforeMessageMs: 0, messageMs: 1400, cameraBeforeCountdownMs: 2000 },
+      { message: 'Last one! Now...', cameraBeforeMessageMs: 0, messageMs: 1200, cameraBeforeCountdownMs: 2000 },
       { message: 'New Pose!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
       { message: 'Big Smile!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
       { message: 'Something Silly!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
@@ -332,6 +334,9 @@ export function installMockApi() {
       scene.tags = [...new Set([...scene.tags, 'ai-generated', provider])];
       return { scene: validateScene(scene), provider, model: settings.ai.poseGenerator.providers[provider].model };
     },
+    getPoseNarrationSettings: async () => ({ configured: false, voiceId: '0S5oIfi8zOZixuSj8K6n', modelId: 'eleven_v4_turbo', stability: .5, similarityBoost: .75, style: .2, speed: 1, direction: '[energetic] [happy] [Make it upbeat, fun]' }),
+    updatePoseNarrationSettings: async value => ({ ...value, configured: Boolean(value.apiKey), apiKey: undefined }),
+    generatePoseNarration: async () => { throw new Error('ElevenLabs narration generation is available in the Electron app.'); },
     getSettings: async () => readSettings(),
     updateSettings: async (partial: Partial<AppSettings>) => {
       const current = readSettings();
@@ -400,14 +405,14 @@ export function installMockApi() {
     removeAudioCue: async () => readSettings(),
     uploadTemplateAudioCue: async (cue: AudioCue) => cue,
     removeTemplateAudioCue: async (cue: AudioCue) => ({ ...cue, mode: 'off', filePath: '', updatedAt: new Date().toISOString() }),
-    generateHostVoiceCue: async () => ({ ok: false, settings: readSettings(), error: 'Host voice generation is only available in Electron.' }),
+    generateHostVoiceCue: async () => ({ ok: false, settings: readSettings(), error: 'ElevenLabs generation is only available in Electron.' }),
     generateTemplateHostVoiceCue: async (cue: AudioCue) => ({
       ok: true,
       settings: readSettings(),
       cue: { ...cue, mode: 'host', filePath: `Browser preview - ${cue.id}.wav`, updatedAt: new Date().toISOString() },
       generatedPath: `Browser preview - ${cue.id}.wav`
     }),
-    generateAllHostVoiceCues: async () => ({ ok: false, settings: readSettings(), error: 'Host voice generation is only available in Electron.' }),
+    generateAllHostVoiceCues: async () => ({ ok: false, settings: readSettings(), error: 'ElevenLabs generation is only available in Electron.' }),
     uploadTemplate: async (request) => {
       const current = readSettings();
       const layout = current.template.layouts.find((item) => item.id === request.templateId);
@@ -547,6 +552,18 @@ export function installMockApi() {
       window.open(`${window.location.origin}?preview=picker`, '_blank');
       return true;
     },
+    previewPoseOnGuest: async (preview: unknown) => {
+      localStorage.setItem('pose-guest-preview', JSON.stringify(preview));
+      window.open(`${window.location.origin}?preview=pose`, 'pose-guest-preview');
+      return true;
+    },
+    takePosePreview: async () => {
+      const raw = localStorage.getItem('pose-guest-preview');
+      localStorage.removeItem('pose-guest-preview');
+      return raw ? JSON.parse(raw) : null;
+    },
+    setGuestCameraPaused: async () => true,
+    onGuestCameraPaused: () => () => undefined,
     capturePage: async () => '',
     setGuestFullscreen: async (fullscreen: boolean) => {
       if (fullscreen && !document.fullscreenElement) await document.documentElement.requestFullscreen();
@@ -560,8 +577,12 @@ export function installMockApi() {
       return () => document.removeEventListener('fullscreenchange', listener);
     },
     onOpenGuestPickerPreview: () => () => undefined,
+    onPreviewPose: () => () => undefined,
     listPrinters: async () => [],
     canonConnect: async () => ({ ok: false, error: 'Canon camera is only available in the Electron app.' }),
+    canonLiveFrame: async () => '',
+    canonPrepareCapture: async () => undefined,
+    canonReleaseFocus: async () => undefined,
     canonCapture: async () => {
       throw new Error('Canon camera is only available in the Electron app.');
     },
@@ -609,6 +630,7 @@ export function installMockApi() {
     getGalleryUploadStatus: async () => ({ state: 'idle', message: 'No active upload.', active: 0 } as const),
     onGalleryUploadStatus: () => () => undefined,
     saveSessionVideo: async () => ({ path: '', name: '' }),
+    appendSessionVideoOutro: async (request: { videoPath: string }) => ({ path: request.videoPath, name: request.videoPath }),
     uploadSessionVideo: async () => ({ ok: true }),
     openFile: async () => true,
     openUrl: async () => true,

@@ -1,14 +1,18 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import { app, dialog, ipcMain, type IpcMainInvokeEvent } from 'electron';
+import { app, dialog, ipcMain, safeStorage, type IpcMainInvokeEvent } from 'electron';
 import { validateScene } from './poseValidation';
-import type { PoseCatalog, PoseScene } from './poseTypes';
+import type { PoseCatalog, PoseNarrationGenerateRequest, PoseNarrationModel, PoseNarrationSettings, PoseNarrationSettingsUpdate, PoseScene } from './poseTypes';
 
 const directory = () => path.join(app.getPath('userData'), 'pose-library');
 const safeId = (id: string) => { if (!/^[a-z0-9][a-z0-9-]{0,79}$/.test(id)) throw new Error('Invalid pose ID.'); return id; };
 const posePath = (id: string) => path.join(directory(), `${safeId(id)}.json`);
 const MAX_JSON = 2 * 1024 * 1024;
+const narrationConfigPath = () => path.join(directory(), 'elevenlabs.json');
+const narrationModels = new Set<PoseNarrationModel>(['eleven_v4_turbo', 'eleven_flash_v2_5', 'eleven_multilingual_v2', 'eleven_v3']);
+type StoredNarrationSettings = Omit<PoseNarrationSettings, 'configured'> & { encryptedApiKey?: string };
+const narrationDefaults: StoredNarrationSettings = { voiceId: '0S5oIfi8zOZixuSj8K6n', modelId: 'eleven_v4_turbo', stability: .5, similarityBoost: .75, style: .2, speed: 1, direction: '[energetic] [happy] [Make it upbeat, fun]' };
 let writes: Promise<unknown> = Promise.resolve();
 function serialized<T>(work: () => Promise<T>): Promise<T> { const result = writes.then(work); writes = result.catch(() => undefined); return result; }
 export async function listStoredPoses(): Promise<PoseCatalog> {
@@ -41,6 +45,91 @@ export function deleteStoredPose(id: string) { const target = posePath(id); retu
 function adminOnly(event: IpcMainInvokeEvent) {
   if (new URL(event.sender.getURL()).searchParams.get('window') !== 'admin') throw new Error('Open the admin window to edit poses.');
 }
+const bounded = (value: unknown, fallback: number, min: number, max: number) => {
+  const number = Number(value); return Number.isFinite(number) ? Math.min(max, Math.max(min, number)) : fallback;
+};
+async function readNarrationSettings(): Promise<StoredNarrationSettings> {
+  try {
+    const raw = JSON.parse(await fs.readFile(narrationConfigPath(), 'utf8')) as Partial<StoredNarrationSettings>;
+    return {
+      voiceId: typeof raw.voiceId === 'string' ? raw.voiceId.trim() : '',
+      modelId: narrationModels.has(raw.modelId as PoseNarrationModel) ? raw.modelId as PoseNarrationModel : narrationDefaults.modelId,
+      stability: bounded(raw.stability, narrationDefaults.stability, 0, 1),
+      similarityBoost: bounded(raw.similarityBoost, narrationDefaults.similarityBoost, 0, 1),
+      style: bounded(raw.style, narrationDefaults.style, 0, 1),
+      speed: bounded(raw.speed, narrationDefaults.speed, .7, 1.2),
+      direction: typeof raw.direction === 'string' ? raw.direction.trim().slice(0, 240) : narrationDefaults.direction,
+      ...(typeof raw.encryptedApiKey === 'string' ? { encryptedApiKey: raw.encryptedApiKey } : {})
+    };
+  } catch { return { ...narrationDefaults }; }
+}
+function publicNarrationSettings(settings: StoredNarrationSettings): PoseNarrationSettings {
+  const { encryptedApiKey, ...publicSettings } = settings;
+  return { ...publicSettings, configured: Boolean(encryptedApiKey || process.env.ELEVENLABS_API_KEY) };
+}
+async function saveNarrationSettings(update: PoseNarrationSettingsUpdate): Promise<PoseNarrationSettings> {
+  const current = await readNarrationSettings();
+  if (!narrationModels.has(update.modelId)) throw new Error('Choose a supported ElevenLabs model.');
+  const voiceId = update.voiceId.trim();
+  if (voiceId && !/^[A-Za-z0-9_-]{10,100}$/.test(voiceId)) throw new Error('Voice ID is invalid.');
+  let encryptedApiKey = current.encryptedApiKey;
+  if (update.apiKey !== undefined) {
+    const apiKey = update.apiKey.trim();
+    if (!apiKey) encryptedApiKey = undefined;
+    else {
+      if (!safeStorage.isEncryptionAvailable()) throw new Error('Windows credential encryption is unavailable. Set ELEVENLABS_API_KEY instead.');
+      encryptedApiKey = safeStorage.encryptString(apiKey).toString('base64');
+    }
+  }
+  const next: StoredNarrationSettings = {
+    voiceId, modelId: update.modelId,
+    stability: bounded(update.stability, .5, 0, 1), similarityBoost: bounded(update.similarityBoost, .75, 0, 1),
+    style: bounded(update.style, .2, 0, 1), speed: bounded(update.speed, 1, .7, 1.2),
+    direction: String(update.direction ?? '').trim().slice(0, 240),
+    ...(encryptedApiKey ? { encryptedApiKey } : {})
+  };
+  await fs.mkdir(directory(), { recursive: true });
+  const target = narrationConfigPath(), temporary = `${target}.${crypto.randomUUID()}.tmp`;
+  try { await fs.writeFile(temporary, `${JSON.stringify(next, null, 2)}\n`, { flag: 'wx' }); await fs.rename(temporary, target); }
+  finally { await fs.rm(temporary, { force: true }); }
+  return publicNarrationSettings(next);
+}
+function narrationApiKey(settings: StoredNarrationSettings) {
+  if (process.env.ELEVENLABS_API_KEY?.trim()) return process.env.ELEVENLABS_API_KEY.trim();
+  if (!settings.encryptedApiKey) throw new Error('Add your ElevenLabs API key first.');
+  if (!safeStorage.isEncryptionAvailable()) throw new Error('Windows credential encryption is unavailable.');
+  try { return safeStorage.decryptString(Buffer.from(settings.encryptedApiKey, 'base64')); }
+  catch { throw new Error('The saved ElevenLabs API key could not be decrypted. Save it again.'); }
+}
+export async function getElevenLabsSettings() { return publicNarrationSettings(await readNarrationSettings()); }
+export async function updateElevenLabsSettings(update: PoseNarrationSettingsUpdate) { return saveNarrationSettings(update); }
+export async function generateElevenLabsSpeech(id: string, rawText: string, outputDirectory = path.join(directory(), 'audio', 'elevenlabs')) {
+  const safeSpeechId = safeId(id), text = String(rawText ?? '').trim();
+  if (!text || text.length > 2000) throw new Error('Narration must contain 1–2,000 characters.');
+  const settings = await readNarrationSettings(), apiKey = narrationApiKey(settings);
+  if (!settings.voiceId) throw new Error('Add an ElevenLabs voice ID first.');
+  const digest = crypto.createHash('sha1').update(JSON.stringify({ id: safeSpeechId, text, ...publicNarrationSettings(settings) })).digest('hex').slice(0, 14);
+  const filePath = path.join(outputDirectory, `${safeSpeechId}-${digest}.mp3`);
+  try { const stat = await fs.stat(filePath); if (stat.isFile() && stat.size > 0) return { filePath, name: path.basename(filePath), cached: true }; } catch { /* generate */ }
+  const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(settings.voiceId)}?output_format=mp3_44100_128`, {
+    method: 'POST', headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json', Accept: 'audio/mpeg' },
+    body: JSON.stringify({ text: [settings.direction, text].filter(Boolean).join(' '), model_id: settings.modelId, voice_settings: { stability: settings.stability, similarity_boost: settings.similarityBoost, style: settings.style, speed: settings.speed, use_speaker_boost: true } })
+  });
+  if (!response.ok) {
+    const detail = (await response.text()).slice(0, 600);
+    throw new Error(`ElevenLabs generation failed (${response.status}): ${detail}`);
+  }
+  const buffer = Buffer.from(await response.arrayBuffer());
+  if (!buffer.length || buffer.length > 25 * 1024 * 1024) throw new Error('ElevenLabs returned an invalid audio file.');
+  await fs.mkdir(outputDirectory, { recursive: true });
+  const temporary = `${filePath}.${crypto.randomUUID()}.tmp`;
+  try { await fs.writeFile(temporary, buffer, { flag: 'wx' }); await fs.rename(temporary, filePath); }
+  finally { await fs.rm(temporary, { force: true }); }
+  return { filePath, name: path.basename(filePath), cached: false };
+}
+async function generatePoseNarration(request: PoseNarrationGenerateRequest) {
+  return generateElevenLabsSpeech(request.poseId, request.text);
+}
 export function registerPoseStorage() {
   ipcMain.handle('poses:list', () => listStoredPoses());
   ipcMain.handle('poses:save', (event, value: unknown) => { adminOnly(event); return saveStoredPose(value); });
@@ -71,4 +160,7 @@ export function registerPoseStorage() {
     const filePath = path.join(audioDirectory, `${crypto.randomUUID()}${extension}`); await fs.copyFile(source, filePath);
     return { filePath, name: path.basename(source) };
   });
+  ipcMain.handle('poses:narration-settings:get', async event => { adminOnly(event); return getElevenLabsSettings(); });
+  ipcMain.handle('poses:narration-settings:set', async (event, value: PoseNarrationSettingsUpdate) => { adminOnly(event); return updateElevenLabsSettings(value); });
+  ipcMain.handle('poses:narration-generate', async (event, value: PoseNarrationGenerateRequest) => { adminOnly(event); return generatePoseNarration(value); });
 }

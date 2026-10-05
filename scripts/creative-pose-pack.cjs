@@ -7,7 +7,7 @@ function pose({ audience, category, styles, framing, childSafe, roles, id, name,
     category,
     tags: ['creative-pack', 'four-second', `audience-${audience}`, `framing-${framing}`, `mood-${mood}`, childSafe ? 'child-safe' : 'adult-only', 'cooperative', ...tags],
     instruction: cues.at(-1),
-    animation: { durationMs: 4000, captions: [{ timeMs: 0, text: 'Find your mark' }, ...cues.map((text, index) => ({ timeMs: (index + 1) * 500, text }))] },
+    animation: { durationMs: 7000, captions: cues.map((text, index) => ({ timeMs: index * 500, text })) },
     compatibility: { minPeople: flexible ? 5 : roles.length, maxPeople: flexible ? null : roles.length, styles, framing: [framing], childSafe },
     roles: roles.map((role, index) => ({ role, repeatable: flexible && index === roles.length - 1 }))
   };

@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import type { PoseAiGenerateRequest, PoseAiGenerateResult, PoseCatalog, PoseScene } from './poseTypes';
+import type { PoseAiGenerateRequest, PoseAiGenerateResult, PoseCatalog, PoseNarrationGenerateRequest, PoseNarrationGenerateResult, PoseNarrationSettings, PoseNarrationSettingsUpdate, PoseScene } from './poseTypes';
 import type {
   AiGenerateRequest,
   AiGenerateResult,
@@ -33,6 +33,9 @@ const api = {
   importPoseAudio: () => ipcRenderer.invoke('poses:audio-import') as Promise<{ filePath: string; name: string } | null>,
   importPoseImage: () => ipcRenderer.invoke('poses:image-import') as Promise<{ filePath: string; name: string } | null>,
   generatePose: (request: PoseAiGenerateRequest) => ipcRenderer.invoke('poses:generate', request) as Promise<PoseAiGenerateResult>,
+  getPoseNarrationSettings: () => ipcRenderer.invoke('poses:narration-settings:get') as Promise<PoseNarrationSettings>,
+  updatePoseNarrationSettings: (settings: PoseNarrationSettingsUpdate) => ipcRenderer.invoke('poses:narration-settings:set', settings) as Promise<PoseNarrationSettings>,
+  generatePoseNarration: (request: PoseNarrationGenerateRequest) => ipcRenderer.invoke('poses:narration-generate', request) as Promise<PoseNarrationGenerateResult>,
   getSettings: () => ipcRenderer.invoke('settings:get') as Promise<AppSettings>,
   updateSettings: (settings: Partial<AppSettings>) =>
     ipcRenderer.invoke('settings:update', settings) as Promise<AppSettings>,
@@ -96,6 +99,14 @@ const api = {
   openAdmin: () => ipcRenderer.invoke('window:open-admin') as Promise<boolean>,
   openGuest: () => ipcRenderer.invoke('window:open-guest') as Promise<boolean>,
   openGuestPickerPreview: () => ipcRenderer.invoke('window:open-guest-picker-preview') as Promise<boolean>,
+  previewPoseOnGuest: (preview: unknown) => ipcRenderer.invoke('window:preview-pose', preview) as Promise<boolean>,
+  takePosePreview: () => ipcRenderer.invoke('guest:take-pose-preview') as Promise<unknown>,
+  setGuestCameraPaused: (paused: boolean) => ipcRenderer.invoke('guest:set-camera-paused', paused) as Promise<boolean>,
+  onGuestCameraPaused: (callback: (paused: boolean) => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, paused: boolean) => callback(paused);
+    ipcRenderer.on('guest:camera-paused', listener);
+    return () => { ipcRenderer.removeListener('guest:camera-paused', listener); };
+  },
   capturePage: (rect?: { x: number; y: number; width: number; height: number }) =>
     ipcRenderer.invoke('window:capture-page', rect) as Promise<string>,
   setGuestFullscreen: (fullscreen: boolean) =>
@@ -115,9 +126,19 @@ const api = {
       ipcRenderer.removeListener('guest:open-picker-preview', listener);
     };
   },
+  onPreviewPose: (callback: (preview: unknown) => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, preview: unknown) => callback(preview);
+    ipcRenderer.on('guest:preview-pose', listener);
+    return () => {
+      ipcRenderer.removeListener('guest:preview-pose', listener);
+    };
+  },
   listPrinters: () => ipcRenderer.invoke('printers:list') as Promise<Electron.PrinterInfo[]>,
   saveImage: (request: SaveImageRequest) => ipcRenderer.invoke('image:save', request) as Promise<SaveImageResult>,
   canonConnect: () => ipcRenderer.invoke('canon:connect') as Promise<CanonConnectResult>,
+  canonLiveFrame: () => ipcRenderer.invoke('canon:live-frame') as Promise<string>,
+  canonPrepareCapture: () => ipcRenderer.invoke('canon:prepare-capture') as Promise<void>,
+  canonReleaseFocus: () => ipcRenderer.invoke('canon:release-focus') as Promise<void>,
   canonCapture: (crop: CanonStillCrop) =>
     ipcRenderer.invoke('canon:capture', crop) as Promise<{ dataUrl: string; width: number; height: number }>,
   updatePhotoGalleryUrl: (filePath: string, galleryUrl: string) =>
@@ -131,6 +152,8 @@ const api = {
     ipcRenderer.invoke('gallery:upload-final', request) as Promise<BackgroundGalleryUploadResult>,
   saveSessionVideo: (request: SaveVideoRequest) =>
     ipcRenderer.invoke('video:save-and-transcode', request) as Promise<SaveVideoResult>,
+  appendSessionVideoOutro: (request: { videoPath: string; finalImagePath: string; logoPath?: string }) =>
+    ipcRenderer.invoke('video:append-outro', request) as Promise<SaveVideoResult>,
   uploadSessionVideo: (request: BackgroundVideoUploadRequest) =>
     ipcRenderer.invoke('gallery:upload-video', request) as Promise<BackgroundGalleryUploadResult>,
   getGalleryUploadStatus: () => ipcRenderer.invoke('gallery:upload-status') as Promise<GalleryUploadStatus>,

@@ -3,12 +3,12 @@ import { app, BrowserWindow, desktopCapturer, dialog, ipcMain, nativeImage, sess
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
-import { exec, execFile, spawn } from 'node:child_process';
+import { exec, spawn } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import crypto from 'node:crypto';
 import ffmpegStatic from 'ffmpeg-static';
-import { captureCanonStill, connectCanon, stopCanonService } from './canon';
-import { registerPoseStorage } from './poseStorage';
+import { captureCanonStill, connectCanon, getCanonLiveViewFrame, prepareCanonCapture, releaseCanonFocus, stopCanonService } from './canon';
+import { generateElevenLabsSpeech, registerPoseStorage } from './poseStorage';
 import { registerPoseAi } from './poseAi';
 import type {
   AiGenerateRequest,
@@ -39,6 +39,7 @@ import type {
 } from './types';
 
 let guestWindow: BrowserWindow | null = null;
+let pendingPosePreview: unknown = null;
 let adminWindow: BrowserWindow | null = null;
 let lastFinalPath = '';
 let galleryUploadStatus: GalleryUploadStatus = { state: 'idle', message: 'No active upload.', active: 0 };
@@ -138,13 +139,14 @@ const defaultAudioSettings = (): AppSettings['audio'] => ({
     welcome: defaultAudioCue('welcome', 'Welcome idle loop', 'Welcome. Touch start to begin.', 'voice', 'host', true),
     style: defaultAudioCue('style', 'Choose style screen', 'Please choose a style.'),
     design: defaultAudioCue('design', 'Choose design screen', 'Please choose a design.'),
+    people: defaultAudioCue('people', "Who's joining screen", "Who's joining the photo? Tell me who's here, then choose your pose style."),
     intro: defaultAudioCue('intro', 'Intro screen', "Let's take pictures."),
     select: defaultAudioCue('select', 'Photo selection screen', 'Please choose your favorite pictures to print.'),
     thanks: defaultAudioCue('thanks', 'Finish screen', 'Thank you. Please pick up your print.'),
-    shot0: defaultAudioCue('shot0', 'Picture 1 message', 'Get ready!'),
-    shot1: defaultAudioCue('shot1', 'Picture 2 message', 'Smile!'),
-    shot2: defaultAudioCue('shot2', 'Picture 3 message', 'Switch it up!'),
-    shot3: defaultAudioCue('shot3', 'Picture 4 message', 'Final pose!'),
+    shot0: defaultAudioCue('shot0', 'Picture 1 message', 'Pose challenge!'),
+    shot1: defaultAudioCue('shot1', 'Picture 2 message', 'Next one!'),
+    shot2: defaultAudioCue('shot2', 'Picture 3 message', 'Looking good, now do this!'),
+    shot3: defaultAudioCue('shot3', 'Picture 4 message', 'Last one! Now...'),
     shot4: defaultAudioCue('shot4', 'Picture 5 message', 'New pose!'),
     shot5: defaultAudioCue('shot5', 'Picture 6 message', 'Big smile!'),
     shot6: defaultAudioCue('shot6', 'Picture 7 message', 'Something silly!'),
@@ -163,10 +165,10 @@ const defaultAudioSettings = (): AppSettings['audio'] => ({
 });
 
 const defaultWorkflowShots = (): WorkflowShotSettings[] => [
-  { message: 'Get Ready!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
-  { message: 'Smile!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
-  { message: 'Switch It Up!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
-  { message: 'Final Pose!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+  { message: 'Pose challenge!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+  { message: 'Next one!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
+  { message: 'Looking good, now do this!', cameraBeforeMessageMs: 0, messageMs: 1400, cameraBeforeCountdownMs: 2000 },
+  { message: 'Last one! Now...', cameraBeforeMessageMs: 0, messageMs: 1200, cameraBeforeCountdownMs: 2000 },
   { message: 'New Pose!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
   { message: 'Big Smile!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
   { message: 'Something Silly!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
@@ -176,6 +178,12 @@ const defaultWorkflowShots = (): WorkflowShotSettings[] => [
   { message: 'Almost There!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 },
   { message: 'Final Pose!', cameraBeforeMessageMs: 0, messageMs: 1000, cameraBeforeCountdownMs: 2000 }
 ];
+
+const migratePoseChallengeMessage = (index: number, message: string) => {
+  const legacy = ['Get Ready!', 'Smile!', 'Switch It Up!', 'Final Pose!'];
+  const current = defaultWorkflowShots()[index]?.message;
+  return current && message.trim().toLowerCase() === legacy[index]?.toLowerCase() ? current : message;
+};
 
 const defaultWorkflowSettings = (): AppSettings['workflow'] => ({
   introMessage: "Let's take pictures!",
@@ -195,10 +203,10 @@ const normalizeWorkflowSettings = (
   return {
     ...fallback,
     ...current,
-    shots: fallback.shots.map((shot, index) => ({
-      ...shot,
-      ...(sourceShots[index] ?? {})
-    }))
+    shots: fallback.shots.map((shot, index) => {
+      const source = sourceShots[index] ?? {};
+      return { ...shot, ...source, message: migratePoseChallengeMessage(index, source.message ?? shot.message) };
+    })
   };
 };
 
@@ -265,6 +273,7 @@ const defaultSettings = (): AppSettings => ({
   boothSecret: '',
   staffControlQueueMode: false,
   cameraId: '',
+  cameraSource: 'capture-card',
   canonEnabled: false,
   canonFraming: 'cover',
   mirrorPreview: true,
@@ -388,7 +397,14 @@ const normalizeLoadedSettings = (parsed: Partial<AppSettings>, fallback = defaul
       ...(parsed.cameraControls ?? {})
     },
     cameraPreviewOverlay: normalizeCameraPreviewOverlay(parsed.cameraPreviewOverlay),
-    canonEnabled: parsed.canonEnabled === true,
+    cameraSource: parsed.cameraSource === 'canon-usb'
+      ? 'canon-usb'
+      : parsed.cameraSource === 'capture-card'
+        ? 'capture-card'
+        : parsed.canonEnabled === true
+          ? 'canon-usb'
+          : 'capture-card',
+    canonEnabled: parsed.canonEnabled === true || parsed.cameraSource === 'canon-usb',
     canonFraming: parsed.canonFraming === 'contain' ? 'contain' : 'cover',
     stylePrinters: normalizeStylePrinters({
       ...fallback.stylePrinters,
@@ -585,6 +601,9 @@ async function createWindow(kind: AppWindowKind, extraQuery = '') {
   }
 
   await win.loadURL(windowUrl(kind, extraQuery));
+  win.webContents.on('render-process-gone', (_event, details) => {
+    console.error(`[${kind} renderer] stopped: ${details.reason}`);
+  });
   if (kind === 'guest') guestWindow = win;
   if (kind === 'admin') adminWindow = win;
   if (kind === 'guest') {
@@ -675,6 +694,11 @@ function dataUrlToBuffer(dataUrl: string): Buffer {
   return Buffer.from(base64, 'base64');
 }
 
+function imageExtensionFromDataUrl(dataUrl: string): '.jpg' | '.png' {
+  const mimeType = /^data:([^;,]+)/i.exec(dataUrl)?.[1]?.toLowerCase();
+  return mimeType === 'image/jpeg' || mimeType === 'image/jpg' ? '.jpg' : '.png';
+}
+
 async function fileExists(filePath: string) {
   try {
     await fs.access(filePath);
@@ -705,60 +729,8 @@ async function audioFileToDataUrl(filePath: string): Promise<string> {
   return `data:${mimeType};base64,${buffer.toString('base64')}`;
 }
 
-const execFileAsync = (
-  file: string,
-  args: string[],
-  options: { input?: string; cwd?: string } = {}
-): Promise<void> =>
-  new Promise((resolve, reject) => {
-    const child = execFile(file, args, { cwd: options.cwd, windowsHide: true }, (error) => {
-      if (error) reject(error);
-      else resolve();
-    });
-    if (options.input) {
-      child.stdin?.write(options.input);
-      child.stdin?.end();
-    }
-  });
-
-const appResourcePath = (...parts: string[]) =>
-  isDev ? path.join(app.getAppPath(), ...parts) : path.join(process.resourcesPath, ...parts);
-
-const eventTtsPath = (settings: AppSettings, ...parts: string[]) => path.join(settings.eventFolder, 'audio', 'tts', ...parts);
-
-const hostVoiceHash = (settings: AppSettings, cue: AppSettings['audio']['cues'][string], text: string) =>
-  crypto
-    .createHash('sha1')
-    .update(JSON.stringify({
-      engine: settings.audio.voiceEngine,
-      voiceName: settings.audio.voiceName,
-      speed: settings.audio.speed,
-      text,
-      cueId: cue.id
-    }))
-    .digest('hex')
-    .slice(0, 14);
-
-const hostVoiceOutputPath = (settings: AppSettings, cue: AppSettings['audio']['cues'][string], text: string) =>
-  path.join(
-    settings.eventFolder,
-    'audio',
-    'generated',
-    settings.audio.voiceEngine,
-    safeTemplateName(settings.audio.voiceName || 'voice'),
-    `${safeAudioCueId(cue.id)}-${hostVoiceHash(settings, cue, text)}.wav`
-  );
-
-const isGeneratedHostVoicePath = (filePath: string) => /[\\/]audio[\\/]generated[\\/]/i.test(filePath);
-
-// A generated file name embeds a hash of the engine, voice, speed and text, so
-// a path that no longer matches the cue points at a recording of different
-// words or a different voice. Drop it rather than let the booth speak it.
-const hasStaleHostVoiceFile = (settings: AppSettings, cue: AppSettings['audio']['cues'][string]) => {
-  if (cue.mode !== 'host' || !cue.filePath || !isGeneratedHostVoicePath(cue.filePath)) return false;
-  const expected = hostVoiceOutputPath(settings, cue, cue.text.trim());
-  return path.normalize(cue.filePath).toLowerCase() !== path.normalize(expected).toLowerCase();
-};
+const hasStaleHostVoiceFile = (_settings: AppSettings, cue: AppSettings['audio']['cues'][string]) =>
+  cue.mode === 'host' && /[\\/]audio[\\/]generated[\\/](?:kokoro|piper)[\\/]/i.test(cue.filePath);
 
 const dropStaleHostVoiceFiles = (settings: AppSettings): AppSettings => {
   const entries = Object.entries(settings.audio.cues);
@@ -773,75 +745,6 @@ const dropStaleHostVoiceFiles = (settings: AppSettings): AppSettings => {
     }
   };
 };
-
-const resolveTtsExecutable = async (settings: AppSettings) => {
-  const engine = settings.audio.voiceEngine;
-  const executableName = engine === 'kokoro' ? 'kokoro-tts.exe' : 'piper.exe';
-  const candidates = [
-    eventTtsPath(settings, engine, executableName),
-    eventTtsPath(settings, engine, '.venv', 'Scripts', executableName),
-    appResourcePath('tts', engine, executableName),
-    appResourcePath('tts', engine, '.venv', 'Scripts', executableName),
-    appResourcePath('extraResources', 'tts', engine, '.venv', 'Scripts', executableName),
-    appResourcePath('extraResources', 'tts', engine, executableName)
-  ];
-  for (const candidate of candidates) {
-    if (await fileExists(candidate)) return candidate;
-  }
-  throw new Error(`${engine} executable not found. Place ${executableName} under resources/tts/${engine}/ or ${eventTtsPath(settings, engine)}.`);
-};
-
-const resolvePiperModel = async (settings: AppSettings) => {
-  const voice = settings.audio.voiceName || 'en_US-lessac-medium';
-  const candidates = [
-    eventTtsPath(settings, 'piper', 'voices', `${voice}.onnx`),
-    appResourcePath('tts', 'piper', 'voices', `${voice}.onnx`),
-    appResourcePath('extraResources', 'tts', 'piper', 'voices', `${voice}.onnx`)
-  ];
-  for (const candidate of candidates) {
-    if (await fileExists(candidate)) return candidate;
-  }
-  throw new Error(`Piper voice model not found: ${voice}.onnx`);
-};
-
-const resolveKokoroWorkingDir = async (settings: AppSettings) => {
-  const candidates = [
-    eventTtsPath(settings, 'kokoro'),
-    appResourcePath('tts', 'kokoro'),
-    appResourcePath('extraResources', 'tts', 'kokoro')
-  ];
-  for (const candidate of candidates) {
-    if (
-      (await fileExists(candidate)) &&
-      (await fileExists(path.join(candidate, 'kokoro-v1.0.onnx'))) &&
-      (await fileExists(path.join(candidate, 'voices-v1.0.bin')))
-    ) return candidate;
-  }
-  throw new Error('Kokoro model files not found. Put kokoro-v1.0.onnx and voices-v1.0.bin in resources/tts/kokoro or eventFolder/audio/tts/kokoro.');
-};
-
-async function synthesizeHostVoice(settings: AppSettings, text: string, outputPath: string) {
-  await fs.mkdir(path.dirname(outputPath), { recursive: true });
-  const executable = await resolveTtsExecutable(settings);
-  if (settings.audio.voiceEngine === 'piper') {
-    const modelPath = await resolvePiperModel(settings);
-    const lengthScale = String(Math.max(0.35, Math.min(2.5, 1 / Math.max(0.1, settings.audio.speed))));
-    await execFileAsync(executable, ['--model', modelPath, '--output_file', outputPath, '--length_scale', lengthScale], { input: text });
-    return;
-  }
-
-  const workingDir = await resolveKokoroWorkingDir(settings);
-  const inputPath = path.join(path.dirname(outputPath), `${safeAudioCueId(path.basename(outputPath, '.wav'))}.txt`);
-  await fs.writeFile(inputPath, text, 'utf8');
-  await execFileAsync(executable, [
-    inputPath,
-    outputPath,
-    '--voice',
-    settings.audio.voiceName || 'af_heart',
-    '--speed',
-    String(settings.audio.speed)
-  ], { cwd: workingDir });
-}
 
 async function getImageSize(filePath: string) {
   const image = nativeImage.createFromPath(filePath);
@@ -962,10 +865,11 @@ const normalizeTemplateWorkflow = (
       const fallbackShot = fallback.shots[Math.min(index, fallback.shots.length - 1)];
       const sourceShot = sourceShots[index] ?? {};
       const sourceCue = sourceShot.audioCue;
-      const message = sourceShot.message ?? fallbackShot.message;
+      const message = migratePoseChallengeMessage(index, sourceShot.message ?? fallbackShot.message);
       return {
         ...fallbackShot,
         ...sourceShot,
+        message,
         audioCue: normalizeAudioCue(
           {
             ...defaultTemplateShotAudioCue('template', index, message),
@@ -1097,6 +1001,16 @@ const normalizeAudioSettings = (settings?: Partial<AppSettings['audio']>): AppSe
   Object.entries(settings?.cues ?? {}).forEach(([id, cue]) => {
     if (id === 'facePack' || cues[id]) return;
     cues[id] = normalizeAudioCue(cue, defaultAudioCue(id, cue.label || id, cue.text || ''));
+  });
+  const legacyPoseOpenings: Record<string, { old: string; next: string }> = {
+    shot0: { old: 'Get ready!', next: 'Pose challenge!' },
+    shot1: { old: 'Smile!', next: 'Next one!' },
+    shot2: { old: 'Switch it up!', next: 'Looking good, now do this!' },
+    shot3: { old: 'Final pose!', next: 'Last one! Now...' }
+  };
+  Object.entries(legacyPoseOpenings).forEach(([id, wording]) => {
+    if (cues[id]?.text.trim().toLowerCase() !== wording.old.toLowerCase()) return;
+    cues[id] = { ...cues[id], text: wording.next, filePath: '', updatedAt: '' };
   });
   return {
     ...fallback,
@@ -1581,7 +1495,8 @@ async function writeThumbnail(sourceBuffer: Buffer, eventFolder: string, folder:
     height: Math.max(1, Math.round(size.height * scale)),
     quality: 'good'
   });
-  await fs.writeFile(path.join(eventFolder, folder, 'thumbs', name), thumbnail.toPNG());
+  const thumbnailBuffer = /\.jpe?g$/i.test(name) ? thumbnail.toJPEG(85) : thumbnail.toPNG();
+  await fs.writeFile(path.join(eventFolder, folder, 'thumbs', name), thumbnailBuffer);
 }
 
 async function writePhotoMetadata(filePath: string, request: SaveImageRequest) {
@@ -1779,11 +1694,13 @@ const VIDEO_UPLOAD_RETRY_DELAY_MS = 2000;
 const VIDEO_UPLOAD_MAX_BYTES = 4 * 1024 * 1024;
 type VideoTranscodeProfile = { maxLongEdge: number; crf: number; audioBitrate: string };
 const VIDEO_TRANSCODE_PROFILES = [
-  { maxLongEdge: 854, crf: 25, audioBitrate: '96k' },
+  { maxLongEdge: 1920, crf: 20, audioBitrate: '128k' },
+  { maxLongEdge: 1280, crf: 22, audioBitrate: '112k' },
+  { maxLongEdge: 960, crf: 25, audioBitrate: '96k' },
   { maxLongEdge: 854, crf: 28, audioBitrate: '64k' },
-  { maxLongEdge: 640, crf: 30, audioBitrate: '64k' },
-  { maxLongEdge: 480, crf: 32, audioBitrate: '48k' }
+  { maxLongEdge: 640, crf: 30, audioBitrate: '64k' }
 ] satisfies VideoTranscodeProfile[];
+const LOCAL_VIDEO_PROFILE = VIDEO_TRANSCODE_PROFILES[0];
 
 const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
@@ -1801,10 +1718,10 @@ function transcodeToMp4(inputPath: string, outputPath: string, profile: VideoTra
       reject(new Error('ffmpeg binary not available.'));
       return;
     }
-    // Downscale the longer edge to VIDEO_MAX_LONG_EDGE (keeping aspect, even
+    // Downscale the longer edge to the selected profile (keeping aspect, even
     // dimensions) and encode H.264/AAC with faststart for broad playback.
     const scaleFilter =
-      `scale='if(gt(a,1),min(${profile.maxLongEdge},iw),-2)':'if(gt(a,1),-2,min(${profile.maxLongEdge},ih))'`;
+      `fps=24,scale='if(gt(a,1),min(${profile.maxLongEdge},iw),-2)':'if(gt(a,1),-2,min(${profile.maxLongEdge},ih))'`;
     const args = [
       '-y',
       '-i', inputPath,
@@ -1813,6 +1730,9 @@ function transcodeToMp4(inputPath: string, outputPath: string, profile: VideoTra
       '-preset', 'veryfast',
       '-crf', String(profile.crf),
       '-pix_fmt', 'yuv420p',
+      '-r', '24',
+      '-video_track_timescale', '24000',
+      '-tag:v', 'avc1',
       '-c:a', 'aac',
       '-b:a', profile.audioBitrate,
       '-threads', String(VIDEO_TRANSCODE_THREADS),
@@ -1883,12 +1803,70 @@ async function saveSessionVideoData(request: SaveVideoRequest): Promise<SaveVide
   await ensureEventFolders(settings.eventFolder);
   const videosFolder = path.join(settings.eventFolder, 'videos');
   const safeBase = request.baseName?.trim().replace(/[^\w-]+/g, '') || (await nextVideoName(settings.eventFolder));
-  const webmPath = path.join(videosFolder, `${safeBase}.webm`);
+  const webmPath = path.join(videosFolder, `${safeBase}.source.webm`);
+  const mp4Path = path.join(videosFolder, `${safeBase}.mp4`);
   const buffer = Buffer.from(request.data instanceof Uint8Array ? request.data : new Uint8Array(request.data));
   console.log(`[video] received recording ${buffer.byteLength} bytes -> ${webmPath}`);
   await fs.writeFile(webmPath, buffer);
   console.log(`[video] saved raw recording ${webmPath}`);
-  return { path: webmPath, name: path.basename(webmPath) };
+  try {
+    await transcodeToMp4(webmPath, mp4Path, LOCAL_VIDEO_PROFILE);
+    await fs.rm(webmPath, { force: true });
+    console.log(`[video] saved 24 fps MP4 ${mp4Path}`);
+    return { path: mp4Path, name: path.basename(mp4Path) };
+  } catch (error) {
+    console.warn('[video] MP4 conversion failed; preserving source WebM.', error);
+    return { path: webmPath, name: path.basename(webmPath) };
+  }
+}
+
+async function appendSessionVideoOutro(videoPath: string, finalImagePath: string, logoPath = '') {
+  if (!(await fileExists(videoPath))) throw new Error('Session video was not found.');
+  if (!(await fileExists(finalImagePath))) throw new Error('Final photo was not found.');
+  const usableLogo = logoPath && await fileExists(logoPath) ? logoPath : '';
+  const parsed = path.parse(videoPath);
+  const outputPath = path.join(parsed.dir, `${parsed.name}-complete.mp4`);
+  const args = ['-y', '-i', videoPath, '-loop', '1', '-framerate', '24', '-t', '5', '-i', finalImagePath];
+  if (usableLogo) args.push('-loop', '1', '-framerate', '24', '-t', '2.5', '-i', usableLogo);
+
+  const canvas = "scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1";
+  const filters = [
+    `[0:v]${canvas},fps=24,setpts=PTS-STARTPTS[v0]`,
+    '[1:v]split=2[photoBg][photoFg]',
+    '[photoBg]scale=90:160:force_original_aspect_ratio=increase,crop=90:160,gblur=sigma=22,scale=1080:1920:flags=bicubic,eq=brightness=-0.24:saturation=1.15[photoBgReady]',
+    '[photoFg]scale=1000:1800:force_original_aspect_ratio=decrease[photoFgReady]',
+    `[photoBgReady][photoFgReady]overlay=(W-w)/2:(H-h)/2,zoompan=z='min(zoom+0.00042,1.05)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1080x1920:fps=24,fade=t=in:st=0:d=0.35,fade=t=out:st=4.5:d=0.5,setpts=PTS-STARTPTS[v1]`
+  ];
+  if (usableLogo) {
+    filters.push(
+      `[2:v]scale=650:650:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1,fps=24,fade=t=in:st=0:d=0.4,fade=t=out:st=2:d=0.5,setpts=PTS-STARTPTS[v2]`,
+      '[v0][v1][v2]concat=n=3:v=1:a=0[outv]'
+    );
+  } else {
+    filters.push('[v0][v1]concat=n=2:v=1:a=0[outv]');
+  }
+  args.push(
+    '-filter_complex', filters.join(';'),
+    '-map', '[outv]', '-map', '0:a?',
+    '-af', `apad=pad_dur=${usableLogo ? '7.5' : '5'}`,
+    '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18',
+    '-pix_fmt', 'yuv420p', '-r', '24', '-video_track_timescale', '24000', '-tag:v', 'avc1',
+    '-c:a', 'aac', '-b:a', '128k', '-shortest', '-movflags', '+faststart', outputPath
+  );
+
+  await new Promise<void>((resolve, reject) => {
+    const ffmpegPath = resolveFfmpegPath();
+    if (!ffmpegPath) return reject(new Error('ffmpeg binary not available.'));
+    const child = spawn(ffmpegPath, args, { windowsHide: true });
+    let stderr = '';
+    child.stderr?.on('data', (chunk) => { stderr += String(chunk); });
+    child.on('error', reject);
+    child.on('close', (code) => {
+      if (code === 0) resolve();
+      else reject(new Error(`Could not add video outro (${code}): ${stderr.slice(-700)}`));
+    });
+  });
+  return outputPath;
 }
 
 async function uploadSessionVideoInBackground(
@@ -1902,9 +1880,8 @@ async function uploadSessionVideoInBackground(
       throw new Error('Web API, event ID, or booth secret is missing.');
     }
     const uploadPath = await prepareVideoForUpload(request.videoPath);
-    if (uploadPath !== request.videoPath && !/\.mp4$/i.test(request.videoPath)) {
-      await fs.rm(request.videoPath, { force: true });
-    }
+    // Keep the high-quality local recording. Upload compression is a separate
+    // derivative and must never replace the event's master video.
     const buffer = await fs.readFile(uploadPath);
     if (buffer.byteLength > VIDEO_UPLOAD_MAX_BYTES) {
       throw new Error(`Video is ${formatMegabytes(buffer.byteLength)}, over upload limit ${formatMegabytes(VIDEO_UPLOAD_MAX_BYTES)}.`);
@@ -1970,7 +1947,7 @@ async function saveImageData(request: SaveImageRequest): Promise<SaveImageResult
   const settings = await readSettings();
   await ensureEventFolders(settings.eventFolder);
   const folder = request.kind === 'original' ? 'originals' : 'finals';
-  const name = await photoName(settings.eventFolder);
+  const name = await photoName(settings.eventFolder, imageExtensionFromDataUrl(request.dataUrl));
   const filePath = path.join(settings.eventFolder, folder, name);
   const buffer = dataUrlToBuffer(request.dataUrl);
   await fs.writeFile(filePath, buffer);
@@ -2164,10 +2141,10 @@ async function generateStandaloneHostVoiceCue(cue: AudioCue): Promise<HostVoiceG
   const normalizedCue = normalizeAudioCue(cue, defaultAudioCue(cue.id, cue.label || cue.id, cue.text || ''));
   const text = normalizedCue.text.trim();
   if (!text) return { ok: false, settings, cue: normalizedCue, error: 'Cue text is empty.' };
-  if (!audio.enableHostVoice) return { ok: false, settings, cue: normalizedCue, error: 'Host voice is disabled.' };
+  if (!audio.enableHostVoice) return { ok: false, settings, cue: normalizedCue, error: 'Generated voice is disabled.' };
   try {
-    const generatedPath = hostVoiceOutputPath({ ...settings, audio }, normalizedCue, text);
-    if (!(await fileExists(generatedPath))) await synthesizeHostVoice({ ...settings, audio }, text, generatedPath);
+    const generated = await generateElevenLabsSpeech(safeAudioCueId(normalizedCue.id), text, path.join(settings.eventFolder, 'audio', 'generated', 'elevenlabs'));
+    const generatedPath = generated.filePath;
     return {
       ok: true,
       settings,
@@ -2183,7 +2160,7 @@ async function generateStandaloneHostVoiceCue(cue: AudioCue): Promise<HostVoiceG
       )
     };
   } catch (error) {
-    return { ok: false, settings, cue: normalizedCue, error: error instanceof Error ? error.message : 'Host voice generation failed.' };
+    return { ok: false, settings, cue: normalizedCue, error: error instanceof Error ? error.message : 'ElevenLabs generation failed.' };
   }
 }
 
@@ -2194,10 +2171,10 @@ async function generateHostVoiceCue(cueId: string): Promise<HostVoiceGenerateRes
   if (!cue) return { ok: false, settings, error: 'Audio cue not found.' };
   const text = cue.text.trim();
   if (!text) return { ok: false, settings, error: 'Cue text is empty.' };
-  if (!audio.enableHostVoice) return { ok: false, settings, error: 'Host voice is disabled.' };
+  if (!audio.enableHostVoice) return { ok: false, settings, error: 'Generated voice is disabled.' };
   try {
-    const generatedPath = hostVoiceOutputPath({ ...settings, audio }, cue, text);
-    if (!(await fileExists(generatedPath))) await synthesizeHostVoice({ ...settings, audio }, text, generatedPath);
+    const generated = await generateElevenLabsSpeech(safeAudioCueId(cue.id), text, path.join(settings.eventFolder, 'audio', 'generated', 'elevenlabs'));
+    const generatedPath = generated.filePath;
     const nextSettings = await writeSettings({
       ...settings,
       audio: normalizeAudioSettings({
@@ -2215,7 +2192,7 @@ async function generateHostVoiceCue(cueId: string): Promise<HostVoiceGenerateRes
     });
     return { ok: true, settings: nextSettings, generatedPath };
   } catch (error) {
-    return { ok: false, settings, error: error instanceof Error ? error.message : 'Host voice generation failed.' };
+    return { ok: false, settings, error: error instanceof Error ? error.message : 'ElevenLabs generation failed.' };
   }
 }
 
@@ -2494,12 +2471,12 @@ async function printAiQueueItem(itemId: string) {
   return updated;
 }
 
-async function photoName(eventFolder: string) {
+async function photoName(eventFolder: string, extension: '.jpg' | '.png') {
   const readNumericNames = async (folder: string) => {
     try {
       const entries = await fs.readdir(path.join(eventFolder, folder), { withFileTypes: true });
       return entries
-        .filter((entry) => entry.isFile() && /^\d+\.png$/i.test(entry.name))
+        .filter((entry) => entry.isFile() && /^\d+\.(?:png|jpe?g)$/i.test(entry.name))
         .map((entry) => Number.parseInt(path.parse(entry.name).name, 10))
         .filter((value) => Number.isFinite(value));
     } catch {
@@ -2508,7 +2485,7 @@ async function photoName(eventFolder: string) {
   };
   const numbers = [...(await readNumericNames('originals')), ...(await readNumericNames('finals'))];
   const nextNumber = numbers.length > 0 ? Math.max(...numbers) + 1 : 1;
-  return `${nextNumber}.png`;
+  return `${nextNumber}${extension}`;
 }
 
 async function listPrintersForPrint() {
@@ -2882,6 +2859,22 @@ app.whenReady().then(async () => {
     await createWindow('guest', 'preview=picker');
     return true;
   });
+  ipcMain.handle('window:preview-pose', async (_event, preview: unknown) => {
+    pendingPosePreview = preview;
+    if (guestWindow) {
+      guestWindow.show();
+      guestWindow.focus();
+      guestWindow.webContents.send('guest:preview-pose', preview);
+      return true;
+    }
+    await createWindow('guest', 'preview=pose');
+    return true;
+  });
+  ipcMain.handle('guest:take-pose-preview', () => {
+    const preview = pendingPosePreview;
+    pendingPosePreview = null;
+    return preview;
+  });
   ipcMain.handle(
     'window:capture-page',
     async (event, rect?: { x: number; y: number; width: number; height: number }) => {
@@ -2901,6 +2894,10 @@ app.whenReady().then(async () => {
   );
   ipcMain.handle('guest:set-fullscreen', (_event, fullscreen: boolean) => setGuestFullscreen(fullscreen));
   ipcMain.handle('guest:is-fullscreen', () => isGuestFullscreen());
+  ipcMain.handle('guest:set-camera-paused', (_event, paused: boolean) => {
+    guestWindow?.webContents.send('guest:camera-paused', Boolean(paused));
+    return true;
+  });
   ipcMain.handle('printers:list', async () => {
     const win = adminWindow ?? guestWindow;
     return win ? win.webContents.getPrintersAsync() : [];
@@ -2909,6 +2906,9 @@ app.whenReady().then(async () => {
     return saveImageData(request);
   });
   ipcMain.handle('canon:connect', () => connectCanon());
+  ipcMain.handle('canon:live-frame', () => getCanonLiveViewFrame());
+  ipcMain.handle('canon:prepare-capture', () => prepareCanonCapture());
+  ipcMain.handle('canon:release-focus', () => releaseCanonFocus());
   ipcMain.handle('canon:capture', async (_event, crop: CanonStillCrop) => {
     const captured = await captureCanonStill(crop);
     const dataUrl = await imageFileToDataUrl(captured.path);
@@ -2931,6 +2931,10 @@ app.whenReady().then(async () => {
   });
   ipcMain.handle('video:save-and-transcode', async (_event, request: SaveVideoRequest): Promise<SaveVideoResult> => {
     return saveSessionVideoData(request);
+  });
+  ipcMain.handle('video:append-outro', async (_event, request: { videoPath: string; finalImagePath: string; logoPath?: string }) => {
+    const outputPath = await appendSessionVideoOutro(request.videoPath, request.finalImagePath, request.logoPath ?? '');
+    return { path: outputPath, name: path.basename(outputPath) };
   });
   ipcMain.handle('gallery:upload-video', async (_event, request: BackgroundVideoUploadRequest) => {
     void uploadSessionVideoInBackground(request);

@@ -6,6 +6,7 @@ require.extensions['.ts'] = (module, filename) => module._compile(ts.transpileMo
 const { BUNDLED_SCENES, PHOTO_GUIDE_SCENES, RandomSceneSelector, sceneMatches, captionAt, slotFraming, slotGeometry, validateComposition } = require('../src/pose/scenes.ts');
 const { validateScene } = require('../src/pose/validation.ts');
 const photoPromptManifest = require('../src/pose/poses/photo-prompts-rest.json');
+const photoAssets = require('../src/pose/poses/photo-assets.json');
 const { addStep, moveStep, deleteStep, resizeScene, alignStep, moveMarker } = require('../src/pose/editor/operations.ts');
 const { normalizePoseGuide } = require('../electron/poseTypes.ts');
 const solo = () => structuredClone(BUNDLED_SCENES[0]);
@@ -27,17 +28,21 @@ test('playful library covers every category with four-second teaching and a held
   assert.deepEqual([...new Set(library.map(scene => scene.category))].sort(), ['couple', 'cute', 'family', 'friends', 'funny', 'glamour', 'group', 'kids', 'party', 'professional', 'solo', 'wedding']);
   assert.ok(library.filter(scene => ['funny', 'party', 'friends', 'kids'].includes(scene.category)).length > library.filter(scene => ['professional'].includes(scene.category)).length);
   for (const scene of library) {
-    assert.equal(scene.animation.durationMs, 4000);
-    assert.deepEqual(scene.animation.captions.map(caption => caption.timeMs), [0, 500, 1000, 1500, 2000]);
+    assert.equal(scene.animation.durationMs, 7000);
+    assert.deepEqual(scene.animation.captions.map(caption => caption.timeMs), [0, 500, 1000, 1500]);
+    assert.equal(scene.animation.captions.some(caption => caption.text === 'Find your mark'), false);
     assert.equal(captionAt(scene, 4000).caption, captionAt(scene, 2000).caption);
   }
 });
-test('photo guide pilot contains twelve valid packaged cutouts with four-second timelines', () => {
-  assert.equal(PHOTO_GUIDE_SCENES.length, 12);
-  assert.equal(new Set(PHOTO_GUIDE_SCENES.map(scene => scene.id)).size, 12);
+test('photo guide catalog contains a packaged cutout for every bundled scene', () => {
+  assert.equal(PHOTO_GUIDE_SCENES.length, BUNDLED_SCENES.length);
+  assert.equal(new Set(PHOTO_GUIDE_SCENES.map(scene => scene.id)).size, BUNDLED_SCENES.length);
+  assert.equal(photoAssets.length, BUNDLED_SCENES.length);
+  assert.deepEqual(photoAssets.map(asset => asset.id).sort(), BUNDLED_SCENES.map(scene => scene.id).sort());
   for (const scene of PHOTO_GUIDE_SCENES) {
     assert.equal(scene.visual.kind, 'photo-cutout');
-    assert.equal(scene.animation.durationMs, 4000);
+    assert.equal(scene.animation.durationMs, 7000);
+    assert.equal(scene.visual.assetPath, `pose-guides/${scene.id}.webp`);
     assert.ok(fs.statSync(require('node:path').join(__dirname, '..', 'public', scene.visual.assetPath)).size > 10000);
     assert.doesNotThrow(() => validateScene(structuredClone(scene)));
   }
@@ -99,17 +104,17 @@ test('random bags exhaust compatible scenes, avoid immediate repeats and allow o
 test('multi-person scenes keep one shared caption clock and separate roles', () => {
   const scene = BUNDLED_SCENES.find(scene => scene.id === 'friends-peace');
   assert.equal(scene.roles.length, 2);
-  assert.equal(captionAt(scene, 4000).elapsedMs, 4000);
-  assert.equal(captionAt(scene, 4000).caption, scene.animation.captions.at(-1).text);
+  assert.equal(captionAt(scene, 7000).elapsedMs, 7000);
+  assert.equal(captionAt(scene, 7000).caption, scene.animation.captions.at(-1).text);
 });
 test('teaching captions add, move and delete safely; collisions and duration truncation fail', () => {
   const added = addStep(solo(), 3500); assert.ok(added.animation.captions.some(frame => frame.timeMs === 3500));
   const moved = moveStep(added, 3500, 3700); assert.ok(moved.animation.captions.some(frame => frame.timeMs === 3700));
   assert.ok(!deleteStep(moved, 3700).animation.captions.some(frame => frame.timeMs === 3700));
-  assert.throws(() => moveStep(added, 3500, 2000));
-  assert.throws(() => resizeScene(solo(), 1800, false));
-  const stretched = resizeScene(solo(), 8000, true);
-  assert.equal(stretched.animation.captions.at(-1).timeMs, 4000);
+  assert.throws(() => moveStep(added, 3500, 1500));
+  assert.throws(() => resizeScene(solo(), 1000, false));
+  const stretched = resizeScene(solo(), 14000, true);
+  assert.equal(stretched.animation.captions.at(-1).timeMs, 3000);
   assert.equal(stretched.animation.captions[1].timeMs, 1000);
 });
 test('narration markers align captions, move together and stay anchored during stretch', () => {
@@ -132,19 +137,19 @@ test('validation rejects malformed roles, identities and remote assets', () => {
   pose = solo(); pose.compatibility.childSafe = 'yes'; assert.throws(() => validateScene(pose));
   pose = solo(); pose.audio = { filePath: 'https://remote/audio.wav' }; assert.throws(() => validateScene(pose));
 });
-test('photo pilot locks framing, keeps flexible family scenes, and holds the final caption', () => {
+test('photo catalog preserves authored compatibility and holds the final caption', () => {
   const pose = (id) => PHOTO_GUIDE_SCENES.find(scene => scene.id === id);
-  assert.deepEqual(pose('peace-and-wink').compatibility.framing, ['half']);
-  assert.deepEqual(pose('action-movie-diamond').compatibility.framing, ['full']);
-  assert.deepEqual(pose('secret-and-shock').compatibility.styles, ['friends']);
+  assert.deepEqual(pose('peace-and-wink').compatibility.framing, ['full', 'half']);
+  assert.deepEqual(pose('action-movie-diamond').compatibility.framing, ['full', 'half']);
+  assert.deepEqual(pose('secret-and-shock').compatibility.styles, ['friends', 'couple']);
   assert.deepEqual(pose('back-to-back-agents').compatibility.framing, ['full', 'half']);
   assert.equal(pose('family-superhero-team').compatibility.minPeople, 3);
   assert.equal(pose('family-superhero-team').compatibility.maxPeople, null);
   assert.deepEqual(pose('family-superhero-team').compatibility.framing, ['full', 'half']);
   assert.equal(pose('many-armed-idol').compatibility.minPeople, 5);
   for (const scene of PHOTO_GUIDE_SCENES) {
-    assert.equal(scene.animation.durationMs, 4000);
-    assert.equal(scene.animation.captions.at(-1).timeMs, 2000);
+    assert.equal(scene.animation.durationMs, 7000);
+    assert.equal(scene.animation.captions.at(-1).timeMs, 1500);
     assert.equal(captionAt(scene, 4000).caption, captionAt(scene, 2000).caption);
   }
 });
@@ -158,7 +163,9 @@ test('selection keeps count and style, then relaxes gender and age', () => {
   const runway = PHOTO_GUIDE_SCENES.find(scene => scene.id === 'runway-cross-step');
   assert.equal(sceneMatches(runway, group(0, 0, 1, 0, 'solo'), 'full'), false);
   assert.equal(new RandomSceneSelector([runway], () => 0).next(group(0, 0, 1, 0, 'solo'), 'full').id, 'runway-cross-step');
-  assert.equal(new RandomSceneSelector(PHOTO_GUIDE_SCENES, () => 0).next(group(2, 0, 0, 0, 'family'), 'full'), null);
+  const familyPair = new RandomSceneSelector(PHOTO_GUIDE_SCENES, () => 0).next(group(2, 0, 0, 0, 'family'), 'full');
+  assert.ok(familyPair);
+  assert.equal(sceneMatches(familyPair, group(2, 0, 0, 0, 'family'), 'full', true), true);
   const selector = new RandomSceneSelector(PHOTO_GUIDE_SCENES, () => .2);
   const first = selector.next(group(1, 0, 0, 0, 'solo'), 'full').id;
   const second = selector.next(group(1, 0, 0, 0, 'solo'), 'full').id;

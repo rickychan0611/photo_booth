@@ -19,7 +19,8 @@ import { PoseGuideOverlay, type PoseGuideHandle } from './pose/PoseGuideOverlay'
 import { GuestCompositionScreen, CompositionControls } from './pose/GuestCompositionScreen';
 import { EMPTY_COMPOSITION, RandomSceneSelector, slotFraming, slotGeometry, validateComposition } from './pose/scenes';
 import { loadPhotoGuideCatalog } from './pose/repository';
-import { normalizePoseGuide, type GuestComposition } from './pose/types';
+import { normalizePoseGuide, type GuestComposition, type PoseFraming, type PoseNarrationSettings, type PoseScene } from './pose/types';
+import { validateScene } from './pose/validation';
 const PoseEditor = lazy(() => import('./pose/editor/PoseEditor').then(module => ({ default: module.PoseEditor })));
 
 type GuestStep = 'queue' | 'welcome' | 'style' | 'design' | 'people' | 'intro' | 'capture' | 'select' | 'thanks';
@@ -46,6 +47,67 @@ type SelectContext = {
 const buttonText = (value: string) => `[ ${value} ]`;
 const PHONE_MAX_DIGITS = 15;
 const SELECT_PREVIEW_MAX_LONG_EDGE = 600;
+const ELEVENLABS_DEFAULTS: PoseNarrationSettings = { configured: false, voiceId: '0S5oIfi8zOZixuSj8K6n', modelId: 'eleven_v4_turbo', stability: .5, similarityBoost: .75, style: .2, speed: 1, direction: '[energetic] [happy] [Make it upbeat, fun]' };
+
+const decodeImage = (source: string) => new Promise<HTMLImageElement>((resolve, reject) => {
+  const image = new window.Image();
+  image.onload = () => resolve(image);
+  image.onerror = () => reject(new Error('Canon Live View returned an unreadable frame.'));
+  image.src = source;
+});
+
+async function openCanonLiveViewStream(signal: AbortSignal): Promise<MediaStream> {
+  const connected = await window.photoBooth.canonConnect();
+  if (!connected.ok) throw new Error(connected.error || 'Canon camera could not connect.');
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d', { alpha: false });
+  if (!context) throw new Error('Video canvas is unavailable.');
+  let stream: MediaStream | null = null;
+  let firstFrameResolve: (value: MediaStream) => void = () => undefined;
+  let firstFrameReject: (reason?: unknown) => void = () => undefined;
+  let firstFrameSettled = false;
+  const firstFrame = new Promise<MediaStream>((resolve, reject) => {
+    firstFrameResolve = resolve;
+    firstFrameReject = reject;
+  });
+
+  void (async () => {
+    try {
+      while (!signal.aborted) {
+        const startedAt = performance.now();
+        const dataUrl = await window.photoBooth.canonLiveFrame();
+        if (signal.aborted) break;
+        if (dataUrl) {
+          const image = await decodeImage(dataUrl);
+          if (!canvas.width || canvas.width !== image.naturalWidth || canvas.height !== image.naturalHeight) {
+            canvas.width = image.naturalWidth;
+            canvas.height = image.naturalHeight;
+          }
+          context.drawImage(image, 0, 0, canvas.width, canvas.height);
+          if (!stream) {
+            stream = canvas.captureStream(24);
+            firstFrameSettled = true;
+            firstFrameResolve(stream);
+          }
+        }
+        const remaining = 42 - (performance.now() - startedAt);
+        if (remaining > 0) await delay(remaining);
+      }
+    } catch (error) {
+      if (!firstFrameSettled) firstFrameReject(error);
+      firstFrameSettled = true;
+      console.warn('Canon USB Live View stopped.', error);
+    } finally {
+      stream?.getTracks().forEach((track) => track.stop());
+    }
+  })();
+
+  signal.addEventListener('abort', () => {
+    if (!firstFrameSettled) firstFrameReject(new DOMException('Canon Live View cancelled.', 'AbortError'));
+    firstFrameSettled = true;
+  }, { once: true });
+  return firstFrame;
+}
 
 function formatPhoneNumber(value: string) {
   const digits = value.replace(/\D/g, '').slice(0, PHONE_MAX_DIGITS);
@@ -129,6 +191,8 @@ function GuestApp() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const captureGuideRef = useRef<HTMLDivElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
+  const cameraAbortRef = useRef<AbortController | null>(null);
+  const activeCameraSourceRef = useRef<AppSettings['cameraSource'] | null>(null);
   const [cameraCapabilities, setCameraCapabilities] = useState<CameraCapabilitiesMap>({});
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const recordedChunksRef = useRef<Blob[]>([]);
@@ -147,6 +211,8 @@ function GuestApp() {
   const poseAbortRef = useRef<AbortController | null>(null);
   const [poseShot, setPoseShot] = useState({ number: 1, total: 1 });
   const [poseSessionEnabled, setPoseSessionEnabled] = useState(false);
+  const [cameraPausedByAdmin, setCameraPausedByAdmin] = useState(false);
+  const [poseGuestPreview, setPoseGuestPreview] = useState<{ scene: PoseScene; framing: PoseFraming } | null>(null);
   const queueModeEnabled = Boolean(settings?.staffControlQueueMode);
   const templateLayouts = settings?.template.layouts.map(normalizeTemplateLayoutForClient) ?? [];
   const activeTemplateLayouts = templateLayouts.filter((layout) => layout.active);
@@ -254,7 +320,18 @@ function GuestApp() {
   ]);
 
   useEffect(() => {
+    return window.photoBooth.onGuestCameraPaused(paused => {
+      setCameraPausedByAdmin(paused);
+      if (paused) stopCamera();
+    });
+  }, []);
+
+  useEffect(() => {
     if (!settings) return undefined;
+    if (cameraPausedByAdmin) {
+      stopCamera();
+      return undefined;
+    }
     if (!settings.audio.enabled) {
       stopAllAudio();
       return undefined;
@@ -270,7 +347,8 @@ function GuestApp() {
     const cueByStep: Partial<Record<GuestStep, string>> = {
       welcome: 'welcome',
       style: 'style',
-      design: 'design'
+      design: 'design',
+      people: 'people'
     };
     if (step !== 'welcome') stopAudioCue('welcome');
     const cueId = cueByStep[step];
@@ -381,6 +459,50 @@ function GuestApp() {
     });
   }, [settings]);
 
+  const showPoseOnGuest = (preview: unknown) => {
+    if (!preview || typeof preview !== 'object') return;
+    const payload = preview as { scene?: unknown; framing?: unknown };
+    const scene = validateScene(payload.scene);
+    const framing: PoseFraming = payload.framing === 'half' ? 'half' : 'full';
+    setPoseGuestPreview({ scene, framing });
+    setPoseSessionEnabled(true);
+    setPoseShot({ number: 1, total: 1 });
+    setCountdown(null);
+    setIsCapturing(false);
+    setCaptureMessage('');
+    setStep('capture');
+  };
+
+  const posePreviewTaken = useRef(false);
+  useEffect(() => {
+    if (!settings) return undefined;
+    const queryPreview = new URLSearchParams(window.location.search).get('preview') === 'pose';
+    if (queryPreview && !posePreviewTaken.current) {
+      posePreviewTaken.current = true;
+      void window.photoBooth.takePosePreview().then(preview => { if (preview) showPoseOnGuest(preview); });
+    }
+    return window.photoBooth.onPreviewPose(preview => { if (!poseAbortRef.current) showPoseOnGuest(preview); });
+  }, [settings]);
+
+  useEffect(() => {
+    if (!poseGuestPreview || step !== 'capture') return undefined;
+    const controller = new AbortController();
+    let stopped = false;
+    const run = async () => {
+      try { await startCamera('preview'); } catch { /* The pose still plays if the camera is unavailable. */ }
+      while (!stopped && !controller.signal.aborted) {
+        const guide = poseGuideRef.current;
+        if (!guide) { await delay(50); continue; }
+        const result = await guide.play(poseGuestPreview.scene, controller.signal, poseGuestPreview.framing);
+        if (stopped || controller.signal.aborted || result === 'cancelled') return;
+        if (result !== 'completed') { setError('This pose could not be shown on the guest screen.'); return; }
+        await guide.dismiss();
+      }
+    };
+    void run();
+    return () => { stopped = true; controller.abort(); poseGuideRef.current?.stop(); };
+  }, [poseGuestPreview, step]);
+
   useEffect(() => {
     if (!settings) return;
     const activeTemplateIds = new Set(settings.template.layouts.map((layout) => layout.id));
@@ -417,8 +539,11 @@ function GuestApp() {
   }, []);
 
   const stopCamera = () => {
+    cameraAbortRef.current?.abort();
+    cameraAbortRef.current = null;
     streamRef.current?.getTracks().forEach((track) => track.stop());
     streamRef.current = null;
+    activeCameraSourceRef.current = null;
     setCameraCapabilities({});
     if (videoRef.current) {
       videoRef.current.pause();
@@ -436,6 +561,12 @@ function GuestApp() {
   };
 
   const openCameraStream = async (quality: 'preview' | 'capture') => {
+    if (settings?.cameraSource === 'canon-usb') {
+      const controller = new AbortController();
+      cameraAbortRef.current?.abort();
+      cameraAbortRef.current = controller;
+      return openCanonLiveViewStream(controller.signal);
+    }
     const preferred: MediaTrackConstraints = quality === 'preview'
       ? { width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 30 } }
       : { width: { ideal: 3840 }, height: { ideal: 2160 }, frameRate: { ideal: 30 } };
@@ -469,7 +600,7 @@ function GuestApp() {
 
   const startCamera = async (quality: 'preview' | 'capture' = 'capture', options: { forceRestart?: boolean; runId?: number } = {}) => {
     if (!settings) throw new Error('Settings not ready.');
-    if (streamRef.current && !options.forceRestart) {
+    if (streamRef.current && activeCameraSourceRef.current === settings.cameraSource && !options.forceRestart) {
       await attachCameraStream(streamRef.current);
       return;
     }
@@ -486,6 +617,7 @@ function GuestApp() {
       return;
     }
     streamRef.current = stream;
+    activeCameraSourceRef.current = settings.cameraSource;
     await attachCameraStream(stream);
   };
 
@@ -505,7 +637,7 @@ function GuestApp() {
     return () => {
       active = false;
     };
-  }, [settings, step]);
+  }, [settings, step, cameraPausedByAdmin]);
 
   const pickRecorderMimeType = () => {
     const candidates = [
@@ -534,9 +666,9 @@ function GuestApp() {
     try {
       const displayStream = await navigator.mediaDevices.getDisplayMedia({
         video: {
-          frameRate: { ideal: 15, max: 15 },
-          width: { ideal: 854, max: 854 },
-          height: { ideal: 480, max: 480 }
+          frameRate: { ideal: 24, max: 24 },
+          width: { ideal: 1080, max: 1920 },
+          height: { ideal: 1920, max: 1920 }
         },
         audio: false
       });
@@ -561,8 +693,8 @@ function GuestApp() {
       const mimeType = pickRecorderMimeType();
       const recorder = new MediaRecorder(merged, {
         ...(mimeType ? { mimeType } : {}),
-        videoBitsPerSecond: 1_500_000,
-        audioBitsPerSecond: 96_000
+        videoBitsPerSecond: 8_000_000,
+        audioBitsPerSecond: 128_000
       });
       recorder.ondataavailable = (event) => {
         if (event.data && event.data.size > 0) recordedChunksRef.current.push(event.data);
@@ -597,16 +729,37 @@ function GuestApp() {
       const buffer = await blob.arrayBuffer();
       console.log('[video] stopping recording, saving', { bytes: buffer.byteLength });
       const saved = await window.photoBooth.saveSessionVideo({ data: buffer });
-      pendingVideoPathRef.current = saved.path;
       console.log('[video] saved locally at', saved.path);
-        void flushSessionVideoUpload();
-        return saved.path;
+      return saved.path;
       })
       .catch((error) => {
         console.warn('[video] could not finalize session recording.', error);
         stopRecordingTracks();
         return null;
       });
+  };
+
+  const scheduleSessionVideoOutro = (finalImagePath: string) => {
+    const sourceSave = pendingVideoSaveRef.current;
+    if (!sourceSave || !settings) return;
+    pendingVideoPathRef.current = null;
+    pendingVideoSaveRef.current = sourceSave.then(async (videoPath) => {
+      if (!videoPath) return null;
+      try {
+        const completed = await window.photoBooth.appendSessionVideoOutro({
+          videoPath,
+          finalImagePath,
+          logoPath: settings.template.logoPath
+        });
+        pendingVideoPathRef.current = completed.path;
+        console.log('[video] final photo and logo outro added', { path: completed.path });
+        return completed.path;
+      } catch (error) {
+        console.warn('[video] could not add final outro; using the session video.', error);
+        pendingVideoPathRef.current = videoPath;
+        return videoPath;
+      }
+    });
   };
 
   const flushSessionVideoUpload = async (ticketId?: string) => {
@@ -673,8 +826,6 @@ function GuestApp() {
           cropY: slot.cropY === 'top' ? 'top' : 'center'
         });
         assertCurrent();
-        setIsFlashing(true);
-        window.setTimeout(() => setIsFlashing(false), 180);
         const saved = await window.photoBooth.saveImage({ dataUrl: captured.dataUrl, kind: 'original', filenamePrefix: 'original' });
         assertCurrent();
         return { dataUrl: captured.dataUrl, ...saved };
@@ -933,6 +1084,7 @@ function GuestApp() {
       try { validateComposition(guests, normalizePoseGuide(settings.poseGuide).groupCapacity); }
       catch (error) { setError(String(error)); return; }
     }
+    setPoseGuestPreview(null);
     setPoseSessionEnabled(guideEnabled);
     const runId = sessionRunRef.current + 1;
     sessionRunRef.current = runId;
@@ -969,6 +1121,10 @@ function GuestApp() {
       if (sessionRunRef.current !== runId) {
         return;
       }
+      if (settings.canonEnabled) {
+        const canon = await window.photoBooth.canonConnect();
+        if (!canon.ok) throw new Error(canon.error || 'Could not connect to the Canon camera.');
+      }
       if (design?.videoRecordingEnabled) {
         await startSessionRecording();
       }
@@ -989,6 +1145,13 @@ function GuestApp() {
         let guided = false;
         if (pose && poseGuideRef.current) {
           stopAudioChannel('voice');
+          const opening = shot.message;
+          const openingCue = settings.audio.cues[`shot${Math.min(shotIndex, 11)}`] ?? shot.audioCue;
+          setCaptureMessage(opening);
+          void playAudioCueObject(settings, openingCue ? { ...openingCue, text: opening } : undefined, opening);
+          await delay(Math.max(700, shot.messageMs));
+          if (sessionRunRef.current !== runId) return;
+          setCaptureMessage('');
           const result = await poseGuideRef.current.play(pose, poseController.signal, framing);
           if (sessionRunRef.current !== runId || result === 'cancelled') return;
           guided = result === 'completed';
@@ -1010,14 +1173,26 @@ function GuestApp() {
           await poseGuideRef.current?.dismiss();
           await nextPaint();
         }
-        if (!(await runCountdown(runId))) return;
+        if (settings.canonEnabled) {
+          try {
+            await window.photoBooth.canonPrepareCapture();
+          } catch (focusError) {
+            console.warn('Canon countdown autofocus was unavailable.', focusError);
+          }
+        }
+        if (!(await runCountdown(runId))) {
+          if (settings.canonEnabled) void window.photoBooth.canonReleaseFocus().catch(() => undefined);
+          return;
+        }
         poseGuideRef.current?.hide();
+        void playAudioCue(settings, 'shutter');
+        setIsFlashing(true);
+        window.setTimeout(() => setIsFlashing(false), 180);
         // When taking more photos than slots, every shot is a candidate for any
         // slot, so crop them all to the first slot's aspect ratio for a
         // consistent selection grid. Otherwise match each slot in order.
         const capture = await captureFrame(guideSlot, false, runId);
         if (sessionRunRef.current !== runId) return;
-        void playAudioCue(settings, 'shutter');
         nextCaptures.push(capture);
         setCaptures([...nextCaptures]);
         await delay(350);
@@ -1151,6 +1326,7 @@ function GuestApp() {
         if (result.saved) {
           setPrintedNumber(displayedPhotoNumber(result.saved.name, uploadSession));
           pendingGalleryUploadRef.current = { settings, session: uploadSession, finalPath: result.saved.path };
+          scheduleSessionVideoOutro(result.saved.path);
           consumeQueuedPhoneSubmission();
         }
         setIsAiGenerating(false);
@@ -1169,6 +1345,7 @@ function GuestApp() {
       setPrintedNumber(displayedPhotoNumber(saved.name, uploadSession));
       setIsAiGenerating(false);
       console.log('[gallery-upload] final photo saved', { path: saved.path, hasUploadSession: Boolean(uploadSession) });
+      scheduleSessionVideoOutro(saved.path);
       if (uploadSession) {
         console.log('[gallery-upload] final upload waiting for phone entry', { ticketId: uploadSession.ticket.id, galleryUrl: uploadSession.galleryUrl });
         pendingGalleryUploadRef.current = { settings, session: uploadSession, finalPath: saved.path };
@@ -1342,6 +1519,7 @@ function GuestApp() {
     stopSessionRecording();
     stopCamera();
     stopAllAudio();
+    if (settings?.canonEnabled) void window.photoBooth.canonReleaseFocus().catch(() => undefined);
     setCountdown(null);
     setCaptureMessage('');
     setIsCapturing(false);
@@ -1525,6 +1703,7 @@ function GuestApp() {
               {captureMessage}
             </div>
           )}
+          {poseGuestPreview && <button className="pose-guest-exit" onClick={() => { setPoseGuestPreview(null); setPoseSessionEnabled(false); poseGuideRef.current?.stop(); setStep('welcome'); }}>Exit</button>}
           {countdown && (
             <>
               <div className="capture-camera-arrow" aria-hidden="true">
@@ -2370,6 +2549,8 @@ function AdminApp() {
   const [printers, setPrinters] = useState<Electron.PrinterInfo[]>([]);
   const [cameras, setCameras] = useState<MediaDeviceInfo[]>([]);
   const [message, setMessage] = useState('');
+  const [elevenLabs, setElevenLabs] = useState<PoseNarrationSettings>(ELEVENLABS_DEFAULTS);
+  const [elevenLabsApiKey, setElevenLabsApiKey] = useState('');
   const [gallerySearch, setGallerySearch] = useState('');
   const [cameraCapabilities, setCameraCapabilities] = useState<CameraCapabilitiesMap>({});
   const [cameraDefaultControls, setCameraDefaultControls] = useState<CameraControlSettings>({});
@@ -2410,6 +2591,7 @@ function AdminApp() {
     void refreshPrinters();
     void refreshCameras();
     void window.photoBooth.getGalleryUploadStatus().then(setGalleryUploadStatus);
+    void window.photoBooth.getPoseNarrationSettings().then(setElevenLabs).catch(error => setMessage(String(error)));
     return window.photoBooth.onGalleryUploadStatus((status) => {
       setGalleryUploadStatus(status);
       if (status.state === 'done' || status.state === 'failed') void refreshGallery();
@@ -2432,32 +2614,44 @@ function AdminApp() {
   useEffect(() => {
     if (tab !== 'camera' || !settings) return undefined;
     let stream: MediaStream | null = null;
+    let active = true;
+    const controller = new AbortController();
     const start = async () => {
       try {
-        stream = await navigator.mediaDevices.getUserMedia({
-          video: settings.cameraId ? { deviceId: { exact: settings.cameraId } } : true,
-          audio: false
-        });
-        setCameraDefaultControls(getCameraControlSettings(stream));
-        await applyCameraControls(stream, settings.cameraControls);
-        setCameraCapabilities(getCameraCapabilities(stream));
+        await window.photoBooth.setGuestCameraPaused(true);
+        await delay(350);
+        if (!active) return;
+        stream = settings.cameraSource === 'canon-usb'
+          ? await openCanonLiveViewStream(controller.signal)
+          : await navigator.mediaDevices.getUserMedia({
+              video: settings.cameraId ? { deviceId: { exact: settings.cameraId } } : true,
+              audio: false
+            });
+        if (settings.cameraSource === 'capture-card') {
+          setCameraDefaultControls(getCameraControlSettings(stream));
+          await applyCameraControls(stream, settings.cameraControls);
+          setCameraCapabilities(getCameraCapabilities(stream));
+        }
         setAdminStream(stream);
         if (cameraPreviewRef.current) {
           cameraPreviewRef.current.srcObject = stream;
           await cameraPreviewRef.current.play();
         }
-      } catch {
-        setMessage('Camera preview failed.');
+      } catch (error) {
+        setMessage(error instanceof Error ? `Camera preview failed: ${error.message}` : 'Camera preview failed.');
       }
     };
     void start();
     return () => {
+      active = false;
+      controller.abort();
       stream?.getTracks().forEach((track) => track.stop());
       setAdminStream(null);
       setCameraCapabilities({});
       setCameraDefaultControls({});
+      void window.photoBooth.setGuestCameraPaused(false);
     };
-  }, [settings?.cameraId, tab]);
+  }, [settings?.cameraId, settings?.cameraSource, tab]);
 
 
   const latestFinal = useMemo(() => gallery.finals[0], [gallery]);
@@ -2476,6 +2670,18 @@ function AdminApp() {
     return next;
   };
 
+  const saveElevenLabs = async () => {
+    try {
+      const next = await window.photoBooth.updatePoseNarrationSettings({
+        ...elevenLabs,
+        ...(elevenLabsApiKey.trim() ? { apiKey: elevenLabsApiKey.trim() } : {})
+      });
+      setElevenLabs(next);
+      setElevenLabsApiKey('');
+      setMessage(next.configured ? 'ElevenLabs settings saved.' : 'Add an ElevenLabs API key.');
+    } catch (error) { setMessage(error instanceof Error ? error.message : String(error)); }
+  };
+
   const saveWorkflowShot = (index: number, partial: Partial<TemplateWorkflowSettings['shots'][number]>) => {
     const shots = settings.workflow.shots.map((shot, shotIndex) =>
       shotIndex === index ? { ...shot, ...partial } : shot
@@ -2484,16 +2690,7 @@ function AdminApp() {
   };
 
   const saveAudioSettings = async (audio: AppSettings['audio'], text = 'Audio saved.') => {
-    const voiceChanged =
-      audio.voiceEngine !== settings.audio.voiceEngine ||
-      audio.voiceName !== settings.audio.voiceName ||
-      audio.speed !== settings.audio.speed;
     const next = await saveMessage({ audio }, text);
-    // Changing the voice invalidates every cached recording, so the lines stay
-    // silent until they are rebuilt.
-    if (voiceChanged && Object.values(next.audio.cues).some((cue) => cue.mode === 'host' && !cue.filePath)) {
-      setMessage('Voice changed. Press "Generate all host lines" to rebuild the spoken lines.');
-    }
     return next.audio;
   };
 
@@ -2504,24 +2701,12 @@ function AdminApp() {
         ...settings.audio,
         cues: {
           ...settings.audio.cues,
-          [cue.id]: { ...cue, updatedAt: new Date().toISOString() }
+          [cue.id]: { ...cue, filePath: textChanged && cue.mode === 'host' ? '' : cue.filePath, updatedAt: new Date().toISOString() }
         }
       },
       text
     );
-    // New words mean the cached recording was discarded; rebuild it now so the
-    // cue does not fall silent mid-event.
-    const savedCue = nextAudio.cues[cue.id];
-    if (
-      textChanged &&
-      nextAudio.enableHostVoice &&
-      savedCue?.mode === 'host' &&
-      savedCue.channel === 'voice' &&
-      savedCue.text.trim() &&
-      !savedCue.filePath
-    ) {
-      await generateHostVoiceCue(cue.id);
-    }
+    if (textChanged && nextAudio.cues[cue.id]?.mode === 'host') setMessage('Text saved. Press Generate MP3 to create the new ElevenLabs voice file.');
   };
 
   const uploadAudioCue = async (cueId: string) => {
@@ -2541,22 +2726,22 @@ function AdminApp() {
   };
 
   const generateHostVoiceCue = async (cueId: string, playAfterGenerate = false) => {
-    setMessage('Generating host voice...');
+    setMessage('Generating ElevenLabs MP3...');
     const result = await window.photoBooth.generateHostVoiceCue(cueId);
     await updateSettings(result.settings);
     if (!result.ok) {
-      setMessage(result.error ?? 'Host voice generation failed.');
+      setMessage(result.error ?? 'ElevenLabs generation failed.');
       return;
     }
-    setMessage('Host voice generated.');
+    setMessage('ElevenLabs MP3 generated.');
     if (playAfterGenerate) void playAudioCue(result.settings, cueId);
   };
 
   const generateAllHostVoiceCues = async () => {
-    setMessage('Generating all host voice lines...');
+    setMessage('Generating all ElevenLabs voice lines...');
     const result = await window.photoBooth.generateAllHostVoiceCues();
     await updateSettings(result.settings);
-    setMessage(result.ok ? 'All host voice lines generated.' : result.error ?? 'Host voice generation failed.');
+    setMessage(result.ok ? 'All ElevenLabs voice lines generated.' : result.error ?? 'ElevenLabs generation failed.');
   };
 
   const saveCameraControl = async (key: CameraControlKey, value: number) => {
@@ -2862,6 +3047,23 @@ function AdminApp() {
                 }}>Choose</button>
               </div>
             </label>
+            <div className="admin-card audio-settings-panel">
+              <div className="panel-title-row">
+                <div><h2>ElevenLabs voice</h2><p>Global voice used by Workflow and every pose narration.</p></div>
+                <strong>{elevenLabs.configured ? 'API ready' : 'API key needed'}</strong>
+              </div>
+              <div className="workflow-grid audio-global-grid">
+                <label>API key<input type="password" value={elevenLabsApiKey} placeholder={elevenLabs.configured ? 'Saved — enter only to replace' : 'Paste ElevenLabs API key'} onChange={event => setElevenLabsApiKey(event.target.value)} /></label>
+                <label>Voice ID<input value={elevenLabs.voiceId} onChange={event => setElevenLabs(value => ({ ...value, voiceId: event.target.value }))} /></label>
+                <label>Model<select value={elevenLabs.modelId} onChange={event => setElevenLabs(value => ({ ...value, modelId: event.target.value as PoseNarrationSettings['modelId'] }))}><option value="eleven_v4_turbo">V4 Turbo</option><option value="eleven_flash_v2_5">Flash v2.5</option><option value="eleven_multilingual_v2">Multilingual v2</option><option value="eleven_v3">Eleven v3</option></select></label>
+                <label>Speed<DraftInput type="number" min="0.7" max="1.2" step="0.05" value={elevenLabs.speed} onSave={value => setElevenLabs(current => ({ ...current, speed: Number(value) }))} /></label>
+                <label>Stability<DraftInput type="number" min="0" max="1" step="0.05" value={elevenLabs.stability} onSave={value => setElevenLabs(current => ({ ...current, stability: Number(value) }))} /></label>
+                <label>Similarity<DraftInput type="number" min="0" max="1" step="0.05" value={elevenLabs.similarityBoost} onSave={value => setElevenLabs(current => ({ ...current, similarityBoost: Number(value) }))} /></label>
+                <label>Style<DraftInput type="number" min="0" max="1" step="0.05" value={elevenLabs.style} onSave={value => setElevenLabs(current => ({ ...current, style: Number(value) }))} /></label>
+              </div>
+              <label>Voice direction<input value={elevenLabs.direction} onChange={event => setElevenLabs(value => ({ ...value, direction: event.target.value }))} /></label>
+              <div className="admin-actions"><button className="primary" onClick={() => void saveElevenLabs()}>Save ElevenLabs settings</button></div>
+            </div>
             <label>
               Guest idle screen logo
               <div className="inline-field">
@@ -2976,7 +3178,24 @@ function AdminApp() {
             <div className="camera-admin-layout">
               <div className="camera-settings-column">
                 <label>
-                  {settings.canonEnabled ? 'Capture card' : 'Camera'}
+                  Live video source
+                  <select
+                    value={settings.cameraSource}
+                    onChange={(event) => {
+                      const cameraSource = event.target.value === 'canon-usb' ? 'canon-usb' : 'capture-card';
+                      void saveMessage(
+                        { cameraSource, ...(cameraSource === 'canon-usb' ? { canonEnabled: true } : {}) },
+                        cameraSource === 'canon-usb' ? 'Canon USB-C Live View selected.' : 'HDMI capture card selected.'
+                      );
+                    }}
+                  >
+                    <option value="canon-usb">Canon USB-C Live View</option>
+                    <option value="capture-card">HDMI capture card</option>
+                  </select>
+                </label>
+                {settings.cameraSource === 'capture-card' && (
+                <label>
+                  Capture card
                   <select value={settings.cameraId} onChange={(event) => void saveMessage({ cameraId: event.target.value }, 'Camera saved.')}>
                     <option value="">Default camera</option>
                     {cameras.map((camera) => (
@@ -2984,6 +3203,7 @@ function AdminApp() {
                     ))}
                   </select>
                 </label>
+                )}
                 <label className="check-row">
                   <input
                     type="checkbox"
@@ -2993,8 +3213,11 @@ function AdminApp() {
                   Take photos with the Canon camera
                 </label>
                 <p className="muted">
-                  The capture card is the live picture. The Canon USB connection focuses and takes the full-resolution photo, then that photo is cropped to this viewfinder.
+                  {settings.cameraSource === 'canon-usb'
+                    ? 'Canon USB-C supplies the live mirror and recording. Full-resolution photos still use the Canon shutter and are cropped to this viewfinder.'
+                    : 'The capture card supplies the live mirror and recording. Canon USB focuses and takes the full-resolution photo.'}
                 </p>
+                {settings.cameraSource === 'capture-card' && (
                 <label>
                   Capture card framing
                   <select
@@ -3010,6 +3233,7 @@ function AdminApp() {
                     <option value="contain">HDMI shows the whole photo with bars</option>
                   </select>
                 </label>
+                )}
                 <div className="admin-actions">
                   <button
                     onClick={async () => {
@@ -3242,7 +3466,7 @@ function AdminApp() {
               </label>
               <p>Show the pose coach during photos. Random poses match the guest group and each photo slot. Edit demonstrations, captions and timing in Poses. Turn this off to use the photo messages below. Changes apply next session.</p>
               <label className="check-row"><input type="checkbox" checked={settings.poseGuide.selectionEnabled !== false} onChange={event => void saveMessage({ poseGuide: { ...settings.poseGuide, selectionEnabled: event.target.checked } }, 'Guest selection saved.')} />Ask who's joining before photos</label>
-              <label>Maximum guests<input type="number" min="1" max="30" value={settings.poseGuide.groupCapacity ?? 12} onChange={event => void saveMessage({ poseGuide: { ...settings.poseGuide, groupCapacity: Number(event.target.value) } }, 'Group capacity saved.')} /></label>
+              <label>Maximum guests<DraftInput type="number" min="1" max="30" step="1" value={settings.poseGuide.groupCapacity ?? 12} onSave={value => void saveMessage({ poseGuide: { ...settings.poseGuide, groupCapacity: Number(value) } }, 'Group capacity saved.')} /></label>
               {settings.poseGuide.selectionEnabled === false && <div className="fixed-composition"><h3>Event guest group</h3><CompositionControls value={normalizePoseGuide(settings.poseGuide).defaultComposition!} capacity={normalizePoseGuide(settings.poseGuide).groupCapacity} onChange={value => void saveMessage({ poseGuide: { ...settings.poseGuide, defaultComposition: value } }, 'Event group saved.')} /></div>}
             </div>
             <div className="admin-card workflow-session-card">
@@ -3337,9 +3561,9 @@ function AdminApp() {
                   </div>
                   <div className="workflow-photo-body">
                     <div className="workflow-photo-settings">
-                      <p>With the guide enabled, each photo gets a random compatible pose. These messages apply when the guide is off.</p>
+                      <p>With the guide enabled, this message appears before the pose. With the guide disabled, it remains the regular photo instruction.</p>
                       <label>
-                        Message
+                        Pose opening / photo message
                         <DraftInput
                           value={shot.message}
                           onSave={(value) => saveWorkflowShot(shotIndex, { message: value })}
@@ -3396,8 +3620,8 @@ function AdminApp() {
             <div className="admin-card audio-settings-panel">
               <div className="panel-title-row">
                 <div>
-                  <h2>Voice engine and volume</h2>
-                  <p>Global playback levels and offline host voice settings.</p>
+                  <h2>Audio and volume</h2>
+                  <p>Playback levels for generated voices, music, and effects. ElevenLabs is configured on the Event page.</p>
                 </div>
                 <label className="check-row compact-check">
                   <input
@@ -3416,16 +3640,14 @@ function AdminApp() {
                   ['voiceVolume', 'Voice volume'],
                   ['musicVolume', 'Music volume'],
                   ['sfxVolume', 'SFX volume'],
-                  ['speed', 'Host speed'],
-                  ['volume', 'Host volume'],
                   ['welcomeRepeatSeconds', 'Welcome repeat seconds']
                 ].map(([key, label]) => (
                   <label key={key}>
                     {label}
                     <DraftInput
                       type="number"
-                      min={key === 'speed' ? 0.5 : key === 'welcomeRepeatSeconds' ? 3 : 0}
-                      max={key === 'speed' ? 2 : key === 'welcomeRepeatSeconds' ? 60 : 1}
+                      min={key === 'welcomeRepeatSeconds' ? 3 : 0}
+                      max={key === 'welcomeRepeatSeconds' ? 60 : 1}
                       step={key === 'welcomeRepeatSeconds' ? 1 : 0.05}
                       value={settings.audio[key as keyof AppSettings['audio']] as number}
                       onSave={(value) =>
@@ -3437,26 +3659,6 @@ function AdminApp() {
                     />
                   </label>
                 ))}
-                <label>
-                  Voice engine
-                  <select
-                    value={settings.audio.voiceEngine}
-                    onChange={(event) =>
-                      void saveAudioSettings({ ...settings.audio, voiceEngine: event.target.value as AppSettings['audio']['voiceEngine'] })
-                    }
-                  >
-                    <option value="kokoro">Kokoro</option>
-                    <option value="piper">Piper</option>
-                  </select>
-                </label>
-                <label>
-                  Voice name
-                  <DraftInput
-                    value={settings.audio.voiceName}
-                    placeholder={settings.audio.voiceEngine === 'kokoro' ? 'af_heart' : 'en_US-lessac-medium'}
-                    onSave={(value) => saveAudioSettings({ ...settings.audio, voiceName: value })}
-                  />
-                </label>
               </div>
               <div className="admin-actions">
                 <label className="check-row compact-check">
@@ -3467,12 +3669,12 @@ function AdminApp() {
                       void saveAudioSettings({ ...settings.audio, enableHostVoice: event.target.checked })
                     }
                   />
-                  Enable host voice
+                  Enable generated voice
                 </label>
-                <button onClick={() => void generateAllHostVoiceCues()}>Generate all host lines</button>
+                <button onClick={() => void generateAllHostVoiceCues()}>Generate all MP3 files</button>
               </div>
               <p className="muted">
-                Host voice is generated offline into cached WAV files. Bundle Kokoro or Piper under resources/tts, or place tools in the event folder under audio/tts.
+                Generation uses ElevenLabs and requires internet. Generated MP3 files are saved in the event folder and play offline during sessions.
               </p>
             </div>
 
@@ -3484,7 +3686,7 @@ function AdminApp() {
                 </div>
               </div>
               <div className="audio-cue-grid">
-                {['welcome', 'style', 'design', 'intro', 'select', 'thanks'].map((cueId) => (
+                {['welcome', 'style', 'design', 'people', 'intro', 'select', 'thanks'].map((cueId) => (
                   <AudioCueCard
                     key={cueId}
                     cue={settings.audio.cues[cueId]}
@@ -3924,7 +4126,10 @@ function AudioCueCard({
           />
           {cue.label}
         </label>
-        <button type="button" onClick={() => onTest(cue)}>Test</button>
+        <div className="audio-cue-preview-actions">
+          <button type="button" onClick={() => onTest(cue)}>Play</button>
+          <button type="button" onClick={() => stopAudioCue(cue.id)} disabled={!cue.filePath}>Stop</button>
+        </div>
       </div>
       <div className="audio-cue-controls">
         <label>
@@ -3932,7 +4137,7 @@ function AudioCueCard({
           <select value={cue.mode} onChange={(event) => void onSave({ ...cue, mode: event.target.value as AudioCue['mode'] })}>
             <option value="off">Off</option>
             <option value="mp3">MP3</option>
-            {cue.channel === 'voice' && <option value="host">Host voice</option>}
+            {cue.channel === 'voice' && <option value="host">ElevenLabs voice</option>}
           </select>
         </label>
         <label>
@@ -3963,7 +4168,7 @@ function AudioCueCard({
       )}
       <div className="audio-file-row">
         <button type="button" onClick={() => void onUpload(cue.id)}>Upload MP3</button>
-        {cue.channel === 'voice' && <button type="button" onClick={() => void onGenerate(cue.id)}>Generate</button>}
+        {cue.channel === 'voice' && <button type="button" onClick={() => void onGenerate(cue.id)}>Generate MP3</button>}
         <button type="button" onClick={() => void onRemove(cue.id)} disabled={!cue.filePath}>Clear</button>
         <span title={cue.filePath}>{fileName || (cue.mode === 'mp3' ? 'No file' : settings.audio.enabled ? 'No file' : 'Audio off')}</span>
       </div>
@@ -3988,14 +4193,34 @@ function DraftInput({
   const valueText = String(value);
   const [draft, setDraft] = useState(valueText);
   const [isFocused, setIsFocused] = useState(false);
+  const numeric = rest.type === 'number';
 
   useEffect(() => {
     if (!isFocused) setDraft(valueText);
   }, [isFocused, valueText]);
 
+  const commit = () => {
+    if (!numeric) {
+      if (draft !== valueText) void onSave(draft);
+      return;
+    }
+    const parsed = Number(draft);
+    if (!draft.trim() || !Number.isFinite(parsed)) {
+      setDraft(valueText);
+      return;
+    }
+    const min = rest.min === undefined ? parsed : Number(rest.min);
+    const max = rest.max === undefined ? parsed : Number(rest.max);
+    const next = Math.min(max, Math.max(min, parsed));
+    if (next !== Number(valueText)) void onSave(String(next));
+    else setDraft(String(next));
+  };
+
   return (
     <input
       {...rest}
+      type={numeric ? 'text' : rest.type}
+      inputMode={numeric ? 'decimal' : rest.inputMode}
       value={draft}
       onFocus={(event) => {
         setIsFocused(true);
@@ -4005,7 +4230,11 @@ function DraftInput({
       onBlur={(event) => {
         setIsFocused(false);
         onBlur?.(event);
-        if (draft !== valueText) void onSave(draft);
+        commit();
+      }}
+      onKeyDown={(event) => {
+        rest.onKeyDown?.(event);
+        if (event.key === 'Enter') event.currentTarget.blur();
       }}
     />
   );
