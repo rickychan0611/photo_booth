@@ -1,7 +1,7 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type InputHTMLAttributes } from 'react';
 import QRCode from 'qrcode';
 import { ArrowLeft, ArrowUp, Camera, Copy, Download, Expand, ExternalLink, FolderOpen, Globe, Image, Minimize2, Printer, RefreshCw, RotateCw, Settings, SlidersHorizontal, Sparkles, Trash2, X } from 'lucide-react';
-import type { AiPreset, AiProvider, AiQueueItem, AppSettings, AudioCue, BoothSession, CameraControlSettings, CameraRotation, Capture, Gallery, GalleryUploadStatus, QueueSnapshot, SavedPhoto, TemplateDesign, TemplateLayout, TemplateSlot, TemplateWorkflowSettings } from './types';
+import type { AiPreset, AiProvider, AiQueueItem, AppSettings, AudioCue, BoothSession, CameraControlSettings, CameraRotation, Capture, CloudSyncStatus, Gallery, GalleryUploadStatus, QueueSnapshot, SavedPhoto, TemplateDesign, TemplateLayout, TemplateSlot, TemplateWorkflowSettings } from './types';
 import { detectPhotoSlots, layoutFromDetectedSlots, loadRasterFromFile, renderSlotMapThumbnail } from './templateMap';
 import { createGuideTemplateImage, createTemplatedPhotoLayer, createTemplatedPrintImageFromLayer, getPrimarySlot, MAX_PHOTOS_TO_TAKE, normalizePhotosToTake, normalizeTemplateLayoutForClient, normalizeTemplateWorkflow, templateDimensions } from './template';
 import {
@@ -2567,6 +2567,10 @@ function AdminApp() {
     message: 'No active upload.',
     active: 0
   });
+  const [cloudSyncStatus, setCloudSyncStatus] = useState<CloudSyncStatus>({
+    state: 'idle',
+    message: 'Cloud sync is ready.'
+  });
   const cameraPreviewRef = useRef<HTMLVideoElement>(null);
   const slotMapInputRef = useRef<HTMLInputElement>(null);
   const [adminStream, setAdminStream] = useState<MediaStream | null>(null);
@@ -2594,11 +2598,17 @@ function AdminApp() {
     void refreshPrinters();
     void refreshCameras();
     void window.photoBooth.getGalleryUploadStatus().then(setGalleryUploadStatus);
+    void window.photoBooth.getCloudSyncStatus().then(setCloudSyncStatus);
     void window.photoBooth.getPoseNarrationSettings().then(setElevenLabs).catch(error => setMessage(String(error)));
-    return window.photoBooth.onGalleryUploadStatus((status) => {
+    const removeGalleryListener = window.photoBooth.onGalleryUploadStatus((status) => {
       setGalleryUploadStatus(status);
       if (status.state === 'done' || status.state === 'failed') void refreshGallery();
     });
+    const removeSyncListener = window.photoBooth.onCloudSyncStatus(setCloudSyncStatus);
+    return () => {
+      removeGalleryListener();
+      removeSyncListener();
+    };
   }, []);
 
   useEffect(() => {
@@ -3139,6 +3149,31 @@ function AdminApp() {
                 onSave={(value) => saveMessage({ boothSecret: value }, 'Booth secret saved.')}
               />
             </label>
+            <div className="admin-card">
+              <div className="panel-title-row">
+                <div>
+                  <h2>Cloud sync</h2>
+                  <p>Saving an edit backs it up to the cloud. On another computer, press Sync now to download those changes. Camera, printer, folders, passwords, and API keys stay on each computer.</p>
+                </div>
+                <strong>{cloudSyncStatus.state === 'syncing' ? 'SYNCING' : cloudSyncStatus.state.toUpperCase()}</strong>
+              </div>
+              <p className="quiet">{cloudSyncStatus.message}</p>
+              {cloudSyncStatus.lastSyncedAt && (
+                <p className="quiet">Last synced {new Date(cloudSyncStatus.lastSyncedAt).toLocaleString()}</p>
+              )}
+              <div className="admin-actions">
+                <button
+                  disabled={cloudSyncStatus.state === 'syncing'}
+                  onClick={async () => {
+                    const status = await window.photoBooth.syncCloudNow();
+                    setCloudSyncStatus(status);
+                    setMessage(status.message);
+                  }}
+                >
+                  <RefreshCw size={16} />Sync now
+                </button>
+              </div>
+            </div>
             <div className="admin-actions">
               <button
                 onClick={async () => {

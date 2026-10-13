@@ -19,6 +19,7 @@ import type {
   TemplateUploadRequest,
   CanonConnectResult,
   CanonStillCrop,
+  CloudSyncStatus,
   SaveImageRequest,
   SaveImageResult,
   SaveVideoRequest,
@@ -44,6 +45,15 @@ const api = {
     ipcRenderer.on('settings:changed', listener);
     return () => {
       ipcRenderer.removeListener('settings:changed', listener);
+    };
+  },
+  getCloudSyncStatus: () => ipcRenderer.invoke('cloud-sync:status') as Promise<CloudSyncStatus>,
+  syncCloudNow: () => ipcRenderer.invoke('cloud-sync:now') as Promise<CloudSyncStatus>,
+  onCloudSyncStatus: (callback: (status: CloudSyncStatus) => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, status: CloudSyncStatus) => callback(status);
+    ipcRenderer.on('cloud-sync:status', listener);
+    return () => {
+      ipcRenderer.removeListener('cloud-sync:status', listener);
     };
   },
   exportSettings: () =>

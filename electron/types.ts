@@ -184,6 +184,12 @@ export type AppSettings = {
   printCalibration: PrintCalibrationSettings;
 };
 
+export type CloudSyncStatus = {
+  state: 'disabled' | 'idle' | 'syncing' | 'synced' | 'error';
+  message: string;
+  lastSyncedAt?: string;
+};
+
 export type AudioCueMode = 'off' | 'mp3' | 'host';
 
 export type AudioChannel = 'voice' | 'music' | 'sfx';

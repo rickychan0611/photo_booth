@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import { Mic } from 'lucide-react';
 import type { AppSettings } from '../../types';
 import { pauseAudioCue, playAudioCueObject, resumeAudioCue, seekAudioCue, stopAudioCue } from '../../audio';
 import { isBundledPoseAsset, resolvePoseAsset } from '../assets';
@@ -49,6 +50,7 @@ function PoseGalleryCard({ scene, onOpen }: { scene: PoseScene; onOpen: () => vo
     <span className="pose-gallery-thumb" style={{ background: scene.visual?.accent ? `color-mix(in srgb, ${scene.visual.accent} 24%, #121212)` : '#171717' }}>
       {src && !failed ? <img src={src} alt="" onError={() => setFailed(true)} /> : <span className="pose-gallery-missing">No photo</span>}
       <span className="pose-gallery-badge">{framing}</span>
+      {scene.audio?.filePath ? <span className="pose-gallery-voice" role="img" aria-label="Voice narration assigned" title="Voice narration assigned"><Mic size={16} aria-hidden="true" /></span> : null}
     </span>
     <strong>{scene.name}</strong>
     <small>{scene.category} · {peopleLabel(scene)}</small>
@@ -72,6 +74,7 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
   const [aiDescription, setAiDescription] = useState('');
   const [aiProvider, setAiProvider] = useState(settings.ai.poseGenerator.provider);
   const player = useRef<ScenePlayer | null>(null), countdownTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const galleryScrollTop = useRef(0);
   const dirty = JSON.stringify(draft) !== JSON.stringify(saved);
   const bundled = BUNDLED_SCENES.some(scene => scene.id === draft.id);
   const photo = draft.visual?.kind === 'photo-cutout';
@@ -84,7 +87,10 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
   const [narrationScript, setNarrationScript] = useState('');
   const refresh = async () => { const result = await loadPhotoGuideCatalog(); setCatalog(result.poses); if (result.errors.length) setMessage(result.errors.join('\n')); };
   useEffect(() => { void refresh(); }, []);
-  useEffect(() => { document.querySelector('.admin-panel')?.scrollTo({ top: 0 }); }, [page, draft.id]);
+  useLayoutEffect(() => {
+    const panel = document.querySelector<HTMLElement>('.admin-panel');
+    if (panel) panel.scrollTop = page === 'gallery' ? galleryScrollTop.current : 0;
+  }, [page, draft.id]);
   useEffect(() => { setNarrationScript(''); }, [draft.id]);
   useEffect(() => {
     const assetPath = draft.visual?.assetPath;
@@ -100,19 +106,12 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
     if (draft.audio?.filePath) void readNarration(draft.audio.filePath).then(result => { if (!cancelled) setNarration(result); }).catch(error => { if (!cancelled) setMessage(String(error)); });
     return () => { cancelled = true; stopAudioCue(CUE); };
   }, [draft.audio?.filePath]);
-  useEffect(() => {
-    if (!narration.durationMs || !draft.audio) return;
-    const fitted = fitSceneToNarration(draft, narration.durationMs);
-    if (JSON.stringify(fitted.animation) === JSON.stringify(draft.animation) && JSON.stringify(fitted.audio) === JSON.stringify(draft.audio)) return;
-    setDraft(fitted);
-  }, [narration.durationMs, draft.audio?.filePath]);
   useEffect(() => () => { stopAudioCue(CUE); player.current?.dispose(); if (countdownTimer.current) clearTimeout(countdownTimer.current); }, []);
   const stopPreview = () => { setPlaying(false); pauseAudioCue(CUE); player.current?.stop(); if (countdownTimer.current) clearTimeout(countdownTimer.current); setCountdownPreview(null); };
   function apply(operation: (scene: PoseScene) => PoseScene) {
     stopPreview();
     try {
-      let next = operation(cloneScene(draft));
-      if (bundled) next = { ...next, id: newId(), name: `${next.name} (copy)` };
+      const next = operation(cloneScene(draft));
       validateScene(next);
       setPast(history => [...history.slice(-49), cloneScene(draft)]); setFuture([]); setDraft(next); setMessage('');
     } catch (error) { setMessage(String(error)); }
@@ -122,7 +121,11 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
     stopPreview(); stopAudioCue(CUE); setDraft(cloneScene(scene)); setSaved(cloneScene(scene)); setPast([]); setFuture([]); setTime(0); setMessage('');
     return true;
   };
-  const openScene = (scene: PoseScene) => { if (select(scene)) setPage('detail'); };
+  const openScene = (scene: PoseScene) => {
+    if (!select(scene)) return;
+    if (page === 'gallery') galleryScrollTop.current = document.querySelector<HTMLElement>('.admin-panel')?.scrollTop ?? 0;
+    setPage('detail');
+  };
   const backToGallery = () => {
     if (dirty && !window.confirm('Discard unsaved pose changes?')) return;
     stopPreview(); stopAudioCue(CUE); setDraft(cloneScene(saved)); setPast([]); setFuture([]); setTime(0); setPage('gallery');
@@ -172,7 +175,6 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
   const save = () => write(async () => {
     let scene = validateScene(cloneScene(draft));
     if (narration.durationMs && scene.audio) scene = fitSceneToNarration(scene, narration.durationMs);
-    if (bundled) scene = { ...scene, id: newId(), name: `${scene.name} (copy)` };
     const stored = await window.photoBooth.savePose(scene); setDraft(stored); setSaved(cloneScene(stored)); await refresh();
   }, 'Pose saved. It will be available next session.');
   const updatePoseGenerator = async (provider: typeof aiProvider, patch: Partial<{ apiUrl: string; model: string }> = {}) => {
@@ -208,7 +210,7 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
     try { await playAudioCueObject(settings, { id: CUE, label: draft.name, mode: 'mp3', channel: 'voice', text: narrationScript, filePath: draft.audio.filePath, enabled: true, loop: false, volume: 1, updatedAt: '' }, '', narration.dataUrl); }
     catch (error) { setMessage(String(error)); }
   };
-  if (page === 'gallery') return <div className="pose-editor pose-gallery">
+  const gallery = <div className="pose-editor pose-gallery" hidden={page !== 'gallery'}>
     <header className="pose-gallery-header">
       <div>
         <h2>Pose library</h2>
@@ -225,7 +227,9 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
     {visibleCatalog.length ? <div className="pose-library-list">{visibleCatalog.map(scene => <PoseGalleryCard key={scene.id} scene={scene} onOpen={() => openScene(scene)} />)}</div> : <p className="pose-gallery-empty">No poses match this filter.</p>}
   </div>;
 
-  return <div className="pose-editor">
+  return <>
+    {gallery}
+    {page === 'detail' ? <div className="pose-editor">
     <button type="button" className="pose-back" onClick={backToGallery}>Back</button>
     <header className="admin-card pose-editor-header">
       <div className="pose-editor-heading">
@@ -337,5 +341,6 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
         <p className="pose-preview-hint">This is the offline guide guests will see. Captions and narration follow the timeline.</p>
       </aside>
     </div>
-  </div>;
+    </div> : null}
+  </>;
 }

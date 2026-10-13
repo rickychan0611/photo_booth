@@ -387,6 +387,9 @@ export function installMockApi() {
       });
     },
     onSettingsChanged: () => () => undefined,
+    getCloudSyncStatus: async () => ({ state: 'disabled' as const, message: 'Cloud sync is available in Electron.' }),
+    syncCloudNow: async () => ({ state: 'disabled' as const, message: 'Cloud sync is available in Electron.' }),
+    onCloudSyncStatus: () => () => undefined,
     exportSettings: async () => ({ ok: false, error: 'Settings export is available in Electron.' }),
     importSettings: async () => ({ ok: false, error: 'Settings import is available in Electron.' }),
     chooseFolder: async () => {

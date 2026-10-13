@@ -8,8 +8,9 @@ import { pathToFileURL } from 'node:url';
 import crypto from 'node:crypto';
 import ffmpegStatic from 'ffmpeg-static';
 import { captureCanonStill, connectCanon, getCanonLiveViewFrame, prepareCanonCapture, releaseCanonFocus, stopCanonService } from './canon';
-import { generateElevenLabsSpeech, registerPoseStorage } from './poseStorage';
+import { generateElevenLabsSpeech, listStoredPoses, registerPoseStorage, replaceStoredPoses } from './poseStorage';
 import { registerPoseAi } from './poseAi';
+import { applyCloudPoseLibrary, applyCloudSnapshot, cloudFingerprint, cloudProfileId, cloudSyncConfigured, fetchCloudSnapshot, pushCloudSnapshot } from './cloudSync';
 import type {
   AiGenerateRequest,
   AiGenerateResult,
@@ -25,6 +26,7 @@ import type {
   GalleryUploadStatus,
   HostVoiceGenerateResult,
   CanonStillCrop,
+  CloudSyncStatus,
   SaveImageRequest,
   SaveImageResult,
   SaveVideoRequest,
@@ -60,6 +62,7 @@ const defaultEventFolder = () => path.join(app.getPath('pictures'), 'Photo Booth
 const settingsPath = () => path.join(app.getPath('userData'), 'settings.json');
 const settingsBackupPath = () => path.join(app.getPath('userData'), 'settings.json.bak');
 const settingsTempPath = () => path.join(app.getPath('userData'), 'settings.json.tmp');
+const cloudSyncStatePath = () => path.join(app.getPath('userData'), 'cloud-sync-state.json');
 const portableSettingsToken = {
   eventFolder: '${EVENT_FOLDER}',
   appUserData: '${APP_USER_DATA}',
@@ -480,6 +483,7 @@ async function writeSettings(settings: AppSettings): Promise<AppSettings> {
   for (const win of BrowserWindow.getAllWindows()) {
     if (!win.isDestroyed()) win.webContents.send('settings:changed', cleaned);
   }
+  scheduleCloudSave();
   return cleaned;
 }
 
@@ -2626,8 +2630,163 @@ function modalParent() {
   return adminWindow ?? guestWindow;
 }
 
+type StoredCloudSyncState = {
+  profileId: string;
+  cloudRevision: number;
+  localFingerprint: string;
+  lastSyncedAt: string;
+};
+
+let cloudSyncStatus: CloudSyncStatus = {
+  state: 'idle',
+  message: 'Cloud sync is ready.'
+};
+let cloudSyncRunning: Promise<CloudSyncStatus> | null = null;
+let cloudSaveDelay: NodeJS.Timeout | null = null;
+let applyingCloudSettings = false;
+
+function publishCloudSyncStatus(status: CloudSyncStatus) {
+  cloudSyncStatus = status;
+  for (const win of BrowserWindow.getAllWindows()) {
+    if (!win.isDestroyed()) win.webContents.send('cloud-sync:status', status);
+  }
+  return status;
+}
+
+async function readCloudSyncState(): Promise<StoredCloudSyncState | null> {
+  try {
+    return JSON.parse(await fs.readFile(cloudSyncStatePath(), 'utf8')) as StoredCloudSyncState;
+  } catch {
+    return null;
+  }
+}
+
+async function writeCloudSyncState(state: StoredCloudSyncState) {
+  await fs.writeFile(cloudSyncStatePath(), `${JSON.stringify(state, null, 2)}${os.EOL}`, 'utf8');
+}
+
+async function performCloudSync(): Promise<CloudSyncStatus> {
+  const local = await readSettings();
+  if (!cloudSyncConfigured(local)) {
+    return publishCloudSyncStatus({
+      state: 'error',
+      message: 'Add the Supabase URL, publishable key, Event ID, and booth secret before syncing.'
+    });
+  }
+
+  publishCloudSyncStatus({ state: 'syncing', message: 'Syncing event settings, templates, and poses…' });
+  try {
+    const localPoses = (await listStoredPoses()).poses;
+    const profileId = cloudProfileId(local);
+    const stored = await readCloudSyncState();
+    const state = stored?.profileId === profileId ? stored : null;
+    const remote = await fetchCloudSnapshot(local);
+    const localFingerprint = cloudFingerprint(local, localPoses);
+
+    if (!remote) {
+      const pushed = await pushCloudSnapshot(local, localPoses);
+      const lastSyncedAt = pushed.updated_at || new Date().toISOString();
+      await writeCloudSyncState({ profileId, cloudRevision: pushed.revision, localFingerprint, lastSyncedAt });
+      return publishCloudSyncStatus({ state: 'synced', message: 'Cloud profile created from this computer.', lastSyncedAt });
+    }
+
+    if (!state) {
+      const materialized = await applyCloudSnapshot(local, remote.payload);
+      const cloudPoses = await applyCloudPoseLibrary(local, remote.payload);
+      if (cloudPoses) await replaceStoredPoses(cloudPoses);
+      applyingCloudSettings = true;
+      const saved = await writeSettings(normalizeLoadedSettings(materialized, local));
+      applyingCloudSettings = false;
+      const lastSyncedAt = remote.updated_at || new Date().toISOString();
+      await writeCloudSyncState({ profileId, cloudRevision: remote.revision, localFingerprint: cloudFingerprint(saved, cloudPoses ?? localPoses), lastSyncedAt });
+      return publishCloudSyncStatus({ state: 'synced', message: 'Downloaded the shared event profile.', lastSyncedAt });
+    }
+
+    const localChanged = localFingerprint !== state.localFingerprint;
+    const cloudChanged = remote.revision !== state.cloudRevision;
+    if (cloudChanged) {
+      const materialized = await applyCloudSnapshot(local, remote.payload);
+      const cloudPoses = await applyCloudPoseLibrary(local, remote.payload);
+      if (cloudPoses) await replaceStoredPoses(cloudPoses);
+      applyingCloudSettings = true;
+      const saved = await writeSettings(normalizeLoadedSettings(materialized, local));
+      applyingCloudSettings = false;
+      const lastSyncedAt = remote.updated_at || new Date().toISOString();
+      await writeCloudSyncState({ profileId, cloudRevision: remote.revision, localFingerprint: cloudFingerprint(saved, cloudPoses ?? localPoses), lastSyncedAt });
+      return publishCloudSyncStatus({ state: 'synced', message: 'Downloaded changes from another computer.', lastSyncedAt });
+    }
+
+    if (localChanged) {
+      const pushed = await pushCloudSnapshot(local, localPoses);
+      const lastSyncedAt = pushed.updated_at || new Date().toISOString();
+      await writeCloudSyncState({ profileId, cloudRevision: pushed.revision, localFingerprint, lastSyncedAt });
+      return publishCloudSyncStatus({ state: 'synced', message: cloudChanged ? 'Synced this computer’s newer changes.' : 'Uploaded local changes.', lastSyncedAt });
+    }
+
+    const lastSyncedAt = remote.updated_at || state.lastSyncedAt;
+    await writeCloudSyncState({ ...state, cloudRevision: remote.revision, lastSyncedAt });
+    return publishCloudSyncStatus({ state: 'synced', message: 'Everything is up to date.', lastSyncedAt });
+  } catch (error) {
+    applyingCloudSettings = false;
+    const message = error instanceof Error ? error.message : String(error);
+    return publishCloudSyncStatus({ state: 'error', message: `Cloud sync failed: ${message}` });
+  }
+}
+
+async function performCloudSave(): Promise<CloudSyncStatus> {
+  const local = await readSettings();
+  if (!cloudSyncConfigured(local)) return cloudSyncStatus;
+
+  publishCloudSyncStatus({ state: 'syncing', message: 'Saving changes to the cloud…' });
+  try {
+    const localPoses = (await listStoredPoses()).poses;
+    const profileId = cloudProfileId(local);
+    const stored = await readCloudSyncState();
+    const state = stored?.profileId === profileId ? stored : null;
+    const remote = await fetchCloudSnapshot(local);
+    const localFingerprint = cloudFingerprint(local, localPoses);
+
+    if (remote && (!state || remote.revision !== state.cloudRevision)) {
+      return publishCloudSyncStatus({
+        state: 'error',
+        message: 'Another computer has newer cloud changes. Press Sync now before editing further.'
+      });
+    }
+    if (state && localFingerprint === state.localFingerprint) {
+      return publishCloudSyncStatus({ state: 'synced', message: 'Everything is saved to the cloud.', lastSyncedAt: state.lastSyncedAt });
+    }
+
+    const pushed = await pushCloudSnapshot(local, localPoses);
+    const lastSyncedAt = pushed.updated_at || new Date().toISOString();
+    await writeCloudSyncState({ profileId, cloudRevision: pushed.revision, localFingerprint, lastSyncedAt });
+    return publishCloudSyncStatus({ state: 'synced', message: 'Changes saved to the cloud.', lastSyncedAt });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    return publishCloudSyncStatus({ state: 'error', message: `Cloud save failed: ${message}` });
+  }
+}
+
+function runCloudSync() {
+  if (cloudSyncRunning) return cloudSyncRunning;
+  cloudSyncRunning = performCloudSync().finally(() => { cloudSyncRunning = null; });
+  return cloudSyncRunning;
+}
+
+function scheduleCloudSave() {
+  if (!app.isReady() || applyingCloudSettings) return;
+  if (cloudSaveDelay) clearTimeout(cloudSaveDelay);
+  cloudSaveDelay = setTimeout(() => {
+    cloudSaveDelay = null;
+    if (cloudSyncRunning) {
+      scheduleCloudSave();
+      return;
+    }
+    cloudSyncRunning = performCloudSave().finally(() => { cloudSyncRunning = null; });
+  }, 1200);
+}
+
 app.whenReady().then(async () => {
-  registerPoseStorage();
+  registerPoseStorage(scheduleCloudSave);
   registerPoseAi(readSettings);
   await readSettings();
 
@@ -2656,6 +2815,8 @@ app.whenReady().then(async () => {
   });
 
   ipcMain.handle('settings:get', readSettings);
+  ipcMain.handle('cloud-sync:status', () => cloudSyncStatus);
+  ipcMain.handle('cloud-sync:now', () => runCloudSync());
   ipcMain.handle('settings:update', async (_event, partial: Partial<AppSettings>) => {
     const current = await readSettings();
     const next: AppSettings = {
@@ -2976,5 +3137,6 @@ app.on('window-all-closed', () => {
 });
 
 app.on('will-quit', () => {
+  if (cloudSaveDelay) clearTimeout(cloudSaveDelay);
   stopCanonService();
 });

@@ -19,7 +19,7 @@ export async function listStoredPoses(): Promise<PoseCatalog> {
   await writes;
   await fs.mkdir(directory(), { recursive: true });
   const poses: PoseScene[] = [], errors: string[] = [];
-  for (const name of (await fs.readdir(directory())).filter(name => name.endsWith('.json')).sort()) {
+  for (const name of (await fs.readdir(directory())).filter(name => name.endsWith('.json') && name !== path.basename(narrationConfigPath())).sort()) {
     try {
       const file = path.join(directory(), name); const stat = await fs.lstat(file);
       if (!stat.isFile() || stat.size > MAX_JSON) throw new Error('Not a bounded JSON file.');
@@ -29,6 +29,30 @@ export async function listStoredPoses(): Promise<PoseCatalog> {
     } catch (error) { errors.push(`${name}: ${String(error)}`); }
   }
   return { poses, errors };
+}
+export function replaceStoredPoses(values: unknown[]) {
+  const poses = values.map(validateScene);
+  const ids = new Set(poses.map(pose => pose.id));
+  if (ids.size !== poses.length) throw new Error('The synced pose library contains duplicate IDs.');
+  const serializedPoses = poses.map(pose => {
+    const text = `${JSON.stringify(pose, null, 2)}\n`;
+    if (Buffer.byteLength(text) > MAX_JSON) throw new Error(`Pose ${pose.id} is too large.`);
+    return { pose, text };
+  });
+  return serialized(async () => {
+    await fs.mkdir(directory(), { recursive: true });
+    for (const { pose, text } of serializedPoses) {
+      const target = posePath(pose.id), temporary = `${target}.${crypto.randomUUID()}.tmp`;
+      try { await fs.writeFile(temporary, text, { flag: 'wx' }); await fs.rename(temporary, target); }
+      finally { await fs.rm(temporary, { force: true }); }
+    }
+    for (const name of await fs.readdir(directory())) {
+      if (!name.endsWith('.json') || name === path.basename(narrationConfigPath())) continue;
+      const id = name.slice(0, -'.json'.length);
+      if (!ids.has(id)) await fs.rm(path.join(directory(), name), { force: true });
+    }
+    return poses;
+  });
 }
 export function saveStoredPose(value: unknown) {
   const pose = validateScene(value), text = `${JSON.stringify(pose, null, 2)}\n`;
@@ -130,10 +154,10 @@ export async function generateElevenLabsSpeech(id: string, rawText: string, outp
 async function generatePoseNarration(request: PoseNarrationGenerateRequest) {
   return generateElevenLabsSpeech(request.poseId, request.text);
 }
-export function registerPoseStorage() {
+export function registerPoseStorage(onLibraryChanged?: () => void) {
   ipcMain.handle('poses:list', () => listStoredPoses());
-  ipcMain.handle('poses:save', (event, value: unknown) => { adminOnly(event); return saveStoredPose(value); });
-  ipcMain.handle('poses:delete', (event, id: string) => { adminOnly(event); return deleteStoredPose(id); });
+  ipcMain.handle('poses:save', async (event, value: unknown) => { adminOnly(event); const pose = await saveStoredPose(value); onLibraryChanged?.(); return pose; });
+  ipcMain.handle('poses:delete', async (event, id: string) => { adminOnly(event); const deleted = await deleteStoredPose(id); onLibraryChanged?.(); return deleted; });
   ipcMain.handle('poses:export', async (event, value: unknown) => {
     adminOnly(event); const pose = validateScene(value);
     const result = await dialog.showSaveDialog({ title: 'Export pose JSON', defaultPath: `${pose.id}.json`, filters: [{ name: 'Pose JSON', extensions: ['json'] }] });

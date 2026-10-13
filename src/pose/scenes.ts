@@ -1,5 +1,6 @@
 import bundledScenes from './poses/scenes.json';
 import photoAssets from './poses/photo-assets.json';
+import narrationAssets from './poses/narration-assets.json';
 import { validateScene } from './validation';
 import type { GuestComposition, ParticipantRole, PoseFraming, PoseRole, PoseScene, SceneFrame } from './types';
 
@@ -102,5 +103,14 @@ function withPhotoCutout(scene: PoseScene): PoseScene {
   });
 }
 
+export function withNarration(scene: PoseScene): PoseScene {
+  if (scene.audio?.filePath) return scene;
+  const narration = (narrationAssets as Record<string, { filePath: string; durationMs: number; cues: string[] }>)[scene.id];
+  if (!narration) return scene;
+  return validateScene({ ...scene,
+    audio: { filePath: narration.filePath, startMs: 0, markers: [] },
+    animation: { durationMs: Math.min(120000, narration.durationMs + 1000), captions: narration.cues.map((text, index) => ({ text, timeMs: narration.cues.length === 1 ? 0 : Math.round(narration.durationMs * index / (narration.cues.length - 1)) })) }
+  });
+}
 export const BUNDLED_SCENES: PoseScene[] = bundledScenes.map(scene => validateScene(scene)).map(withPhotoCutout);
 export const PHOTO_GUIDE_SCENES = BUNDLED_SCENES.filter(scene => scene.visual?.kind === 'photo-cutout');
