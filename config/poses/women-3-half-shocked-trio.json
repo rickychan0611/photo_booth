@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "women-3-half-shocked-trio",
+  "name": "Shocked Trio",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-3",
+    "framing-half",
+    "mood-funny",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the shock",
+  "animation": {
+    "durationMs": 6150,
+    "captions": [
+      {
+        "text": "Same gasp",
+        "timeMs": 0
+      },
+      {
+        "text": "Hands on cheeks",
+        "timeMs": 1717
+      },
+      {
+        "text": "Eyes huge",
+        "timeMs": 3433
+      },
+      {
+        "text": "Hold the shock",
+        "timeMs": 5150
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-3-half-shocked-trio.webp",
+    "alt": "Hold the shock",
+    "accent": "#0a9f9f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-3-half-shocked-trio-5a9a4337e9a32c.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

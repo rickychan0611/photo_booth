@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "family-3-full-generation-pose",
+  "name": "Generation Pose",
+  "category": "family",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-family-3",
+    "framing-full",
+    "mood-cool",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Hold the portrait",
+  "animation": {
+    "durationMs": 7530,
+    "captions": [
+      {
+        "text": "Stagger your height",
+        "timeMs": 0
+      },
+      {
+        "text": "Hands in pockets or on hips",
+        "timeMs": 2177
+      },
+      {
+        "text": "Look just off camera",
+        "timeMs": 4353
+      },
+      {
+        "text": "Hold the portrait",
+        "timeMs": 6530
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/family-3-full-generation-pose.webp",
+    "alt": "Hold the portrait",
+    "accent": "#1769ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/family-3-full-generation-pose-434e168938a84f.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

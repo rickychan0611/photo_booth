@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 2,
+  "id": "peace-and-wink",
+  "name": "Peace and Wink",
+  "category": "cute",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-wink",
+    "child-safe",
+    "solo"
+  ],
+  "instruction": "Smile and wink",
+  "animation": {
+    "durationMs": 6250,
+    "captions": [
+      {
+        "text": "Raise one hand",
+        "timeMs": 0
+      },
+      {
+        "text": "Make a peace sign",
+        "timeMs": 1750
+      },
+      {
+        "text": "Tilt your head",
+        "timeMs": 3500
+      },
+      {
+        "text": "Smile and wink",
+        "timeMs": 5250
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 1,
+    "maxPeople": 1,
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/peace-and-wink.webp",
+    "alt": "Smile and wink",
+    "accent": "#0a9f9f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/peace-and-wink-d022d5bd58b3c6.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

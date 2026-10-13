@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 2,
+  "id": "family-squeeze-attack",
+  "name": "Family Squeeze Attack",
+  "category": "family",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-triangle",
+    "expression-bigSmile",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Laugh at the camera",
+  "animation": {
+    "durationMs": 7030,
+    "captions": [
+      {
+        "text": "Move close together",
+        "timeMs": 0
+      },
+      {
+        "text": "Lean toward the center",
+        "timeMs": 2010
+      },
+      {
+        "text": "Squeeze gently",
+        "timeMs": 4020
+      },
+      {
+        "text": "Laugh at the camera",
+        "timeMs": 6030
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": null,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/family-squeeze-attack.webp",
+    "alt": "Laugh at the camera",
+    "accent": "#0a9f9f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/family-squeeze-attack-b8cec06a351e77.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "id": "dance-battle-freeze",
+  "name": "Dance Battle Freeze",
+  "category": "party",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-diamond",
+    "expression-bigSmile",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Dance faces",
+  "animation": {
+    "durationMs": 6490,
+    "captions": [
+      {
+        "text": "Split into dance teams",
+        "timeMs": 0
+      },
+      {
+        "text": "Start your moves",
+        "timeMs": 1830
+      },
+      {
+        "text": "Freeze mid-battle",
+        "timeMs": 3660
+      },
+      {
+        "text": "Dance faces",
+        "timeMs": 5490
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends",
+      "group"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/dance-battle-freeze.webp",
+    "alt": "Dance faces",
+    "accent": "#ef2929"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/dance-battle-freeze-fe570f51ee520d.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

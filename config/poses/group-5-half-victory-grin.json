@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-half-victory-grin",
+  "name": "Victory Grin",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-half",
+    "mood-crazy",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the win",
+  "animation": {
+    "durationMs": 6330,
+    "captions": [
+      {
+        "text": "Lean in hard",
+        "timeMs": 0
+      },
+      {
+        "text": "Huge grins",
+        "timeMs": 1777
+      },
+      {
+        "text": "Someone points up",
+        "timeMs": 3553
+      },
+      {
+        "text": "Hold the win",
+        "timeMs": 5330
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-half-victory-grin.webp",
+    "alt": "Hold the win",
+    "accent": "#ffd21a"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-victory-grin-29b4b7c5559c50.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

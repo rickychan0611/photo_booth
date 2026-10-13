@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "women-2-full-bestie-dip",
+  "name": "Bestie Dip",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-2",
+    "framing-full",
+    "mood-crazy",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Freeze the laugh",
+  "animation": {
+    "durationMs": 6960,
+    "captions": [
+      {
+        "text": "Take a dance hold",
+        "timeMs": 0
+      },
+      {
+        "text": "Dip dramatically",
+        "timeMs": 1987
+      },
+      {
+        "text": "Free arm in the air",
+        "timeMs": 3973
+      },
+      {
+        "text": "Freeze the laugh",
+        "timeMs": 5960
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-2-full-bestie-dip.webp",
+    "alt": "Freeze the laugh",
+    "accent": "#ffd21a"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-2-full-bestie-dip-402f276357a4fa.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

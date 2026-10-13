@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 2,
+  "id": "human-wave",
+  "name": "Human Wave",
+  "category": "funny",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-layers",
+    "expression-panic",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the wave",
+  "animation": {
+    "durationMs": 6800,
+    "captions": [
+      {
+        "text": "Form a close line",
+        "timeMs": 0
+      },
+      {
+        "text": "Start leaning outside",
+        "timeMs": 1933
+      },
+      {
+        "text": "Build a wave",
+        "timeMs": 3867
+      },
+      {
+        "text": "Hold the wave",
+        "timeMs": 5800
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/human-wave.webp",
+    "alt": "Hold the wave",
+    "accent": "#1769ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/human-wave-c4cf3ce2536222.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

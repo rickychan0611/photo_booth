@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "id": "women-4-half-sunglasses-wall",
+  "name": "Sunglasses Wall",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-4",
+    "framing-half",
+    "mood-cool",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the wall",
+  "animation": {
+    "durationMs": 6330,
+    "captions": [
+      {
+        "text": "Glasses on",
+        "timeMs": 0
+      },
+      {
+        "text": "Lower them together",
+        "timeMs": 1777
+      },
+      {
+        "text": "One cool stare",
+        "timeMs": 3553
+      },
+      {
+        "text": "Hold the wall",
+        "timeMs": 5330
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-4-half-sunglasses-wall.webp",
+    "alt": "Hold the wall",
+    "accent": "#1769ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-4-half-sunglasses-wall-5b89473e037cca.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

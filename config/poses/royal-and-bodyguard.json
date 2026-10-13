@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "royal-and-bodyguard",
+  "name": "Royal and Bodyguard",
+  "category": "friends",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-smirk",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Regal and serious",
+  "animation": {
+    "durationMs": 7690,
+    "captions": [
+      {
+        "text": "Royal steps forward",
+        "timeMs": 0
+      },
+      {
+        "text": "Guard stands behind",
+        "timeMs": 2230
+      },
+      {
+        "text": "Set your roles",
+        "timeMs": 4460
+      },
+      {
+        "text": "Regal and serious",
+        "timeMs": 6690
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "friends",
+      "couple"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/royal-and-bodyguard.webp",
+    "alt": "Regal and serious",
+    "accent": "#1769ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/royal-and-bodyguard-639903e727b525.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

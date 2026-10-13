@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 2,
+  "id": "many-armed-idol",
+  "name": "Many-Armed Idol",
+  "category": "party",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-layers",
+    "expression-confident",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Idol face",
+  "animation": {
+    "durationMs": 7530,
+    "captions": [
+      {
+        "text": "Choose the center idol",
+        "timeMs": 0
+      },
+      {
+        "text": "Hide behind in layers",
+        "timeMs": 2177
+      },
+      {
+        "text": "Fan every arm outward",
+        "timeMs": 4353
+      },
+      {
+        "text": "Idol face",
+        "timeMs": 6530
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/many-armed-idol.webp",
+    "alt": "Idol face",
+    "accent": "#ff168f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/many-armed-idol-8667f62be2f186.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

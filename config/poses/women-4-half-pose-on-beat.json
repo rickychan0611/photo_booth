@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "id": "women-4-half-pose-on-beat",
+  "name": "Pose on the Beat",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-4",
+    "framing-half",
+    "mood-challenge",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Freeze together",
+  "animation": {
+    "durationMs": 5910,
+    "captions": [
+      {
+        "text": "Hands down",
+        "timeMs": 0
+      },
+      {
+        "text": "Hit pose one",
+        "timeMs": 1637
+      },
+      {
+        "text": "Hit pose two",
+        "timeMs": 3273
+      },
+      {
+        "text": "Freeze together",
+        "timeMs": 4910
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-4-half-pose-on-beat.webp",
+    "alt": "Freeze together",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-4-half-pose-on-beat-c5f37bb48e1a50.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

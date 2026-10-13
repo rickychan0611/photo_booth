@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 2,
+  "id": "kids-take-over",
+  "name": "Kids Take Over",
+  "category": "family",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-triangle",
+    "expression-smirk",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Adults look worried",
+  "animation": {
+    "durationMs": 7840,
+    "captions": [
+      {
+        "text": "Kids take the center",
+        "timeMs": 0
+      },
+      {
+        "text": "Adults move behind",
+        "timeMs": 2280
+      },
+      {
+        "text": "Kids act like bosses",
+        "timeMs": 4560
+      },
+      {
+        "text": "Adults look worried",
+        "timeMs": 6840
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": null,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/kids-take-over.webp",
+    "alt": "Adults look worried",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/kids-take-over-c030fbe2c57a5c.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

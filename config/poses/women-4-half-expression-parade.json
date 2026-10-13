@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "id": "women-4-half-expression-parade",
+  "name": "Expression Parade",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-4",
+    "framing-half",
+    "mood-crazy",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Freeze the wildest",
+  "animation": {
+    "durationMs": 8890,
+    "captions": [
+      {
+        "text": "Cute, cool, shocked, unhinged",
+        "timeMs": 0
+      },
+      {
+        "text": "Switch on one count",
+        "timeMs": 2630
+      },
+      {
+        "text": "New face each",
+        "timeMs": 5260
+      },
+      {
+        "text": "Freeze the wildest",
+        "timeMs": 7890
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-4-half-expression-parade.webp",
+    "alt": "Freeze the wildest",
+    "accent": "#ef2929"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-4-half-expression-parade-aef6d2a4cfd1d6.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

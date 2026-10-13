@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "women-3-half-peace-crown",
+  "name": "Peace Crown",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-3",
+    "framing-half",
+    "mood-cute",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the crown",
+  "animation": {
+    "durationMs": 7110,
+    "captions": [
+      {
+        "text": "Peace signs around one face",
+        "timeMs": 0
+      },
+      {
+        "text": "Middle friend shines",
+        "timeMs": 2037
+      },
+      {
+        "text": "Tilt together",
+        "timeMs": 4073
+      },
+      {
+        "text": "Hold the crown",
+        "timeMs": 6110
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-3-half-peace-crown.webp",
+    "alt": "Hold the crown",
+    "accent": "#ff168f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-3-half-peace-crown-71a5adee4f597e.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

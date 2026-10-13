@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "men-3-full-comedy-chase",
+  "name": "Comedy Chase",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-men-3",
+    "framing-full",
+    "mood-funny",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Freeze the chase",
+  "animation": {
+    "durationMs": 6720,
+    "captions": [
+      {
+        "text": "One runs ahead",
+        "timeMs": 0
+      },
+      {
+        "text": "Two reach to grab him",
+        "timeMs": 1907
+      },
+      {
+        "text": "Everyone looks back",
+        "timeMs": 3813
+      },
+      {
+        "text": "Freeze the chase",
+        "timeMs": 5720
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "men",
+      "repeatable": false
+    },
+    {
+      "role": "men",
+      "repeatable": false
+    },
+    {
+      "role": "men",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/men-3-full-comedy-chase.webp",
+    "alt": "Freeze the chase",
+    "accent": "#ff168f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/men-3-full-comedy-chase-cba5228321a77d.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

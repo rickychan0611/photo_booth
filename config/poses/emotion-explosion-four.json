@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 2,
+  "id": "emotion-explosion-four",
+  "name": "Emotion Explosion",
+  "category": "funny",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-diamond",
+    "expression-deadpan",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Explode at the end",
+  "animation": {
+    "durationMs": 6800,
+    "captions": [
+      {
+        "text": "Line up tightly",
+        "timeMs": 0
+      },
+      {
+        "text": "Look down the line",
+        "timeMs": 1933
+      },
+      {
+        "text": "Pass the reaction",
+        "timeMs": 3867
+      },
+      {
+        "text": "Explode at the end",
+        "timeMs": 5800
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/emotion-explosion-four.webp",
+    "alt": "Explode at the end",
+    "accent": "#1769ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/emotion-explosion-four-f503b3b7ab942e.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

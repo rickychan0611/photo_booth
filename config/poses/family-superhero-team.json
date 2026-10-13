@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "family-superhero-team",
+  "name": "Family Superhero Team",
+  "category": "family",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-triangle",
+    "expression-determined",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Family saves the day",
+  "animation": {
+    "durationMs": 8240,
+    "captions": [
+      {
+        "text": "Adults anchor behind",
+        "timeMs": 0
+      },
+      {
+        "text": "Hero steps forward",
+        "timeMs": 2413
+      },
+      {
+        "text": "Everyone powers up",
+        "timeMs": 4827
+      },
+      {
+        "text": "Family saves the day",
+        "timeMs": 7240
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": null,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/family-superhero-team.webp",
+    "alt": "Family saves the day",
+    "accent": "#ef2929"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/family-superhero-team-6dd555dfd282da.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

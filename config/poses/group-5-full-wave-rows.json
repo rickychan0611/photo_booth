@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-full-wave-rows",
+  "name": "Wave Rows",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-full",
+    "mood-cute",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the crest",
+  "animation": {
+    "durationMs": 6640,
+    "captions": [
+      {
+        "text": "Back row starts the wave",
+        "timeMs": 0
+      },
+      {
+        "text": "Front row follows",
+        "timeMs": 1880
+      },
+      {
+        "text": "Hands high",
+        "timeMs": 3760
+      },
+      {
+        "text": "Hold the crest",
+        "timeMs": 5640
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-full-wave-rows.webp",
+    "alt": "Hold the crest",
+    "accent": "#7d22c9"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-wave-rows-e406b466384bc1.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

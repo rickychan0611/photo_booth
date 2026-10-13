@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-half-silly-filter",
+  "name": "Silly Filter",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-half",
+    "mood-crazy",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the mess",
+  "animation": {
+    "durationMs": 6960,
+    "captions": [
+      {
+        "text": "Pick the weirdest face you can",
+        "timeMs": 0
+      },
+      {
+        "text": "Show it at once",
+        "timeMs": 1987
+      },
+      {
+        "text": "No matching allowed",
+        "timeMs": 3973
+      },
+      {
+        "text": "Hold the mess",
+        "timeMs": 5960
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-half-silly-filter.webp",
+    "alt": "Hold the mess",
+    "accent": "#ff168f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-silly-filter-bc70dcd32be244.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

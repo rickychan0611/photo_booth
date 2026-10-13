@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 2,
+  "id": "back-to-back-agents",
+  "name": "Back-to-Back Agents",
+  "category": "friends",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-determined",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Secret-agent faces",
+  "animation": {
+    "durationMs": 6960,
+    "captions": [
+      {
+        "text": "Stand back-to-back",
+        "timeMs": 0
+      },
+      {
+        "text": "Cross your arms",
+        "timeMs": 1987
+      },
+      {
+        "text": "Look opposite ways",
+        "timeMs": 3973
+      },
+      {
+        "text": "Secret-agent faces",
+        "timeMs": 5960
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "couple",
+      "friends"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/back-to-back-agents.webp",
+    "alt": "Secret-agent faces",
+    "accent": "#1769ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/back-to-back-agents-a6938e882df347.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

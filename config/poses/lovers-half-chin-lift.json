@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "lovers-half-chin-lift",
+  "name": "Chin Lift",
+  "category": "couple",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-lovers",
+    "framing-half",
+    "mood-cool",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Hold the movie stare",
+  "animation": {
+    "durationMs": 7610,
+    "captions": [
+      {
+        "text": "One hand under the chin",
+        "timeMs": 0
+      },
+      {
+        "text": "Lift it just a little",
+        "timeMs": 2203
+      },
+      {
+        "text": "Look into the lens",
+        "timeMs": 4407
+      },
+      {
+        "text": "Hold the movie stare",
+        "timeMs": 6610
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/lovers-half-chin-lift.webp",
+    "alt": "Hold the movie stare",
+    "accent": "#08cbe8"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/lovers-half-chin-lift-6cca4a47819c35.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

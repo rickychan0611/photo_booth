@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 2,
+  "id": "family-4-half-kid-whisper",
+  "name": "Kid Whisper",
+  "category": "family",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-family-4",
+    "framing-half",
+    "mood-cute",
+    "child-safe",
+    "cooperative",
+    "with-kids"
+  ],
+  "instruction": "Hold the secret",
+  "animation": {
+    "durationMs": 7350,
+    "captions": [
+      {
+        "text": "Child whispers to one grownup",
+        "timeMs": 0
+      },
+      {
+        "text": "That face changes",
+        "timeMs": 2117
+      },
+      {
+        "text": "The others lean in",
+        "timeMs": 4233
+      },
+      {
+        "text": "Hold the secret",
+        "timeMs": 6350
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "child",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/family-4-half-kid-whisper.webp",
+    "alt": "Hold the secret",
+    "accent": "#ffd21a"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/family-4-half-kid-whisper-6f535268771f80.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

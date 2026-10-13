@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 2,
+  "id": "family-3-half-silly-faces-kid",
+  "name": "Silly Faces",
+  "category": "family",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-family-3",
+    "framing-half",
+    "mood-funny",
+    "child-safe",
+    "cooperative",
+    "with-kids"
+  ],
+  "instruction": "Freeze the silliest",
+  "animation": {
+    "durationMs": 7030,
+    "captions": [
+      {
+        "text": "Kids pick the faces",
+        "timeMs": 0
+      },
+      {
+        "text": "Grownup copies them",
+        "timeMs": 2010
+      },
+      {
+        "text": "Worse is better",
+        "timeMs": 4020
+      },
+      {
+        "text": "Freeze the silliest",
+        "timeMs": 6030
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "child",
+      "repeatable": false
+    },
+    {
+      "role": "child",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/family-3-half-silly-faces-kid.webp",
+    "alt": "Freeze the silliest",
+    "accent": "#ef2929"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/family-3-half-silly-faces-kid-a15f43b50e872f.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 2,
+  "id": "family-4-full-one-kid-star",
+  "name": "One Kid Star",
+  "category": "family",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-family-4",
+    "framing-full",
+    "mood-cute",
+    "child-safe",
+    "cooperative",
+    "with-kids"
+  ],
+  "instruction": "Hold the star",
+  "animation": {
+    "durationMs": 7530,
+    "captions": [
+      {
+        "text": "Child takes the front",
+        "timeMs": 0
+      },
+      {
+        "text": "Three grownups fan behind",
+        "timeMs": 2177
+      },
+      {
+        "text": "Copy the kid's hands",
+        "timeMs": 4353
+      },
+      {
+        "text": "Hold the star",
+        "timeMs": 6530
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "child",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/family-4-full-one-kid-star.webp",
+    "alt": "Hold the star",
+    "accent": "#7d22c9"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/family-4-full-one-kid-star-a35b85429c75f7.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

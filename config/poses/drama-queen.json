@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 2,
+  "id": "drama-queen",
+  "name": "Drama Queen",
+  "category": "funny",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-panic",
+    "child-safe",
+    "solo"
+  ],
+  "instruction": "Maximum drama!",
+  "animation": {
+    "durationMs": 6800,
+    "captions": [
+      {
+        "text": "Lift your chest",
+        "timeMs": 0
+      },
+      {
+        "text": "Throw hands upward",
+        "timeMs": 1933
+      },
+      {
+        "text": "Tip your head back",
+        "timeMs": 3867
+      },
+      {
+        "text": "Maximum drama!",
+        "timeMs": 5800
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 1,
+    "maxPeople": 1,
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/drama-queen.webp",
+    "alt": "Maximum drama!",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/drama-queen-dbce3fd98f9d7d.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

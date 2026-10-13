@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "women-3-full-silly-walk",
+  "name": "Silly Walk",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-3",
+    "framing-full",
+    "mood-funny",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the nonsense",
+  "animation": {
+    "durationMs": 7770,
+    "captions": [
+      {
+        "text": "Each pick a silly step",
+        "timeMs": 0
+      },
+      {
+        "text": "March toward the camera",
+        "timeMs": 2257
+      },
+      {
+        "text": "Stop at the same time",
+        "timeMs": 4513
+      },
+      {
+        "text": "Hold the nonsense",
+        "timeMs": 6770
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-3-full-silly-walk.webp",
+    "alt": "Hold the nonsense",
+    "accent": "#7d22c9"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-3-full-silly-walk-90adb5c0b79d5c.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "lovers-half-matching-smirk",
+  "name": "Matching Smirk",
+  "category": "couple",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-lovers",
+    "framing-half",
+    "mood-cool",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Do not blink",
+  "animation": {
+    "durationMs": 6410,
+    "captions": [
+      {
+        "text": "Same head tilt",
+        "timeMs": 0
+      },
+      {
+        "text": "One eyebrow up",
+        "timeMs": 1803
+      },
+      {
+        "text": "Match the smirk",
+        "timeMs": 3607
+      },
+      {
+        "text": "Do not blink",
+        "timeMs": 5410
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/lovers-half-matching-smirk.webp",
+    "alt": "Do not blink",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/lovers-half-matching-smirk-ffb79acc6b441f.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 2,
+  "id": "family-4-half-crown-the-kid",
+  "name": "Crown the Kid",
+  "category": "family",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-family-4",
+    "framing-half",
+    "mood-cool",
+    "child-safe",
+    "cooperative",
+    "with-kids"
+  ],
+  "instruction": "Hold the crown",
+  "animation": {
+    "durationMs": 7530,
+    "captions": [
+      {
+        "text": "Kids make a crown with hands",
+        "timeMs": 0
+      },
+      {
+        "text": "One child wears it",
+        "timeMs": 2177
+      },
+      {
+        "text": "Grownup steadies the pose",
+        "timeMs": 4353
+      },
+      {
+        "text": "Hold the crown",
+        "timeMs": 6530
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "child",
+      "repeatable": false
+    },
+    {
+      "role": "child",
+      "repeatable": false
+    },
+    {
+      "role": "child",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/family-4-half-crown-the-kid.webp",
+    "alt": "Hold the crown",
+    "accent": "#7d22c9"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/family-4-half-crown-the-kid-153ccaf08550c9.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

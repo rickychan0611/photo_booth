@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-full-stadium-jump",
+  "name": "Stadium Jump",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-full",
+    "mood-crazy",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Land with arms up",
+  "animation": {
+    "durationMs": 6640,
+    "captions": [
+      {
+        "text": "Pack into two rows",
+        "timeMs": 0
+      },
+      {
+        "text": "Bend your knees",
+        "timeMs": 1880
+      },
+      {
+        "text": "Jump on three",
+        "timeMs": 3760
+      },
+      {
+        "text": "Land with arms up",
+        "timeMs": 5640
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-full-stadium-jump.webp",
+    "alt": "Land with arms up",
+    "accent": "#0a9f9f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-stadium-jump-39f01a8394676a.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "men-3-half-three-smirks",
+  "name": "Three Smirks",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-men-3",
+    "framing-half",
+    "mood-cool",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold it",
+  "animation": {
+    "durationMs": 5830,
+    "captions": [
+      {
+        "text": "Lean in a triangle",
+        "timeMs": 0
+      },
+      {
+        "text": "Same smirk",
+        "timeMs": 1610
+      },
+      {
+        "text": "Eyes on the lens",
+        "timeMs": 3220
+      },
+      {
+        "text": "Hold it",
+        "timeMs": 4830
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "men",
+      "repeatable": false
+    },
+    {
+      "role": "men",
+      "repeatable": false
+    },
+    {
+      "role": "men",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/men-3-half-three-smirks.webp",
+    "alt": "Hold it",
+    "accent": "#1769ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/men-3-half-three-smirks-e0662ffcb587b7.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

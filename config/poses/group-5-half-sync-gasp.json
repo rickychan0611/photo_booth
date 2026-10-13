@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-half-sync-gasp",
+  "name": "Sync Gasp",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-half",
+    "mood-funny",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the gasp",
+  "animation": {
+    "durationMs": 5990,
+    "captions": [
+      {
+        "text": "Hands ready",
+        "timeMs": 0
+      },
+      {
+        "text": "Gasp together",
+        "timeMs": 1663
+      },
+      {
+        "text": "Eyes wide",
+        "timeMs": 3327
+      },
+      {
+        "text": "Hold the gasp",
+        "timeMs": 4990
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-half-sync-gasp.webp",
+    "alt": "Hold the gasp",
+    "accent": "#ef2929"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-sync-gasp-01d6b33e914104.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

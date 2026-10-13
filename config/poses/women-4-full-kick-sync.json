@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "id": "women-4-full-kick-sync",
+  "name": "Kick Sync",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-4",
+    "framing-full",
+    "mood-challenge",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the line",
+  "animation": {
+    "durationMs": 5990,
+    "captions": [
+      {
+        "text": "Link arms",
+        "timeMs": 0
+      },
+      {
+        "text": "Same leg ready",
+        "timeMs": 1663
+      },
+      {
+        "text": "Kick on one count",
+        "timeMs": 3327
+      },
+      {
+        "text": "Hold the line",
+        "timeMs": 4990
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-4-full-kick-sync.webp",
+    "alt": "Hold the line",
+    "accent": "#7d22c9"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-4-full-kick-sync-05c12d1683144f.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

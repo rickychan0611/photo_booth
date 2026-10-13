@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "id": "runway-cross-step",
+  "name": "Runway Cross-Step",
+  "category": "glamour",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-confident",
+    "adult-only",
+    "solo"
+  ],
+  "instruction": "Runway eyes",
+  "animation": {
+    "durationMs": 6640,
+    "captions": [
+      {
+        "text": "Cross one step",
+        "timeMs": 0
+      },
+      {
+        "text": "Lengthen your body",
+        "timeMs": 1880
+      },
+      {
+        "text": "Relax your arms",
+        "timeMs": 3760
+      },
+      {
+        "text": "Runway eyes",
+        "timeMs": 5640
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 1,
+    "maxPeople": 1,
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/runway-cross-step.webp",
+    "alt": "Runway eyes",
+    "accent": "#7d22c9"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/runway-cross-step-3652d864427ef5.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

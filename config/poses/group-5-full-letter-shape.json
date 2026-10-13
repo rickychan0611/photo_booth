@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-full-letter-shape",
+  "name": "Letter Shape",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-full",
+    "mood-challenge",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the letter",
+  "animation": {
+    "durationMs": 7430,
+    "captions": [
+      {
+        "text": "Make the letter A with your bodies",
+        "timeMs": 0
+      },
+      {
+        "text": "Arms are the peak",
+        "timeMs": 2143
+      },
+      {
+        "text": "Feet plant the sides",
+        "timeMs": 4287
+      },
+      {
+        "text": "Hold the letter",
+        "timeMs": 6430
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-full-letter-shape.webp",
+    "alt": "Hold the letter",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-letter-shape-cfb683a7a65133.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

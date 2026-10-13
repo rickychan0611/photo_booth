@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "id": "broken-doll-fashion",
+  "name": "Broken-Doll Fashion",
+  "category": "glamour",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-deadpan",
+    "adult-only",
+    "solo"
+  ],
+  "instruction": "Blank fashion face",
+  "animation": {
+    "durationMs": 6720,
+    "captions": [
+      {
+        "text": "Break your hip line",
+        "timeMs": 0
+      },
+      {
+        "text": "Tilt your shoulders",
+        "timeMs": 1907
+      },
+      {
+        "text": "Bend your wrists",
+        "timeMs": 3813
+      },
+      {
+        "text": "Blank fashion face",
+        "timeMs": 5720
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 1,
+    "maxPeople": 1,
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/broken-doll-fashion.webp",
+    "alt": "Blank fashion face",
+    "accent": "#ffd21a"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/broken-doll-fashion-333dac1624097a.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

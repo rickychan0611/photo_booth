@@ -9,6 +9,8 @@
     "dev": "tsc -p tsconfig.electron.json && concurrently -k \"vite\" \"wait-on http://localhost:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron .\"",
     "build": "tsc -p tsconfig.json && vite build && tsc -p tsconfig.electron.json",
     "generate:poses": "node scripts/generate-pose-library.cjs",
+    "portable:migrate": "node scripts/migrate-portable-project.cjs",
+    "portable:verify": "node scripts/verify-portable-project.cjs",
     "test:poses": "node --test tests/pose-runtime.test.cjs tests/pose-scenes.test.cjs tests/pose-ai.test.cjs",
     "dist": "npm run build && electron-builder --win",
     "dist:portable": "npm run build && electron-builder --win portable",
@@ -41,6 +43,21 @@
         "filter": [
           "*.dll"
         ]
+      },
+      {
+        "from": "config/settings.shared.json",
+        "to": "project-config/settings.shared.json"
+      },
+      {
+        "from": "config/poses",
+        "to": "project-poses",
+        "filter": [
+          "*.json"
+        ]
+      },
+      {
+        "from": "public/project-assets",
+        "to": "project-assets"
       }
     ],
     "asar": true,

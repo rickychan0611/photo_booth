@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 2,
+  "id": "cinematic-almost-kiss",
+  "name": "Cinematic Almost Kiss",
+  "category": "couple",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-kiss",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Almost kiss",
+  "animation": {
+    "durationMs": 6330,
+    "captions": [
+      {
+        "text": "Turn toward each other",
+        "timeMs": 0
+      },
+      {
+        "text": "Move close",
+        "timeMs": 1777
+      },
+      {
+        "text": "Hold at the waist",
+        "timeMs": 3553
+      },
+      {
+        "text": "Almost kiss",
+        "timeMs": 5330
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/cinematic-almost-kiss.webp",
+    "alt": "Almost kiss",
+    "accent": "#ef2929"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/cinematic-almost-kiss-6c6267ccc68fca.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

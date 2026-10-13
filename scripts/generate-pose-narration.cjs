@@ -7,12 +7,23 @@ const ts = require('typescript');
 require.extensions['.ts'] = (module, filename) => module._compile(ts.transpileModule(fs.readFileSync(filename, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true } }).outputText, filename);
 const root = path.resolve(__dirname, '..');
 app.setPath('userData', path.join(process.env.APPDATA, 'photo-booth'));
-const library = path.join(app.getPath('userData'), 'pose-library');
+const library = path.join(root, 'config', 'poses');
+const privateLibrary = path.join(app.getPath('userData'), 'pose-library');
+const projectAssets = path.join(root, 'public', 'project-assets');
 const manifestPath = path.join(root, 'src/pose/poses/narration-assets.json');
-const reportPath = path.join(library, 'audio', 'narration-batch-report.json');
+const reportPath = path.join(privateLibrary, 'audio', 'narration-batch-report.json');
 const { generateElevenLabsSpeech } = require('../electron/poseStorage.ts');
 const { validateScene } = require('../electron/poseValidation.ts');
 const ffmpeg = require('ffmpeg-static');
+const resolveAsset = value => value?.startsWith('project-asset:')
+  ? path.join(projectAssets, value.slice('project-asset:'.length).replace(/^[/\\]+/, ''))
+  : value;
+const portableAsset = value => {
+  const relative = path.relative(projectAssets, value);
+  return relative && !relative.startsWith('..') && !path.isAbsolute(relative)
+    ? `project-asset:${relative.split(path.sep).join('/')}`
+    : value;
+};
 function atomic(file, value) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   const tmp = `${file}.${process.pid}.tmp`;
@@ -56,8 +67,9 @@ app.whenReady().then(async () => {
       const job = jobs[cursor++], { scene } = job;
       try {
         const existing = job.bundled ? assets[scene.id] : scene.audio;
-        if (existing?.filePath && fs.existsSync(existing.filePath)) {
-          duration(existing.filePath); report.skipped.push(scene.id); continue;
+        const existingPath = resolveAsset(existing?.filePath);
+        if (existingPath && fs.existsSync(existingPath)) {
+          duration(existingPath); report.skipped.push(scene.id); continue;
         }
         const script = scriptFor(scene);
         let generated;
@@ -70,13 +82,13 @@ app.whenReady().then(async () => {
         }
         const durationMs = duration(generated.filePath);
         if (job.bundled) {
-          assets[scene.id] = { filePath: generated.filePath, durationMs, script: script.text, cues: script.cues };
+          assets[scene.id] = { filePath: portableAsset(generated.filePath), durationMs, script: script.text, cues: script.cues };
           atomic(manifestPath, assets);
         } else {
           const current = JSON.parse(fs.readFileSync(job.file, 'utf8'));
           if (JSON.stringify(current) !== JSON.stringify(scene)) throw new Error('Pose changed during generation; cached MP3 preserved for next run');
           fs.mkdirSync(backup, { recursive: true }); fs.copyFileSync(job.file, path.join(backup, path.basename(job.file)));
-          current.audio = { filePath: generated.filePath, startMs: 0, markers: [] };
+          current.audio = { filePath: portableAsset(generated.filePath), startMs: 0, markers: [] };
           current.animation.durationMs = Math.min(120000, durationMs + 1000);
           current.animation.captions = script.cues.map((text, i) => ({ text, timeMs: script.cues.length === 1 ? 0 : Math.round(durationMs * i / (script.cues.length - 1)) }));
           atomic(job.file, validateScene(current));

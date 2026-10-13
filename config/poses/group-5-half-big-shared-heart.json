@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-half-big-shared-heart",
+  "name": "Big Shared Heart",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-half",
+    "mood-sweet",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the heart",
+  "animation": {
+    "durationMs": 7190,
+    "captions": [
+      {
+        "text": "Outside hands start a heart",
+        "timeMs": 0
+      },
+      {
+        "text": "Everyone else tucks inside",
+        "timeMs": 2063
+      },
+      {
+        "text": "Look through it",
+        "timeMs": 4127
+      },
+      {
+        "text": "Hold the heart",
+        "timeMs": 6190
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-half-big-shared-heart.webp",
+    "alt": "Hold the heart",
+    "accent": "#ef2929"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-big-shared-heart-254f04f194a781.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

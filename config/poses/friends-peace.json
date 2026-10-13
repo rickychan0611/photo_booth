@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 2,
+  "id": "friends-peace",
+  "name": "Peace Party",
+  "category": "friends",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-bigSmile",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Party smiles",
+  "animation": {
+    "durationMs": 6960,
+    "captions": [
+      {
+        "text": "Move close together",
+        "timeMs": 0
+      },
+      {
+        "text": "Raise your hands",
+        "timeMs": 1987
+      },
+      {
+        "text": "Fill the frame with peace",
+        "timeMs": 3973
+      },
+      {
+        "text": "Party smiles",
+        "timeMs": 5960
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "friends",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/friends-peace.webp",
+    "alt": "Party smiles",
+    "accent": "#ffd21a"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/friends-peace-44bcb1a2133b7d.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

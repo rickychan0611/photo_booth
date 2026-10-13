@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 2,
+  "id": "family-3-full-family-jump",
+  "name": "Family Jump",
+  "category": "family",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-family-3",
+    "framing-full",
+    "mood-funny",
+    "child-safe",
+    "cooperative",
+    "with-kids"
+  ],
+  "instruction": "Land laughing",
+  "animation": {
+    "durationMs": 5910,
+    "captions": [
+      {
+        "text": "Hold hands",
+        "timeMs": 0
+      },
+      {
+        "text": "Crouch together",
+        "timeMs": 1637
+      },
+      {
+        "text": "Small jump",
+        "timeMs": 3273
+      },
+      {
+        "text": "Land laughing",
+        "timeMs": 4910
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "child",
+      "repeatable": false
+    },
+    {
+      "role": "child",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/family-3-full-family-jump.webp",
+    "alt": "Land laughing",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/family-3-full-family-jump-89f2c1635a65c3.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

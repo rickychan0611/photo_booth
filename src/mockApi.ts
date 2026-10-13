@@ -618,8 +618,12 @@ export function installMockApi() {
       if (photo) photo.phoneNumber = phoneNumber;
       return true;
     },
-    getImageDataUrl: async () => '',
-    getAudioDataUrl: async filePath => localStorage.getItem(filePath) ?? '',
+    getImageDataUrl: async filePath => filePath.startsWith('project-asset:')
+      ? `/project-assets/${filePath.slice('project-asset:'.length).replace(/^[/\\]+/, '')}`
+      : '',
+    getAudioDataUrl: async filePath => filePath.startsWith('project-asset:')
+      ? `/project-assets/${filePath.slice('project-asset:'.length).replace(/^[/\\]+/, '')}`
+      : localStorage.getItem(filePath) ?? '',
     listGallery: async () => gallery,
     uploadFinalGallery: async (request) => {
       const photo = gallery.finals.find((item) => item.path === request.finalPath);

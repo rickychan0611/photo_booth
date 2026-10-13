@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 2,
+  "id": "domino-lean-three",
+  "name": "Domino Lean",
+  "category": "funny",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-triangle",
+    "expression-bigSmile",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the domino",
+  "animation": {
+    "durationMs": 7030,
+    "captions": [
+      {
+        "text": "Stand in a row",
+        "timeMs": 0
+      },
+      {
+        "text": "Lean one direction",
+        "timeMs": 2010
+      },
+      {
+        "text": "Increase each angle",
+        "timeMs": 4020
+      },
+      {
+        "text": "Hold the domino",
+        "timeMs": 6030
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/domino-lean-three.webp",
+    "alt": "Hold the domino",
+    "accent": "#7d22c9"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/domino-lean-three-712b7a2b3db9ec.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

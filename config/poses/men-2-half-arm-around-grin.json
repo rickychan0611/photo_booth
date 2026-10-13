@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "men-2-half-arm-around-grin",
+  "name": "Arm Around Grin",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-men-2",
+    "framing-half",
+    "mood-sweet",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Stay there",
+  "animation": {
+    "durationMs": 6800,
+    "captions": [
+      {
+        "text": "Arm across his shoulder",
+        "timeMs": 0
+      },
+      {
+        "text": "Knock your heads once",
+        "timeMs": 1933
+      },
+      {
+        "text": "Big easy grins",
+        "timeMs": 3867
+      },
+      {
+        "text": "Stay there",
+        "timeMs": 5800
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "men",
+      "repeatable": false
+    },
+    {
+      "role": "men",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/men-2-half-arm-around-grin.webp",
+    "alt": "Stay there",
+    "accent": "#08cbe8"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/men-2-half-arm-around-grin-c0223b1bbfbfee.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

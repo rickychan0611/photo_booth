@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "family-3-half-storytime-laugh",
+  "name": "Storytime Laugh",
+  "category": "family",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-family-3",
+    "framing-half",
+    "mood-funny",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Hold the laugh",
+  "animation": {
+    "durationMs": 6960,
+    "captions": [
+      {
+        "text": "One tells a tiny story",
+        "timeMs": 0
+      },
+      {
+        "text": "The others break",
+        "timeMs": 1987
+      },
+      {
+        "text": "Hands over mouths",
+        "timeMs": 3973
+      },
+      {
+        "text": "Hold the laugh",
+        "timeMs": 5960
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/family-3-half-storytime-laugh.webp",
+    "alt": "Hold the laugh",
+    "accent": "#0a9f9f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/family-3-half-storytime-laugh-1f90a3faf7190d.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

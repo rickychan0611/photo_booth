@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "women-2-full-freeze-five",
+  "name": "Freeze Five",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-2",
+    "framing-full",
+    "mood-challenge",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the slap",
+  "animation": {
+    "durationMs": 6960,
+    "captions": [
+      {
+        "text": "Run at each other",
+        "timeMs": 0
+      },
+      {
+        "text": "Jump into a high five",
+        "timeMs": 1987
+      },
+      {
+        "text": "Stop exactly there",
+        "timeMs": 3973
+      },
+      {
+        "text": "Hold the slap",
+        "timeMs": 5960
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-2-full-freeze-five.webp",
+    "alt": "Hold the slap",
+    "accent": "#ef2929"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-2-full-freeze-five-dd022ada2db4ac.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

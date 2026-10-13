@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 2,
+  "id": "family-3-half-piggy-chin",
+  "name": "Piggy Chin",
+  "category": "family",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-family-3",
+    "framing-half",
+    "mood-cute",
+    "child-safe",
+    "cooperative",
+    "with-kids"
+  ],
+  "instruction": "Hold the pile",
+  "animation": {
+    "durationMs": 7610,
+    "captions": [
+      {
+        "text": "Child in the middle",
+        "timeMs": 0
+      },
+      {
+        "text": "Grownups rest chins close",
+        "timeMs": 2203
+      },
+      {
+        "text": "All scrunch noses",
+        "timeMs": 4407
+      },
+      {
+        "text": "Hold the pile",
+        "timeMs": 6610
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "child",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/family-3-half-piggy-chin.webp",
+    "alt": "Hold the pile",
+    "accent": "#7d22c9"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/family-3-half-piggy-chin-dec150598f658d.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

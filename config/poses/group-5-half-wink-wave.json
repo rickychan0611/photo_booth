@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-half-wink-wave",
+  "name": "Wink Wave",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-half",
+    "mood-crazy",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold that face",
+  "animation": {
+    "durationMs": 7270,
+    "captions": [
+      {
+        "text": "Wink from one side to the other",
+        "timeMs": 0
+      },
+      {
+        "text": "Keep it moving",
+        "timeMs": 2090
+      },
+      {
+        "text": "End on the last wink",
+        "timeMs": 4180
+      },
+      {
+        "text": "Hold that face",
+        "timeMs": 6270
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-half-wink-wave.webp",
+    "alt": "Hold that face",
+    "accent": "#1769ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-wink-wave-aecbd217fd0def.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

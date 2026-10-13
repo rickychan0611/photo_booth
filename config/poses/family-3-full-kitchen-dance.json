@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "family-3-full-kitchen-dance",
+  "name": "Kitchen Dance",
+  "category": "family",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-family-3",
+    "framing-full",
+    "mood-funny",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Freeze the chaos",
+  "animation": {
+    "durationMs": 7770,
+    "captions": [
+      {
+        "text": "Someone starts dancing",
+        "timeMs": 0
+      },
+      {
+        "text": "The others join badly",
+        "timeMs": 2257
+      },
+      {
+        "text": "One big spin",
+        "timeMs": 4513
+      },
+      {
+        "text": "Freeze the chaos",
+        "timeMs": 6770
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/family-3-full-kitchen-dance.webp",
+    "alt": "Freeze the chaos",
+    "accent": "#ff168f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/family-3-full-kitchen-dance-b3d45eaaa7831c.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

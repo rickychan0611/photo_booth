@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-full-shoulder-chain",
+  "name": "Shoulder Chain",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-full",
+    "mood-cool",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the chain",
+  "animation": {
+    "durationMs": 6800,
+    "captions": [
+      {
+        "text": "Arm on the next shoulder",
+        "timeMs": 0
+      },
+      {
+        "text": "Lean the same way",
+        "timeMs": 1933
+      },
+      {
+        "text": "One cool face",
+        "timeMs": 3867
+      },
+      {
+        "text": "Hold the chain",
+        "timeMs": 5800
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-full-shoulder-chain.webp",
+    "alt": "Hold the chain",
+    "accent": "#7d22c9"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-shoulder-chain-cd765bafa609f3.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

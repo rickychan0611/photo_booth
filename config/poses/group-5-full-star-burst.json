@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-full-star-burst",
+  "name": "Star Burst",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-full",
+    "mood-crazy",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the burst",
+  "animation": {
+    "durationMs": 6410,
+    "captions": [
+      {
+        "text": "Cluster tight",
+        "timeMs": 0
+      },
+      {
+        "text": "Burst one step out",
+        "timeMs": 1803
+      },
+      {
+        "text": "Arms like a star",
+        "timeMs": 3607
+      },
+      {
+        "text": "Hold the burst",
+        "timeMs": 5410
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-full-star-burst.webp",
+    "alt": "Hold the burst",
+    "accent": "#1769ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-star-burst-10c2726466d62d.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

@@ -59,13 +59,41 @@ const isDev = Boolean(process.env.VITE_DEV_SERVER_URL);
 app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
 
 const defaultEventFolder = () => path.join(app.getPath('pictures'), 'Photo Booth');
-const settingsPath = () => path.join(app.getPath('userData'), 'settings.json');
-const settingsBackupPath = () => path.join(app.getPath('userData'), 'settings.json.bak');
-const settingsTempPath = () => path.join(app.getPath('userData'), 'settings.json.tmp');
+const projectConfigFolder = () => path.join(app.getAppPath(), 'config');
+const PROJECT_ASSET_PREFIX = 'project-asset:';
+const projectAssetsRoot = () => app.isPackaged
+  ? path.join(process.resourcesPath, 'project-assets')
+  : path.join(app.getAppPath(), 'public', 'project-assets');
+const resolveProjectAssetPath = (value: string) => {
+  if (!value.startsWith(PROJECT_ASSET_PREFIX)) return value;
+  const relative = value.slice(PROJECT_ASSET_PREFIX.length).replace(/^[/\\]+/, '');
+  const resolved = path.resolve(projectAssetsRoot(), relative);
+  const root = path.resolve(projectAssetsRoot());
+  if (resolved !== root && !resolved.startsWith(`${root}${path.sep}`)) throw new Error('Invalid project asset path.');
+  return resolved;
+};
+const projectAssetToken = (value: string) => {
+  const root = path.resolve(projectAssetsRoot());
+  const resolved = path.resolve(value);
+  if (resolved !== root && !resolved.startsWith(`${root}${path.sep}`)) return value;
+  return `${PROJECT_ASSET_PREFIX}${path.relative(root, resolved).split(path.sep).join('/')}`;
+};
+const reusableAssetsFolder = (settings: AppSettings, category: string) =>
+  isDev ? path.join(projectAssetsRoot(), category) : path.join(settings.eventFolder, category);
+const sharedSettingsPath = () => app.isPackaged
+  ? path.join(process.resourcesPath, 'project-config', 'settings.shared.json')
+  : path.join(projectConfigFolder(), 'settings.shared.json');
+const localSettingsPath = () => isDev
+  ? path.join(projectConfigFolder(), 'settings.local.json')
+  : path.join(app.getPath('userData'), 'settings.json');
+const legacySettingsPath = () => path.join(app.getPath('userData'), 'settings.json');
+const settingsBackupPath = () => `${localSettingsPath()}.bak`;
+const settingsTempPath = () => `${localSettingsPath()}.tmp`;
 const cloudSyncStatePath = () => path.join(app.getPath('userData'), 'cloud-sync-state.json');
 const portableSettingsToken = {
   eventFolder: '${EVENT_FOLDER}',
   appUserData: '${APP_USER_DATA}',
+  projectAssets: '${PROJECT_ASSETS}',
   pictures: '${PICTURES}',
   home: '${HOME}'
 } as const;
@@ -329,6 +357,9 @@ const defaultSettings = (): AppSettings => ({
 
 const eventStoredPath = (eventFolder: string, candidatePath: string) => {
   if (!candidatePath) return '';
+  if (candidatePath.startsWith(PROJECT_ASSET_PREFIX)) return candidatePath;
+  const projectRelative = path.relative(path.resolve(projectAssetsRoot()), path.resolve(candidatePath));
+  if (!projectRelative.startsWith('..') && !path.isAbsolute(projectRelative)) return candidatePath;
   const relative = path.relative(path.resolve(eventFolder), path.resolve(candidatePath));
   return relative && !relative.startsWith('..') && !path.isAbsolute(relative) ? candidatePath : '';
 };
@@ -421,9 +452,103 @@ const normalizeLoadedSettings = (parsed: Partial<AppSettings>, fallback = defaul
   };
 };
 
+type LocalSettingsOverlay = Partial<AppSettings> & { layoutPrinters?: Record<string, string> };
+
+const localSettingKeys: Array<keyof AppSettings> = [
+  'eventFolder',
+  'supabaseUrl',
+  'supabasePublishableKey',
+  'eventId',
+  'boothSecret',
+  'cameraId',
+  'cameraSource',
+  'canonEnabled',
+  'canonFraming',
+  'cameraRotation',
+  'cameraPreviewOverlay',
+  'cameraControls',
+  'defaultPrinter',
+  'stylePrinters',
+  'printerEnabled',
+  'silentPrint',
+  'printCalibration',
+  'adminPassword'
+];
+
+const readJsonObject = async (filePath: string): Promise<Record<string, unknown>> =>
+  JSON.parse(await fs.readFile(filePath, 'utf8')) as Record<string, unknown>;
+
+async function readOptionalJsonObject(filePath: string): Promise<Record<string, unknown>> {
+  try {
+    return await readJsonObject(filePath);
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') return {};
+    throw error;
+  }
+}
+
+function mergeSettingsLayers(shared: Partial<AppSettings>, local: LocalSettingsOverlay): Partial<AppSettings> {
+  const merged = {
+    ...shared,
+    ...local,
+    ai: {
+      ...(shared.ai ?? {}),
+      ...(local.ai ?? {}),
+      providers: {
+        openai: { ...(shared.ai?.providers?.openai ?? {}), ...(local.ai?.providers?.openai ?? {}) },
+        gemini: { ...(shared.ai?.providers?.gemini ?? {}), ...(local.ai?.providers?.gemini ?? {}) },
+        xai: { ...(shared.ai?.providers?.xai ?? {}), ...(local.ai?.providers?.xai ?? {}) }
+      }
+    },
+    template: {
+      ...(shared.template ?? {}),
+      ...(local.template ?? {})
+    }
+  } as Partial<AppSettings>;
+  if (merged.template?.layouts && local.layoutPrinters) {
+    merged.template.layouts = merged.template.layouts.map((layout) => ({
+      ...layout,
+      printerName: local.layoutPrinters?.[layout.id] ?? layout.printerName
+    }));
+  }
+  return merged;
+}
+
+function splitSettingsLayers(settings: AppSettings) {
+  const shared = cloneJson(settings) as AppSettings;
+  const local: LocalSettingsOverlay = {};
+  const sharedRecord = shared as unknown as Record<string, unknown>;
+  const localRecord = local as unknown as Record<string, unknown>;
+  for (const key of localSettingKeys) {
+    localRecord[key] = cloneJson(settings[key]);
+    delete sharedRecord[key];
+  }
+  local.ai = {
+    ...defaultAiSettings(),
+    providers: {
+      openai: { ...defaultAiSettings().providers.openai, apiKey: settings.ai.providers.openai.apiKey },
+      gemini: { ...defaultAiSettings().providers.gemini, apiKey: settings.ai.providers.gemini.apiKey },
+      xai: { ...defaultAiSettings().providers.xai, apiKey: settings.ai.providers.xai.apiKey }
+    }
+  };
+  localRecord.ai = {
+    providers: {
+      openai: { apiKey: settings.ai.providers.openai.apiKey },
+      gemini: { apiKey: settings.ai.providers.gemini.apiKey },
+      xai: { apiKey: settings.ai.providers.xai.apiKey }
+    }
+  };
+  shared.ai.providers.openai.apiKey = '';
+  shared.ai.providers.gemini.apiKey = '';
+  shared.ai.providers.xai.apiKey = '';
+  local.layoutPrinters = Object.fromEntries(settings.template.layouts.map((layout) => [layout.id, layout.printerName]));
+  shared.template.layouts = shared.template.layouts.map((layout) => ({ ...layout, printerName: '' }));
+  return { shared, local };
+}
+
 async function readSettingsFile(filePath: string): Promise<AppSettings> {
   const raw = await fs.readFile(filePath, 'utf8');
-  const parsed = JSON.parse(raw) as Partial<AppSettings>;
+  const parsed = mapJsonStrings(JSON.parse(raw) as JsonValue, value => resolveProjectAssetPath(value)) as unknown as Partial<AppSettings>;
   const merged = dropStaleHostVoiceFiles(normalizeLoadedSettings(parsed));
   merged.template.logoPath = eventStoredPath(merged.eventFolder, merged.template.logoPath);
   if ((parsed.template?.styleVersion ?? 0) < 2) await migrateLegacyTemplateFolders(merged.eventFolder);
@@ -432,11 +557,33 @@ async function readSettingsFile(filePath: string): Promise<AppSettings> {
 }
 
 async function readSettings(): Promise<AppSettings> {
+  if (isDev) {
+    try {
+      const shared = mapJsonStrings(await readJsonObject(sharedSettingsPath()) as JsonValue, value => resolveProjectAssetPath(value)) as unknown as Partial<AppSettings>;
+      const local = await readOptionalJsonObject(localSettingsPath()) as LocalSettingsOverlay;
+      const merged = dropStaleHostVoiceFiles(normalizeLoadedSettings(mergeSettingsLayers(shared, local)));
+      merged.template.logoPath = eventStoredPath(merged.eventFolder, merged.template.logoPath);
+      await ensureEventFolders(merged.eventFolder);
+      return merged;
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
+      try {
+        const legacy = await readSettingsFile(legacySettingsPath());
+        return writeSettings(legacy);
+      } catch {
+        return writeSettings(defaultSettings());
+      }
+    }
+  }
   try {
-    return await readSettingsFile(settingsPath());
+    return await readSettingsFile(localSettingsPath());
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-      return writeSettings(defaultSettings());
+      try {
+        return writeSettings(await readSettingsFile(sharedSettingsPath()));
+      } catch {
+        return writeSettings(defaultSettings());
+      }
     }
     console.warn('Could not read settings.json; trying backup.', error);
     try {
@@ -451,7 +598,6 @@ async function readSettings(): Promise<AppSettings> {
 }
 
 async function writeSettings(settings: AppSettings): Promise<AppSettings> {
-  await fs.mkdir(app.getPath('userData'), { recursive: true });
   const normalized: AppSettings = {
     ...settings,
     defaultPrinter: normalizePrinterName(settings.defaultPrinter),
@@ -474,12 +620,21 @@ async function writeSettings(settings: AppSettings): Promise<AppSettings> {
   };
   const cleaned = dropStaleHostVoiceFiles(normalized);
   await ensureEventFolders(cleaned.eventFolder);
-  const serialized = `${JSON.stringify(cleaned, null, 2)}${os.EOL}`;
-  await fs.writeFile(settingsTempPath(), serialized, 'utf8');
-  if (await fileExists(settingsPath())) {
-    await fs.copyFile(settingsPath(), settingsBackupPath());
+  await fs.mkdir(path.dirname(localSettingsPath()), { recursive: true });
+  if (isDev) {
+    const { shared, local } = splitSettingsLayers(cleaned);
+    const portableShared = mapJsonStrings(shared as unknown as JsonValue, value => projectAssetToken(value));
+    await fs.mkdir(path.dirname(sharedSettingsPath()), { recursive: true });
+    await fs.writeFile(sharedSettingsPath(), `${JSON.stringify(portableShared, null, 2)}${os.EOL}`, 'utf8');
+    await fs.writeFile(localSettingsPath(), `${JSON.stringify(local, null, 2)}${os.EOL}`, 'utf8');
+  } else {
+    const serialized = `${JSON.stringify(cleaned, null, 2)}${os.EOL}`;
+    await fs.writeFile(settingsTempPath(), serialized, 'utf8');
+    if (await fileExists(localSettingsPath())) {
+      await fs.copyFile(localSettingsPath(), settingsBackupPath());
+    }
+    await fs.rename(settingsTempPath(), localSettingsPath());
   }
-  await fs.rename(settingsTempPath(), settingsPath());
   for (const win of BrowserWindow.getAllWindows()) {
     if (!win.isDestroyed()) win.webContents.send('settings:changed', cleaned);
   }
@@ -544,6 +699,7 @@ const portableSettingsForExport = (settings: AppSettings): AppSettings => {
           : [
               { base: eventFolder, token: portableSettingsToken.eventFolder },
               { base: userData, token: portableSettingsToken.appUserData },
+              { base: projectAssetsRoot(), token: portableSettingsToken.projectAssets },
               { base: pictures, token: portableSettingsToken.pictures },
               { base: home, token: portableSettingsToken.home }
             ]
@@ -555,6 +711,7 @@ const expandPortablePath = (value: string, eventFolder: string) => {
   const replacements = [
     { token: portableSettingsToken.eventFolder, base: eventFolder },
     { token: portableSettingsToken.appUserData, base: app.getPath('userData') },
+    { token: portableSettingsToken.projectAssets, base: projectAssetsRoot() },
     { token: portableSettingsToken.pictures, base: app.getPath('pictures') },
     { token: portableSettingsToken.home, base: app.getPath('home') }
   ];
@@ -713,15 +870,17 @@ async function fileExists(filePath: string) {
 }
 
 async function imageFileToDataUrl(filePath: string): Promise<string> {
-  const buffer = await fs.readFile(filePath);
-  const extension = path.extname(filePath).toLowerCase();
+  const resolved = resolveProjectAssetPath(filePath);
+  const buffer = await fs.readFile(resolved);
+  const extension = path.extname(resolved).toLowerCase();
   const mimeType = extension === '.jpg' || extension === '.jpeg' ? 'image/jpeg' : 'image/png';
   return `data:${mimeType};base64,${buffer.toString('base64')}`;
 }
 
 async function audioFileToDataUrl(filePath: string): Promise<string> {
-  const buffer = await fs.readFile(filePath);
-  const extension = path.extname(filePath).toLowerCase();
+  const resolved = resolveProjectAssetPath(filePath);
+  const buffer = await fs.readFile(resolved);
+  const extension = path.extname(resolved).toLowerCase();
   const mimeType =
     extension === '.wav'
       ? 'audio/wav'
@@ -751,7 +910,7 @@ const dropStaleHostVoiceFiles = (settings: AppSettings): AppSettings => {
 };
 
 async function getImageSize(filePath: string) {
-  const image = nativeImage.createFromPath(filePath);
+  const image = nativeImage.createFromPath(resolveProjectAssetPath(filePath));
   if (image.isEmpty()) throw new Error('Image cannot be read.');
   return image.getSize();
 }
@@ -1136,7 +1295,7 @@ async function uploadTemplate(request: TemplateUploadRequest): Promise<TemplateD
   const now = new Date().toISOString();
   const id = `design-${Date.now()}`;
   const name = request.name?.trim() || path.parse(frameSourcePath).name || 'Template';
-  const designFolder = path.join(settings.eventFolder, 'templates', 'custom', request.templateId, `${id}-${safeTemplateName(name)}`);
+  const designFolder = path.join(reusableAssetsFolder(settings, 'templates'), 'custom', request.templateId, `${id}-${safeTemplateName(name)}`);
   await fs.mkdir(designFolder, { recursive: true });
   const framePath = await copyTemplateAsset(frameSourcePath, designFolder, 'frame', layout);
 
@@ -1250,7 +1409,7 @@ async function saveTemplateSlotPreview(templateId: string, dataUrl: string) {
   const layouts = settings.template.layouts.map(normalizeTemplateLayout);
   const layout = layouts.find((item) => item.id === templateId);
   if (!layout) throw new Error('Template layout not found.');
-  const folder = path.join(settings.eventFolder, 'templates', 'custom', templateId);
+  const folder = path.join(reusableAssetsFolder(settings, 'templates'), 'custom', templateId);
   await fs.mkdir(folder, { recursive: true });
   const targetPath = path.join(folder, 'guest-preview.png');
   await fs.writeFile(targetPath, dataUrlToBuffer(dataUrl));
@@ -1274,7 +1433,7 @@ async function uploadTemplateLayoutPreview(templateId: string) {
   if (!layout) throw new Error('Template layout not found.');
   const now = new Date().toISOString();
   const extension = path.extname(sourcePath).toLowerCase() || '.png';
-  const folder = path.join(settings.eventFolder, 'templates', 'custom', templateId);
+  const folder = path.join(reusableAssetsFolder(settings, 'templates'), 'custom', templateId);
   await fs.mkdir(folder, { recursive: true });
   const targetPath = path.join(folder, `guest-preview${extension}`);
   await fs.copyFile(sourcePath, targetPath);
@@ -1293,7 +1452,7 @@ async function deleteTemplateLayout(templateId: string) {
   const settings = await readSettings();
   const designs = settings.template.designs.map((item) => normalizeTemplateDesign(item));
   const removedDesigns = designs.filter((item) => item.templateId === templateId);
-  await fs.rm(path.join(settings.eventFolder, 'templates', 'custom', templateId), { force: true, recursive: true });
+  await fs.rm(path.join(reusableAssetsFolder(settings, 'templates'), 'custom', templateId), { force: true, recursive: true });
   for (const design of removedDesigns) {
     const folder = path.dirname(design.framePath || design.previewPath);
     if (folder) await fs.rm(folder, { force: true, recursive: true }).catch(() => undefined);
@@ -1315,7 +1474,7 @@ async function saveGuideTemplate(templateId: string, dataUrl: string) {
   await ensureEventFolders(settings.eventFolder);
   const layout = settings.template.layouts.map(normalizeTemplateLayout).find((item) => item.id === templateId);
   if (!layout) throw new Error('Template layout not found.');
-  const filePath = path.join(settings.eventFolder, 'templates', `${safeTemplateName(layout.name)}-blank-guide.png`);
+  const filePath = path.join(reusableAssetsFolder(settings, 'templates'), `${safeTemplateName(layout.name)}-blank-guide.png`);
   await fs.writeFile(filePath, dataUrlToBuffer(dataUrl));
   await shell.showItemInFolder(filePath);
   return filePath;
@@ -1446,7 +1605,7 @@ async function importTemplatePackage() {
     createdAt: now,
     updatedAt: now
   });
-  const folder = path.join(settings.eventFolder, 'templates', 'custom', templateId);
+  const folder = path.join(reusableAssetsFolder(settings, 'templates'), 'custom', templateId);
   const importedDesigns: TemplateDesign[] = [];
   const activeAiPresetIds = new Set(settings.template.aiPresets.map((preset) => preset.id));
 
@@ -1986,7 +2145,7 @@ async function copyAiPresetImage(presetId: string) {
   const now = new Date().toISOString();
   const id = `ref-${Date.now()}`;
   const extension = path.extname(sourcePath).toLowerCase() || '.png';
-  const folder = path.join(settings.eventFolder, 'ai-presets', presetId);
+  const folder = path.join(reusableAssetsFolder(settings, 'ai-presets'), presetId);
   await fs.mkdir(folder, { recursive: true });
   const targetPath = path.join(folder, `${id}${extension}`);
   await fs.copyFile(sourcePath, targetPath);
@@ -2049,7 +2208,7 @@ async function uploadAudioCue(cueId: string) {
   const cue = audio.cues[cueId] ?? defaultAudioCue(cueId, cueId, '');
   const now = new Date().toISOString();
   const extension = path.extname(sourcePath).toLowerCase() || '.mp3';
-  const targetPath = path.join(settings.eventFolder, 'audio', `${safeAudioCueId(cueId)}-${Date.now()}${extension}`);
+  const targetPath = path.join(reusableAssetsFolder(settings, 'audio'), `${safeAudioCueId(cueId)}-${Date.now()}${extension}`);
   await ensureEventFolders(settings.eventFolder);
   await fs.copyFile(sourcePath, targetPath);
   return writeSettings({
@@ -2098,7 +2257,7 @@ async function uploadStandaloneAudioCue(cue: AudioCue): Promise<AudioCue | null>
   await ensureEventFolders(settings.eventFolder);
   const now = new Date().toISOString();
   const extension = path.extname(sourcePath).toLowerCase() || '.mp3';
-  const targetPath = path.join(settings.eventFolder, 'audio', 'template-cues', `${safeAudioCueId(cue.id)}-${Date.now()}${extension}`);
+  const targetPath = path.join(reusableAssetsFolder(settings, 'audio'), 'template-cues', `${safeAudioCueId(cue.id)}-${Date.now()}${extension}`);
   await fs.mkdir(path.dirname(targetPath), { recursive: true });
   await fs.copyFile(sourcePath, targetPath);
   return normalizeAudioCue(
@@ -2133,7 +2292,7 @@ async function generateStandaloneHostVoiceCue(cue: AudioCue): Promise<HostVoiceG
   if (!text) return { ok: false, settings, cue: normalizedCue, error: 'Cue text is empty.' };
   if (!audio.enableHostVoice) return { ok: false, settings, cue: normalizedCue, error: 'Generated voice is disabled.' };
   try {
-    const generated = await generateElevenLabsSpeech(safeAudioCueId(normalizedCue.id), text, path.join(settings.eventFolder, 'audio', 'generated', 'elevenlabs'));
+    const generated = await generateElevenLabsSpeech(safeAudioCueId(normalizedCue.id), text, path.join(reusableAssetsFolder(settings, 'audio'), 'generated', 'elevenlabs'));
     const generatedPath = generated.filePath;
     return {
       ok: true,
@@ -2163,7 +2322,7 @@ async function generateHostVoiceCue(cueId: string): Promise<HostVoiceGenerateRes
   if (!text) return { ok: false, settings, error: 'Cue text is empty.' };
   if (!audio.enableHostVoice) return { ok: false, settings, error: 'Generated voice is disabled.' };
   try {
-    const generated = await generateElevenLabsSpeech(safeAudioCueId(cue.id), text, path.join(settings.eventFolder, 'audio', 'generated', 'elevenlabs'));
+    const generated = await generateElevenLabsSpeech(safeAudioCueId(cue.id), text, path.join(reusableAssetsFolder(settings, 'audio'), 'generated', 'elevenlabs'));
     const generatedPath = generated.filePath;
     const nextSettings = await writeSettings({
       ...settings,
@@ -2939,7 +3098,7 @@ app.whenReady().then(async () => {
     if (!sourcePath) return null;
 
     const settings = await readSettings();
-    const brandingFolder = path.join(settings.eventFolder, 'branding');
+    const brandingFolder = reusableAssetsFolder(settings, 'branding');
     await fs.mkdir(brandingFolder, { recursive: true });
     const extension = path.extname(sourcePath).toLowerCase() || '.png';
     const targetPath = path.join(brandingFolder, `idle-logo-${Date.now()}${extension}`);

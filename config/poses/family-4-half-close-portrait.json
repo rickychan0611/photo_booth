@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "id": "family-4-half-close-portrait",
+  "name": "Close Portrait",
+  "category": "family",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-family-4",
+    "framing-half",
+    "mood-sweet",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Hold the portrait",
+  "animation": {
+    "durationMs": 5830,
+    "captions": [
+      {
+        "text": "Pack in tight",
+        "timeMs": 0
+      },
+      {
+        "text": "Heads touching",
+        "timeMs": 1610
+      },
+      {
+        "text": "Kind eyes",
+        "timeMs": 3220
+      },
+      {
+        "text": "Hold the portrait",
+        "timeMs": 4830
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/family-4-half-close-portrait.webp",
+    "alt": "Hold the portrait",
+    "accent": "#ef2929"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/family-4-half-close-portrait-a37c53846377e9.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

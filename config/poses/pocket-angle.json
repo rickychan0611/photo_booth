@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 2,
+  "id": "pocket-angle",
+  "name": "Pocket Angle",
+  "category": "professional",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-smirk",
+    "adult-only",
+    "solo"
+  ],
+  "instruction": "Give a small smirk",
+  "animation": {
+    "durationMs": 6150,
+    "captions": [
+      {
+        "text": "Turn your body",
+        "timeMs": 0
+      },
+      {
+        "text": "Bend one knee",
+        "timeMs": 1717
+      },
+      {
+        "text": "Hand near pocket",
+        "timeMs": 3433
+      },
+      {
+        "text": "Give a small smirk",
+        "timeMs": 5150
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 1,
+    "maxPeople": 1,
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/pocket-angle.webp",
+    "alt": "Give a small smirk",
+    "accent": "#7d22c9"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/pocket-angle-7acb7348869bb1.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

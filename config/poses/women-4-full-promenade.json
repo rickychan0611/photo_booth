@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "id": "women-4-full-promenade",
+  "name": "Promenade",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-4",
+    "framing-full",
+    "mood-sweet",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the stroll",
+  "animation": {
+    "durationMs": 6560,
+    "captions": [
+      {
+        "text": "Walk in pairs",
+        "timeMs": 0
+      },
+      {
+        "text": "Swing your arms",
+        "timeMs": 1853
+      },
+      {
+        "text": "Arrive in a line",
+        "timeMs": 3707
+      },
+      {
+        "text": "Hold the stroll",
+        "timeMs": 5560
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-4-full-promenade.webp",
+    "alt": "Hold the stroll",
+    "accent": "#ef2929"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-4-full-promenade-4b7de521881229.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

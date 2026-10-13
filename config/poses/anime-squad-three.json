@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 2,
+  "id": "anime-squad-three",
+  "name": "Anime Squad Trio",
+  "category": "party",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-triangle",
+    "expression-determined",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Squad faces",
+  "animation": {
+    "durationMs": 7270,
+    "captions": [
+      {
+        "text": "Leader steps forward",
+        "timeMs": 0
+      },
+      {
+        "text": "Teammates fan out",
+        "timeMs": 2090
+      },
+      {
+        "text": "Power poses ready",
+        "timeMs": 4180
+      },
+      {
+        "text": "Squad faces",
+        "timeMs": 6270
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/anime-squad-three.webp",
+    "alt": "Squad faces",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/anime-squad-three-3aee76b80aa10e.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

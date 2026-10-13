@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "women-2-full-piggyback-giggle",
+  "name": "Piggyback Giggle",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-2",
+    "framing-full",
+    "mood-funny",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Laugh at the lens",
+  "animation": {
+    "durationMs": 6070,
+    "captions": [
+      {
+        "text": "One hops on",
+        "timeMs": 0
+      },
+      {
+        "text": "Hold on tight",
+        "timeMs": 1690
+      },
+      {
+        "text": "Kick your feet",
+        "timeMs": 3380
+      },
+      {
+        "text": "Laugh at the lens",
+        "timeMs": 5070
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-2-full-piggyback-giggle.webp",
+    "alt": "Laugh at the lens",
+    "accent": "#1769ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-2-full-piggyback-giggle-9cf51584d3e35e.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

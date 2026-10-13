@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "lovers-full-ballroom-dip",
+  "name": "Ballroom Dip",
+  "category": "couple",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-lovers",
+    "framing-full",
+    "mood-cool",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Smile up at them",
+  "animation": {
+    "durationMs": 6640,
+    "captions": [
+      {
+        "text": "Take a dance hold",
+        "timeMs": 0
+      },
+      {
+        "text": "Step one foot wide",
+        "timeMs": 1880
+      },
+      {
+        "text": "Dip your partner",
+        "timeMs": 3760
+      },
+      {
+        "text": "Smile up at them",
+        "timeMs": 5640
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/lovers-full-ballroom-dip.webp",
+    "alt": "Smile up at them",
+    "accent": "#ffd21a"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/lovers-full-ballroom-dip-953782412c3e8b.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

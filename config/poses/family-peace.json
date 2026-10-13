@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "family-peace",
+  "name": "Family Peace",
+  "category": "family",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-triangle",
+    "expression-wink",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Smile together",
+  "animation": {
+    "durationMs": 6720,
+    "captions": [
+      {
+        "text": "Build three levels",
+        "timeMs": 0
+      },
+      {
+        "text": "Raise your hands",
+        "timeMs": 1907
+      },
+      {
+        "text": "Make peace signs",
+        "timeMs": 3813
+      },
+      {
+        "text": "Smile together",
+        "timeMs": 5720
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": null,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/family-peace.webp",
+    "alt": "Smile together",
+    "accent": "#08cbe8"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/family-peace-e6138619cef760.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

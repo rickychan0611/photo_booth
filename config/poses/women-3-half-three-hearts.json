@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "women-3-half-three-hearts",
+  "name": "Three Hearts",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-3",
+    "framing-half",
+    "mood-sweet",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Soft smiles",
+  "animation": {
+    "durationMs": 7030,
+    "captions": [
+      {
+        "text": "Each make a tiny heart",
+        "timeMs": 0
+      },
+      {
+        "text": "Bring them together",
+        "timeMs": 2010
+      },
+      {
+        "text": "Peek over your hands",
+        "timeMs": 4020
+      },
+      {
+        "text": "Soft smiles",
+        "timeMs": 6030
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-3-half-three-hearts.webp",
+    "alt": "Soft smiles",
+    "accent": "#ffd21a"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-3-half-three-hearts-0ffbad55243deb.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

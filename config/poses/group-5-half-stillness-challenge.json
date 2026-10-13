@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-half-stillness-challenge",
+  "name": "Stillness Challenge",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-half",
+    "mood-challenge",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold completely still",
+  "animation": {
+    "durationMs": 6150,
+    "captions": [
+      {
+        "text": "Find a face",
+        "timeMs": 0
+      },
+      {
+        "text": "Hands freeze",
+        "timeMs": 1717
+      },
+      {
+        "text": "No wiggling",
+        "timeMs": 3433
+      },
+      {
+        "text": "Hold completely still",
+        "timeMs": 5150
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-half-stillness-challenge.webp",
+    "alt": "Hold completely still",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-stillness-challenge-cd369a04a65f44.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "id": "women-4-half-four-faces",
+  "name": "Four Faces",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-4",
+    "framing-half",
+    "mood-cute",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the bouquet",
+  "animation": {
+    "durationMs": 6150,
+    "captions": [
+      {
+        "text": "Pack in close",
+        "timeMs": 0
+      },
+      {
+        "text": "Chins level",
+        "timeMs": 1717
+      },
+      {
+        "text": "Bright matching eyes",
+        "timeMs": 3433
+      },
+      {
+        "text": "Hold the bouquet",
+        "timeMs": 5150
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-4-half-four-faces.webp",
+    "alt": "Hold the bouquet",
+    "accent": "#08cbe8"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-4-half-four-faces-e91c1a8867123c.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

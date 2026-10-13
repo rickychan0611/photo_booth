@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "women-3-half-villain-trio",
+  "name": "Villain Trio",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-3",
+    "framing-half",
+    "mood-crazy",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the plot",
+  "animation": {
+    "durationMs": 7430,
+    "captions": [
+      {
+        "text": "Lean in like a council",
+        "timeMs": 0
+      },
+      {
+        "text": "One brow up each",
+        "timeMs": 2143
+      },
+      {
+        "text": "Slow evil smile",
+        "timeMs": 4287
+      },
+      {
+        "text": "Hold the plot",
+        "timeMs": 6430
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-3-half-villain-trio.webp",
+    "alt": "Hold the plot",
+    "accent": "#1769ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-3-half-villain-trio-64a4dbfce9037e.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

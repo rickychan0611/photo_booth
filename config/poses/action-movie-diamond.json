@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 2,
+  "id": "action-movie-diamond",
+  "name": "Action-Movie Diamond",
+  "category": "party",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-diamond",
+    "expression-determined",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Movie-poster faces",
+  "animation": {
+    "durationMs": 7270,
+    "captions": [
+      {
+        "text": "Build a diamond",
+        "timeMs": 0
+      },
+      {
+        "text": "Turn four directions",
+        "timeMs": 2090
+      },
+      {
+        "text": "Ready action hands",
+        "timeMs": 4180
+      },
+      {
+        "text": "Movie-poster faces",
+        "timeMs": 6270
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/action-movie-diamond.webp",
+    "alt": "Movie-poster faces",
+    "accent": "#ef2929"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/action-movie-diamond-7f46420d98ae5b.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

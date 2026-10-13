@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 2,
+  "id": "invisible-roller-coaster",
+  "name": "Invisible Roller Coaster",
+  "category": "funny",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-diamond",
+    "expression-bigSmile",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Roller-coaster faces!",
+  "animation": {
+    "durationMs": 7530,
+    "captions": [
+      {
+        "text": "Make one tight row",
+        "timeMs": 0
+      },
+      {
+        "text": "Grab the safety bar",
+        "timeMs": 2177
+      },
+      {
+        "text": "Lean through the turn",
+        "timeMs": 4353
+      },
+      {
+        "text": "Roller-coaster faces!",
+        "timeMs": 6530
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/invisible-roller-coaster.webp",
+    "alt": "Roller-coaster faces!",
+    "accent": "#08cbe8"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/invisible-roller-coaster-16973b44d3b68e.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

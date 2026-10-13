@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "id": "women-4-half-lean-in-row",
+  "name": "Lean-In Row",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-4",
+    "framing-half",
+    "mood-cool",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the stack",
+  "animation": {
+    "durationMs": 6800,
+    "captions": [
+      {
+        "text": "Lean from alternating sides",
+        "timeMs": 0
+      },
+      {
+        "text": "Shoulders overlap",
+        "timeMs": 1933
+      },
+      {
+        "text": "Chins sharp",
+        "timeMs": 3867
+      },
+      {
+        "text": "Hold the stack",
+        "timeMs": 5800
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-4-half-lean-in-row.webp",
+    "alt": "Hold the stack",
+    "accent": "#ff168f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-4-half-lean-in-row-6f923557f9b54e.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

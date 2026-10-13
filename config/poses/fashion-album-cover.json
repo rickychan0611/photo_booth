@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 2,
+  "id": "fashion-album-cover",
+  "name": "Fashion Album Cover",
+  "category": "glamour",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-diamond",
+    "expression-deadpan",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Album-cover faces",
+  "animation": {
+    "durationMs": 7110,
+    "captions": [
+      {
+        "text": "Make four levels",
+        "timeMs": 0
+      },
+      {
+        "text": "Overlap the group",
+        "timeMs": 2037
+      },
+      {
+        "text": "Choose different angles",
+        "timeMs": 4073
+      },
+      {
+        "text": "Album-cover faces",
+        "timeMs": 6110
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/fashion-album-cover.webp",
+    "alt": "Album-cover faces",
+    "accent": "#08cbe8"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/fashion-album-cover-d629e37f286e22.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

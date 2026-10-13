@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-half-peace-skyline",
+  "name": "Peace Skyline",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-half",
+    "mood-cute",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the skyline",
+  "animation": {
+    "durationMs": 7530,
+    "captions": [
+      {
+        "text": "Peace signs at different heights",
+        "timeMs": 0
+      },
+      {
+        "text": "Pack the faces under them",
+        "timeMs": 2177
+      },
+      {
+        "text": "Big smiles",
+        "timeMs": 4353
+      },
+      {
+        "text": "Hold the skyline",
+        "timeMs": 6530
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-half-peace-skyline.webp",
+    "alt": "Hold the skyline",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-peace-skyline-f0e53a380d73f4.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "family-3-full-family-stroll",
+  "name": "Family Stroll",
+  "category": "family",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-family-3",
+    "framing-full",
+    "mood-sweet",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Easy smiles",
+  "animation": {
+    "durationMs": 6560,
+    "captions": [
+      {
+        "text": "Walk arm in arm",
+        "timeMs": 0
+      },
+      {
+        "text": "Match your steps",
+        "timeMs": 1853
+      },
+      {
+        "text": "Stop in a line",
+        "timeMs": 3707
+      },
+      {
+        "text": "Easy smiles",
+        "timeMs": 5560
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/family-3-full-family-stroll.webp",
+    "alt": "Easy smiles",
+    "accent": "#0a9f9f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/family-3-full-family-stroll-8ac9f99c72ae69.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

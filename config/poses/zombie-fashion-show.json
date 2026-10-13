@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 2,
+  "id": "zombie-fashion-show",
+  "name": "Zombie Fashion Show",
+  "category": "funny",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-diamond",
+    "expression-deadpan",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Dead-serious fashion",
+  "animation": {
+    "durationMs": 7430,
+    "captions": [
+      {
+        "text": "Enter the runway",
+        "timeMs": 0
+      },
+      {
+        "text": "Break your body lines",
+        "timeMs": 2143
+      },
+      {
+        "text": "Reach like zombies",
+        "timeMs": 4287
+      },
+      {
+        "text": "Dead-serious fashion",
+        "timeMs": 6430
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/zombie-fashion-show.webp",
+    "alt": "Dead-serious fashion",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/zombie-fashion-show-707231ebcee0ea.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

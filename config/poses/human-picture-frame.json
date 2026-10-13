@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 2,
+  "id": "human-picture-frame",
+  "name": "Human Picture Frame",
+  "category": "friends",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-diamond",
+    "expression-bigSmile",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Everyone reacts",
+  "animation": {
+    "durationMs": 7610,
+    "captions": [
+      {
+        "text": "Outside guests frame",
+        "timeMs": 0
+      },
+      {
+        "text": "Inside guests move close",
+        "timeMs": 2203
+      },
+      {
+        "text": "Build the picture",
+        "timeMs": 4407
+      },
+      {
+        "text": "Everyone reacts",
+        "timeMs": 6610
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/human-picture-frame.webp",
+    "alt": "Everyone reacts",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/human-picture-frame-c52c88d87fb21d.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

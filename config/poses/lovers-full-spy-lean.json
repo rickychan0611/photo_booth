@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "lovers-full-spy-lean",
+  "name": "Spy Lean",
+  "category": "couple",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-lovers",
+    "framing-full",
+    "mood-cool",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Smirk together",
+  "animation": {
+    "durationMs": 6880,
+    "captions": [
+      {
+        "text": "Stand back to back",
+        "timeMs": 0
+      },
+      {
+        "text": "Look over one shoulder",
+        "timeMs": 1960
+      },
+      {
+        "text": "Cross one ankle",
+        "timeMs": 3920
+      },
+      {
+        "text": "Smirk together",
+        "timeMs": 5880
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/lovers-full-spy-lean.webp",
+    "alt": "Smirk together",
+    "accent": "#7d22c9"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/lovers-full-spy-lean-1916a7876fc68a.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

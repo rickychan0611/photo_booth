@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 2,
+  "id": "family-4-full-parents-and-pair",
+  "name": "Parents and Pair",
+  "category": "family",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-family-4",
+    "framing-full",
+    "mood-sweet",
+    "child-safe",
+    "cooperative",
+    "with-kids"
+  ],
+  "instruction": "One family smile",
+  "animation": {
+    "durationMs": 6720,
+    "captions": [
+      {
+        "text": "Kids in front",
+        "timeMs": 0
+      },
+      {
+        "text": "Grownups behind",
+        "timeMs": 1907
+      },
+      {
+        "text": "Hands on shoulders",
+        "timeMs": 3813
+      },
+      {
+        "text": "One family smile",
+        "timeMs": 5720
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "child",
+      "repeatable": false
+    },
+    {
+      "role": "child",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/family-4-full-parents-and-pair.webp",
+    "alt": "One family smile",
+    "accent": "#ff168f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/family-4-full-parents-and-pair-bc74065b70ee35.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

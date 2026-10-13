@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-freestyle",
+  "name": "Group Freestyle",
+  "category": "friends",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-layers",
+    "expression-determined",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Freeze the chaos",
+  "animation": {
+    "durationMs": 7350,
+    "captions": [
+      {
+        "text": "Fill the frame",
+        "timeMs": 0
+      },
+      {
+        "text": "Choose different body lines",
+        "timeMs": 2117
+      },
+      {
+        "text": "Make every face unique",
+        "timeMs": 4233
+      },
+      {
+        "text": "Freeze the chaos",
+        "timeMs": 6350
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-freestyle.webp",
+    "alt": "Freeze the chaos",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-freestyle-ccab77349529a7.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

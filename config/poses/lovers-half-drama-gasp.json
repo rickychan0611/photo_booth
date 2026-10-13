@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "lovers-half-drama-gasp",
+  "name": "Drama Gasp",
+  "category": "couple",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-lovers",
+    "framing-half",
+    "mood-crazy",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Freeze the melodrama",
+  "animation": {
+    "durationMs": 6880,
+    "captions": [
+      {
+        "text": "Clutch each other",
+        "timeMs": 0
+      },
+      {
+        "text": "Gasp at the same time",
+        "timeMs": 1960
+      },
+      {
+        "text": "Eyes wide",
+        "timeMs": 3920
+      },
+      {
+        "text": "Freeze the melodrama",
+        "timeMs": 5880
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/lovers-half-drama-gasp.webp",
+    "alt": "Freeze the melodrama",
+    "accent": "#1769ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/lovers-half-drama-gasp-708b60122d708d.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

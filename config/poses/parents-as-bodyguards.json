@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "parents-as-bodyguards",
+  "name": "Parents as Bodyguards",
+  "category": "family",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-triangle",
+    "expression-determined",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Cool family faces",
+  "animation": {
+    "durationMs": 8000,
+    "captions": [
+      {
+        "text": "Star stands in front",
+        "timeMs": 0
+      },
+      {
+        "text": "Guards close behind",
+        "timeMs": 2333
+      },
+      {
+        "text": "Set protective hands",
+        "timeMs": 4667
+      },
+      {
+        "text": "Cool family faces",
+        "timeMs": 7000
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": null,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/parents-as-bodyguards.webp",
+    "alt": "Cool family faces",
+    "accent": "#08cbe8"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/parents-as-bodyguards-41cb9036b3ec6d.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

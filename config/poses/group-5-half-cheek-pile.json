@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-half-cheek-pile",
+  "name": "Cheek Pile",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-half",
+    "mood-cute",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the pile",
+  "animation": {
+    "durationMs": 6070,
+    "captions": [
+      {
+        "text": "Pack your faces in",
+        "timeMs": 0
+      },
+      {
+        "text": "Cheeks touching",
+        "timeMs": 1690
+      },
+      {
+        "text": "Bright eyes",
+        "timeMs": 3380
+      },
+      {
+        "text": "Hold the pile",
+        "timeMs": 5070
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-half-cheek-pile.webp",
+    "alt": "Hold the pile",
+    "accent": "#7d22c9"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-cheek-pile-d232401266dbc4.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-full-buddy-clusters",
+  "name": "Buddy Clusters",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-full",
+    "mood-cute",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold your cluster",
+  "animation": {
+    "durationMs": 7840,
+    "captions": [
+      {
+        "text": "Split into little pairs",
+        "timeMs": 0
+      },
+      {
+        "text": "Each pair picks a tiny pose",
+        "timeMs": 2280
+      },
+      {
+        "text": "Look back at the camera",
+        "timeMs": 4560
+      },
+      {
+        "text": "Hold your cluster",
+        "timeMs": 6840
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-full-buddy-clusters.webp",
+    "alt": "Hold your cluster",
+    "accent": "#ffd21a"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-buddy-clusters-16ab0704ee9711.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

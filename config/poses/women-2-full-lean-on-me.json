@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "women-2-full-lean-on-me",
+  "name": "Lean on Me",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-2",
+    "framing-full",
+    "mood-sweet",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Soft smiles",
+  "animation": {
+    "durationMs": 7110,
+    "captions": [
+      {
+        "text": "Stand shoulder to shoulder",
+        "timeMs": 0
+      },
+      {
+        "text": "One leans her head",
+        "timeMs": 2037
+      },
+      {
+        "text": "The other steadies her",
+        "timeMs": 4073
+      },
+      {
+        "text": "Soft smiles",
+        "timeMs": 6110
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-2-full-lean-on-me.webp",
+    "alt": "Soft smiles",
+    "accent": "#08cbe8"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-2-full-lean-on-me-02f69ccd0df5cd.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

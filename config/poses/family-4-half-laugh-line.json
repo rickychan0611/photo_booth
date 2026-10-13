@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "id": "family-4-half-laugh-line",
+  "name": "Laugh Line",
+  "category": "family",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-family-4",
+    "framing-half",
+    "mood-funny",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Hold the line",
+  "animation": {
+    "durationMs": 6560,
+    "captions": [
+      {
+        "text": "One starts laughing",
+        "timeMs": 0
+      },
+      {
+        "text": "Pass it down the row",
+        "timeMs": 1853
+      },
+      {
+        "text": "Last person breaks",
+        "timeMs": 3707
+      },
+      {
+        "text": "Hold the line",
+        "timeMs": 5560
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/family-4-half-laugh-line.webp",
+    "alt": "Hold the line",
+    "accent": "#08cbe8"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/family-4-half-laugh-line-cc61fb4632d76a.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

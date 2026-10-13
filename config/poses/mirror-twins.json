@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 2,
+  "id": "mirror-twins",
+  "name": "Mirror Twins",
+  "category": "friends",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-deadpan",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Twin fashion faces",
+  "animation": {
+    "durationMs": 7350,
+    "captions": [
+      {
+        "text": "Stand shoulder-to-shoulder",
+        "timeMs": 0
+      },
+      {
+        "text": "Mirror your bodies",
+        "timeMs": 2117
+      },
+      {
+        "text": "Match your hands",
+        "timeMs": 4233
+      },
+      {
+        "text": "Twin fashion faces",
+        "timeMs": 6350
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "friends",
+      "couple"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/mirror-twins.webp",
+    "alt": "Twin fashion faces",
+    "accent": "#ff168f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/mirror-twins-7c9ce0f65edd3c.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

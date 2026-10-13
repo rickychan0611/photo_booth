@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "id": "crossed-arms-cool",
+  "name": "Crossed Arms Cool",
+  "category": "professional",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-confident",
+    "child-safe",
+    "solo"
+  ],
+  "instruction": "Cool confident face",
+  "animation": {
+    "durationMs": 6720,
+    "captions": [
+      {
+        "text": "Turn slightly",
+        "timeMs": 0
+      },
+      {
+        "text": "Lower your shoulders",
+        "timeMs": 1907
+      },
+      {
+        "text": "Cross your arms",
+        "timeMs": 3813
+      },
+      {
+        "text": "Cool confident face",
+        "timeMs": 5720
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 1,
+    "maxPeople": 1,
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/crossed-arms-cool.webp",
+    "alt": "Cool confident face",
+    "accent": "#08cbe8"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/crossed-arms-cool-f8e8230b0f126a.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

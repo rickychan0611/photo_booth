@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "id": "editorial-s-curve",
+  "name": "Editorial S-Curve",
+  "category": "glamour",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-confident",
+    "adult-only",
+    "solo"
+  ],
+  "instruction": "Soft model eyes",
+  "animation": {
+    "durationMs": 6880,
+    "captions": [
+      {
+        "text": "Shift one hip",
+        "timeMs": 0
+      },
+      {
+        "text": "Angle your shoulders",
+        "timeMs": 1960
+      },
+      {
+        "text": "Place one hand",
+        "timeMs": 3920
+      },
+      {
+        "text": "Soft model eyes",
+        "timeMs": 5880
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 1,
+    "maxPeople": 1,
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/editorial-s-curve.webp",
+    "alt": "Soft model eyes",
+    "accent": "#ffd21a"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/editorial-s-curve-7aa8ba8fbbf9bf.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

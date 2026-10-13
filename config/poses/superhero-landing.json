@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "id": "superhero-landing",
+  "name": "Superhero Landing",
+  "category": "funny",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-determined",
+    "child-safe",
+    "solo"
+  ],
+  "instruction": "Hero eyes up",
+  "animation": {
+    "durationMs": 5990,
+    "captions": [
+      {
+        "text": "Step wide",
+        "timeMs": 0
+      },
+      {
+        "text": "Drop one knee",
+        "timeMs": 1663
+      },
+      {
+        "text": "Plant your fist",
+        "timeMs": 3327
+      },
+      {
+        "text": "Hero eyes up",
+        "timeMs": 4990
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 1,
+    "maxPeople": 1,
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/superhero-landing.webp",
+    "alt": "Hero eyes up",
+    "accent": "#ef2929"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/superhero-landing-ea86544290c02d.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

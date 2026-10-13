@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 2,
+  "id": "face-totem-three",
+  "name": "Three-Face Totem",
+  "category": "funny",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-triangle",
+    "expression-suspicious",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Three wild reactions",
+  "animation": {
+    "durationMs": 8000,
+    "captions": [
+      {
+        "text": "Stack diagonally",
+        "timeMs": 0
+      },
+      {
+        "text": "Lean into view",
+        "timeMs": 2333
+      },
+      {
+        "text": "Keep every face clear",
+        "timeMs": 4667
+      },
+      {
+        "text": "Three wild reactions",
+        "timeMs": 7000
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/face-totem-three.webp",
+    "alt": "Three wild reactions",
+    "accent": "#0a9f9f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/face-totem-three-0034a66ff3a437.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

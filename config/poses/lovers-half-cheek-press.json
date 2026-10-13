@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "lovers-half-cheek-press",
+  "name": "Cheek Press",
+  "category": "couple",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-lovers",
+    "framing-half",
+    "mood-sweet",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Stay right there",
+  "animation": {
+    "durationMs": 6490,
+    "captions": [
+      {
+        "text": "Press cheeks together",
+        "timeMs": 0
+      },
+      {
+        "text": "Close your eyes",
+        "timeMs": 1830
+      },
+      {
+        "text": "Soft little smiles",
+        "timeMs": 3660
+      },
+      {
+        "text": "Stay right there",
+        "timeMs": 5490
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/lovers-half-cheek-press.webp",
+    "alt": "Stay right there",
+    "accent": "#ff168f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/lovers-half-cheek-press-7a1b72ebc2620f.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

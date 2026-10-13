@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-half-point-at-center",
+  "name": "Point at Center",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-half",
+    "mood-cool",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the spotlight",
+  "animation": {
+    "durationMs": 7270,
+    "captions": [
+      {
+        "text": "Center person poses",
+        "timeMs": 0
+      },
+      {
+        "text": "Everyone else points at them",
+        "timeMs": 2090
+      },
+      {
+        "text": "Center owns it",
+        "timeMs": 4180
+      },
+      {
+        "text": "Hold the spotlight",
+        "timeMs": 6270
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-half-point-at-center.webp",
+    "alt": "Hold the spotlight",
+    "accent": "#ff168f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-point-at-center-8dd91f491a7a0d.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

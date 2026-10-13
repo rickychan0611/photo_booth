@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "women-3-full-statue-challenge",
+  "name": "Statue Challenge",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-3",
+    "framing-full",
+    "mood-challenge",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold perfectly still",
+  "animation": {
+    "durationMs": 7430,
+    "captions": [
+      {
+        "text": "Strike three different statues",
+        "timeMs": 0
+      },
+      {
+        "text": "Do not wobble",
+        "timeMs": 2143
+      },
+      {
+        "text": "Eyes on the lens",
+        "timeMs": 4287
+      },
+      {
+        "text": "Hold perfectly still",
+        "timeMs": 6430
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-3-full-statue-challenge.webp",
+    "alt": "Hold perfectly still",
+    "accent": "#1769ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-3-full-statue-challenge-56e4f17c3bd397.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

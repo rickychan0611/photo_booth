@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "men-2-half-matching-smirk",
+  "name": "Matching Smirk",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-men-2",
+    "framing-half",
+    "mood-cool",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Do not break",
+  "animation": {
+    "durationMs": 5910,
+    "captions": [
+      {
+        "text": "Same tilt",
+        "timeMs": 0
+      },
+      {
+        "text": "Same squint",
+        "timeMs": 1637
+      },
+      {
+        "text": "Same smirk",
+        "timeMs": 3273
+      },
+      {
+        "text": "Do not break",
+        "timeMs": 4910
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "men",
+      "repeatable": false
+    },
+    {
+      "role": "men",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/men-2-half-matching-smirk.webp",
+    "alt": "Do not break",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/men-2-half-matching-smirk-4e1768a5230f2a.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

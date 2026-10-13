@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "women-2-half-matching-peace",
+  "name": "Matching Peace",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-2",
+    "framing-half",
+    "mood-cute",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the pair",
+  "animation": {
+    "durationMs": 6250,
+    "captions": [
+      {
+        "text": "Peace signs up",
+        "timeMs": 0
+      },
+      {
+        "text": "Tilt opposite ways",
+        "timeMs": 1750
+      },
+      {
+        "text": "Same smile",
+        "timeMs": 3500
+      },
+      {
+        "text": "Hold the pair",
+        "timeMs": 5250
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-2-half-matching-peace.webp",
+    "alt": "Hold the pair",
+    "accent": "#08cbe8"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-2-half-matching-peace-e3b70e6660385c.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

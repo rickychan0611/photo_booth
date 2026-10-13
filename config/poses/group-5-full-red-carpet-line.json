@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-full-red-carpet-line",
+  "name": "Red Carpet Line",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-full",
+    "mood-cool",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the arrival",
+  "animation": {
+    "durationMs": 6560,
+    "captions": [
+      {
+        "text": "Stagger a long line",
+        "timeMs": 0
+      },
+      {
+        "text": "One hand on a hip",
+        "timeMs": 1853
+      },
+      {
+        "text": "Chin up",
+        "timeMs": 3707
+      },
+      {
+        "text": "Hold the arrival",
+        "timeMs": 5560
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-full-red-carpet-line.webp",
+    "alt": "Hold the arrival",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-red-carpet-line-83628c02e70c81.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

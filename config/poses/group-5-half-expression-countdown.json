@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-half-expression-countdown",
+  "name": "Expression Countdown",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-half",
+    "mood-funny",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Freeze the worst one",
+  "animation": {
+    "durationMs": 6070,
+    "captions": [
+      {
+        "text": "Face one",
+        "timeMs": 0
+      },
+      {
+        "text": "Face two",
+        "timeMs": 1690
+      },
+      {
+        "text": "Face three",
+        "timeMs": 3380
+      },
+      {
+        "text": "Freeze the worst one",
+        "timeMs": 5070
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-half-expression-countdown.webp",
+    "alt": "Freeze the worst one",
+    "accent": "#7d22c9"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-expression-countdown-600fb86dbd6783.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

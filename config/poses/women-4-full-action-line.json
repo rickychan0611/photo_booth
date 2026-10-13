@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "id": "women-4-full-action-line",
+  "name": "Action Line",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-4",
+    "framing-full",
+    "mood-cool",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the poster",
+  "animation": {
+    "durationMs": 6800,
+    "captions": [
+      {
+        "text": "Stagger your heights",
+        "timeMs": 0
+      },
+      {
+        "text": "One arm forward each",
+        "timeMs": 1933
+      },
+      {
+        "text": "Lean into the shot",
+        "timeMs": 3867
+      },
+      {
+        "text": "Hold the poster",
+        "timeMs": 5800
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-4-full-action-line.webp",
+    "alt": "Hold the poster",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-4-full-action-line-b16107e95aa9fc.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "women-2-full-hand-heart-walk",
+  "name": "Hand Heart Walk",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-2",
+    "framing-full",
+    "mood-sweet",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Stop cheek to cheek",
+  "animation": {
+    "durationMs": 6960,
+    "captions": [
+      {
+        "text": "Walk toward the camera",
+        "timeMs": 0
+      },
+      {
+        "text": "Swing your joined hands",
+        "timeMs": 1987
+      },
+      {
+        "text": "Make a heart",
+        "timeMs": 3973
+      },
+      {
+        "text": "Stop cheek to cheek",
+        "timeMs": 5960
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-2-full-hand-heart-walk.webp",
+    "alt": "Stop cheek to cheek",
+    "accent": "#ef2929"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-2-full-hand-heart-walk-96b1effbda0cbd.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

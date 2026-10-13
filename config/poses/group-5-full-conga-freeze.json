@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-full-conga-freeze",
+  "name": "Conga Freeze",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-full",
+    "mood-funny",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Look back and grin",
+  "animation": {
+    "durationMs": 7270,
+    "captions": [
+      {
+        "text": "Hands on the shoulders ahead",
+        "timeMs": 0
+      },
+      {
+        "text": "Two silly steps",
+        "timeMs": 2090
+      },
+      {
+        "text": "Stop in the line",
+        "timeMs": 4180
+      },
+      {
+        "text": "Look back and grin",
+        "timeMs": 6270
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-full-conga-freeze.webp",
+    "alt": "Look back and grin",
+    "accent": "#ff168f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-conga-freeze-40d2ad92dd2f6b.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

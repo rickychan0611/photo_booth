@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "id": "hands-on-cheeks",
+  "name": "Hands on Cheeks",
+  "category": "cute",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-surprised",
+    "child-safe",
+    "solo"
+  ],
+  "instruction": "Big surprise",
+  "animation": {
+    "durationMs": 6330,
+    "captions": [
+      {
+        "text": "Lift both hands",
+        "timeMs": 0
+      },
+      {
+        "text": "Touch your cheeks",
+        "timeMs": 1777
+      },
+      {
+        "text": "Tilt your head",
+        "timeMs": 3553
+      },
+      {
+        "text": "Big surprise",
+        "timeMs": 5330
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 1,
+    "maxPeople": 1,
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/hands-on-cheeks.webp",
+    "alt": "Big surprise",
+    "accent": "#ff168f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/hands-on-cheeks-f18685c8d614e7.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

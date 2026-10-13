@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 2,
+  "id": "anime-team-four",
+  "name": "Anime Team Four",
+  "category": "party",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-diamond",
+    "expression-determined",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Final battle faces",
+  "animation": {
+    "durationMs": 7430,
+    "captions": [
+      {
+        "text": "Leader steps forward",
+        "timeMs": 0
+      },
+      {
+        "text": "Team fans behind",
+        "timeMs": 2143
+      },
+      {
+        "text": "Choose powers",
+        "timeMs": 4287
+      },
+      {
+        "text": "Final battle faces",
+        "timeMs": 6430
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/anime-team-four.webp",
+    "alt": "Final battle faces",
+    "accent": "#0a9f9f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/anime-team-four-160b250a501b39.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

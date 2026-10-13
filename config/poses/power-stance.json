@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "id": "power-stance",
+  "name": "Power Stance",
+  "category": "professional",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-determined",
+    "child-safe",
+    "solo"
+  ],
+  "instruction": "Own the camera",
+  "animation": {
+    "durationMs": 6070,
+    "captions": [
+      {
+        "text": "Step wide",
+        "timeMs": 0
+      },
+      {
+        "text": "Stand tall",
+        "timeMs": 1690
+      },
+      {
+        "text": "Set your fists",
+        "timeMs": 3380
+      },
+      {
+        "text": "Own the camera",
+        "timeMs": 5070
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 1,
+    "maxPeople": 1,
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/power-stance.webp",
+    "alt": "Own the camera",
+    "accent": "#ff168f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/power-stance-64d627cb408931.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

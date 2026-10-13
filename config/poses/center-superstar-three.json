@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 2,
+  "id": "center-superstar-three",
+  "name": "Center Superstar",
+  "category": "party",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-triangle",
+    "expression-surprised",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Star stays cool",
+  "animation": {
+    "durationMs": 7350,
+    "captions": [
+      {
+        "text": "Center takes the mark",
+        "timeMs": 0
+      },
+      {
+        "text": "Sides lean inward",
+        "timeMs": 2117
+      },
+      {
+        "text": "Present the star",
+        "timeMs": 4233
+      },
+      {
+        "text": "Star stays cool",
+        "timeMs": 6350
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/center-superstar-three.webp",
+    "alt": "Star stays cool",
+    "accent": "#1769ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/center-superstar-three-c27fc811805208.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

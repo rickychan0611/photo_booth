@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "copy-the-child",
+  "name": "Copy the Child",
+  "category": "kids",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-triangle",
+    "expression-bigSmile",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Child does it best",
+  "animation": {
+    "durationMs": 7430,
+    "captions": [
+      {
+        "text": "Child chooses the pose",
+        "timeMs": 0
+      },
+      {
+        "text": "Adults copy the body",
+        "timeMs": 2143
+      },
+      {
+        "text": "Match every hand",
+        "timeMs": 4287
+      },
+      {
+        "text": "Child does it best",
+        "timeMs": 6430
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "child",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/copy-the-child.webp",
+    "alt": "Child does it best",
+    "accent": "#ff168f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/copy-the-child-f0d345f2fc7e85.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

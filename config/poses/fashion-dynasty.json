@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 2,
+  "id": "fashion-dynasty",
+  "name": "Fashion Dynasty",
+  "category": "glamour",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-layers",
+    "expression-confident",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Dynasty faces",
+  "animation": {
+    "durationMs": 7430,
+    "captions": [
+      {
+        "text": "Build a fashion pyramid",
+        "timeMs": 0
+      },
+      {
+        "text": "Overlap shoulders",
+        "timeMs": 2143
+      },
+      {
+        "text": "Vary every angle",
+        "timeMs": 4287
+      },
+      {
+        "text": "Dynasty faces",
+        "timeMs": 6430
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/fashion-dynasty.webp",
+    "alt": "Dynasty faces",
+    "accent": "#08cbe8"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/fashion-dynasty-d290fa07ec254b.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

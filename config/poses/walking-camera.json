@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "id": "walking-camera",
+  "name": "Walk to Camera",
+  "category": "solo",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-bigSmile",
+    "child-safe",
+    "solo"
+  ],
+  "instruction": "Smile as you walk",
+  "animation": {
+    "durationMs": 6410,
+    "captions": [
+      {
+        "text": "Step forward",
+        "timeMs": 0
+      },
+      {
+        "text": "Let your arms move",
+        "timeMs": 1803
+      },
+      {
+        "text": "Lift your chin",
+        "timeMs": 3607
+      },
+      {
+        "text": "Smile as you walk",
+        "timeMs": 5410
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 1,
+    "maxPeople": 1,
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/walking-camera.webp",
+    "alt": "Smile as you walk",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/walking-camera-3200960b9cde5f.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

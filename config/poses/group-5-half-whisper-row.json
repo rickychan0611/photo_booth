@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-half-whisper-row",
+  "name": "Whisper Row",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-half",
+    "mood-funny",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the row",
+  "animation": {
+    "durationMs": 7030,
+    "captions": [
+      {
+        "text": "Pass a whisper across",
+        "timeMs": 0
+      },
+      {
+        "text": "Each face reacts",
+        "timeMs": 2010
+      },
+      {
+        "text": "Last person gasps",
+        "timeMs": 4020
+      },
+      {
+        "text": "Hold the row",
+        "timeMs": 6030
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-half-whisper-row.webp",
+    "alt": "Hold the row",
+    "accent": "#ffd21a"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-whisper-row-bb9ef8753abd25.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

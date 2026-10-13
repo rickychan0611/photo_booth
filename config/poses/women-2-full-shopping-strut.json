@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "women-2-full-shopping-strut",
+  "name": "Shopping Strut",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-2",
+    "framing-full",
+    "mood-cool",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hit a cover pose",
+  "animation": {
+    "durationMs": 6490,
+    "captions": [
+      {
+        "text": "One foot in front",
+        "timeMs": 0
+      },
+      {
+        "text": "Hands on hips",
+        "timeMs": 1830
+      },
+      {
+        "text": "Strut two steps",
+        "timeMs": 3660
+      },
+      {
+        "text": "Hit a cover pose",
+        "timeMs": 5490
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-2-full-shopping-strut.webp",
+    "alt": "Hit a cover pose",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-2-full-shopping-strut-29075189c2175c.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

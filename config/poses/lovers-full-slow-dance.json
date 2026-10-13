@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "lovers-full-slow-dance",
+  "name": "Slow Dance",
+  "category": "couple",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-lovers",
+    "framing-full",
+    "mood-sweet",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Rest your heads",
+  "animation": {
+    "durationMs": 6560,
+    "captions": [
+      {
+        "text": "Offer one hand",
+        "timeMs": 0
+      },
+      {
+        "text": "Step in together",
+        "timeMs": 1853
+      },
+      {
+        "text": "Sway on the spot",
+        "timeMs": 3707
+      },
+      {
+        "text": "Rest your heads",
+        "timeMs": 5560
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/lovers-full-slow-dance.webp",
+    "alt": "Rest your heads",
+    "accent": "#0a9f9f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/lovers-full-slow-dance-488f0e376b051e.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

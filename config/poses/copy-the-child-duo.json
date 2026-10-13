@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "copy-the-child-duo",
+  "name": "Copy the Child Duo",
+  "category": "kids",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-bigSmile",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Child wins!",
+  "animation": {
+    "durationMs": 7110,
+    "captions": [
+      {
+        "text": "Child takes the lead",
+        "timeMs": 0
+      },
+      {
+        "text": "Adult copies the body",
+        "timeMs": 2037
+      },
+      {
+        "text": "Match both hands",
+        "timeMs": 4073
+      },
+      {
+        "text": "Child wins!",
+        "timeMs": 6110
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "child",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/copy-the-child-duo.webp",
+    "alt": "Child wins!",
+    "accent": "#0a9f9f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/copy-the-child-duo-4b5be0fd2fbeea.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

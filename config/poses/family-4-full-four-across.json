@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "id": "family-4-full-four-across",
+  "name": "Four Across",
+  "category": "family",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-family-4",
+    "framing-full",
+    "mood-cool",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Hold the line",
+  "animation": {
+    "durationMs": 8000,
+    "captions": [
+      {
+        "text": "Stand shoulder to shoulder",
+        "timeMs": 0
+      },
+      {
+        "text": "Mix pockets and folded arms",
+        "timeMs": 2333
+      },
+      {
+        "text": "Stagger one foot",
+        "timeMs": 4667
+      },
+      {
+        "text": "Hold the line",
+        "timeMs": 7000
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/family-4-full-four-across.webp",
+    "alt": "Hold the line",
+    "accent": "#08cbe8"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/family-4-full-four-across-102cebef7b726c.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

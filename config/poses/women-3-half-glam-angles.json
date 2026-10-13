@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "women-3-half-glam-angles",
+  "name": "Glam Angles",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-3",
+    "framing-half",
+    "mood-cool",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the editorial",
+  "animation": {
+    "durationMs": 6880,
+    "captions": [
+      {
+        "text": "Sharp chin angles",
+        "timeMs": 0
+      },
+      {
+        "text": "One hand in your hair",
+        "timeMs": 1960
+      },
+      {
+        "text": "Look down the lens",
+        "timeMs": 3920
+      },
+      {
+        "text": "Hold the editorial",
+        "timeMs": 5880
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-3-half-glam-angles.webp",
+    "alt": "Hold the editorial",
+    "accent": "#ef2929"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-3-half-glam-angles-a5d7fde0c79e22.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

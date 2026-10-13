@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 2,
+  "id": "family-4-half-four-silly-faces",
+  "name": "Four Silly Faces",
+  "category": "family",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-family-4",
+    "framing-half",
+    "mood-funny",
+    "child-safe",
+    "cooperative",
+    "with-kids"
+  ],
+  "instruction": "Freeze the set",
+  "animation": {
+    "durationMs": 6560,
+    "captions": [
+      {
+        "text": "Each pick a face",
+        "timeMs": 0
+      },
+      {
+        "text": "Show them together",
+        "timeMs": 1853
+      },
+      {
+        "text": "Kids may go wilder",
+        "timeMs": 3707
+      },
+      {
+        "text": "Freeze the set",
+        "timeMs": 5560
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "child",
+      "repeatable": false
+    },
+    {
+      "role": "child",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/family-4-half-four-silly-faces.webp",
+    "alt": "Freeze the set",
+    "accent": "#ff168f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/family-4-half-four-silly-faces-b670303049cb03.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

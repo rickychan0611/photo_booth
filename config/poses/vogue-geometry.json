@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "id": "vogue-geometry",
+  "name": "Vogue Geometry",
+  "category": "glamour",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-smirk",
+    "adult-only",
+    "solo"
+  ],
+  "instruction": "Editorial smirk",
+  "animation": {
+    "durationMs": 7110,
+    "captions": [
+      {
+        "text": "Angle your shoulders",
+        "timeMs": 0
+      },
+      {
+        "text": "Lift both elbows",
+        "timeMs": 2037
+      },
+      {
+        "text": "Frame your face",
+        "timeMs": 4073
+      },
+      {
+        "text": "Editorial smirk",
+        "timeMs": 6110
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 1,
+    "maxPeople": 1,
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/vogue-geometry.webp",
+    "alt": "Editorial smirk",
+    "accent": "#ef2929"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/vogue-geometry-81d7e0f3545313.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "id": "women-4-full-square-heroes",
+  "name": "Square Heroes",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-4",
+    "framing-full",
+    "mood-crazy",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Freeze the team",
+  "animation": {
+    "durationMs": 7110,
+    "captions": [
+      {
+        "text": "Four low stances",
+        "timeMs": 0
+      },
+      {
+        "text": "Different arm shapes",
+        "timeMs": 2037
+      },
+      {
+        "text": "Pop tall together",
+        "timeMs": 4073
+      },
+      {
+        "text": "Freeze the team",
+        "timeMs": 6110
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-4-full-square-heroes.webp",
+    "alt": "Freeze the team",
+    "accent": "#ffd21a"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-4-full-square-heroes-2264fd9b87a87a.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

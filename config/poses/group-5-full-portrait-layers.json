@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-full-portrait-layers",
+  "name": "Portrait Layers",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-full",
+    "mood-sweet",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "One warm portrait",
+  "animation": {
+    "durationMs": 6720,
+    "captions": [
+      {
+        "text": "Tallest in the back",
+        "timeMs": 0
+      },
+      {
+        "text": "Shortest in front",
+        "timeMs": 1907
+      },
+      {
+        "text": "Hands relaxed",
+        "timeMs": 3813
+      },
+      {
+        "text": "One warm portrait",
+        "timeMs": 5720
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-full-portrait-layers.webp",
+    "alt": "One warm portrait",
+    "accent": "#ef2929"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-portrait-layers-e718aeb54b7923.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

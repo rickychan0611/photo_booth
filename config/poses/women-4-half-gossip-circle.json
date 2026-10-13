@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "id": "women-4-half-gossip-circle",
+  "name": "Gossip Circle",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-4",
+    "framing-half",
+    "mood-funny",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Freeze the gossip",
+  "animation": {
+    "durationMs": 7030,
+    "captions": [
+      {
+        "text": "Heads in a huddle",
+        "timeMs": 0
+      },
+      {
+        "text": "One spills the secret",
+        "timeMs": 2010
+      },
+      {
+        "text": "Three react differently",
+        "timeMs": 4020
+      },
+      {
+        "text": "Freeze the gossip",
+        "timeMs": 6030
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-4-half-gossip-circle.webp",
+    "alt": "Freeze the gossip",
+    "accent": "#ffd21a"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-4-half-gossip-circle-0a2dd2df32dc43.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

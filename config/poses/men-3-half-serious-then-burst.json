@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "men-3-half-serious-then-burst",
+  "name": "Serious Then Burst",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-men-3",
+    "framing-half",
+    "mood-crazy",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Freeze the burst",
+  "animation": {
+    "durationMs": 7030,
+    "captions": [
+      {
+        "text": "Start stone faced",
+        "timeMs": 0
+      },
+      {
+        "text": "Hold one beat",
+        "timeMs": 2010
+      },
+      {
+        "text": "Explode into laughs",
+        "timeMs": 4020
+      },
+      {
+        "text": "Freeze the burst",
+        "timeMs": 6030
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "men",
+      "repeatable": false
+    },
+    {
+      "role": "men",
+      "repeatable": false
+    },
+    {
+      "role": "men",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/men-3-half-serious-then-burst.webp",
+    "alt": "Freeze the burst",
+    "accent": "#ff168f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/men-3-half-serious-then-burst-9edebf83f807ea.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

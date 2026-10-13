@@ -1,6 +1,6 @@
 {
   "relaxed-confidence": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\relaxed-confidence-9b06df28703546.mp3",
+    "filePath": "project-asset:audio/elevenlabs/relaxed-confidence-9b06df28703546.mp3",
     "durationMs": 5330,
     "script": "Turn slightly. Shift your weight. Relax your hands. Confident eyes!",
     "cues": [
@@ -11,7 +11,7 @@
     ]
   },
   "power-stance": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\power-stance-64d627cb408931.mp3",
+    "filePath": "project-asset:audio/elevenlabs/power-stance-64d627cb408931.mp3",
     "durationMs": 5070,
     "script": "Step wide. Stand tall. Set your fists. Own the camera!",
     "cues": [
@@ -22,7 +22,7 @@
     ]
   },
   "pocket-angle": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\pocket-angle-7acb7348869bb1.mp3",
+    "filePath": "project-asset:audio/elevenlabs/pocket-angle-7acb7348869bb1.mp3",
     "durationMs": 5150,
     "script": "Turn your body. Bend one knee. Hand near pocket. Give a small smirk!",
     "cues": [
@@ -33,7 +33,7 @@
     ]
   },
   "shoulder-turn": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\shoulder-turn-29cea25612e719.mp3",
+    "filePath": "project-asset:audio/elevenlabs/shoulder-turn-29cea25612e719.mp3",
     "durationMs": 5150,
     "script": "Turn away. Bring one shoulder back. Look over it. Hold that gaze!",
     "cues": [
@@ -44,7 +44,7 @@
     ]
   },
   "editorial-s-curve": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\editorial-s-curve-7aa8ba8fbbf9bf.mp3",
+    "filePath": "project-asset:audio/elevenlabs/editorial-s-curve-7aa8ba8fbbf9bf.mp3",
     "durationMs": 5880,
     "script": "Shift one hip. Angle your shoulders. Place one hand. Soft model eyes!",
     "cues": [
@@ -55,7 +55,7 @@
     ]
   },
   "crossed-arms-cool": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\crossed-arms-cool-f8e8230b0f126a.mp3",
+    "filePath": "project-asset:audio/elevenlabs/crossed-arms-cool-f8e8230b0f126a.mp3",
     "durationMs": 5720,
     "script": "Turn slightly. Lower your shoulders. Cross your arms. Cool confident face!",
     "cues": [
@@ -66,7 +66,7 @@
     ]
   },
   "walking-camera": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\walking-camera-3200960b9cde5f.mp3",
+    "filePath": "project-asset:audio/elevenlabs/walking-camera-3200960b9cde5f.mp3",
     "durationMs": 5410,
     "script": "Step forward. Let your arms move. Lift your chin. Smile as you walk!",
     "cues": [
@@ -77,7 +77,7 @@
     ]
   },
   "peace-and-wink": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\peace-and-wink-d022d5bd58b3c6.mp3",
+    "filePath": "project-asset:audio/elevenlabs/peace-and-wink-d022d5bd58b3c6.mp3",
     "durationMs": 5250,
     "script": "Raise one hand. Make a peace sign. Tilt your head. Smile and wink!",
     "cues": [
@@ -88,7 +88,7 @@
     ]
   },
   "double-peace": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\double-peace-20addda560be24.mp3",
+    "filePath": "project-asset:audio/elevenlabs/double-peace-20addda560be24.mp3",
     "durationMs": 6110,
     "script": "Lift both hands. Make two peace signs. Tilt your head. Big happy eyes!",
     "cues": [
@@ -99,7 +99,7 @@
     ]
   },
   "hands-on-cheeks": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\hands-on-cheeks-f18685c8d614e7.mp3",
+    "filePath": "project-asset:audio/elevenlabs/hands-on-cheeks-f18685c8d614e7.mp3",
     "durationMs": 5330,
     "script": "Lift both hands. Touch your cheeks. Tilt your head. Big surprise!",
     "cues": [
@@ -110,7 +110,7 @@
     ]
   },
   "heart-hands": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\heart-hands-68a968b3efca39.mp3",
+    "filePath": "project-asset:audio/elevenlabs/heart-hands-68a968b3efca39.mp3",
     "durationMs": 5150,
     "script": "Raise your hands. Bring them together. Make a heart. Smile through it!",
     "cues": [
@@ -121,7 +121,7 @@
     ]
   },
   "superhero-landing": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\superhero-landing-ea86544290c02d.mp3",
+    "filePath": "project-asset:audio/elevenlabs/superhero-landing-ea86544290c02d.mp3",
     "durationMs": 4990,
     "script": "Step wide. Drop one knee. Plant your fist. Hero eyes up!",
     "cues": [
@@ -132,7 +132,7 @@
     ]
   },
   "shy-toe-turn": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\shy-toe-turn-7f6d29bad0e5e0.mp3",
+    "filePath": "project-asset:audio/elevenlabs/shy-toe-turn-7f6d29bad0e5e0.mp3",
     "durationMs": 5720,
     "script": "Turn your toes in. Bring hands together. Tilt your head. Give a shy smile!",
     "cues": [
@@ -143,7 +143,7 @@
     ]
   },
   "anime-power-up": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\anime-power-up-6cb55e0e3039d0.mp3",
+    "filePath": "project-asset:audio/elevenlabs/anime-power-up-6cb55e0e3039d0.mp3",
     "durationMs": 4830,
     "script": "Step wide. Bend your knees. Clench your fists. Power up!",
     "cues": [
@@ -154,7 +154,7 @@
     ]
   },
   "magical-transformation": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\magical-transformation-e95e84e082a153.mp3",
+    "filePath": "project-asset:audio/elevenlabs/magical-transformation-e95e84e082a153.mp3",
     "durationMs": 6030,
     "script": "Turn one foot. Twist your body. Sweep your arms up. Transformation finish!",
     "cues": [
@@ -165,7 +165,7 @@
     ]
   },
   "cool-villain": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\cool-villain-d15c2fcb468e28.mp3",
+    "filePath": "project-asset:audio/elevenlabs/cool-villain-d15c2fcb468e28.mp3",
     "durationMs": 5720,
     "script": "Turn into shadow. Raise one hand. Lower your chin. Give a villain smirk!",
     "cues": [
@@ -176,7 +176,7 @@
     ]
   },
   "secret-agent-dodge": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\secret-agent-dodge-5f35ad7dffbfbc.mp3",
+    "filePath": "project-asset:audio/elevenlabs/secret-agent-dodge-5f35ad7dffbfbc.mp3",
     "durationMs": 5560,
     "script": "Step sideways. Lean away. Throw your arms out. Dodge the laser!",
     "cues": [
@@ -187,7 +187,7 @@
     ]
   },
   "comic-hero-punch": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\comic-hero-punch-b7b9dda5594275.mp3",
+    "filePath": "project-asset:audio/elevenlabs/comic-hero-punch-b7b9dda5594275.mp3",
     "durationMs": 5070,
     "script": "Set your feet. Turn your shoulder. Punch toward camera. Hero face!",
     "cues": [
@@ -198,7 +198,7 @@
     ]
   },
   "broken-doll-fashion": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\broken-doll-fashion-333dac1624097a.mp3",
+    "filePath": "project-asset:audio/elevenlabs/broken-doll-fashion-333dac1624097a.mp3",
     "durationMs": 5720,
     "script": "Break your hip line. Tilt your shoulders. Bend your wrists. Blank fashion face!",
     "cues": [
@@ -209,7 +209,7 @@
     ]
   },
   "runway-cross-step": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\runway-cross-step-3652d864427ef5.mp3",
+    "filePath": "project-asset:audio/elevenlabs/runway-cross-step-3652d864427ef5.mp3",
     "durationMs": 5640,
     "script": "Cross one step. Lengthen your body. Relax your arms. Runway eyes!",
     "cues": [
@@ -220,7 +220,7 @@
     ]
   },
   "vogue-geometry": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\vogue-geometry-81d7e0f3545313.mp3",
+    "filePath": "project-asset:audio/elevenlabs/vogue-geometry-81d7e0f3545313.mp3",
     "durationMs": 6110,
     "script": "Angle your shoulders. Lift both elbows. Frame your face. Editorial smirk!",
     "cues": [
@@ -231,7 +231,7 @@
     ]
   },
   "pop-star-finish": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\pop-star-finish-98e92cbfdb6db9.mp3",
+    "filePath": "project-asset:audio/elevenlabs/pop-star-finish-98e92cbfdb6db9.mp3",
     "durationMs": 6430,
     "script": "Step to the side. Reach one arm high. Grab the imaginary mic. Big stage smile!",
     "cues": [
@@ -242,7 +242,7 @@
     ]
   },
   "rock-star-lean": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\rock-star-lean-5a066140afa0c6.mp3",
+    "filePath": "project-asset:audio/elevenlabs/rock-star-lean-5a066140afa0c6.mp3",
     "durationMs": 5410,
     "script": "Step wide. Lean backward. Play air guitar. Rock-star face!",
     "cues": [
@@ -253,7 +253,7 @@
     ]
   },
   "drama-queen": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\drama-queen-dbce3fd98f9d7d.mp3",
+    "filePath": "project-asset:audio/elevenlabs/drama-queen-dbce3fd98f9d7d.mp3",
     "durationMs": 5800,
     "script": "Lift your chest. Throw hands upward. Tip your head back. Maximum drama!",
     "cues": [
@@ -264,7 +264,7 @@
     ]
   },
   "back-to-back-agents": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\back-to-back-agents-a6938e882df347.mp3",
+    "filePath": "project-asset:audio/elevenlabs/back-to-back-agents-a6938e882df347.mp3",
     "durationMs": 5960,
     "script": "Stand back-to-back. Cross your arms. Look opposite ways. Secret-agent faces!",
     "cues": [
@@ -275,7 +275,7 @@
     ]
   },
   "anime-rivals": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\anime-rivals-0648f04bbd5b63.mp3",
+    "filePath": "project-asset:audio/elevenlabs/anime-rivals-0648f04bbd5b63.mp3",
     "durationMs": 5330,
     "script": "Face each other. Take battle stances. Ready your fists. Rival eyes!",
     "cues": [
@@ -286,7 +286,7 @@
     ]
   },
   "hero-and-sidekick": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\hero-and-sidekick-a8b71d64ae0d9a.mp3",
+    "filePath": "project-asset:audio/elevenlabs/hero-and-sidekick-a8b71d64ae0d9a.mp3",
     "durationMs": 5960,
     "script": "Hero steps forward. Sidekick peeks out. Strike your signs. Save the world!",
     "cues": [
@@ -297,7 +297,7 @@
     ]
   },
   "dip-and-laugh": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\dip-and-laugh-54352f77448f43.mp3",
+    "filePath": "project-asset:audio/elevenlabs/dip-and-laugh-54352f77448f43.mp3",
     "durationMs": 5560,
     "script": "Connect hands. Support the waist. Make a tiny dip. Laugh together!",
     "cues": [
@@ -308,7 +308,7 @@
     ]
   },
   "power-couple": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\power-couple-025a4148c83793.mp3",
+    "filePath": "project-asset:audio/elevenlabs/power-couple-025a4148c83793.mp3",
     "durationMs": 5800,
     "script": "Stand shoulder-to-shoulder. Angle outward. Set your hands. Power-couple eyes!",
     "cues": [
@@ -319,7 +319,7 @@
     ]
   },
   "cinematic-almost-kiss": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\cinematic-almost-kiss-6c6267ccc68fca.mp3",
+    "filePath": "project-asset:audio/elevenlabs/cinematic-almost-kiss-6c6267ccc68fca.mp3",
     "durationMs": 5330,
     "script": "Turn toward each other. Move close. Hold at the waist. Almost kiss!",
     "cues": [
@@ -330,7 +330,7 @@
     ]
   },
   "forehead-touch": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\forehead-touch-f1c9949316e664.mp3",
+    "filePath": "project-asset:audio/elevenlabs/forehead-touch-f1c9949316e664.mp3",
     "durationMs": 4830,
     "script": "Face each other. Step close. Touch foreheads. Close your eyes!",
     "cues": [
@@ -341,7 +341,7 @@
     ]
   },
   "kneeling-proposal": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\kneeling-proposal-25f39dcb2c54e7.mp3",
+    "filePath": "project-asset:audio/elevenlabs/kneeling-proposal-25f39dcb2c54e7.mp3",
     "durationMs": 5960,
     "script": "One person kneels. Present the ring. React with both hands. Big surprise!",
     "cues": [
@@ -352,7 +352,7 @@
     ]
   },
   "royal-and-bodyguard": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\royal-and-bodyguard-639903e727b525.mp3",
+    "filePath": "project-asset:audio/elevenlabs/royal-and-bodyguard-639903e727b525.mp3",
     "durationMs": 6690,
     "script": "Royal steps forward. Guard stands behind. Set your roles. Regal and serious!",
     "cues": [
@@ -363,7 +363,7 @@
     ]
   },
   "fashion-push-pull": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\fashion-push-pull-b14faab214a195.mp3",
+    "filePath": "project-asset:audio/elevenlabs/fashion-push-pull-b14faab214a195.mp3",
     "durationMs": 5330,
     "script": "Connect one hand. Lean apart. Stretch the line. Model eyes!",
     "cues": [
@@ -374,7 +374,7 @@
     ]
   },
   "mirror-twins": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\mirror-twins-7c9ce0f65edd3c.mp3",
+    "filePath": "project-asset:audio/elevenlabs/mirror-twins-7c9ce0f65edd3c.mp3",
     "durationMs": 6350,
     "script": "Stand shoulder-to-shoulder. Mirror your bodies. Match your hands. Twin fashion faces!",
     "cues": [
@@ -385,7 +385,7 @@
     ]
   },
   "secret-and-shock": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\secret-and-shock-940f86513e6aaa.mp3",
+    "filePath": "project-asset:audio/elevenlabs/secret-and-shock-940f86513e6aaa.mp3",
     "durationMs": 5410,
     "script": "Lean together. Whisper the secret. Turn to camera. Huge shock!",
     "cues": [
@@ -396,7 +396,7 @@
     ]
   },
   "spy-trio": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\spy-trio-4585a81e2e8c44.mp3",
+    "filePath": "project-asset:audio/elevenlabs/spy-trio-4585a81e2e8c44.mp3",
     "durationMs": 5800,
     "script": "Make a triangle. Turn three directions. Ready your hands. Spy faces!",
     "cues": [
@@ -407,7 +407,7 @@
     ]
   },
   "anime-squad-three": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\anime-squad-three-3aee76b80aa10e.mp3",
+    "filePath": "project-asset:audio/elevenlabs/anime-squad-three-3aee76b80aa10e.mp3",
     "durationMs": 6270,
     "script": "Leader steps forward. Teammates fan out. Power poses ready. Squad faces!",
     "cues": [
@@ -418,7 +418,7 @@
     ]
   },
   "editorial-triangle": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\editorial-triangle-da24000c05d324.mp3",
+    "filePath": "project-asset:audio/elevenlabs/editorial-triangle-da24000c05d324.mp3",
     "durationMs": 6270,
     "script": "Build three levels. Angle toward center. Shape your arms. Fashion stillness!",
     "cues": [
@@ -429,7 +429,7 @@
     ]
   },
   "face-totem-three": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\face-totem-three-0034a66ff3a437.mp3",
+    "filePath": "project-asset:audio/elevenlabs/face-totem-three-0034a66ff3a437.mp3",
     "durationMs": 7000,
     "script": "Stack diagonally. Lean into view. Keep every face clear. Three wild reactions!",
     "cues": [
@@ -440,7 +440,7 @@
     ]
   },
   "center-superstar-three": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\center-superstar-three-c27fc811805208.mp3",
+    "filePath": "project-asset:audio/elevenlabs/center-superstar-three-c27fc811805208.mp3",
     "durationMs": 6350,
     "script": "Center takes the mark. Sides lean inward. Present the star. Star stays cool!",
     "cues": [
@@ -451,7 +451,7 @@
     ]
   },
   "three-level-fashion": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\three-level-fashion-6bf40145fad4ec.mp3",
+    "filePath": "project-asset:audio/elevenlabs/three-level-fashion-6bf40145fad4ec.mp3",
     "durationMs": 6270,
     "script": "Choose three heights. Overlap shoulders. Make sharp lines. Editorial faces!",
     "cues": [
@@ -462,7 +462,7 @@
     ]
   },
   "see-hear-speak-chaos": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\see-hear-speak-chaos-32d2dad4c4a194.mp3",
+    "filePath": "project-asset:audio/elevenlabs/see-hear-speak-chaos-32d2dad4c4a194.mp3",
     "durationMs": 6030,
     "script": "Line up close. Cover eyes ears mouth. Lean together. Make it chaotic!",
     "cues": [
@@ -473,7 +473,7 @@
     ]
   },
   "domino-lean-three": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\domino-lean-three-712b7a2b3db9ec.mp3",
+    "filePath": "project-asset:audio/elevenlabs/domino-lean-three-712b7a2b3db9ec.mp3",
     "durationMs": 6030,
     "script": "Stand in a row. Lean one direction. Increase each angle. Hold the domino!",
     "cues": [
@@ -484,7 +484,7 @@
     ]
   },
   "action-movie-diamond": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\action-movie-diamond-7f46420d98ae5b.mp3",
+    "filePath": "project-asset:audio/elevenlabs/action-movie-diamond-7f46420d98ae5b.mp3",
     "durationMs": 6270,
     "script": "Build a diamond. Turn four directions. Ready action hands. Movie-poster faces!",
     "cues": [
@@ -495,7 +495,7 @@
     ]
   },
   "fashion-album-cover": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\fashion-album-cover-d629e37f286e22.mp3",
+    "filePath": "project-asset:audio/elevenlabs/fashion-album-cover-d629e37f286e22.mp3",
     "durationMs": 6110,
     "script": "Make four levels. Overlap the group. Choose different angles. Album-cover faces!",
     "cues": [
@@ -506,7 +506,7 @@
     ]
   },
   "human-picture-frame": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\human-picture-frame-c52c88d87fb21d.mp3",
+    "filePath": "project-asset:audio/elevenlabs/human-picture-frame-c52c88d87fb21d.mp3",
     "durationMs": 6610,
     "script": "Outside guests frame. Inside guests move close. Build the picture. Everyone reacts!",
     "cues": [
@@ -517,7 +517,7 @@
     ]
   },
   "anime-team-four": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\anime-team-four-160b250a501b39.mp3",
+    "filePath": "project-asset:audio/elevenlabs/anime-team-four-160b250a501b39.mp3",
     "durationMs": 6430,
     "script": "Leader steps forward. Team fans behind. Choose powers. Final battle faces!",
     "cues": [
@@ -528,7 +528,7 @@
     ]
   },
   "emotion-explosion-four": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\emotion-explosion-four-f503b3b7ab942e.mp3",
+    "filePath": "project-asset:audio/elevenlabs/emotion-explosion-four-f503b3b7ab942e.mp3",
     "durationMs": 5800,
     "script": "Line up tightly. Look down the line. Pass the reaction. Explode at the end!",
     "cues": [
@@ -539,7 +539,7 @@
     ]
   },
   "accusation-circle-four": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\accusation-circle-four-58d40ca5cd41e5.mp3",
+    "filePath": "project-asset:audio/elevenlabs/accusation-circle-four-58d40ca5cd41e5.mp3",
     "durationMs": 4990,
     "script": "Turn toward center. Point to someone else. Look at camera. Who did it!",
     "cues": [
@@ -550,7 +550,7 @@
     ]
   },
   "red-carpet-drama-four": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\red-carpet-drama-four-874b6d8cb3a003.mp3",
+    "filePath": "project-asset:audio/elevenlabs/red-carpet-drama-four-874b6d8cb3a003.mp3",
     "durationMs": 6840,
     "script": "Star takes the center. Bodyguard steps close. Paparazzi aims. Fan loses control!",
     "cues": [
@@ -561,7 +561,7 @@
     ]
   },
   "sit-kneel-lean-stand": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\sit-kneel-lean-stand-6443b68d1c0d3d.mp3",
+    "filePath": "project-asset:audio/elevenlabs/sit-kneel-lean-stand-6443b68d1c0d3d.mp3",
     "durationMs": 6190,
     "script": "Choose four heights. Build a diagonal. Overlap carefully. Freeze like fashion!",
     "cues": [
@@ -572,7 +572,7 @@
     ]
   },
   "ensemble-movie-poster": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\ensemble-movie-poster-a3cb049e53cf13.mp3",
+    "filePath": "project-asset:audio/elevenlabs/ensemble-movie-poster-a3cb049e53cf13.mp3",
     "durationMs": 6110,
     "script": "Choose the hero. Build layers behind. Give everyone a role. Movie-poster finish!",
     "cues": [
@@ -583,7 +583,7 @@
     ]
   },
   "fashion-dynasty": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\fashion-dynasty-d290fa07ec254b.mp3",
+    "filePath": "project-asset:audio/elevenlabs/fashion-dynasty-d290fa07ec254b.mp3",
     "durationMs": 6430,
     "script": "Build a fashion pyramid. Overlap shoulders. Vary every angle. Dynasty faces!",
     "cues": [
@@ -594,7 +594,7 @@
     ]
   },
   "celebration-eruption": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\celebration-eruption-dad5ea1f0a55b6.mp3",
+    "filePath": "project-asset:audio/elevenlabs/celebration-eruption-dad5ea1f0a55b6.mp3",
     "durationMs": 6610,
     "script": "Center starts calm. Raise hands outward. Grow the energy. Celebration erupts!",
     "cues": [
@@ -605,7 +605,7 @@
     ]
   },
   "group-power-up": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-power-up-081b03d8f8a749.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-power-up-081b03d8f8a749.mp3",
     "durationMs": 5960,
     "script": "Spread into formation. Bend your knees. Choose your power. Power up together!",
     "cues": [
@@ -616,7 +616,7 @@
     ]
   },
   "human-wave": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\human-wave-c4cf3ce2536222.mp3",
+    "filePath": "project-asset:audio/elevenlabs/human-wave-c4cf3ce2536222.mp3",
     "durationMs": 5800,
     "script": "Form a close line. Start leaning outside. Build a wave. Hold the wave!",
     "cues": [
@@ -627,7 +627,7 @@
     ]
   },
   "many-armed-idol": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\many-armed-idol-8667f62be2f186.mp3",
+    "filePath": "project-asset:audio/elevenlabs/many-armed-idol-8667f62be2f186.mp3",
     "durationMs": 6530,
     "script": "Choose the center idol. Hide behind in layers. Fan every arm outward. Idol face!",
     "cues": [
@@ -638,7 +638,7 @@
     ]
   },
   "royal-court": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\royal-court-23bd54bb0cd885.mp3",
+    "filePath": "project-asset:audio/elevenlabs/royal-court-23bd54bb0cd885.mp3",
     "durationMs": 6350,
     "script": "Royal takes the center. Court forms around. Choose your court role. Royal drama!",
     "cues": [
@@ -649,7 +649,7 @@
     ]
   },
   "heroes-vs-villains": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\heroes-vs-villains-446508c177a9d7.mp3",
+    "filePath": "project-asset:audio/elevenlabs/heroes-vs-villains-446508c177a9d7.mp3",
     "durationMs": 6430,
     "script": "Split into two teams. Face the center. Ready your powers. Heroes versus villains!",
     "cues": [
@@ -660,7 +660,7 @@
     ]
   },
   "family-superhero-team": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-superhero-team-6dd555dfd282da.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-superhero-team-6dd555dfd282da.mp3",
     "durationMs": 7240,
     "script": "Adults anchor behind. Hero steps forward. Everyone powers up. Family saves the day!",
     "cues": [
@@ -671,7 +671,7 @@
     ]
   },
   "parents-as-bodyguards": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\parents-as-bodyguards-41cb9036b3ec6d.mp3",
+    "filePath": "project-asset:audio/elevenlabs/parents-as-bodyguards-41cb9036b3ec6d.mp3",
     "durationMs": 7000,
     "script": "Star stands in front. Guards close behind. Set protective hands. Cool family faces!",
     "cues": [
@@ -682,7 +682,7 @@
     ]
   },
   "kids-take-over": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\kids-take-over-c030fbe2c57a5c.mp3",
+    "filePath": "project-asset:audio/elevenlabs/kids-take-over-c030fbe2c57a5c.mp3",
     "durationMs": 6840,
     "script": "Kids take the center. Adults move behind. Kids act like bosses. Adults look worried!",
     "cues": [
@@ -693,7 +693,7 @@
     ]
   },
   "family-squeeze-attack": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-squeeze-attack-b8cec06a351e77.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-squeeze-attack-b8cec06a351e77.mp3",
     "durationMs": 6030,
     "script": "Move close together. Lean toward the center. Squeeze gently. Laugh at the camera!",
     "cues": [
@@ -704,7 +704,7 @@
     ]
   },
   "tiny-hero-big-villains": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\tiny-hero-big-villains-a1643c52bb87dc.mp3",
+    "filePath": "project-asset:audio/elevenlabs/tiny-hero-big-villains-a1643c52bb87dc.mp3",
     "durationMs": 7390,
     "script": "Tiny hero steps forward. Villains loom behind. Hero powers up. Villains are defeated!",
     "cues": [
@@ -715,7 +715,7 @@
     ]
   },
   "copy-the-child": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\copy-the-child-f0d345f2fc7e85.mp3",
+    "filePath": "project-asset:audio/elevenlabs/copy-the-child-f0d345f2fc7e85.mp3",
     "durationMs": 6430,
     "script": "Child chooses the pose. Adults copy the body. Match every hand. Child does it best!",
     "cues": [
@@ -726,7 +726,7 @@
     ]
   },
   "animal-family": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\animal-family-80533e02bfec45.mp3",
+    "filePath": "project-asset:audio/elevenlabs/animal-family-80533e02bfec45.mp3",
     "durationMs": 5960,
     "script": "Choose your animals. Make ears and paws. Lean into the pack. Animal faces!",
     "cues": [
@@ -737,7 +737,7 @@
     ]
   },
   "parent-puppet-show": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\parent-puppet-show-b084060b807d01.mp3",
+    "filePath": "project-asset:audio/elevenlabs/parent-puppet-show-b084060b807d01.mp3",
     "durationMs": 6110,
     "script": "Puppet master in front. Adults become puppets. Bend strange angles. Freeze!",
     "cues": [
@@ -748,7 +748,7 @@
     ]
   },
   "family-duo-power": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-duo-power-06d56b72a6ba57.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-duo-power-06d56b72a6ba57.mp3",
     "durationMs": 6770,
     "script": "Stand shoulder-to-shoulder. Take two power stances. Ready your fists. Family power-up!",
     "cues": [
@@ -759,7 +759,7 @@
     ]
   },
   "family-duo-squeeze": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-duo-squeeze-1d3a67424d8850.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-duo-squeeze-1d3a67424d8850.mp3",
     "durationMs": 5960,
     "script": "Move close together. Lean toward the middle. Touch shoulders. Squeeze and smile!",
     "cues": [
@@ -770,7 +770,7 @@
     ]
   },
   "parent-child-agents": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\parent-child-agents-9fc007fb2adec6.mp3",
+    "filePath": "project-asset:audio/elevenlabs/parent-child-agents-9fc007fb2adec6.mp3",
     "durationMs": 6110,
     "script": "Stand back-to-back. Choose agent poses. Set your hands. Secret-agent faces!",
     "cues": [
@@ -781,7 +781,7 @@
     ]
   },
   "copy-the-child-duo": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\copy-the-child-duo-4b5be0fd2fbeea.mp3",
+    "filePath": "project-asset:audio/elevenlabs/copy-the-child-duo-4b5be0fd2fbeea.mp3",
     "durationMs": 6110,
     "script": "Child takes the lead. Adult copies the body. Match both hands. Child wins!",
     "cues": [
@@ -792,7 +792,7 @@
     ]
   },
   "cinematic-back-hug": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\cinematic-back-hug-5b7bbccd480873.mp3",
+    "filePath": "project-asset:audio/elevenlabs/cinematic-back-hug-5b7bbccd480873.mp3",
     "durationMs": 6610,
     "script": "Stand front and back. Wrap arms gently. Turn your heads. Soft cinematic eyes!",
     "cues": [
@@ -803,7 +803,7 @@
     ]
   },
   "runaway-newlyweds": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\runaway-newlyweds-7801ffda074fa6.mp3",
+    "filePath": "project-asset:audio/elevenlabs/runaway-newlyweds-7801ffda074fa6.mp3",
     "durationMs": 6610,
     "script": "Connect inside hands. Step forward together. Lean into the run. Laugh toward camera!",
     "cues": [
@@ -814,7 +814,7 @@
     ]
   },
   "spy-newlyweds": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\spy-newlyweds-a94bc74ae6ccd1.mp3",
+    "filePath": "project-asset:audio/elevenlabs/spy-newlyweds-a94bc74ae6ccd1.mp3",
     "durationMs": 5800,
     "script": "Stand back-to-back. Cross your arms. Turn opposite ways. Wedding spies!",
     "cues": [
@@ -825,7 +825,7 @@
     ]
   },
   "kiss-with-reaction": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\kiss-with-reaction-e37442be635156.mp3",
+    "filePath": "project-asset:audio/elevenlabs/kiss-with-reaction-e37442be635156.mp3",
     "durationMs": 6030,
     "script": "Couple takes the center. Friends crowd around. Couple leans in. Everyone reacts!",
     "cues": [
@@ -836,7 +836,7 @@
     ]
   },
   "dance-battle-freeze": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\dance-battle-freeze-fe570f51ee520d.mp3",
+    "filePath": "project-asset:audio/elevenlabs/dance-battle-freeze-fe570f51ee520d.mp3",
     "durationMs": 5490,
     "script": "Split into dance teams. Start your moves. Freeze mid-battle. Dance faces!",
     "cues": [
@@ -847,7 +847,7 @@
     ]
   },
   "invisible-roller-coaster": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\invisible-roller-coaster-16973b44d3b68e.mp3",
+    "filePath": "project-asset:audio/elevenlabs/invisible-roller-coaster-16973b44d3b68e.mp3",
     "durationMs": 6530,
     "script": "Make one tight row. Grab the safety bar. Lean through the turn. Roller-coaster faces!",
     "cues": [
@@ -858,7 +858,7 @@
     ]
   },
   "zombie-fashion-show": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\zombie-fashion-show-707231ebcee0ea.mp3",
+    "filePath": "project-asset:audio/elevenlabs/zombie-fashion-show-707231ebcee0ea.mp3",
     "durationMs": 6430,
     "script": "Enter the runway. Break your body lines. Reach like zombies. Dead-serious fashion!",
     "cues": [
@@ -869,7 +869,7 @@
     ]
   },
   "alien-abduction": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\alien-abduction-f346c60cef5a34.mp3",
+    "filePath": "project-asset:audio/elevenlabs/alien-abduction-f346c60cef5a34.mp3",
     "durationMs": 6190,
     "script": "Target reaches upward. Others grab on. Fight the tractor beam. Alien panic!",
     "cues": [
@@ -880,7 +880,7 @@
     ]
   },
   "couple-heart": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\couple-heart-5b04e6f03d16a0.mp3",
+    "filePath": "project-asset:audio/elevenlabs/couple-heart-5b04e6f03d16a0.mp3",
     "durationMs": 6270,
     "script": "Stand close together. Raise both hands. Build matching hearts. Smile together!",
     "cues": [
@@ -891,7 +891,7 @@
     ]
   },
   "couple-peace": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\couple-peace-8eaa1c6ed44c3d.mp3",
+    "filePath": "project-asset:audio/elevenlabs/couple-peace-8eaa1c6ed44c3d.mp3",
     "durationMs": 6110,
     "script": "Stand shoulder-to-shoulder. Raise one hand each. Make peace signs. Smile and wink!",
     "cues": [
@@ -902,7 +902,7 @@
     ]
   },
   "friends-peace": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\friends-peace-44bcb1a2133b7d.mp3",
+    "filePath": "project-asset:audio/elevenlabs/friends-peace-44bcb1a2133b7d.mp3",
     "durationMs": 5960,
     "script": "Move close together. Raise your hands. Fill the frame with peace. Party smiles!",
     "cues": [
@@ -913,7 +913,7 @@
     ]
   },
   "friends-cheeks": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\friends-cheeks-5f741038f5392f.mp3",
+    "filePath": "project-asset:audio/elevenlabs/friends-cheeks-5f741038f5392f.mp3",
     "durationMs": 5720,
     "script": "Move close together. Lift both hands. Touch your cheeks. Cheeky faces!",
     "cues": [
@@ -924,7 +924,7 @@
     ]
   },
   "family-heart": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-heart-1b56d5731ea65e.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-heart-1b56d5731ea65e.mp3",
     "durationMs": 6030,
     "script": "Build a family cluster. Raise your hands. Make matching hearts. Family smiles!",
     "cues": [
@@ -935,7 +935,7 @@
     ]
   },
   "family-peace": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-peace-e6138619cef760.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-peace-e6138619cef760.mp3",
     "durationMs": 5720,
     "script": "Build three levels. Raise your hands. Make peace signs. Smile together!",
     "cues": [
@@ -946,7 +946,7 @@
     ]
   },
   "group-freestyle": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-freestyle-ccab77349529a7.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-freestyle-ccab77349529a7.mp3",
     "durationMs": 6350,
     "script": "Fill the frame. Choose different body lines. Make every face unique. Freeze the chaos!",
     "cues": [
@@ -957,7 +957,7 @@
     ]
   },
   "lovers-full-slow-dance": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\lovers-full-slow-dance-488f0e376b051e.mp3",
+    "filePath": "project-asset:audio/elevenlabs/lovers-full-slow-dance-488f0e376b051e.mp3",
     "durationMs": 5560,
     "script": "Offer one hand. Step in together. Sway on the spot. Rest your heads!",
     "cues": [
@@ -968,7 +968,7 @@
     ]
   },
   "lovers-full-forehead-promise": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\lovers-full-forehead-promise-b501ad7745381e.mp3",
+    "filePath": "project-asset:audio/elevenlabs/lovers-full-forehead-promise-b501ad7745381e.mp3",
     "durationMs": 5640,
     "script": "Stand toe to toe. Hold both hands. Lean in gently. Touch foreheads!",
     "cues": [
@@ -979,7 +979,7 @@
     ]
   },
   "lovers-full-cheek-sway": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\lovers-full-cheek-sway-ddcdefc9dcf2a8.mp3",
+    "filePath": "project-asset:audio/elevenlabs/lovers-full-cheek-sway-ddcdefc9dcf2a8.mp3",
     "durationMs": 5490,
     "script": "Stand side by side. Wrap an arm around. Sway once. Cheek to cheek!",
     "cues": [
@@ -990,7 +990,7 @@
     ]
   },
   "lovers-full-ballroom-dip": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\lovers-full-ballroom-dip-953782412c3e8b.mp3",
+    "filePath": "project-asset:audio/elevenlabs/lovers-full-ballroom-dip-953782412c3e8b.mp3",
     "durationMs": 5640,
     "script": "Take a dance hold. Step one foot wide. Dip your partner. Smile up at them!",
     "cues": [
@@ -1001,7 +1001,7 @@
     ]
   },
   "lovers-full-spy-lean": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\lovers-full-spy-lean-1916a7876fc68a.mp3",
+    "filePath": "project-asset:audio/elevenlabs/lovers-full-spy-lean-1916a7876fc68a.mp3",
     "durationMs": 5880,
     "script": "Stand back to back. Look over one shoulder. Cross one ankle. Smirk together!",
     "cues": [
@@ -1012,7 +1012,7 @@
     ]
   },
   "lovers-full-proposal-gasp": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\lovers-full-proposal-gasp-71bda85f3b5140.mp3",
+    "filePath": "project-asset:audio/elevenlabs/lovers-full-proposal-gasp-71bda85f3b5140.mp3",
     "durationMs": 6270,
     "script": "One of you kneels. The other covers their mouth. Hands to your cheeks. Freeze the big yes!",
     "cues": [
@@ -1023,7 +1023,7 @@
     ]
   },
   "lovers-full-lift-laugh": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\lovers-full-lift-laugh-151598b9004e45.mp3",
+    "filePath": "project-asset:audio/elevenlabs/lovers-full-lift-laugh-151598b9004e45.mp3",
     "durationMs": 6110,
     "script": "Count down together. Jump into a small lift. Kick one foot up. Laugh at the camera!",
     "cues": [
@@ -1034,7 +1034,7 @@
     ]
   },
   "lovers-full-spin-catch": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\lovers-full-spin-catch-3736b47d5fb386.mp3",
+    "filePath": "project-asset:audio/elevenlabs/lovers-full-spin-catch-3736b47d5fb386.mp3",
     "durationMs": 6350,
     "script": "Start two steps apart. Spin toward each other. Catch hands and stop. Freeze mid-laugh!",
     "cues": [
@@ -1045,7 +1045,7 @@
     ]
   },
   "lovers-full-mirror-walk": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\lovers-full-mirror-walk-fd8ed8be07e14c.mp3",
+    "filePath": "project-asset:audio/elevenlabs/lovers-full-mirror-walk-fd8ed8be07e14c.mp3",
     "durationMs": 5960,
     "script": "Walk in the same step. Match your arm swing. Hit the same pose. Hold the mirror!",
     "cues": [
@@ -1056,7 +1056,7 @@
     ]
   },
   "lovers-full-trust-lean": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\lovers-full-trust-lean-70a94198487f02.mp3",
+    "filePath": "project-asset:audio/elevenlabs/lovers-full-trust-lean-70a94198487f02.mp3",
     "durationMs": 6030,
     "script": "Face each other. Hold both hands tight. Lean back together. Balance and smile!",
     "cues": [
@@ -1067,7 +1067,7 @@
     ]
   },
   "lovers-half-nose-boop": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\lovers-half-nose-boop-5095a303677f9f.mp3",
+    "filePath": "project-asset:audio/elevenlabs/lovers-half-nose-boop-5095a303677f9f.mp3",
     "durationMs": 5250,
     "script": "Lean in close. Wrinkle your noses. Boop once. Giggle and hold!",
     "cues": [
@@ -1078,7 +1078,7 @@
     ]
   },
   "lovers-half-almost-kiss": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\lovers-half-almost-kiss-5bbca063020b81.mp3",
+    "filePath": "project-asset:audio/elevenlabs/lovers-half-almost-kiss-5bbca063020b81.mp3",
     "durationMs": 6430,
     "script": "Tilt toward each other. Close your eyes. Stop just before a kiss. Smile without moving!",
     "cues": [
@@ -1089,7 +1089,7 @@
     ]
   },
   "lovers-half-shared-secret": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\lovers-half-shared-secret-a3d64eda366d82.mp3",
+    "filePath": "project-asset:audio/elevenlabs/lovers-half-shared-secret-a3d64eda366d82.mp3",
     "durationMs": 5880,
     "script": "Bring your heads together. One whispers. The other melts. Share the smile!",
     "cues": [
@@ -1100,7 +1100,7 @@
     ]
   },
   "lovers-half-heart-hands": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\lovers-half-heart-hands-006432423ffdf0.mp3",
+    "filePath": "project-asset:audio/elevenlabs/lovers-half-heart-hands-006432423ffdf0.mp3",
     "durationMs": 6270,
     "script": "Lift your hands. Make half a heart each. Join them in the middle. Peek through and smile!",
     "cues": [
@@ -1111,7 +1111,7 @@
     ]
   },
   "lovers-half-chin-lift": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\lovers-half-chin-lift-6cca4a47819c35.mp3",
+    "filePath": "project-asset:audio/elevenlabs/lovers-half-chin-lift-6cca4a47819c35.mp3",
     "durationMs": 6610,
     "script": "One hand under the chin. Lift it just a little. Look into the lens. Hold the movie stare!",
     "cues": [
@@ -1122,7 +1122,7 @@
     ]
   },
   "lovers-half-matching-smirk": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\lovers-half-matching-smirk-ffb79acc6b441f.mp3",
+    "filePath": "project-asset:audio/elevenlabs/lovers-half-matching-smirk-ffb79acc6b441f.mp3",
     "durationMs": 5410,
     "script": "Same head tilt. One eyebrow up. Match the smirk. Do not blink!",
     "cues": [
@@ -1133,7 +1133,7 @@
     ]
   },
   "lovers-half-proposal-face": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\lovers-half-proposal-face-f6fbb630ec0524.mp3",
+    "filePath": "project-asset:audio/elevenlabs/lovers-half-proposal-face-f6fbb630ec0524.mp3",
     "durationMs": 6270,
     "script": "One looks hopeful. The other looks shocked. Hands on cheeks. Burst into a grin!",
     "cues": [
@@ -1144,7 +1144,7 @@
     ]
   },
   "lovers-half-drama-gasp": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\lovers-half-drama-gasp-708b60122d708d.mp3",
+    "filePath": "project-asset:audio/elevenlabs/lovers-half-drama-gasp-708b60122d708d.mp3",
     "durationMs": 5880,
     "script": "Clutch each other. Gasp at the same time. Eyes wide. Freeze the melodrama!",
     "cues": [
@@ -1155,7 +1155,7 @@
     ]
   },
   "lovers-half-cheek-press": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\lovers-half-cheek-press-7a1b72ebc2620f.mp3",
+    "filePath": "project-asset:audio/elevenlabs/lovers-half-cheek-press-7a1b72ebc2620f.mp3",
     "durationMs": 5490,
     "script": "Press cheeks together. Close your eyes. Soft little smiles. Stay right there!",
     "cues": [
@@ -1166,7 +1166,7 @@
     ]
   },
   "lovers-half-sync-wink": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\lovers-half-sync-wink-c66d71bdac78a6.mp3",
+    "filePath": "project-asset:audio/elevenlabs/lovers-half-sync-wink-c66d71bdac78a6.mp3",
     "durationMs": 5960,
     "script": "Same smile first. Count silently. Wink the same eye. Hold the wink!",
     "cues": [
@@ -1177,7 +1177,7 @@
     ]
   },
   "women-2-full-pinky-jump": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-2-full-pinky-jump-0e278b695a37a3.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-2-full-pinky-jump-0e278b695a37a3.mp3",
     "durationMs": 5330,
     "script": "Lock pinkies. Bend your knees. Jump together. Land still smiling!",
     "cues": [
@@ -1188,7 +1188,7 @@
     ]
   },
   "women-2-full-hand-heart-walk": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-2-full-hand-heart-walk-96b1effbda0cbd.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-2-full-hand-heart-walk-96b1effbda0cbd.mp3",
     "durationMs": 5960,
     "script": "Walk toward the camera. Swing your joined hands. Make a heart. Stop cheek to cheek!",
     "cues": [
@@ -1199,7 +1199,7 @@
     ]
   },
   "women-2-full-lean-on-me": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-2-full-lean-on-me-02f69ccd0df5cd.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-2-full-lean-on-me-02f69ccd0df5cd.mp3",
     "durationMs": 6110,
     "script": "Stand shoulder to shoulder. One leans her head. The other steadies her. Soft smiles!",
     "cues": [
@@ -1210,7 +1210,7 @@
     ]
   },
   "women-2-full-shopping-strut": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-2-full-shopping-strut-29075189c2175c.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-2-full-shopping-strut-29075189c2175c.mp3",
     "durationMs": 5490,
     "script": "One foot in front. Hands on hips. Strut two steps. Hit a cover pose!",
     "cues": [
@@ -1221,7 +1221,7 @@
     ]
   },
   "women-2-full-spy-sisters": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-2-full-spy-sisters-3c79ed85887d69.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-2-full-spy-sisters-3c79ed85887d69.mp3",
     "durationMs": 5800,
     "script": "Back to back. Look over opposite shoulders. Cross one leg. Cool half-smile!",
     "cues": [
@@ -1232,7 +1232,7 @@
     ]
   },
   "women-2-full-piggyback-giggle": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-2-full-piggyback-giggle-9cf51584d3e35e.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-2-full-piggyback-giggle-9cf51584d3e35e.mp3",
     "durationMs": 5070,
     "script": "One hops on. Hold on tight. Kick your feet. Laugh at the lens!",
     "cues": [
@@ -1243,7 +1243,7 @@
     ]
   },
   "women-2-full-runway-tug": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-2-full-runway-tug-4a8073cdf37621.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-2-full-runway-tug-4a8073cdf37621.mp3",
     "durationMs": 6430,
     "script": "One tries to walk off. The other tugs her back. Both stumble into pose. Point at the camera!",
     "cues": [
@@ -1254,7 +1254,7 @@
     ]
   },
   "women-2-full-bestie-dip": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-2-full-bestie-dip-402f276357a4fa.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-2-full-bestie-dip-402f276357a4fa.mp3",
     "durationMs": 5960,
     "script": "Take a dance hold. Dip dramatically. Free arm in the air. Freeze the laugh!",
     "cues": [
@@ -1265,7 +1265,7 @@
     ]
   },
   "women-2-full-freeze-five": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-2-full-freeze-five-dd022ada2db4ac.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-2-full-freeze-five-dd022ada2db4ac.mp3",
     "durationMs": 5960,
     "script": "Run at each other. Jump into a high five. Stop exactly there. Hold the slap!",
     "cues": [
@@ -1276,7 +1276,7 @@
     ]
   },
   "women-2-full-sync-kick": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-2-full-sync-kick-2e9177e7fd1177.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-2-full-sync-kick-2e9177e7fd1177.mp3",
     "durationMs": 5250,
     "script": "Stand side by side. Arms linked. Kick the same leg. Hold it up!",
     "cues": [
@@ -1287,7 +1287,7 @@
     ]
   },
   "women-2-half-heart-cheeks": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-2-half-heart-cheeks-7c2ad4d3daadc6.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-2-half-heart-cheeks-7c2ad4d3daadc6.mp3",
     "durationMs": 5490,
     "script": "Hands under your chins. Tilt together. Soft eye contact. Stay sweet!",
     "cues": [
@@ -1298,7 +1298,7 @@
     ]
   },
   "women-2-half-cheek-squish": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-2-half-cheek-squish-912294b8b73ca1.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-2-half-cheek-squish-912294b8b73ca1.mp3",
     "durationMs": 5960,
     "script": "Squish your cheeks in. Touch noses. Big sparkling eyes. Hold the cute face!",
     "cues": [
@@ -1309,7 +1309,7 @@
     ]
   },
   "women-2-half-chin-on-shoulder": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-2-half-chin-on-shoulder-04bfad21511a19.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-2-half-chin-on-shoulder-04bfad21511a19.mp3",
     "durationMs": 6030,
     "script": "One rests her chin. The other leans in. Match the smile. Do not look away!",
     "cues": [
@@ -1320,7 +1320,7 @@
     ]
   },
   "women-2-half-sunglasses-drop": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-2-half-sunglasses-drop-dfc5deed8a6b26.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-2-half-sunglasses-drop-dfc5deed8a6b26.mp3",
     "durationMs": 5800,
     "script": "Start with glasses on. Drop them together. One eyebrow up. Hold the reveal!",
     "cues": [
@@ -1331,7 +1331,7 @@
     ]
   },
   "women-2-half-hair-flip-duo": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-2-half-hair-flip-duo-ff1b8e4f184621.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-2-half-hair-flip-duo-ff1b8e4f184621.mp3",
     "durationMs": 5070,
     "script": "Look down. Flip your hair. Snap up to the lens. Cool stare!",
     "cues": [
@@ -1342,7 +1342,7 @@
     ]
   },
   "women-2-half-whisper-gasp": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-2-half-whisper-gasp-e7691b8994a468.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-2-half-whisper-gasp-e7691b8994a468.mp3",
     "durationMs": 5720,
     "script": "One cups a hand. Whisper one word. The other gasps. Freeze the shock!",
     "cues": [
@@ -1353,7 +1353,7 @@
     ]
   },
   "women-2-half-boop-battle": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-2-half-boop-battle-6c324406a8a8b3.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-2-half-boop-battle-6c324406a8a8b3.mp3",
     "durationMs": 5960,
     "script": "Boop her nose. She boops back. Both wrinkle your noses. Laugh and hold!",
     "cues": [
@@ -1364,7 +1364,7 @@
     ]
   },
   "women-2-half-evil-grin": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-2-half-evil-grin-899c628533f385.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-2-half-evil-grin-899c628533f385.mp3",
     "durationMs": 6430,
     "script": "Lean in like a plot. Steeple your fingers. Slow wicked grin. Hold the scheme!",
     "cues": [
@@ -1375,7 +1375,7 @@
     ]
   },
   "women-2-half-matching-peace": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-2-half-matching-peace-e3b70e6660385c.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-2-half-matching-peace-e3b70e6660385c.mp3",
     "durationMs": 5250,
     "script": "Peace signs up. Tilt opposite ways. Same smile. Hold the pair!",
     "cues": [
@@ -1386,7 +1386,7 @@
     ]
   },
   "women-2-half-wink-sync": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-2-half-wink-sync-6bdd998f548b78.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-2-half-wink-sync-6bdd998f548b78.mp3",
     "durationMs": 4830,
     "script": "Same head angle. Count to three. Wink together. Keep the smile!",
     "cues": [
@@ -1397,7 +1397,7 @@
     ]
   },
   "women-3-full-group-hug-jump": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-3-full-group-hug-jump-c714eedbb1e4ba.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-3-full-group-hug-jump-c714eedbb1e4ba.mp3",
     "durationMs": 5560,
     "script": "Squeeze into a hug. Bend your knees. Little jump together. Land in the hug!",
     "cues": [
@@ -1408,7 +1408,7 @@
     ]
   },
   "women-3-full-friendship-lift": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-3-full-friendship-lift-691bf18ed8baa3.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-3-full-friendship-lift-691bf18ed8baa3.mp3",
     "durationMs": 6610,
     "script": "Middle friend steps in. The others support her. One foot pops up. All three smile!",
     "cues": [
@@ -1419,7 +1419,7 @@
     ]
   },
   "women-3-full-triangle-power": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-3-full-triangle-power-f8627aa999ceee.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-3-full-triangle-power-f8627aa999ceee.mp3",
     "durationMs": 5720,
     "script": "One steps forward. Two angle behind. Hands on hips. Power stare!",
     "cues": [
@@ -1430,7 +1430,7 @@
     ]
   },
   "women-3-full-linked-strut": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-3-full-linked-strut-d6641649759469.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-3-full-linked-strut-d6641649759469.mp3",
     "durationMs": 5070,
     "script": "Link elbows. Walk three steps. Stop in a line. Chin up!",
     "cues": [
@@ -1441,7 +1441,7 @@
     ]
   },
   "women-3-full-silly-walk": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-3-full-silly-walk-90adb5c0b79d5c.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-3-full-silly-walk-90adb5c0b79d5c.mp3",
     "durationMs": 6770,
     "script": "Each pick a silly step. March toward the camera. Stop at the same time. Hold the nonsense!",
     "cues": [
@@ -1452,7 +1452,7 @@
     ]
   },
   "women-3-full-super-landing": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-3-full-super-landing-3d17c316cfd62e.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-3-full-super-landing-3d17c316cfd62e.mp3",
     "durationMs": 5330,
     "script": "Crouch low. One arm back. Pop up into heroes. Freeze the landing!",
     "cues": [
@@ -1463,7 +1463,7 @@
     ]
   },
   "women-3-full-spin-out": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-3-full-spin-out-7cabe8412d27a7.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-3-full-spin-out-7cabe8412d27a7.mp3",
     "durationMs": 5560,
     "script": "Hold hands in a circle. Spin once. Break toward the camera. Freeze mid-turn!",
     "cues": [
@@ -1474,7 +1474,7 @@
     ]
   },
   "women-3-full-kickline": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-3-full-kickline-3138158f99c587.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-3-full-kickline-3138158f99c587.mp3",
     "durationMs": 5410,
     "script": "Shoulder to shoulder. Arms around waists. Kick in unison. Hold the kick!",
     "cues": [
@@ -1485,7 +1485,7 @@
     ]
   },
   "women-3-full-piggy-chain": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-3-full-piggy-chain-5e1fce09086f46.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-3-full-piggy-chain-5e1fce09086f46.mp3",
     "durationMs": 6430,
     "script": "Stack a playful lean. Arms out for balance. Everyone makes a face. Hold the tower!",
     "cues": [
@@ -1496,7 +1496,7 @@
     ]
   },
   "women-3-full-statue-challenge": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-3-full-statue-challenge-56e4f17c3bd397.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-3-full-statue-challenge-56e4f17c3bd397.mp3",
     "durationMs": 6430,
     "script": "Strike three different statues. Do not wobble. Eyes on the lens. Hold perfectly still!",
     "cues": [
@@ -1507,7 +1507,7 @@
     ]
   },
   "women-3-half-stacked-chins": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-3-half-stacked-chins-2ab6c547f9d285.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-3-half-stacked-chins-2ab6c547f9d285.mp3",
     "durationMs": 5640,
     "script": "Lean in a staircase. Chins almost touching. Bright eyes. Hold the stack!",
     "cues": [
@@ -1518,7 +1518,7 @@
     ]
   },
   "women-3-half-cheek-row": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-3-half-cheek-row-0c54da82357464.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-3-half-cheek-row-0c54da82357464.mp3",
     "durationMs": 5560,
     "script": "Press cheek to cheek. Middle friend centers it. Close your eyes. Stay in the row!",
     "cues": [
@@ -1529,7 +1529,7 @@
     ]
   },
   "women-3-half-three-hearts": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-3-half-three-hearts-0ffbad55243deb.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-3-half-three-hearts-0ffbad55243deb.mp3",
     "durationMs": 6030,
     "script": "Each make a tiny heart. Bring them together. Peek over your hands. Soft smiles!",
     "cues": [
@@ -1540,7 +1540,7 @@
     ]
   },
   "women-3-half-glam-angles": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-3-half-glam-angles-a5d7fde0c79e22.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-3-half-glam-angles-a5d7fde0c79e22.mp3",
     "durationMs": 5880,
     "script": "Sharp chin angles. One hand in your hair. Look down the lens. Hold the editorial!",
     "cues": [
@@ -1551,7 +1551,7 @@
     ]
   },
   "women-3-half-frame-the-middle": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-3-half-frame-the-middle-91cc89c40b1ce0.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-3-half-frame-the-middle-91cc89c40b1ce0.mp3",
     "durationMs": 6430,
     "script": "Outside friends frame her face. Middle friend poses. Everyone looks through. Hold the frame!",
     "cues": [
@@ -1562,7 +1562,7 @@
     ]
   },
   "women-3-half-whisper-chain": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-3-half-whisper-chain-5596f072de7f56.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-3-half-whisper-chain-5596f072de7f56.mp3",
     "durationMs": 5640,
     "script": "Whisper to the next friend. Pass it down the line. Last friend loses it. Freeze the laugh!",
     "cues": [
@@ -1573,7 +1573,7 @@
     ]
   },
   "women-3-half-shocked-trio": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-3-half-shocked-trio-5a9a4337e9a32c.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-3-half-shocked-trio-5a9a4337e9a32c.mp3",
     "durationMs": 5150,
     "script": "Same gasp. Hands on cheeks. Eyes huge. Hold the shock!",
     "cues": [
@@ -1584,7 +1584,7 @@
     ]
   },
   "women-3-half-villain-trio": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-3-half-villain-trio-64a4dbfce9037e.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-3-half-villain-trio-64a4dbfce9037e.mp3",
     "durationMs": 6430,
     "script": "Lean in like a council. One brow up each. Slow evil smile. Hold the plot!",
     "cues": [
@@ -1595,7 +1595,7 @@
     ]
   },
   "women-3-half-peace-crown": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-3-half-peace-crown-71a5adee4f597e.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-3-half-peace-crown-71a5adee4f597e.mp3",
     "durationMs": 6110,
     "script": "Peace signs around one face. Middle friend shines. Tilt together. Hold the crown!",
     "cues": [
@@ -1606,7 +1606,7 @@
     ]
   },
   "women-3-half-blink-together": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-3-half-blink-together-18196146197d59.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-3-half-blink-together-18196146197d59.mp3",
     "durationMs": 5490,
     "script": "Same smile. Same head height. Blink on one count. Reopen together!",
     "cues": [
@@ -1617,7 +1617,7 @@
     ]
   },
   "women-4-full-flower-hug": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-4-full-flower-hug-57baec607887fc.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-4-full-flower-hug-57baec607887fc.mp3",
     "durationMs": 6610,
     "script": "Step into one hug. Outside friends wrap in. Squeeze once. Smile in the bloom!",
     "cues": [
@@ -1628,7 +1628,7 @@
     ]
   },
   "women-4-full-promenade": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-4-full-promenade-4b7de521881229.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-4-full-promenade-4b7de521881229.mp3",
     "durationMs": 5560,
     "script": "Walk in pairs. Swing your arms. Arrive in a line. Hold the stroll!",
     "cues": [
@@ -1639,7 +1639,7 @@
     ]
   },
   "women-4-full-diamond-strut": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-4-full-diamond-strut-1d13129f7cffb2.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-4-full-diamond-strut-1d13129f7cffb2.mp3",
     "durationMs": 4990,
     "script": "One leads. Two flank her. One closes the back. Hit the diamond!",
     "cues": [
@@ -1650,7 +1650,7 @@
     ]
   },
   "women-4-full-action-line": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-4-full-action-line-b16107e95aa9fc.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-4-full-action-line-b16107e95aa9fc.mp3",
     "durationMs": 5800,
     "script": "Stagger your heights. One arm forward each. Lean into the shot. Hold the poster!",
     "cues": [
@@ -1661,7 +1661,7 @@
     ]
   },
   "women-4-full-cheer-jump": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-4-full-cheer-jump-7b613699285641.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-4-full-cheer-jump-7b613699285641.mp3",
     "durationMs": 4750,
     "script": "Arms up. Count to three. Jump at once. Land in a cheer!",
     "cues": [
@@ -1672,7 +1672,7 @@
     ]
   },
   "women-4-full-puppy-pile": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-4-full-puppy-pile-0df2ae5d72210f.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-4-full-puppy-pile-0df2ae5d72210f.mp3",
     "durationMs": 6110,
     "script": "Kneel and lean in. Stack the hug low. Everyone makes a face. Hold the pile!",
     "cues": [
@@ -1683,7 +1683,7 @@
     ]
   },
   "women-4-full-buddy-carry": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-4-full-buddy-carry-626c8ee7156f6c.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-4-full-buddy-carry-626c8ee7156f6c.mp3",
     "durationMs": 5880,
     "script": "Pair up. Playful lifts or leans. Kick a free foot. Laugh and freeze!",
     "cues": [
@@ -1694,7 +1694,7 @@
     ]
   },
   "women-4-full-square-heroes": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-4-full-square-heroes-2264fd9b87a87a.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-4-full-square-heroes-2264fd9b87a87a.mp3",
     "durationMs": 6110,
     "script": "Four low stances. Different arm shapes. Pop tall together. Freeze the team!",
     "cues": [
@@ -1705,7 +1705,7 @@
     ]
   },
   "women-4-full-mirror-squad": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-4-full-mirror-squad-c545e772bd8a64.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-4-full-mirror-squad-c545e772bd8a64.mp3",
     "durationMs": 4680,
     "script": "Copy the leader. Same hands. Same foot. Hold the copy!",
     "cues": [
@@ -1716,7 +1716,7 @@
     ]
   },
   "women-4-full-kick-sync": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-4-full-kick-sync-05c12d1683144f.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-4-full-kick-sync-05c12d1683144f.mp3",
     "durationMs": 4990,
     "script": "Link arms. Same leg ready. Kick on one count. Hold the line!",
     "cues": [
@@ -1727,7 +1727,7 @@
     ]
   },
   "women-4-half-four-faces": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-4-half-four-faces-e91c1a8867123c.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-4-half-four-faces-e91c1a8867123c.mp3",
     "durationMs": 5150,
     "script": "Pack in close. Chins level. Bright matching eyes. Hold the bouquet!",
     "cues": [
@@ -1738,7 +1738,7 @@
     ]
   },
   "women-4-half-cheek-train": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-4-half-cheek-train-2dc4c289438269.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-4-half-cheek-train-2dc4c289438269.mp3",
     "durationMs": 5720,
     "script": "Cheek to cheek across. Tilt the same way. Soft smiles. Stay tucked in!",
     "cues": [
@@ -1749,7 +1749,7 @@
     ]
   },
   "women-4-half-heart-frame": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-4-half-heart-frame-bf9b56d6b76ecd.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-4-half-heart-frame-bf9b56d6b76ecd.mp3",
     "durationMs": 6690,
     "script": "Outside hands make a heart. Inside friends pose inside it. Everyone looks through. Hold the heart!",
     "cues": [
@@ -1760,7 +1760,7 @@
     ]
   },
   "women-4-half-lean-in-row": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-4-half-lean-in-row-6f923557f9b54e.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-4-half-lean-in-row-6f923557f9b54e.mp3",
     "durationMs": 5800,
     "script": "Lean from alternating sides. Shoulders overlap. Chins sharp. Hold the stack!",
     "cues": [
@@ -1771,7 +1771,7 @@
     ]
   },
   "women-4-half-sunglasses-wall": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-4-half-sunglasses-wall-5b89473e037cca.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-4-half-sunglasses-wall-5b89473e037cca.mp3",
     "durationMs": 5330,
     "script": "Glasses on. Lower them together. One cool stare. Hold the wall!",
     "cues": [
@@ -1782,7 +1782,7 @@
     ]
   },
   "women-4-half-gossip-circle": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-4-half-gossip-circle-0a2dd2df32dc43.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-4-half-gossip-circle-0a2dd2df32dc43.mp3",
     "durationMs": 6030,
     "script": "Heads in a huddle. One spills the secret. Three react differently. Freeze the gossip!",
     "cues": [
@@ -1793,7 +1793,7 @@
     ]
   },
   "women-4-half-gasp-wave": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-4-half-gasp-wave-6865a4558d9ed2.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-4-half-gasp-wave-6865a4558d9ed2.mp3",
     "durationMs": 5880,
     "script": "Gasp from left to right. Hands to cheeks. Last friend points. Hold the wave!",
     "cues": [
@@ -1804,7 +1804,7 @@
     ]
   },
   "women-4-half-peace-stack": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-4-half-peace-stack-ebef9b5243fc9d.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-4-half-peace-stack-ebef9b5243fc9d.mp3",
     "durationMs": 5330,
     "script": "Four peace signs. Stack them high. Smile under them. Hold the stack!",
     "cues": [
@@ -1815,7 +1815,7 @@
     ]
   },
   "women-4-half-pose-on-beat": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-4-half-pose-on-beat-c5f37bb48e1a50.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-4-half-pose-on-beat-c5f37bb48e1a50.mp3",
     "durationMs": 4910,
     "script": "Hands down. Hit pose one. Hit pose two. Freeze together!",
     "cues": [
@@ -1826,7 +1826,7 @@
     ]
   },
   "women-4-half-expression-parade": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\women-4-half-expression-parade-aef6d2a4cfd1d6.mp3",
+    "filePath": "project-asset:audio/elevenlabs/women-4-half-expression-parade-aef6d2a4cfd1d6.mp3",
     "durationMs": 7890,
     "script": "Cute, cool, shocked, unhinged. Switch on one count. New face each. Freeze the wildest!",
     "cues": [
@@ -1837,7 +1837,7 @@
     ]
   },
   "men-2-full-bro-pull": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\men-2-full-bro-pull-e31bb8ade3ca30.mp3",
+    "filePath": "project-asset:audio/elevenlabs/men-2-full-bro-pull-e31bb8ade3ca30.mp3",
     "durationMs": 5410,
     "script": "Clasp hands. Yank into a lean. One foot up. Freeze the stumble!",
     "cues": [
@@ -1848,7 +1848,7 @@
     ]
   },
   "men-2-full-shoulder-ride-joke": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\men-2-full-shoulder-ride-joke-eacfcfbc1fc839.mp3",
+    "filePath": "project-asset:audio/elevenlabs/men-2-full-shoulder-ride-joke-eacfcfbc1fc839.mp3",
     "durationMs": 5800,
     "script": "One crouches. The other sits tall. Both point forward. Hold the joke!",
     "cues": [
@@ -1859,7 +1859,7 @@
     ]
   },
   "men-2-full-back-to-back-cool": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\men-2-full-back-to-back-cool-7948e771de0c13.mp3",
+    "filePath": "project-asset:audio/elevenlabs/men-2-full-back-to-back-cool-7948e771de0c13.mp3",
     "durationMs": 5720,
     "script": "Stand back to back. Arms folded. Look off to the sides. Hold the poster!",
     "cues": [
@@ -1870,7 +1870,7 @@
     ]
   },
   "men-2-full-victory-jump": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\men-2-full-victory-jump-b6ce042e6def9b.mp3",
+    "filePath": "project-asset:audio/elevenlabs/men-2-full-victory-jump-b6ce042e6def9b.mp3",
     "durationMs": 5720,
     "script": "Wind up. Jump with fists up. Shout the win. Land and hold!",
     "cues": [
@@ -1881,7 +1881,7 @@
     ]
   },
   "men-2-full-trust-catch": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\men-2-full-trust-catch-29d68117da7925.mp3",
+    "filePath": "project-asset:audio/elevenlabs/men-2-full-trust-catch-29d68117da7925.mp3",
     "durationMs": 5330,
     "script": "One leans back. The other catches. Stop before the fall. Hold the trust!",
     "cues": [
@@ -1892,7 +1892,7 @@
     ]
   },
   "men-2-half-secret-handshake-face": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\men-2-half-secret-handshake-face-d811292408b75a.mp3",
+    "filePath": "project-asset:audio/elevenlabs/men-2-half-secret-handshake-face-d811292408b75a.mp3",
     "durationMs": 5640,
     "script": "Start the handshake. Lose the choreography. Blame each other. Laugh and hold!",
     "cues": [
@@ -1903,7 +1903,7 @@
     ]
   },
   "men-2-half-arm-around-grin": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\men-2-half-arm-around-grin-c0223b1bbfbfee.mp3",
+    "filePath": "project-asset:audio/elevenlabs/men-2-half-arm-around-grin-c0223b1bbfbfee.mp3",
     "durationMs": 5800,
     "script": "Arm across his shoulder. Knock your heads once. Big easy grins. Stay there!",
     "cues": [
@@ -1914,7 +1914,7 @@
     ]
   },
   "men-2-half-matching-smirk": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\men-2-half-matching-smirk-4e1768a5230f2a.mp3",
+    "filePath": "project-asset:audio/elevenlabs/men-2-half-matching-smirk-4e1768a5230f2a.mp3",
     "durationMs": 4910,
     "script": "Same tilt. Same squint. Same smirk. Do not break!",
     "cues": [
@@ -1925,7 +1925,7 @@
     ]
   },
   "men-2-half-double-point": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\men-2-half-double-point-f48dd0b371f4cd.mp3",
+    "filePath": "project-asset:audio/elevenlabs/men-2-half-double-point-f48dd0b371f4cd.mp3",
     "durationMs": 5330,
     "script": "Point at the lens. Lean in hard. Eyebrows up. Hold the accusation!",
     "cues": [
@@ -1936,7 +1936,7 @@
     ]
   },
   "men-2-half-fist-bump-freeze": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\men-2-half-fist-bump-freeze-e05975ab4e2ae7.mp3",
+    "filePath": "project-asset:audio/elevenlabs/men-2-half-fist-bump-freeze-e05975ab4e2ae7.mp3",
     "durationMs": 5250,
     "script": "Raise your fists. Meet in the middle. Stop on contact. Hold the bump!",
     "cues": [
@@ -1947,7 +1947,7 @@
     ]
   },
   "men-3-full-comedy-chase": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\men-3-full-comedy-chase-cba5228321a77d.mp3",
+    "filePath": "project-asset:audio/elevenlabs/men-3-full-comedy-chase-cba5228321a77d.mp3",
     "durationMs": 5720,
     "script": "One runs ahead. Two reach to grab him. Everyone looks back. Freeze the chase!",
     "cues": [
@@ -1958,7 +1958,7 @@
     ]
   },
   "men-3-full-huddle-break": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\men-3-full-huddle-break-0f6dd34112ecc3.mp3",
+    "filePath": "project-asset:audio/elevenlabs/men-3-full-huddle-break-0f6dd34112ecc3.mp3",
     "durationMs": 4830,
     "script": "Huddle tight. Hands in. Break toward the camera. Hold the shout!",
     "cues": [
@@ -1969,7 +1969,7 @@
     ]
   },
   "men-3-full-squad-stance": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\men-3-full-squad-stance-8c5cccbde7c482.mp3",
+    "filePath": "project-asset:audio/elevenlabs/men-3-full-squad-stance-8c5cccbde7c482.mp3",
     "durationMs": 6110,
     "script": "Wide feet. Arms crossed or in pockets. Stagger the line. Cool stare!",
     "cues": [
@@ -1980,7 +1980,7 @@
     ]
   },
   "men-3-full-lift-the-middle": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\men-3-full-lift-the-middle-e50e25b0a89549.mp3",
+    "filePath": "project-asset:audio/elevenlabs/men-3-full-lift-the-middle-e50e25b0a89549.mp3",
     "durationMs": 5640,
     "script": "Middle friend hops. Two friends support him. One fist up. Hold the lift!",
     "cues": [
@@ -1991,7 +1991,7 @@
     ]
   },
   "men-3-full-sync-jump": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\men-3-full-sync-jump-9af2e2ece942b2.mp3",
+    "filePath": "project-asset:audio/elevenlabs/men-3-full-sync-jump-9af2e2ece942b2.mp3",
     "durationMs": 5640,
     "script": "Line up. Bend together. Jump on one count. Land in the same pose!",
     "cues": [
@@ -2002,7 +2002,7 @@
     ]
   },
   "men-3-half-whisper-lose-it": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\men-3-half-whisper-lose-it-5462a644f79737.mp3",
+    "filePath": "project-asset:audio/elevenlabs/men-3-half-whisper-lose-it-5462a644f79737.mp3",
     "durationMs": 5640,
     "script": "One whispers. Second cracks. Third is already gone. Hold the mess!",
     "cues": [
@@ -2013,7 +2013,7 @@
     ]
   },
   "men-3-half-stacked-peace": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\men-3-half-stacked-peace-7de2a5b43894e3.mp3",
+    "filePath": "project-asset:audio/elevenlabs/men-3-half-stacked-peace-7de2a5b43894e3.mp3",
     "durationMs": 5490,
     "script": "Three peace signs. Stack them in front. Cheesy grins. Hold the stack!",
     "cues": [
@@ -2024,7 +2024,7 @@
     ]
   },
   "men-3-half-three-smirks": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\men-3-half-three-smirks-e0662ffcb587b7.mp3",
+    "filePath": "project-asset:audio/elevenlabs/men-3-half-three-smirks-e0662ffcb587b7.mp3",
     "durationMs": 4830,
     "script": "Lean in a triangle. Same smirk. Eyes on the lens. Hold it!",
     "cues": [
@@ -2035,7 +2035,7 @@
     ]
   },
   "men-3-half-serious-then-burst": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\men-3-half-serious-then-burst-9edebf83f807ea.mp3",
+    "filePath": "project-asset:audio/elevenlabs/men-3-half-serious-then-burst-9edebf83f807ea.mp3",
     "durationMs": 6030,
     "script": "Start stone faced. Hold one beat. Explode into laughs. Freeze the burst!",
     "cues": [
@@ -2046,7 +2046,7 @@
     ]
   },
   "men-3-half-chin-up-trio": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\men-3-half-chin-up-trio-9b26526a18a716.mp3",
+    "filePath": "project-asset:audio/elevenlabs/men-3-half-chin-up-trio-9b26526a18a716.mp3",
     "durationMs": 6350,
     "script": "Same chin height. Same stare. No smiling yet. Hold, then one smile!",
     "cues": [
@@ -2057,7 +2057,7 @@
     ]
   },
   "family-3-full-parent-swing": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-3-full-parent-swing-89b4b749fe8c03.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-3-full-parent-swing-89b4b749fe8c03.mp3",
     "durationMs": 6430,
     "script": "Child holds both hands. Grownups lift gently. Swing once. Smile at the child!",
     "cues": [
@@ -2068,7 +2068,7 @@
     ]
   },
   "family-3-full-little-leader": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-3-full-little-leader-85b735d597dee5.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-3-full-little-leader-85b735d597dee5.mp3",
     "durationMs": 6270,
     "script": "Child steps in front. Grownups kneel behind. Follow the kid's pose. Hold the little boss!",
     "cues": [
@@ -2079,7 +2079,7 @@
     ]
   },
   "family-3-full-airplane-kids": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-3-full-airplane-kids-ea55e6237d603f.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-3-full-airplane-kids-ea55e6237d603f.mp3",
     "durationMs": 6430,
     "script": "Grownup plants their feet. Kids stretch out like wings. One foot pops. Hold the flight!",
     "cues": [
@@ -2090,7 +2090,7 @@
     ]
   },
   "family-3-full-family-jump": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-3-full-family-jump-89f2c1635a65c3.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-3-full-family-jump-89f2c1635a65c3.mp3",
     "durationMs": 4910,
     "script": "Hold hands. Crouch together. Small jump. Land laughing!",
     "cues": [
@@ -2101,7 +2101,7 @@
     ]
   },
   "family-3-full-family-stroll": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-3-full-family-stroll-8ac9f99c72ae69.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-3-full-family-stroll-8ac9f99c72ae69.mp3",
     "durationMs": 5560,
     "script": "Walk arm in arm. Match your steps. Stop in a line. Easy smiles!",
     "cues": [
@@ -2112,7 +2112,7 @@
     ]
   },
   "family-3-full-generation-pose": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-3-full-generation-pose-434e168938a84f.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-3-full-generation-pose-434e168938a84f.mp3",
     "durationMs": 6530,
     "script": "Stagger your height. Hands in pockets or on hips. Look just off camera. Hold the portrait!",
     "cues": [
@@ -2123,7 +2123,7 @@
     ]
   },
   "family-3-half-cheek-kisses": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-3-half-cheek-kisses-27e8604bafb470.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-3-half-cheek-kisses-27e8604bafb470.mp3",
     "durationMs": 5880,
     "script": "Lean into the child. Kiss a cheek each. Child beams. Hold the kisses!",
     "cues": [
@@ -2134,7 +2134,7 @@
     ]
   },
   "family-3-full-kitchen-dance": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-3-full-kitchen-dance-b3d45eaaa7831c.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-3-full-kitchen-dance-b3d45eaaa7831c.mp3",
     "durationMs": 6770,
     "script": "Someone starts dancing. The others join badly. One big spin. Freeze the chaos!",
     "cues": [
@@ -2145,7 +2145,7 @@
     ]
   },
   "family-3-half-piggy-chin": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-3-half-piggy-chin-dec150598f658d.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-3-half-piggy-chin-dec150598f658d.mp3",
     "durationMs": 6610,
     "script": "Child in the middle. Grownups rest chins close. All scrunch noses. Hold the pile!",
     "cues": [
@@ -2156,7 +2156,7 @@
     ]
   },
   "family-3-half-silly-faces-kid": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-3-half-silly-faces-kid-a15f43b50e872f.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-3-half-silly-faces-kid-a15f43b50e872f.mp3",
     "durationMs": 6030,
     "script": "Kids pick the faces. Grownup copies them. Worse is better. Freeze the silliest!",
     "cues": [
@@ -2167,7 +2167,7 @@
     ]
   },
   "family-3-half-tiny-hero": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-3-half-tiny-hero-778aebab96d5d2.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-3-half-tiny-hero-778aebab96d5d2.mp3",
     "durationMs": 6430,
     "script": "Child centers the frame. Grownup frames them. Hero hands on hips. Hold the star!",
     "cues": [
@@ -2178,7 +2178,7 @@
     ]
   },
   "family-3-half-three-smiles": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-3-half-three-smiles-5b571b83909c1f.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-3-half-three-smiles-5b571b83909c1f.mp3",
     "durationMs": 5800,
     "script": "Heads together. Soft matching smiles. Eyes kind. Hold the warmth!",
     "cues": [
@@ -2189,7 +2189,7 @@
     ]
   },
   "family-3-half-storytime-laugh": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-3-half-storytime-laugh-1f90a3faf7190d.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-3-half-storytime-laugh-1f90a3faf7190d.mp3",
     "durationMs": 5960,
     "script": "One tells a tiny story. The others break. Hands over mouths. Hold the laugh!",
     "cues": [
@@ -2200,7 +2200,7 @@
     ]
   },
   "family-3-half-matching-lean": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-3-half-matching-lean-087838d99277b1.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-3-half-matching-lean-087838d99277b1.mp3",
     "durationMs": 5800,
     "script": "Same shoulder angle. Same calm face. Look into the lens. Hold the lean!",
     "cues": [
@@ -2211,7 +2211,7 @@
     ]
   },
   "family-4-full-parents-and-pair": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-4-full-parents-and-pair-bc74065b70ee35.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-4-full-parents-and-pair-bc74065b70ee35.mp3",
     "durationMs": 5720,
     "script": "Kids in front. Grownups behind. Hands on shoulders. One family smile!",
     "cues": [
@@ -2222,7 +2222,7 @@
     ]
   },
   "family-4-full-hoist-the-kids": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-4-full-hoist-the-kids-9452bf89540d08.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-4-full-hoist-the-kids-9452bf89540d08.mp3",
     "durationMs": 5490,
     "script": "Grownups get steady. Kids hop up for a hold. Arms out. Hold the lift!",
     "cues": [
@@ -2233,7 +2233,7 @@
     ]
   },
   "family-4-full-one-kid-star": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-4-full-one-kid-star-a35b85429c75f7.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-4-full-one-kid-star-a35b85429c75f7.mp3",
     "durationMs": 6530,
     "script": "Child takes the front. Three grownups fan behind. Copy the kid's hands. Hold the star!",
     "cues": [
@@ -2244,7 +2244,7 @@
     ]
   },
   "family-4-full-kid-pile": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-4-full-kid-pile-f0d7b6205a2a96.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-4-full-kid-pile-f0d7b6205a2a96.mp3",
     "durationMs": 6430,
     "script": "Kids pile into a hug. Grownup anchors them. Everyone makes a face. Hold the pile!",
     "cues": [
@@ -2255,7 +2255,7 @@
     ]
   },
   "family-4-full-four-across": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-4-full-four-across-102cebef7b726c.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-4-full-four-across-102cebef7b726c.mp3",
     "durationMs": 7000,
     "script": "Stand shoulder to shoulder. Mix pockets and folded arms. Stagger one foot. Hold the line!",
     "cues": [
@@ -2266,7 +2266,7 @@
     ]
   },
   "family-4-full-portrait-walk": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-4-full-portrait-walk-91952c41b6570e.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-4-full-portrait-walk-91952c41b6570e.mp3",
     "durationMs": 5560,
     "script": "Walk toward the camera. Arms loosely linked. Stop in a row. Warm smiles!",
     "cues": [
@@ -2277,7 +2277,7 @@
     ]
   },
   "family-4-full-reunion-jump": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-4-full-reunion-jump-b93ae64496da75.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-4-full-reunion-jump-b93ae64496da75.mp3",
     "durationMs": 5640,
     "script": "Count together. Jump like you just arrived. Arms up. Land laughing!",
     "cues": [
@@ -2288,7 +2288,7 @@
     ]
   },
   "family-4-half-sandwich-hug": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-4-half-sandwich-hug-d568a03fa23be4.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-4-half-sandwich-hug-d568a03fa23be4.mp3",
     "durationMs": 5150,
     "script": "Kids in the middle. Grownups wrap in. Cheeks touching. Hold the sandwich!",
     "cues": [
@@ -2299,7 +2299,7 @@
     ]
   },
   "family-4-half-four-silly-faces": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-4-half-four-silly-faces-b670303049cb03.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-4-half-four-silly-faces-b670303049cb03.mp3",
     "durationMs": 5560,
     "script": "Each pick a face. Show them together. Kids may go wilder. Freeze the set!",
     "cues": [
@@ -2310,7 +2310,7 @@
     ]
   },
   "family-4-half-kid-whisper": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-4-half-kid-whisper-6f535268771f80.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-4-half-kid-whisper-6f535268771f80.mp3",
     "durationMs": 6350,
     "script": "Child whispers to one grownup. That face changes. The others lean in. Hold the secret!",
     "cues": [
@@ -2321,7 +2321,7 @@
     ]
   },
   "family-4-half-crown-the-kid": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-4-half-crown-the-kid-153ccaf08550c9.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-4-half-crown-the-kid-153ccaf08550c9.mp3",
     "durationMs": 6530,
     "script": "Kids make a crown with hands. One child wears it. Grownup steadies the pose. Hold the crown!",
     "cues": [
@@ -2332,7 +2332,7 @@
     ]
   },
   "family-4-half-close-portrait": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-4-half-close-portrait-a37c53846377e9.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-4-half-close-portrait-a37c53846377e9.mp3",
     "durationMs": 4830,
     "script": "Pack in tight. Heads touching. Kind eyes. Hold the portrait!",
     "cues": [
@@ -2343,7 +2343,7 @@
     ]
   },
   "family-4-half-laugh-line": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-4-half-laugh-line-cc61fb4632d76a.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-4-half-laugh-line-cc61fb4632d76a.mp3",
     "durationMs": 5560,
     "script": "One starts laughing. Pass it down the row. Last person breaks. Hold the line!",
     "cues": [
@@ -2354,7 +2354,7 @@
     ]
   },
   "family-4-half-cool-generations": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\family-4-half-cool-generations-72c0e7c24a2d79.mp3",
+    "filePath": "project-asset:audio/elevenlabs/family-4-half-cool-generations-72c0e7c24a2d79.mp3",
     "durationMs": 5960,
     "script": "Same lean. Mix smiles and smirks. Look just past the lens. Hold the cool!",
     "cues": [
@@ -2365,7 +2365,7 @@
     ]
   },
   "group-5-full-stadium-jump": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-full-stadium-jump-39f01a8394676a.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-stadium-jump-39f01a8394676a.mp3",
     "durationMs": 5640,
     "script": "Pack into two rows. Bend your knees. Jump on three. Land with arms up!",
     "cues": [
@@ -2376,7 +2376,7 @@
     ]
   },
   "group-5-full-star-burst": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-full-star-burst-10c2726466d62d.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-star-burst-10c2726466d62d.mp3",
     "durationMs": 5410,
     "script": "Cluster tight. Burst one step out. Arms like a star. Hold the burst!",
     "cues": [
@@ -2387,7 +2387,7 @@
     ]
   },
   "group-5-full-conga-freeze": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-full-conga-freeze-40d2ad92dd2f6b.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-conga-freeze-40d2ad92dd2f6b.mp3",
     "durationMs": 6270,
     "script": "Hands on the shoulders ahead. Two silly steps. Stop in the line. Look back and grin!",
     "cues": [
@@ -2398,7 +2398,7 @@
     ]
   },
   "group-5-full-surprise-pop": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-full-surprise-pop-8aefb334e324b3.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-surprise-pop-8aefb334e324b3.mp3",
     "durationMs": 5410,
     "script": "Crouch below the frame. Wait one beat. Pop up together. Hold the surprise!",
     "cues": [
@@ -2409,7 +2409,7 @@
     ]
   },
   "group-5-full-wave-rows": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-full-wave-rows-e406b466384bc1.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-wave-rows-e406b466384bc1.mp3",
     "durationMs": 5640,
     "script": "Back row starts the wave. Front row follows. Hands high. Hold the crest!",
     "cues": [
@@ -2420,7 +2420,7 @@
     ]
   },
   "group-5-full-circle-hands": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-full-circle-hands-0566972dc7327f.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-circle-hands-0566972dc7327f.mp3",
     "durationMs": 6110,
     "script": "Make a loose circle. Hold your neighbors' hands. Lean in. Smile across the circle!",
     "cues": [
@@ -2431,7 +2431,7 @@
     ]
   },
   "group-5-full-team-lean": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-full-team-lean-ffe2271de2bdf2.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-team-lean-ffe2271de2bdf2.mp3",
     "durationMs": 5640,
     "script": "Front row kneels. Back row stands. Lean in as one. Hold the team!",
     "cues": [
@@ -2442,7 +2442,7 @@
     ]
   },
   "group-5-full-red-carpet-line": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-full-red-carpet-line-83628c02e70c81.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-red-carpet-line-83628c02e70c81.mp3",
     "durationMs": 5560,
     "script": "Stagger a long line. One hand on a hip. Chin up. Hold the arrival!",
     "cues": [
@@ -2453,7 +2453,7 @@
     ]
   },
   "group-5-full-superhero-cluster": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-full-superhero-cluster-2da913464d3995.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-superhero-cluster-2da913464d3995.mp3",
     "durationMs": 7240,
     "script": "Mix low and tall stances. Different hero arms. Eyes fierce or grinning. Hold the poster!",
     "cues": [
@@ -2464,7 +2464,7 @@
     ]
   },
   "group-5-full-march-in-place": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-full-march-in-place-5a90107cd1fefa.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-march-in-place-5a90107cd1fefa.mp3",
     "durationMs": 4910,
     "script": "Knees up together. Two marches. Stop mid-step. Hold the march!",
     "cues": [
@@ -2475,7 +2475,7 @@
     ]
   },
   "group-5-full-laughing-kneel": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-full-laughing-kneel-150d6235832ba2.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-laughing-kneel-150d6235832ba2.mp3",
     "durationMs": 6610,
     "script": "Front row drops to a knee. Back row leans over. Everyone cracks up. Hold the pile!",
     "cues": [
@@ -2486,7 +2486,7 @@
     ]
   },
   "group-5-full-freeze-dance": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-full-freeze-dance-04e36feb5db672.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-freeze-dance-04e36feb5db672.mp3",
     "durationMs": 5800,
     "script": "Dance for one beat. Stop wherever you are. Do not fix it. Hold the accident!",
     "cues": [
@@ -2497,7 +2497,7 @@
     ]
   },
   "group-5-full-shoulder-chain": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-full-shoulder-chain-cd765bafa609f3.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-shoulder-chain-cd765bafa609f3.mp3",
     "durationMs": 5800,
     "script": "Arm on the next shoulder. Lean the same way. One cool face. Hold the chain!",
     "cues": [
@@ -2508,7 +2508,7 @@
     ]
   },
   "group-5-full-portrait-layers": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-full-portrait-layers-e718aeb54b7923.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-portrait-layers-e718aeb54b7923.mp3",
     "durationMs": 5720,
     "script": "Tallest in the back. Shortest in front. Hands relaxed. One warm portrait!",
     "cues": [
@@ -2519,7 +2519,7 @@
     ]
   },
   "group-5-full-countdown-jump": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-full-countdown-jump-8d8fa978da9df0.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-countdown-jump-8d8fa978da9df0.mp3",
     "durationMs": 6030,
     "script": "Everyone shows a number on their fingers. Drop the hands. Jump together. Stick the landing!",
     "cues": [
@@ -2530,7 +2530,7 @@
     ]
   },
   "group-5-full-letter-shape": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-full-letter-shape-cfb683a7a65133.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-letter-shape-cfb683a7a65133.mp3",
     "durationMs": 6430,
     "script": "Make the letter A with your bodies. Arms are the peak. Feet plant the sides. Hold the letter!",
     "cues": [
@@ -2541,7 +2541,7 @@
     ]
   },
   "group-5-full-kick-line": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-full-kick-line-0ffc8535f78297.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-kick-line-0ffc8535f78297.mp3",
     "durationMs": 4440,
     "script": "Link elbows. Same leg ready. Kick once. Hold it up!",
     "cues": [
@@ -2552,7 +2552,7 @@
     ]
   },
   "group-5-full-level-change": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-full-level-change-7218496de0e9f3.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-level-change-7218496de0e9f3.mp3",
     "durationMs": 7310,
     "script": "Some stand, some kneel, some crouch. No two neighbors match. Eyes to the lens. Hold the levels!",
     "cues": [
@@ -2563,7 +2563,7 @@
     ]
   },
   "group-5-full-victory-roar": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-full-victory-roar-ab1489a05d1578.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-victory-roar-ab1489a05d1578.mp3",
     "durationMs": 5490,
     "script": "Fists in. Break outward. Roar the win. Freeze with arms wide!",
     "cues": [
@@ -2574,7 +2574,7 @@
     ]
   },
   "group-5-half-cheek-pile": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-half-cheek-pile-d232401266dbc4.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-cheek-pile-d232401266dbc4.mp3",
     "durationMs": 5070,
     "script": "Pack your faces in. Cheeks touching. Bright eyes. Hold the pile!",
     "cues": [
@@ -2585,7 +2585,7 @@
     ]
   },
   "group-5-full-buddy-clusters": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-full-buddy-clusters-16ab0704ee9711.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-buddy-clusters-16ab0704ee9711.mp3",
     "durationMs": 6840,
     "script": "Split into little pairs. Each pair picks a tiny pose. Look back at the camera. Hold your cluster!",
     "cues": [
@@ -2596,7 +2596,7 @@
     ]
   },
   "group-5-half-big-shared-heart": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-half-big-shared-heart-254f04f194a781.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-big-shared-heart-254f04f194a781.mp3",
     "durationMs": 6190,
     "script": "Outside hands start a heart. Everyone else tucks inside. Look through it. Hold the heart!",
     "cues": [
@@ -2607,7 +2607,7 @@
     ]
   },
   "group-5-half-lean-in-secret": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-half-lean-in-secret-fbb614ac630fea.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-lean-in-secret-fbb614ac630fea.mp3",
     "durationMs": 5720,
     "script": "Heads into a huddle. One shares a look. Everyone softens. Hold the secret!",
     "cues": [
@@ -2618,7 +2618,7 @@
     ]
   },
   "group-5-half-chorus-face": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-half-chorus-face-1e62cd5e8fb1cb.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-chorus-face-1e62cd5e8fb1cb.mp3",
     "durationMs": 5960,
     "script": "Same gentle smile. Same head height as you can. Eyes kind. Hold the chorus!",
     "cues": [
@@ -2629,7 +2629,7 @@
     ]
   },
   "group-5-half-sunglasses-squad": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-half-sunglasses-squad-9cf466e8b6e230.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-sunglasses-squad-9cf466e8b6e230.mp3",
     "durationMs": 5490,
     "script": "Glasses on. Lower them as a group. One eyebrow each. Hold the squad!",
     "cues": [
@@ -2640,7 +2640,7 @@
     ]
   },
   "group-5-half-cool-stare": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-half-cool-stare-6fb896484fb97b.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-cool-stare-6fb896484fb97b.mp3",
     "durationMs": 5720,
     "script": "Start serious. Hold one beat. Let one smile slip. Hold the mix!",
     "cues": [
@@ -2651,7 +2651,7 @@
     ]
   },
   "group-5-half-point-at-center": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-half-point-at-center-8dd91f491a7a0d.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-point-at-center-8dd91f491a7a0d.mp3",
     "durationMs": 6270,
     "script": "Center person poses. Everyone else points at them. Center owns it. Hold the spotlight!",
     "cues": [
@@ -2662,7 +2662,7 @@
     ]
   },
   "group-5-half-whisper-row": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-half-whisper-row-bb9ef8753abd25.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-whisper-row-bb9ef8753abd25.mp3",
     "durationMs": 6030,
     "script": "Pass a whisper across. Each face reacts. Last person gasps. Hold the row!",
     "cues": [
@@ -2673,7 +2673,7 @@
     ]
   },
   "group-5-half-expression-countdown": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-half-expression-countdown-600fb86dbd6783.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-expression-countdown-600fb86dbd6783.mp3",
     "durationMs": 5070,
     "script": "Face one. Face two. Face three. Freeze the worst one!",
     "cues": [
@@ -2684,7 +2684,7 @@
     ]
   },
   "group-5-half-sync-gasp": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-half-sync-gasp-01d6b33e914104.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-sync-gasp-01d6b33e914104.mp3",
     "durationMs": 4990,
     "script": "Hands ready. Gasp together. Eyes wide. Hold the gasp!",
     "cues": [
@@ -2695,7 +2695,7 @@
     ]
   },
   "group-5-half-bubble-cheeks": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-half-bubble-cheeks-31c9e22be10b56.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-bubble-cheeks-31c9e22be10b56.mp3",
     "durationMs": 5070,
     "script": "Puff your cheeks. Lean in. Try not to laugh. Hold the bubbles!",
     "cues": [
@@ -2706,7 +2706,7 @@
     ]
   },
   "group-5-half-peace-skyline": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-half-peace-skyline-f0e53a380d73f4.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-peace-skyline-f0e53a380d73f4.mp3",
     "durationMs": 6530,
     "script": "Peace signs at different heights. Pack the faces under them. Big smiles. Hold the skyline!",
     "cues": [
@@ -2717,7 +2717,7 @@
     ]
   },
   "group-5-half-hand-heart-tunnel": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-half-hand-heart-tunnel-1b4a6af403b171.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-hand-heart-tunnel-1b4a6af403b171.mp3",
     "durationMs": 5880,
     "script": "Hands make a tunnel of hearts. Faces peek through. Find the lens. Hold the tunnel!",
     "cues": [
@@ -2728,7 +2728,7 @@
     ]
   },
   "group-5-half-silly-filter": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-half-silly-filter-bc70dcd32be244.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-silly-filter-bc70dcd32be244.mp3",
     "durationMs": 5960,
     "script": "Pick the weirdest face you can. Show it at once. No matching allowed. Hold the mess!",
     "cues": [
@@ -2739,7 +2739,7 @@
     ]
   },
   "group-5-half-wink-wave": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-half-wink-wave-aecbd217fd0def.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-wink-wave-aecbd217fd0def.mp3",
     "durationMs": 6270,
     "script": "Wink from one side to the other. Keep it moving. End on the last wink. Hold that face!",
     "cues": [
@@ -2750,7 +2750,7 @@
     ]
   },
   "group-5-half-victory-grin": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-half-victory-grin-29b4b7c5559c50.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-victory-grin-29b4b7c5559c50.mp3",
     "durationMs": 5330,
     "script": "Lean in hard. Huge grins. Someone points up. Hold the win!",
     "cues": [
@@ -2761,7 +2761,7 @@
     ]
   },
   "group-5-half-matching-tilt": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-half-matching-tilt-f27c186387c80b.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-matching-tilt-f27c186387c80b.mp3",
     "durationMs": 5490,
     "script": "Tilt the same direction. Same smile size. Same timing. Hold the tilt!",
     "cues": [
@@ -2772,7 +2772,7 @@
     ]
   },
   "group-5-half-frame-one": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-half-frame-one-8b7f12616ddacc.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-frame-one-8b7f12616ddacc.mp3",
     "durationMs": 6110,
     "script": "Choose one person. Everyone else frames their face. That person poses. Hold the frame!",
     "cues": [
@@ -2783,7 +2783,7 @@
     ]
   },
   "group-5-half-blink-on-three": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-half-blink-on-three-0aa73555c077b7.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-blink-on-three-0aa73555c077b7.mp3",
     "durationMs": 5490,
     "script": "Eyes open. Count together. Blink once. Reopen and smile!",
     "cues": [
@@ -2794,7 +2794,7 @@
     ]
   },
   "group-5-half-stillness-challenge": {
-    "filePath": "C:\\Users\\Ricky PC\\AppData\\Roaming\\photo-booth\\pose-library\\audio\\elevenlabs\\group-5-half-stillness-challenge-cd369a04a65f44.mp3",
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-stillness-challenge-cd369a04a65f44.mp3",
     "durationMs": 5150,
     "script": "Find a face. Hands freeze. No wiggling. Hold completely still!",
     "cues": [

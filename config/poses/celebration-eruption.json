@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "celebration-eruption",
+  "name": "Celebration Eruption",
+  "category": "party",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-layers",
+    "expression-smile",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Celebration erupts!",
+  "animation": {
+    "durationMs": 7610,
+    "captions": [
+      {
+        "text": "Center starts calm",
+        "timeMs": 0
+      },
+      {
+        "text": "Raise hands outward",
+        "timeMs": 2203
+      },
+      {
+        "text": "Grow the energy",
+        "timeMs": 4407
+      },
+      {
+        "text": "Celebration erupts!",
+        "timeMs": 6610
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/celebration-eruption.webp",
+    "alt": "Celebration erupts!",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/celebration-eruption-dad5ea1f0a55b6.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

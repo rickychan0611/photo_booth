@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-full-march-in-place",
+  "name": "March in Place",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-full",
+    "mood-funny",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the march",
+  "animation": {
+    "durationMs": 5910,
+    "captions": [
+      {
+        "text": "Knees up together",
+        "timeMs": 0
+      },
+      {
+        "text": "Two marches",
+        "timeMs": 1637
+      },
+      {
+        "text": "Stop mid-step",
+        "timeMs": 3273
+      },
+      {
+        "text": "Hold the march",
+        "timeMs": 4910
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-full-march-in-place.webp",
+    "alt": "Hold the march",
+    "accent": "#1769ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-march-in-place-5a90107cd1fefa.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

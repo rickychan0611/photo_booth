@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "id": "sit-kneel-lean-stand",
+  "name": "Four-Level Editorial",
+  "category": "glamour",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-diamond",
+    "expression-deadpan",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Freeze like fashion",
+  "animation": {
+    "durationMs": 7190,
+    "captions": [
+      {
+        "text": "Choose four heights",
+        "timeMs": 0
+      },
+      {
+        "text": "Build a diagonal",
+        "timeMs": 2063
+      },
+      {
+        "text": "Overlap carefully",
+        "timeMs": 4127
+      },
+      {
+        "text": "Freeze like fashion",
+        "timeMs": 6190
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends",
+      "group"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/sit-kneel-lean-stand.webp",
+    "alt": "Freeze like fashion",
+    "accent": "#7d22c9"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/sit-kneel-lean-stand-6443b68d1c0d3d.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

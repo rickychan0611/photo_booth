@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 2,
+  "id": "hero-and-sidekick",
+  "name": "Hero and Sidekick",
+  "category": "friends",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-determined",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Save the world",
+  "animation": {
+    "durationMs": 6960,
+    "captions": [
+      {
+        "text": "Hero steps forward",
+        "timeMs": 0
+      },
+      {
+        "text": "Sidekick peeks out",
+        "timeMs": 1987
+      },
+      {
+        "text": "Strike your signs",
+        "timeMs": 3973
+      },
+      {
+        "text": "Save the world",
+        "timeMs": 5960
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/hero-and-sidekick.webp",
+    "alt": "Save the world",
+    "accent": "#ffd21a"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/hero-and-sidekick-a8b71d64ae0d9a.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

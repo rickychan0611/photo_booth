@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 2,
+  "id": "cool-villain",
+  "name": "Cool Villain",
+  "category": "funny",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-villain",
+    "child-safe",
+    "solo"
+  ],
+  "instruction": "Give a villain smirk",
+  "animation": {
+    "durationMs": 6720,
+    "captions": [
+      {
+        "text": "Turn into shadow",
+        "timeMs": 0
+      },
+      {
+        "text": "Raise one hand",
+        "timeMs": 1907
+      },
+      {
+        "text": "Lower your chin",
+        "timeMs": 3813
+      },
+      {
+        "text": "Give a villain smirk",
+        "timeMs": 5720
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 1,
+    "maxPeople": 1,
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/cool-villain.webp",
+    "alt": "Give a villain smirk",
+    "accent": "#0a9f9f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/cool-villain-d15c2fcb468e28.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "family-duo-power",
+  "name": "Family Duo Power-Up",
+  "category": "family",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-determined",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Family power-up!",
+  "animation": {
+    "durationMs": 7770,
+    "captions": [
+      {
+        "text": "Stand shoulder-to-shoulder",
+        "timeMs": 0
+      },
+      {
+        "text": "Take two power stances",
+        "timeMs": 2257
+      },
+      {
+        "text": "Ready your fists",
+        "timeMs": 4513
+      },
+      {
+        "text": "Family power-up!",
+        "timeMs": 6770
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/family-duo-power.webp",
+    "alt": "Family power-up!",
+    "accent": "#ef2929"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/family-duo-power-06d56b72a6ba57.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

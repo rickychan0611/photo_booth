@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "men-2-half-double-point",
+  "name": "Double Point",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-men-2",
+    "framing-half",
+    "mood-crazy",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the accusation",
+  "animation": {
+    "durationMs": 6330,
+    "captions": [
+      {
+        "text": "Point at the lens",
+        "timeMs": 0
+      },
+      {
+        "text": "Lean in hard",
+        "timeMs": 1777
+      },
+      {
+        "text": "Eyebrows up",
+        "timeMs": 3553
+      },
+      {
+        "text": "Hold the accusation",
+        "timeMs": 5330
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "men",
+      "repeatable": false
+    },
+    {
+      "role": "men",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/men-2-half-double-point.webp",
+    "alt": "Hold the accusation",
+    "accent": "#0a9f9f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/men-2-half-double-point-f48dd0b371f4cd.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

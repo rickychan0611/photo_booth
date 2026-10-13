@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-full-surprise-pop",
+  "name": "Surprise Pop",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-full",
+    "mood-funny",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the surprise",
+  "animation": {
+    "durationMs": 6410,
+    "captions": [
+      {
+        "text": "Crouch below the frame",
+        "timeMs": 0
+      },
+      {
+        "text": "Wait one beat",
+        "timeMs": 1803
+      },
+      {
+        "text": "Pop up together",
+        "timeMs": 3607
+      },
+      {
+        "text": "Hold the surprise",
+        "timeMs": 5410
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-full-surprise-pop.webp",
+    "alt": "Hold the surprise",
+    "accent": "#ffd21a"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-surprise-pop-8aefb334e324b3.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

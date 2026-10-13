@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "lovers-full-mirror-walk",
+  "name": "Mirror Walk",
+  "category": "couple",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-lovers",
+    "framing-full",
+    "mood-challenge",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Hold the mirror",
+  "animation": {
+    "durationMs": 6960,
+    "captions": [
+      {
+        "text": "Walk in the same step",
+        "timeMs": 0
+      },
+      {
+        "text": "Match your arm swing",
+        "timeMs": 1987
+      },
+      {
+        "text": "Hit the same pose",
+        "timeMs": 3973
+      },
+      {
+        "text": "Hold the mirror",
+        "timeMs": 5960
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/lovers-full-mirror-walk.webp",
+    "alt": "Hold the mirror",
+    "accent": "#0a9f9f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/lovers-full-mirror-walk-fd8ed8be07e14c.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

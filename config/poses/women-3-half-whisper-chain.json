@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "women-3-half-whisper-chain",
+  "name": "Whisper Chain",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-3",
+    "framing-half",
+    "mood-funny",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Freeze the laugh",
+  "animation": {
+    "durationMs": 6640,
+    "captions": [
+      {
+        "text": "Whisper to the next friend",
+        "timeMs": 0
+      },
+      {
+        "text": "Pass it down the line",
+        "timeMs": 1880
+      },
+      {
+        "text": "Last friend loses it",
+        "timeMs": 3760
+      },
+      {
+        "text": "Freeze the laugh",
+        "timeMs": 5640
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-3-half-whisper-chain.webp",
+    "alt": "Freeze the laugh",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-3-half-whisper-chain-5596f072de7f56.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

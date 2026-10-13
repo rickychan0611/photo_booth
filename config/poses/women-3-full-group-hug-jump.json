@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "women-3-full-group-hug-jump",
+  "name": "Group Hug Jump",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-3",
+    "framing-full",
+    "mood-cute",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Land in the hug",
+  "animation": {
+    "durationMs": 6560,
+    "captions": [
+      {
+        "text": "Squeeze into a hug",
+        "timeMs": 0
+      },
+      {
+        "text": "Bend your knees",
+        "timeMs": 1853
+      },
+      {
+        "text": "Little jump together",
+        "timeMs": 3707
+      },
+      {
+        "text": "Land in the hug",
+        "timeMs": 5560
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-3-full-group-hug-jump.webp",
+    "alt": "Land in the hug",
+    "accent": "#0a9f9f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-3-full-group-hug-jump-c714eedbb1e4ba.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "men-2-full-victory-jump",
+  "name": "Victory Jump",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-men-2",
+    "framing-full",
+    "mood-crazy",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Land and hold",
+  "animation": {
+    "durationMs": 6720,
+    "captions": [
+      {
+        "text": "Wind up",
+        "timeMs": 0
+      },
+      {
+        "text": "Jump with fists up",
+        "timeMs": 1907
+      },
+      {
+        "text": "Shout the win",
+        "timeMs": 3813
+      },
+      {
+        "text": "Land and hold",
+        "timeMs": 5720
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "men",
+      "repeatable": false
+    },
+    {
+      "role": "men",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/men-2-full-victory-jump.webp",
+    "alt": "Land and hold",
+    "accent": "#ffd21a"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/men-2-full-victory-jump-b6ce042e6def9b.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

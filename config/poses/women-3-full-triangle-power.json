@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "women-3-full-triangle-power",
+  "name": "Triangle Power",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-3",
+    "framing-full",
+    "mood-cool",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Power stare",
+  "animation": {
+    "durationMs": 6720,
+    "captions": [
+      {
+        "text": "One steps forward",
+        "timeMs": 0
+      },
+      {
+        "text": "Two angle behind",
+        "timeMs": 1907
+      },
+      {
+        "text": "Hands on hips",
+        "timeMs": 3813
+      },
+      {
+        "text": "Power stare",
+        "timeMs": 5720
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-3-full-triangle-power.webp",
+    "alt": "Power stare",
+    "accent": "#ff168f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-3-full-triangle-power-f8627aa999ceee.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

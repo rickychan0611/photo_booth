@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "women-2-half-evil-grin",
+  "name": "Evil Grin",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-2",
+    "framing-half",
+    "mood-crazy",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the scheme",
+  "animation": {
+    "durationMs": 7430,
+    "captions": [
+      {
+        "text": "Lean in like a plot",
+        "timeMs": 0
+      },
+      {
+        "text": "Steeple your fingers",
+        "timeMs": 2143
+      },
+      {
+        "text": "Slow wicked grin",
+        "timeMs": 4287
+      },
+      {
+        "text": "Hold the scheme",
+        "timeMs": 6430
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-2-half-evil-grin.webp",
+    "alt": "Hold the scheme",
+    "accent": "#ef2929"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-2-half-evil-grin-899c628533f385.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

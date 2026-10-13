@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 2,
+  "id": "family-heart",
+  "name": "Family Hearts",
+  "category": "family",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-triangle",
+    "expression-bigSmile",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Family smiles",
+  "animation": {
+    "durationMs": 7030,
+    "captions": [
+      {
+        "text": "Build a family cluster",
+        "timeMs": 0
+      },
+      {
+        "text": "Raise your hands",
+        "timeMs": 2010
+      },
+      {
+        "text": "Make matching hearts",
+        "timeMs": 4020
+      },
+      {
+        "text": "Family smiles",
+        "timeMs": 6030
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": null,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/family-heart.webp",
+    "alt": "Family smiles",
+    "accent": "#ef2929"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/family-heart-1b56d5731ea65e.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

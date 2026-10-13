@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "men-3-half-stacked-peace",
+  "name": "Stacked Peace",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-men-3",
+    "framing-half",
+    "mood-cute",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the stack",
+  "animation": {
+    "durationMs": 6490,
+    "captions": [
+      {
+        "text": "Three peace signs",
+        "timeMs": 0
+      },
+      {
+        "text": "Stack them in front",
+        "timeMs": 1830
+      },
+      {
+        "text": "Cheesy grins",
+        "timeMs": 3660
+      },
+      {
+        "text": "Hold the stack",
+        "timeMs": 5490
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "men",
+      "repeatable": false
+    },
+    {
+      "role": "men",
+      "repeatable": false
+    },
+    {
+      "role": "men",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/men-3-half-stacked-peace.webp",
+    "alt": "Hold the stack",
+    "accent": "#0a9f9f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/men-3-half-stacked-peace-7de2a5b43894e3.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

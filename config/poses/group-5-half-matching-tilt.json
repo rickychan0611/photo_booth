@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-half-matching-tilt",
+  "name": "Matching Tilt",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-half",
+    "mood-challenge",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the tilt",
+  "animation": {
+    "durationMs": 6490,
+    "captions": [
+      {
+        "text": "Tilt the same direction",
+        "timeMs": 0
+      },
+      {
+        "text": "Same smile size",
+        "timeMs": 1830
+      },
+      {
+        "text": "Same timing",
+        "timeMs": 3660
+      },
+      {
+        "text": "Hold the tilt",
+        "timeMs": 5490
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-half-matching-tilt.webp",
+    "alt": "Hold the tilt",
+    "accent": "#7d22c9"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-matching-tilt-f27c186387c80b.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-full-circle-hands",
+  "name": "Circle of Hands",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-full",
+    "mood-sweet",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Smile across the circle",
+  "animation": {
+    "durationMs": 7110,
+    "captions": [
+      {
+        "text": "Make a loose circle",
+        "timeMs": 0
+      },
+      {
+        "text": "Hold your neighbors' hands",
+        "timeMs": 2037
+      },
+      {
+        "text": "Lean in",
+        "timeMs": 4073
+      },
+      {
+        "text": "Smile across the circle",
+        "timeMs": 6110
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-full-circle-hands.webp",
+    "alt": "Smile across the circle",
+    "accent": "#ef2929"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-circle-hands-0566972dc7327f.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 2,
+  "id": "kneeling-proposal",
+  "name": "Kneeling Proposal",
+  "category": "couple",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-confident",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Big surprise!",
+  "animation": {
+    "durationMs": 6960,
+    "captions": [
+      {
+        "text": "One person kneels",
+        "timeMs": 0
+      },
+      {
+        "text": "Present the ring",
+        "timeMs": 1987
+      },
+      {
+        "text": "React with both hands",
+        "timeMs": 3973
+      },
+      {
+        "text": "Big surprise!",
+        "timeMs": 5960
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/kneeling-proposal.webp",
+    "alt": "Big surprise!",
+    "accent": "#0a9f9f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/kneeling-proposal-25f39dcb2c54e7.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

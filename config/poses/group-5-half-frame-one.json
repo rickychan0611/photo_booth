@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-half-frame-one",
+  "name": "Frame One",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-half",
+    "mood-challenge",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the frame",
+  "animation": {
+    "durationMs": 7110,
+    "captions": [
+      {
+        "text": "Choose one person",
+        "timeMs": 0
+      },
+      {
+        "text": "Everyone else frames their face",
+        "timeMs": 2037
+      },
+      {
+        "text": "That person poses",
+        "timeMs": 4073
+      },
+      {
+        "text": "Hold the frame",
+        "timeMs": 6110
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-half-frame-one.webp",
+    "alt": "Hold the frame",
+    "accent": "#ef2929"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-frame-one-8b7f12616ddacc.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

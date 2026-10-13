@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-full-kick-line",
+  "name": "Kick Line",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-full",
+    "mood-challenge",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold it up",
+  "animation": {
+    "durationMs": 5440,
+    "captions": [
+      {
+        "text": "Link elbows",
+        "timeMs": 0
+      },
+      {
+        "text": "Same leg ready",
+        "timeMs": 1480
+      },
+      {
+        "text": "Kick once",
+        "timeMs": 2960
+      },
+      {
+        "text": "Hold it up",
+        "timeMs": 4440
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-full-kick-line.webp",
+    "alt": "Hold it up",
+    "accent": "#0a9f9f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-full-kick-line-0ffc8535f78297.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

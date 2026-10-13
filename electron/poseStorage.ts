@@ -5,11 +5,34 @@ import { app, dialog, ipcMain, safeStorage, type IpcMainInvokeEvent } from 'elec
 import { validateScene } from './poseValidation';
 import type { PoseCatalog, PoseNarrationGenerateRequest, PoseNarrationModel, PoseNarrationSettings, PoseNarrationSettingsUpdate, PoseScene } from './poseTypes';
 
-const directory = () => path.join(app.getPath('userData'), 'pose-library');
+const directory = () => app.isPackaged
+  ? path.join(app.getPath('userData'), 'pose-library')
+  : path.join(app.getAppPath(), 'config', 'poses');
+const bundledDirectory = () => app.isPackaged
+  ? path.join(process.resourcesPath, 'project-poses')
+  : directory();
+const privateDirectory = () => path.join(app.getPath('userData'), 'pose-library');
 const safeId = (id: string) => { if (!/^[a-z0-9][a-z0-9-]{0,79}$/.test(id)) throw new Error('Invalid pose ID.'); return id; };
 const posePath = (id: string) => path.join(directory(), `${safeId(id)}.json`);
 const MAX_JSON = 2 * 1024 * 1024;
-const narrationConfigPath = () => path.join(directory(), 'elevenlabs.json');
+const narrationConfigPath = () => path.join(privateDirectory(), 'elevenlabs.json');
+const PROJECT_ASSET_PREFIX = 'project-asset:';
+const projectAssetsRoot = () => app.isPackaged
+  ? path.join(process.resourcesPath, 'project-assets')
+  : path.join(app.getAppPath(), 'public', 'project-assets');
+const portablePose = (value: unknown) => {
+  const pose = validateScene(value);
+  const root = path.resolve(projectAssetsRoot());
+  const portablePath = (filePath: string) => {
+    if (!filePath || filePath.startsWith(PROJECT_ASSET_PREFIX)) return filePath;
+    const resolved = path.resolve(filePath);
+    if (resolved !== root && !resolved.startsWith(`${root}${path.sep}`)) return filePath;
+    return `${PROJECT_ASSET_PREFIX}${path.relative(root, resolved).split(path.sep).join('/')}`;
+  };
+  if (pose.audio) pose.audio.filePath = portablePath(pose.audio.filePath);
+  if (pose.visual) pose.visual.assetPath = portablePath(pose.visual.assetPath);
+  return pose;
+};
 const narrationModels = new Set<PoseNarrationModel>(['eleven_v4_turbo', 'eleven_flash_v2_5', 'eleven_multilingual_v2', 'eleven_v3']);
 type StoredNarrationSettings = Omit<PoseNarrationSettings, 'configured'> & { encryptedApiKey?: string };
 const narrationDefaults: StoredNarrationSettings = { voiceId: '0S5oIfi8zOZixuSj8K6n', modelId: 'eleven_v4_turbo', stability: .5, similarityBoost: .75, style: .2, speed: 1, direction: '[energetic] [happy] [Make it upbeat, fun]' };
@@ -18,20 +41,25 @@ function serialized<T>(work: () => Promise<T>): Promise<T> { const result = writ
 export async function listStoredPoses(): Promise<PoseCatalog> {
   await writes;
   await fs.mkdir(directory(), { recursive: true });
-  const poses: PoseScene[] = [], errors: string[] = [];
-  for (const name of (await fs.readdir(directory())).filter(name => name.endsWith('.json') && name !== path.basename(narrationConfigPath())).sort()) {
-    try {
-      const file = path.join(directory(), name); const stat = await fs.lstat(file);
-      if (!stat.isFile() || stat.size > MAX_JSON) throw new Error('Not a bounded JSON file.');
-      const pose = validateScene(JSON.parse(await fs.readFile(file, 'utf8')));
-      if (name !== `${pose.id}.json`) throw new Error('Pose ID does not match filename.');
-      poses.push(pose);
-    } catch (error) { errors.push(`${name}: ${String(error)}`); }
+  const byId = new Map<string, PoseScene>(), errors: string[] = [];
+  const folders = [...new Set([bundledDirectory(), directory()])];
+  for (const folder of folders) {
+    let names: string[] = [];
+    try { names = await fs.readdir(folder); } catch { continue; }
+    for (const name of names.filter(name => name.endsWith('.json')).sort()) {
+      try {
+        const file = path.join(folder, name); const stat = await fs.lstat(file);
+        if (!stat.isFile() || stat.size > MAX_JSON) throw new Error('Not a bounded JSON file.');
+        const pose = validateScene(JSON.parse(await fs.readFile(file, 'utf8')));
+        if (name !== `${pose.id}.json`) throw new Error('Pose ID does not match filename.');
+        byId.set(pose.id, pose);
+      } catch (error) { errors.push(`${name}: ${String(error)}`); }
+    }
   }
-  return { poses, errors };
+  return { poses: [...byId.values()], errors };
 }
 export function replaceStoredPoses(values: unknown[]) {
-  const poses = values.map(validateScene);
+  const poses = values.map(portablePose);
   const ids = new Set(poses.map(pose => pose.id));
   if (ids.size !== poses.length) throw new Error('The synced pose library contains duplicate IDs.');
   const serializedPoses = poses.map(pose => {
@@ -55,7 +83,7 @@ export function replaceStoredPoses(values: unknown[]) {
   });
 }
 export function saveStoredPose(value: unknown) {
-  const pose = validateScene(value), text = `${JSON.stringify(pose, null, 2)}\n`;
+  const pose = portablePose(value), text = `${JSON.stringify(pose, null, 2)}\n`;
   if (Buffer.byteLength(text) > MAX_JSON) throw new Error('Pose JSON is too large.');
   return serialized(async () => {
     await fs.mkdir(directory(), { recursive: true });
@@ -112,8 +140,8 @@ async function saveNarrationSettings(update: PoseNarrationSettingsUpdate): Promi
     direction: String(update.direction ?? '').trim().slice(0, 240),
     ...(encryptedApiKey ? { encryptedApiKey } : {})
   };
-  await fs.mkdir(directory(), { recursive: true });
   const target = narrationConfigPath(), temporary = `${target}.${crypto.randomUUID()}.tmp`;
+  await fs.mkdir(path.dirname(target), { recursive: true });
   try { await fs.writeFile(temporary, `${JSON.stringify(next, null, 2)}\n`, { flag: 'wx' }); await fs.rename(temporary, target); }
   finally { await fs.rm(temporary, { force: true }); }
   return publicNarrationSettings(next);
@@ -127,7 +155,9 @@ function narrationApiKey(settings: StoredNarrationSettings) {
 }
 export async function getElevenLabsSettings() { return publicNarrationSettings(await readNarrationSettings()); }
 export async function updateElevenLabsSettings(update: PoseNarrationSettingsUpdate) { return saveNarrationSettings(update); }
-export async function generateElevenLabsSpeech(id: string, rawText: string, outputDirectory = path.join(directory(), 'audio', 'elevenlabs')) {
+export async function generateElevenLabsSpeech(id: string, rawText: string, outputDirectory = app.isPackaged
+  ? path.join(directory(), 'audio', 'elevenlabs')
+  : path.join(app.getAppPath(), 'public', 'project-assets', 'pose-narration')) {
   const safeSpeechId = safeId(id), text = String(rawText ?? '').trim();
   if (!text || text.length > 2000) throw new Error('Narration must contain 1–2,000 characters.');
   const settings = await readNarrationSettings(), apiKey = narrationApiKey(settings);

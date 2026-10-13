@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 2,
+  "id": "alien-abduction",
+  "name": "Alien Abduction",
+  "category": "funny",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-diamond",
+    "expression-panic",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Alien panic!",
+  "animation": {
+    "durationMs": 7190,
+    "captions": [
+      {
+        "text": "Target reaches upward",
+        "timeMs": 0
+      },
+      {
+        "text": "Others grab on",
+        "timeMs": 2063
+      },
+      {
+        "text": "Fight the tractor beam",
+        "timeMs": 4127
+      },
+      {
+        "text": "Alien panic!",
+        "timeMs": 6190
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/alien-abduction.webp",
+    "alt": "Alien panic!",
+    "accent": "#0a9f9f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/alien-abduction-f346c60cef5a34.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

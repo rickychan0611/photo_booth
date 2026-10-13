@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 2,
+  "id": "accusation-circle-four",
+  "name": "Accusation Circle",
+  "category": "funny",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-diamond",
+    "expression-suspicious",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Who did it?",
+  "animation": {
+    "durationMs": 5990,
+    "captions": [
+      {
+        "text": "Turn toward center",
+        "timeMs": 0
+      },
+      {
+        "text": "Point to someone else",
+        "timeMs": 1663
+      },
+      {
+        "text": "Look at camera",
+        "timeMs": 3327
+      },
+      {
+        "text": "Who did it?",
+        "timeMs": 4990
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/accusation-circle-four.webp",
+    "alt": "Who did it?",
+    "accent": "#ff168f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/accusation-circle-four-58d40ca5cd41e5.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

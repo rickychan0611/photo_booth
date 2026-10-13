@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-half-chorus-face",
+  "name": "Chorus Face",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-half",
+    "mood-sweet",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the chorus",
+  "animation": {
+    "durationMs": 6960,
+    "captions": [
+      {
+        "text": "Same gentle smile",
+        "timeMs": 0
+      },
+      {
+        "text": "Same head height as you can",
+        "timeMs": 1987
+      },
+      {
+        "text": "Eyes kind",
+        "timeMs": 3973
+      },
+      {
+        "text": "Hold the chorus",
+        "timeMs": 5960
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-half-chorus-face.webp",
+    "alt": "Hold the chorus",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-chorus-face-1e62cd5e8fb1cb.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

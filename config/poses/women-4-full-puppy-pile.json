@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "id": "women-4-full-puppy-pile",
+  "name": "Puppy Pile",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-4",
+    "framing-full",
+    "mood-funny",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the pile",
+  "animation": {
+    "durationMs": 7110,
+    "captions": [
+      {
+        "text": "Kneel and lean in",
+        "timeMs": 0
+      },
+      {
+        "text": "Stack the hug low",
+        "timeMs": 2037
+      },
+      {
+        "text": "Everyone makes a face",
+        "timeMs": 4073
+      },
+      {
+        "text": "Hold the pile",
+        "timeMs": 6110
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-4-full-puppy-pile.webp",
+    "alt": "Hold the pile",
+    "accent": "#1769ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-4-full-puppy-pile-0df2ae5d72210f.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 2,
+  "id": "kiss-with-reaction",
+  "name": "Kiss with Group Reaction",
+  "category": "wedding",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-layers",
+    "expression-kiss",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Everyone reacts!",
+  "animation": {
+    "durationMs": 7030,
+    "captions": [
+      {
+        "text": "Couple takes the center",
+        "timeMs": 0
+      },
+      {
+        "text": "Friends crowd around",
+        "timeMs": 2010
+      },
+      {
+        "text": "Couple leans in",
+        "timeMs": 4020
+      },
+      {
+        "text": "Everyone reacts!",
+        "timeMs": 6030
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/kiss-with-reaction.webp",
+    "alt": "Everyone reacts!",
+    "accent": "#7d22c9"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/kiss-with-reaction-e37442be635156.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

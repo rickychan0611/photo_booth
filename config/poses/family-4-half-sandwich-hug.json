@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 2,
+  "id": "family-4-half-sandwich-hug",
+  "name": "Sandwich Hug",
+  "category": "family",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-family-4",
+    "framing-half",
+    "mood-sweet",
+    "child-safe",
+    "cooperative",
+    "with-kids"
+  ],
+  "instruction": "Hold the sandwich",
+  "animation": {
+    "durationMs": 6150,
+    "captions": [
+      {
+        "text": "Kids in the middle",
+        "timeMs": 0
+      },
+      {
+        "text": "Grownups wrap in",
+        "timeMs": 1717
+      },
+      {
+        "text": "Cheeks touching",
+        "timeMs": 3433
+      },
+      {
+        "text": "Hold the sandwich",
+        "timeMs": 5150
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "child",
+      "repeatable": false
+    },
+    {
+      "role": "child",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/family-4-half-sandwich-hug.webp",
+    "alt": "Hold the sandwich",
+    "accent": "#1769ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/family-4-half-sandwich-hug-d568a03fa23be4.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

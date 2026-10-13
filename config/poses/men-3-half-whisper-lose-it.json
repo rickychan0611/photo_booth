@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "men-3-half-whisper-lose-it",
+  "name": "Whisper and Lose It",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-men-3",
+    "framing-half",
+    "mood-funny",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the mess",
+  "animation": {
+    "durationMs": 6640,
+    "captions": [
+      {
+        "text": "One whispers",
+        "timeMs": 0
+      },
+      {
+        "text": "Second cracks",
+        "timeMs": 1880
+      },
+      {
+        "text": "Third is already gone",
+        "timeMs": 3760
+      },
+      {
+        "text": "Hold the mess",
+        "timeMs": 5640
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "men",
+      "repeatable": false
+    },
+    {
+      "role": "men",
+      "repeatable": false
+    },
+    {
+      "role": "men",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/men-3-half-whisper-lose-it.webp",
+    "alt": "Hold the mess",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/men-3-half-whisper-lose-it-5462a644f79737.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

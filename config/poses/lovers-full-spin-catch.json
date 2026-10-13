@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "lovers-full-spin-catch",
+  "name": "Spin Catch",
+  "category": "couple",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-lovers",
+    "framing-full",
+    "mood-crazy",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Freeze mid-laugh",
+  "animation": {
+    "durationMs": 7350,
+    "captions": [
+      {
+        "text": "Start two steps apart",
+        "timeMs": 0
+      },
+      {
+        "text": "Spin toward each other",
+        "timeMs": 2117
+      },
+      {
+        "text": "Catch hands and stop",
+        "timeMs": 4233
+      },
+      {
+        "text": "Freeze mid-laugh",
+        "timeMs": 6350
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/lovers-full-spin-catch.webp",
+    "alt": "Freeze mid-laugh",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/lovers-full-spin-catch-3736b47d5fb386.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

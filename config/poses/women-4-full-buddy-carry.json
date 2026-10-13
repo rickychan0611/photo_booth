@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "id": "women-4-full-buddy-carry",
+  "name": "Buddy Carry",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-4",
+    "framing-full",
+    "mood-funny",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Laugh and freeze",
+  "animation": {
+    "durationMs": 6880,
+    "captions": [
+      {
+        "text": "Pair up",
+        "timeMs": 0
+      },
+      {
+        "text": "Playful lifts or leans",
+        "timeMs": 1960
+      },
+      {
+        "text": "Kick a free foot",
+        "timeMs": 3920
+      },
+      {
+        "text": "Laugh and freeze",
+        "timeMs": 5880
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-4-full-buddy-carry.webp",
+    "alt": "Laugh and freeze",
+    "accent": "#0a9f9f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-4-full-buddy-carry-626c8ee7156f6c.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

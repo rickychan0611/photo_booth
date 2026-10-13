@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "id": "women-4-full-flower-hug",
+  "name": "Flower Hug",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-4",
+    "framing-full",
+    "mood-sweet",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Smile in the bloom",
+  "animation": {
+    "durationMs": 7610,
+    "captions": [
+      {
+        "text": "Step into one hug",
+        "timeMs": 0
+      },
+      {
+        "text": "Outside friends wrap in",
+        "timeMs": 2203
+      },
+      {
+        "text": "Squeeze once",
+        "timeMs": 4407
+      },
+      {
+        "text": "Smile in the bloom",
+        "timeMs": 6610
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-4-full-flower-hug.webp",
+    "alt": "Smile in the bloom",
+    "accent": "#7d22c9"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-4-full-flower-hug-57baec607887fc.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

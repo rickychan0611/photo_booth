@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "spy-newlyweds",
+  "name": "Spy Newlyweds",
+  "category": "wedding",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-determined",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Wedding spies",
+  "animation": {
+    "durationMs": 6800,
+    "captions": [
+      {
+        "text": "Stand back-to-back",
+        "timeMs": 0
+      },
+      {
+        "text": "Cross your arms",
+        "timeMs": 1933
+      },
+      {
+        "text": "Turn opposite ways",
+        "timeMs": 3867
+      },
+      {
+        "text": "Wedding spies",
+        "timeMs": 5800
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/spy-newlyweds.webp",
+    "alt": "Wedding spies",
+    "accent": "#ffd21a"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/spy-newlyweds-a94bc74ae6ccd1.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

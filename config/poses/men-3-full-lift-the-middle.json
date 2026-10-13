@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "men-3-full-lift-the-middle",
+  "name": "Lift the Middle",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-men-3",
+    "framing-full",
+    "mood-crazy",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the lift",
+  "animation": {
+    "durationMs": 6640,
+    "captions": [
+      {
+        "text": "Middle friend hops",
+        "timeMs": 0
+      },
+      {
+        "text": "Two friends support him",
+        "timeMs": 1880
+      },
+      {
+        "text": "One fist up",
+        "timeMs": 3760
+      },
+      {
+        "text": "Hold the lift",
+        "timeMs": 5640
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "men",
+      "repeatable": false
+    },
+    {
+      "role": "men",
+      "repeatable": false
+    },
+    {
+      "role": "men",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/men-3-full-lift-the-middle.webp",
+    "alt": "Hold the lift",
+    "accent": "#ef2929"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/men-3-full-lift-the-middle-e50e25b0a89549.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

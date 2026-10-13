@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 2,
+  "id": "family-3-full-airplane-kids",
+  "name": "Airplane Kids",
+  "category": "family",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-family-3",
+    "framing-full",
+    "mood-crazy",
+    "child-safe",
+    "cooperative",
+    "with-kids"
+  ],
+  "instruction": "Hold the flight",
+  "animation": {
+    "durationMs": 7430,
+    "captions": [
+      {
+        "text": "Grownup plants their feet",
+        "timeMs": 0
+      },
+      {
+        "text": "Kids stretch out like wings",
+        "timeMs": 2143
+      },
+      {
+        "text": "One foot pops",
+        "timeMs": 4287
+      },
+      {
+        "text": "Hold the flight",
+        "timeMs": 6430
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 3,
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "child",
+      "repeatable": false
+    },
+    {
+      "role": "child",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/family-3-full-airplane-kids.webp",
+    "alt": "Hold the flight",
+    "accent": "#08cbe8"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/family-3-full-airplane-kids-ea55e6237d603f.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

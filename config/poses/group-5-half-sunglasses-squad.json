@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-half-sunglasses-squad",
+  "name": "Sunglasses Squad",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-half",
+    "mood-cool",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the squad",
+  "animation": {
+    "durationMs": 6490,
+    "captions": [
+      {
+        "text": "Glasses on",
+        "timeMs": 0
+      },
+      {
+        "text": "Lower them as a group",
+        "timeMs": 1830
+      },
+      {
+        "text": "One eyebrow each",
+        "timeMs": 3660
+      },
+      {
+        "text": "Hold the squad",
+        "timeMs": 5490
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-half-sunglasses-squad.webp",
+    "alt": "Hold the squad",
+    "accent": "#0a9f9f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-sunglasses-squad-9cf466e8b6e230.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

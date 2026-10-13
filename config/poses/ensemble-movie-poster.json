@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 2,
+  "id": "ensemble-movie-poster",
+  "name": "Ensemble Movie Poster",
+  "category": "group",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-layers",
+    "expression-determined",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Movie-poster finish",
+  "animation": {
+    "durationMs": 7110,
+    "captions": [
+      {
+        "text": "Choose the hero",
+        "timeMs": 0
+      },
+      {
+        "text": "Build layers behind",
+        "timeMs": 2037
+      },
+      {
+        "text": "Give everyone a role",
+        "timeMs": 4073
+      },
+      {
+        "text": "Movie-poster finish",
+        "timeMs": 6110
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/ensemble-movie-poster.webp",
+    "alt": "Movie-poster finish",
+    "accent": "#ef2929"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/ensemble-movie-poster-a3cb049e53cf13.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

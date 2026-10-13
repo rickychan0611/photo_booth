@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 2,
+  "id": "dip-and-laugh",
+  "name": "Dip and Laugh",
+  "category": "couple",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-bigSmile",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Laugh together",
+  "animation": {
+    "durationMs": 6560,
+    "captions": [
+      {
+        "text": "Connect hands",
+        "timeMs": 0
+      },
+      {
+        "text": "Support the waist",
+        "timeMs": 1853
+      },
+      {
+        "text": "Make a tiny dip",
+        "timeMs": 3707
+      },
+      {
+        "text": "Laugh together",
+        "timeMs": 5560
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/dip-and-laugh.webp",
+    "alt": "Laugh together",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/dip-and-laugh-54352f77448f43.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

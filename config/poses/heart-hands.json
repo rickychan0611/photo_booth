@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "id": "heart-hands",
+  "name": "Heart Hands",
+  "category": "cute",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-bigSmile",
+    "child-safe",
+    "solo"
+  ],
+  "instruction": "Smile through it",
+  "animation": {
+    "durationMs": 6150,
+    "captions": [
+      {
+        "text": "Raise your hands",
+        "timeMs": 0
+      },
+      {
+        "text": "Bring them together",
+        "timeMs": 1717
+      },
+      {
+        "text": "Make a heart",
+        "timeMs": 3433
+      },
+      {
+        "text": "Smile through it",
+        "timeMs": 5150
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 1,
+    "maxPeople": 1,
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/heart-hands.webp",
+    "alt": "Smile through it",
+    "accent": "#ffd21a"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/heart-hands-68a968b3efca39.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

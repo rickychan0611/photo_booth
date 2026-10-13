@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "id": "rock-star-lean",
+  "name": "Rock-Star Lean",
+  "category": "party",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-pair",
+    "expression-villain",
+    "child-safe",
+    "solo"
+  ],
+  "instruction": "Rock-star face",
+  "animation": {
+    "durationMs": 6410,
+    "captions": [
+      {
+        "text": "Step wide",
+        "timeMs": 0
+      },
+      {
+        "text": "Lean backward",
+        "timeMs": 1803
+      },
+      {
+        "text": "Play air guitar",
+        "timeMs": 3607
+      },
+      {
+        "text": "Rock-star face",
+        "timeMs": 5410
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 1,
+    "maxPeople": 1,
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/rock-star-lean.webp",
+    "alt": "Rock-star face",
+    "accent": "#0a9f9f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/rock-star-lean-5a066140afa0c6.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

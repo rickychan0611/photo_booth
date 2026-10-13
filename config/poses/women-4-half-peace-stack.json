@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "id": "women-4-half-peace-stack",
+  "name": "Peace Stack",
+  "category": "friends",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-4",
+    "framing-half",
+    "mood-cute",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the stack",
+  "animation": {
+    "durationMs": 6330,
+    "captions": [
+      {
+        "text": "Four peace signs",
+        "timeMs": 0
+      },
+      {
+        "text": "Stack them high",
+        "timeMs": 1777
+      },
+      {
+        "text": "Smile under them",
+        "timeMs": 3553
+      },
+      {
+        "text": "Hold the stack",
+        "timeMs": 5330
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 4,
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/women-4-half-peace-stack.webp",
+    "alt": "Hold the stack",
+    "accent": "#08cbe8"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/women-4-half-peace-stack-ebef9b5243fc9d.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

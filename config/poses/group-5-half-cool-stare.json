@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "id": "group-5-half-cool-stare",
+  "name": "Cool Stare",
+  "category": "group",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-half",
+    "mood-cool",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the mix",
+  "animation": {
+    "durationMs": 6720,
+    "captions": [
+      {
+        "text": "Start serious",
+        "timeMs": 0
+      },
+      {
+        "text": "Hold one beat",
+        "timeMs": 1907
+      },
+      {
+        "text": "Let one smile slip",
+        "timeMs": 3813
+      },
+      {
+        "text": "Hold the mix",
+        "timeMs": 5720
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": null,
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/group-5-half-cool-stare.webp",
+    "alt": "Hold the mix",
+    "accent": "#1769ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/group-5-half-cool-stare-6fb896484fb97b.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "lovers-full-forehead-promise",
+  "name": "Forehead Promise",
+  "category": "couple",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-lovers",
+    "framing-full",
+    "mood-sweet",
+    "adult-only",
+    "cooperative"
+  ],
+  "instruction": "Touch foreheads",
+  "animation": {
+    "durationMs": 6640,
+    "captions": [
+      {
+        "text": "Stand toe to toe",
+        "timeMs": 0
+      },
+      {
+        "text": "Hold both hands",
+        "timeMs": 1880
+      },
+      {
+        "text": "Lean in gently",
+        "timeMs": 3760
+      },
+      {
+        "text": "Touch foreheads",
+        "timeMs": 5640
+      }
+    ]
+  },
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/lovers-full-forehead-promise.webp",
+    "alt": "Touch foreheads",
+    "accent": "#1769ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/lovers-full-forehead-promise-b501ad7745381e.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}
