@@ -14,7 +14,10 @@ const resolveAsset = value => value?.startsWith('project-asset:')
 const backup = path.join(process.env.APPDATA, 'photo-booth', 'pose-library', 'audio', `save-backup-${Date.now()}`);
 fs.mkdirSync(backup, { recursive: true });
 let saved = 0;
-for (const bundled of BUNDLED_SCENES) {
+const packFilter = process.argv.find(arg => arg.startsWith('--pack='))?.slice('--pack='.length);
+const selected = BUNDLED_SCENES.filter(scene => !packFilter || scene.tags.includes(packFilter));
+if (!selected.length) throw new Error(`No poses found for pack ${packFilter}`);
+for (const bundled of selected) {
   const target = path.join(library, `${bundled.id}.json`);
   const original = fs.existsSync(target) ? fs.readFileSync(target, 'utf8') : null;
   const scene = validateScene(withNarration(original ? validateScene(JSON.parse(original)) : bundled));
@@ -29,6 +32,7 @@ for (const bundled of BUNDLED_SCENES) {
 const entries = fs.readdirSync(library).filter(name => name.endsWith('.json') && name !== 'elevenlabs.json');
 for (const name of entries) {
   const scene = validateScene(JSON.parse(fs.readFileSync(path.join(library, name), 'utf8')));
+  if (packFilter && !scene.tags.includes(packFilter)) continue;
   if (!scene.audio?.filePath || !fs.existsSync(resolveAsset(scene.audio.filePath))) throw new Error(`Missing saved narration: ${scene.id}`);
 }
 console.log(JSON.stringify({ savedBundled: saved, totalSaved: entries.length, backup }));

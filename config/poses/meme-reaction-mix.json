@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "id": "meme-reaction-mix",
+  "name": "Everyone Has a Different Reaction",
+  "category": "group",
+  "tags": [
+    "meme-pack-2026",
+    "gender-inclusive",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Freeze every funny face",
+  "compatibility": {
+    "minPeople": 4,
+    "maxPeople": 8,
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": true
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "animation": {
+    "durationMs": 9990,
+    "captions": [
+      {
+        "text": "Gather close together",
+        "timeMs": 0
+      },
+      {
+        "text": "Each choose a different reaction",
+        "timeMs": 2997
+      },
+      {
+        "text": "Shock, suspicion, joy or confusion",
+        "timeMs": 5993
+      },
+      {
+        "text": "Freeze every funny face",
+        "timeMs": 8990
+      }
+    ]
+  },
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/meme-reaction-mix.webp",
+    "alt": "Six friends tightly grouped, each with a distinct shocked, suspicious, smug, mock-crying, confused or delighted facial expression.",
+    "accent": "#8c40ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/meme-reaction-mix-a203498b1b6caf.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

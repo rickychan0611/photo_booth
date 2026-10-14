@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "meme-six-seven-wave",
+  "name": "6–7 Squad Wave",
+  "category": "group",
+  "tags": [
+    "meme-pack-2026",
+    "gender-inclusive",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the squad wave",
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 8,
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": true
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "animation": {
+    "durationMs": 6880,
+    "captions": [
+      {
+        "text": "Stand in a row",
+        "timeMs": 0
+      },
+      {
+        "text": "Palms facing up",
+        "timeMs": 1960
+      },
+      {
+        "text": "Alternate high and low",
+        "timeMs": 3920
+      },
+      {
+        "text": "Hold the squad wave",
+        "timeMs": 5880
+      }
+    ]
+  },
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/meme-six-seven-wave.webp",
+    "alt": "Four friends in a row with both palms facing up, alternating high and low hands across the row.",
+    "accent": "#1769ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/meme-six-seven-wave-a145958b3862ac.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

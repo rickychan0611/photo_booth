@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 2,
+  "id": "meme-double-finger-hearts",
+  "name": "Double Finger Hearts",
+  "category": "friends",
+  "tags": [
+    "meme-pack-2026",
+    "gender-inclusive",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Smile together",
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "couple",
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "animation": {
+    "durationMs": 7770,
+    "captions": [
+      {
+        "text": "Lift both hands",
+        "timeMs": 0
+      },
+      {
+        "text": "Make two tiny finger hearts",
+        "timeMs": 2257
+      },
+      {
+        "text": "One beside each cheek",
+        "timeMs": 4513
+      },
+      {
+        "text": "Smile together",
+        "timeMs": 6770
+      }
+    ]
+  },
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/meme-double-finger-hearts.webp",
+    "alt": "Each person holds a crossed-thumb-and-index finger heart beside each cheek, two tiny hearts per person.",
+    "accent": "#14bda8"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/meme-double-finger-hearts-487856e985f8cc.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

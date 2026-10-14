@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 2,
+  "id": "meme-flower-face",
+  "name": "Flower Face",
+  "category": "friends",
+  "tags": [
+    "meme-pack-2026",
+    "gender-inclusive",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Smile like a flower",
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "couple",
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "animation": {
+    "durationMs": 6880,
+    "captions": [
+      {
+        "text": "Open both palms",
+        "timeMs": 0
+      },
+      {
+        "text": "Put them beneath your chin",
+        "timeMs": 1960
+      },
+      {
+        "text": "Tilt your head",
+        "timeMs": 3920
+      },
+      {
+        "text": "Smile like a flower",
+        "timeMs": 5880
+      }
+    ]
+  },
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/meme-flower-face.webp",
+    "alt": "Two open palms beneath own chin like flower petals, cheerful tilted heads.",
+    "accent": "#ffd21a"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/meme-flower-face-bcbf821bb23111.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

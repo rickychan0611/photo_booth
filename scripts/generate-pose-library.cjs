@@ -120,7 +120,8 @@ function makeScene(row) {
 }
 
 const creative = require('./creative-pose-pack.cjs');
-const scenes = [...specs.map(makeScene), ...creative];
+const memes = require('./meme-pose-pack.cjs').map(pose => pose.scene);
+const scenes = [...specs.map(makeScene), ...creative, ...memes];
 const ids = scenes.map(scene => scene.id);
 if (new Set(ids).size !== ids.length) throw new Error('Duplicate pose id in generated library');
 fs.writeFileSync(OUT, `${JSON.stringify(scenes, null, 2)}\n`);

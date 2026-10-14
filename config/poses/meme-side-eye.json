@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 2,
+  "id": "meme-side-eye",
+  "name": "Bombastic Side-Eye",
+  "category": "friends",
+  "tags": [
+    "meme-pack-2026",
+    "gender-inclusive",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold that side eye",
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 8,
+    "styles": [
+      "couple",
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": true
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "animation": {
+    "durationMs": 7530,
+    "captions": [
+      {
+        "text": "Keep your head forward",
+        "timeMs": 0
+      },
+      {
+        "text": "Look sharply sideways",
+        "timeMs": 2177
+      },
+      {
+        "text": "Add a suspicious face",
+        "timeMs": 4353
+      },
+      {
+        "text": "Hold that side eye",
+        "timeMs": 6530
+      }
+    ]
+  },
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/meme-side-eye.webp",
+    "alt": "Heads mostly facing forward, eyes sharply sideways, suspicious expressions.",
+    "accent": "#1769ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/meme-side-eye-4536eace38606b.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

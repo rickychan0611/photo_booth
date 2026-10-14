@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 2,
+  "id": "meme-aura-farmer",
+  "name": "Aura Farmer",
+  "category": "solo",
+  "tags": [
+    "meme-pack-2026",
+    "gender-inclusive",
+    "child-safe",
+    "solo"
+  ],
+  "instruction": "Hold that aura",
+  "compatibility": {
+    "minPeople": 1,
+    "maxPeople": 1,
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "animation": {
+    "durationMs": 7350,
+    "captions": [
+      {
+        "text": "Stand confidently",
+        "timeMs": 0
+      },
+      {
+        "text": "Relax your shoulders",
+        "timeMs": 2117
+      },
+      {
+        "text": "Freeze your coolest move",
+        "timeMs": 4233
+      },
+      {
+        "text": "Hold that aura",
+        "timeMs": 6350
+      }
+    ]
+  },
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/meme-aura-farmer.webp",
+    "alt": "Sunglasses, confident relaxed full-body stance, one hand near chest and the other extended loosely in a stylish dance freeze.",
+    "accent": "#ffd21a"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/meme-aura-farmer-c63fd83f79aeff.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

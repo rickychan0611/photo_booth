@@ -1528,5 +1528,245 @@
     "assetPath": "pose-guides/group-5-half-stillness-challenge.webp",
     "alt": "Hold completely still",
     "accent": "#ff8214"
+  },
+  {
+    "id": "meme-six-seven",
+    "assetPath": "pose-guides/meme-six-seven.webp",
+    "alt": "Both open palms face up at chest height, one hand visibly higher than the other, as if weighing choices; playful confused face.",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "meme-six-seven-wave",
+    "assetPath": "pose-guides/meme-six-seven-wave.webp",
+    "alt": "Four friends in a row with both palms facing up, alternating high and low hands across the row.",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "meme-aura-farmer",
+    "assetPath": "pose-guides/meme-aura-farmer.webp",
+    "alt": "Sunglasses, confident relaxed full-body stance, one hand near chest and the other extended loosely in a stylish dance freeze.",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "meme-aura-battle",
+    "assetPath": "pose-guides/meme-aura-battle.webp",
+    "alt": "Two friends face one another in contrasting dramatic confident poses with serious faces; turn enough for both faces to be visible.",
+    "accent": "#8c40ff"
+  },
+  {
+    "id": "meme-main-character",
+    "assetPath": "pose-guides/meme-main-character.webp",
+    "alt": "One person confidently in front, three friends behind them with exaggerated impressed expressions and gestures.",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "meme-jawline-check",
+    "assetPath": "pose-guides/meme-jawline-check.webp",
+    "alt": "Slight side angle, index finger pointing along own jawline, exaggerated serious expression.",
+    "accent": "#14bda8"
+  },
+  {
+    "id": "meme-sigma-smirk",
+    "assetPath": "pose-guides/meme-sigma-smirk.webp",
+    "alt": "One eyebrow raised, lips slightly pursed into a tiny smug smirk, intense camera stare.",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "meme-side-eye",
+    "assetPath": "pose-guides/meme-side-eye.webp",
+    "alt": "Heads mostly facing forward, eyes sharply sideways, suspicious expressions.",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "meme-rock-eyebrow",
+    "assetPath": "pose-guides/meme-rock-eyebrow.webp",
+    "alt": "One eyebrow visibly raised with an exaggerated suspicious facial expression.",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "meme-absolute-cinema",
+    "assetPath": "pose-guides/meme-absolute-cinema.webp",
+    "alt": "Both open hands beside head with palms toward camera, dramatically impressed expression.",
+    "accent": "#8c40ff"
+  },
+  {
+    "id": "meme-finger-heart",
+    "assetPath": "pose-guides/meme-finger-heart.webp",
+    "alt": "Thumb and index finger crossed into a small finger heart beside face; warm smile.",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "meme-double-finger-hearts",
+    "assetPath": "pose-guides/meme-double-finger-hearts.webp",
+    "alt": "Each person holds a crossed-thumb-and-index finger heart beside each cheek, two tiny hearts per person.",
+    "accent": "#14bda8"
+  },
+  {
+    "id": "meme-gyaru-peace",
+    "assetPath": "pose-guides/meme-gyaru-peace.webp",
+    "alt": "Inverted V peace sign reaching toward camera, fingers angled down, playful smile.",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "meme-cheek-heart",
+    "assetPath": "pose-guides/meme-cheek-heart.webp",
+    "alt": "One hand forms a curved half-heart against own cheek, sweet smile.",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "meme-flower-face",
+    "assetPath": "pose-guides/meme-flower-face.webp",
+    "alt": "Two open palms beneath own chin like flower petals, cheerful tilted heads.",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "meme-cat-paws",
+    "assetPath": "pose-guides/meme-cat-paws.webp",
+    "alt": "Hands curled like cat paws beside cheeks, heads tilted playfully.",
+    "accent": "#8c40ff"
+  },
+  {
+    "id": "meme-cheek-poke",
+    "assetPath": "pose-guides/meme-cheek-poke.webp",
+    "alt": "One index finger touching own cheek, smiling or pouting.",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "meme-peace-wink",
+    "assetPath": "pose-guides/meme-peace-wink.webp",
+    "alt": "Two V peace signs beside eyes, each person winking playfully.",
+    "accent": "#14bda8"
+  },
+  {
+    "id": "meme-hand-goggles",
+    "assetPath": "pose-guides/meme-hand-goggles.webp",
+    "alt": "Finger circles around both eyes as pretend goggles, silly wide-eyed expression.",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "meme-tiny-shy",
+    "assetPath": "pose-guides/meme-tiny-shy.webp",
+    "alt": "Index fingertips touching at chest height, shoulders gently tucked, bashful smile.",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "meme-shared-heart",
+    "assetPath": "pose-guides/meme-shared-heart.webp",
+    "alt": "Each partner forms one half of the same hand heart, hands joined between them, happy smiles.",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "meme-overhead-heart",
+    "assetPath": "pose-guides/meme-overhead-heart.webp",
+    "alt": "Side by side with outer arms curved overhead to form one large shared heart; full bodies visible.",
+    "accent": "#8c40ff"
+  },
+  {
+    "id": "meme-heart-rejection",
+    "assetPath": "pose-guides/meme-heart-rejection.webp",
+    "alt": "One offers a hand heart toward the other, who folds their arms with a humorous deadpan expression.",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "meme-spider-point",
+    "assetPath": "pose-guides/meme-spider-point.webp",
+    "alt": "Three friends point at each other in a triangle, surprised expressions, all faces visible; ordinary clothes, no costumes.",
+    "accent": "#14bda8"
+  },
+  {
+    "id": "meme-distracted-trio",
+    "assetPath": "pose-guides/meme-distracted-trio.webp",
+    "alt": "Three-person scene: two companions together, one turns to admire third friend while their companion looks shocked; playful, all faces visible.",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "meme-is-this-pigeon",
+    "assetPath": "pose-guides/meme-is-this-pigeon.webp",
+    "alt": "One friend presents an empty open palm as an imaginary object; the other gestures toward it with exaggerated confusion.",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "meme-cool-chaotic",
+    "assetPath": "pose-guides/meme-cool-chaotic.webp",
+    "alt": "One friend perfectly composed and cool; the other beside them makes an outrageous wide-eyed open-mouth face.",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "meme-back-to-back-agents",
+    "assetPath": "pose-guides/meme-back-to-back-agents.webp",
+    "alt": "Back to back, arms folded, looking in opposite directions; both faces visible in three-quarter profile.",
+    "accent": "#8c40ff"
+  },
+  {
+    "id": "meme-album-cover",
+    "assetPath": "pose-guides/meme-album-cover.webp",
+    "alt": "Friends at staggered depths with contrasting head angles and serious faces, a stylish imaginary band album portrait.",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "meme-sunglasses-reveal",
+    "assetPath": "pose-guides/meme-sunglasses-reveal.webp",
+    "alt": "Each person lowers their sunglasses slightly with one hand and peers over the frames with a confident stare.",
+    "accent": "#14bda8"
+  },
+  {
+    "id": "meme-siuuu",
+    "assetPath": "pose-guides/meme-siuuu.webp",
+    "alt": "Feet planted wide, arms straight down and outward, chest lifted and chin raised in a triumphant celebration.",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "meme-dab",
+    "assetPath": "pose-guides/meme-dab.webp",
+    "alt": "Each person hides face in a bent elbow while extending the opposite arm diagonally; recognizable dab.",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "meme-jojo",
+    "assetPath": "pose-guides/meme-jojo.webp",
+    "alt": "One knee bent, torso slightly twisted, one hand framing face, theatrical expressive pose; ordinary clothes.",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "meme-ginyu-force",
+    "assetPath": "pose-guides/meme-ginyu-force.webp",
+    "alt": "Five friends in a balanced formation at different standing and crouching levels, exaggerated different superhero arm shapes; no costumes.",
+    "accent": "#8c40ff"
+  },
+  {
+    "id": "meme-npc-lineup",
+    "assetPath": "pose-guides/meme-npc-lineup.webp",
+    "alt": "Four people in an evenly spaced row with identical blank faces, straight stiff arms at sides.",
+    "accent": "#ff8214"
+  },
+  {
+    "id": "meme-buffering",
+    "assetPath": "pose-guides/meme-buffering.webp",
+    "alt": "Freeze with one hand halfway through a small gesture, vacant eyes and blank expression as if buffering.",
+    "accent": "#14bda8"
+  },
+  {
+    "id": "meme-one-brain-cell",
+    "assetPath": "pose-guides/meme-one-brain-cell.webp",
+    "alt": "Three friends point to the fourth in the center, who looks completely confused.",
+    "accent": "#ff168f"
+  },
+  {
+    "id": "meme-bodyguards",
+    "assetPath": "pose-guides/meme-bodyguards.webp",
+    "alt": "One smiling celebrity in center, four serious arms-crossed bodyguards arranged around them.",
+    "accent": "#1769ff"
+  },
+  {
+    "id": "meme-peekaboo-stack",
+    "assetPath": "pose-guides/meme-peekaboo-stack.webp",
+    "alt": "Four friends in a compact vertical-depth stack, peeking alternately left and right; all four faces clearly visible.",
+    "accent": "#ffd21a"
+  },
+  {
+    "id": "meme-reaction-mix",
+    "assetPath": "pose-guides/meme-reaction-mix.webp",
+    "alt": "Six friends tightly grouped, each with a distinct shocked, suspicious, smug, mock-crying, confused or delighted facial expression.",
+    "accent": "#8c40ff"
   }
 ]

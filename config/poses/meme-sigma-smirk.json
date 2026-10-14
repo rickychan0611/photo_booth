@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 2,
+  "id": "meme-sigma-smirk",
+  "name": "Sigma Smirk",
+  "category": "solo",
+  "tags": [
+    "meme-pack-2026",
+    "gender-inclusive",
+    "child-safe",
+    "solo"
+  ],
+  "instruction": "Hold the intense stare",
+  "compatibility": {
+    "minPeople": 1,
+    "maxPeople": 1,
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "animation": {
+    "durationMs": 7690,
+    "captions": [
+      {
+        "text": "Look into the lens",
+        "timeMs": 0
+      },
+      {
+        "text": "Raise one eyebrow",
+        "timeMs": 2230
+      },
+      {
+        "text": "Make a tiny smirk",
+        "timeMs": 4460
+      },
+      {
+        "text": "Hold the intense stare",
+        "timeMs": 6690
+      }
+    ]
+  },
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/meme-sigma-smirk.webp",
+    "alt": "One eyebrow raised, lips slightly pursed into a tiny smug smirk, intense camera stare.",
+    "accent": "#ff168f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/meme-sigma-smirk-db260515760bd3.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

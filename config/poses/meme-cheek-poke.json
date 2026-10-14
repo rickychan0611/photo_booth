@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 2,
+  "id": "meme-cheek-poke",
+  "name": "Cheek Poke",
+  "category": "friends",
+  "tags": [
+    "meme-pack-2026",
+    "gender-inclusive",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the cheek poke",
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "couple",
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "animation": {
+    "durationMs": 7190,
+    "captions": [
+      {
+        "text": "Raise one index finger",
+        "timeMs": 0
+      },
+      {
+        "text": "Touch your own cheek",
+        "timeMs": 2063
+      },
+      {
+        "text": "Smile or pout",
+        "timeMs": 4127
+      },
+      {
+        "text": "Hold the cheek poke",
+        "timeMs": 6190
+      }
+    ]
+  },
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/meme-cheek-poke.webp",
+    "alt": "One index finger touching own cheek, smiling or pouting.",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/meme-cheek-poke-c004b8b1163da8.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

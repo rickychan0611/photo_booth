@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 2,
+  "id": "meme-main-character",
+  "name": "Main Character + Crew",
+  "category": "group",
+  "tags": [
+    "meme-pack-2026",
+    "gender-inclusive",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold your star moment",
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 8,
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": true
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "animation": {
+    "durationMs": 7840,
+    "captions": [
+      {
+        "text": "Choose your main character",
+        "timeMs": 0
+      },
+      {
+        "text": "They step in front",
+        "timeMs": 2280
+      },
+      {
+        "text": "Everyone else looks impressed",
+        "timeMs": 4560
+      },
+      {
+        "text": "Hold your star moment",
+        "timeMs": 6840
+      }
+    ]
+  },
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/meme-main-character.webp",
+    "alt": "One person confidently in front, three friends behind them with exaggerated impressed expressions and gestures.",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/meme-main-character-738c467adc94bb.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

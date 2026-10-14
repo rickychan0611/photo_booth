@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 2,
+  "id": "meme-hand-goggles",
+  "name": "Hand Goggles",
+  "category": "friends",
+  "tags": [
+    "meme-pack-2026",
+    "gender-inclusive",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Freeze the silly face",
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 6,
+    "styles": [
+      "couple",
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": true
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "animation": {
+    "durationMs": 7530,
+    "captions": [
+      {
+        "text": "Make circles with your fingers",
+        "timeMs": 0
+      },
+      {
+        "text": "Hold them around your eyes",
+        "timeMs": 2177
+      },
+      {
+        "text": "Look through your goggles",
+        "timeMs": 4353
+      },
+      {
+        "text": "Freeze the silly face",
+        "timeMs": 6530
+      }
+    ]
+  },
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/meme-hand-goggles.webp",
+    "alt": "Finger circles around both eyes as pretend goggles, silly wide-eyed expression.",
+    "accent": "#ff168f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/meme-hand-goggles-bc862596870ee8.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

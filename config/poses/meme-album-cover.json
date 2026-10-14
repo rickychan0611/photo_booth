@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 2,
+  "id": "meme-album-cover",
+  "name": "Imaginary Album Cover",
+  "category": "group",
+  "tags": [
+    "meme-pack-2026",
+    "gender-inclusive",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold your album cover",
+  "compatibility": {
+    "minPeople": 3,
+    "maxPeople": 5,
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": true
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "animation": {
+    "durationMs": 7770,
+    "captions": [
+      {
+        "text": "Stand at different depths",
+        "timeMs": 0
+      },
+      {
+        "text": "Choose different head angles",
+        "timeMs": 2257
+      },
+      {
+        "text": "Keep serious faces",
+        "timeMs": 4513
+      },
+      {
+        "text": "Hold your album cover",
+        "timeMs": 6770
+      }
+    ]
+  },
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/meme-album-cover.webp",
+    "alt": "Friends at staggered depths with contrasting head angles and serious faces, a stylish imaginary band album portrait.",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/meme-album-cover-1e21f79f308b87.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

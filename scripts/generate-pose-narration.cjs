@@ -59,6 +59,11 @@ app.whenReady().then(async () => {
     if (index < 0) jobs.push({ scene, file });
     else jobs[index] = { scene, file };
   }
+  const packFilter = process.argv.find(arg => arg.startsWith('--pack='))?.slice('--pack='.length);
+  if (packFilter) {
+    for (let i = jobs.length - 1; i >= 0; i--) if (!jobs[i].scene.tags.includes(packFilter)) jobs.splice(i, 1);
+    if (!jobs.length) throw new Error(`No poses found for pack ${packFilter}`);
+  }
   const report = { startedAt: new Date().toISOString(), total: jobs.length, completed: [], skipped: [], failed: [] };
   const backup = path.join(library, 'audio', `narration-backup-${Date.now()}`);
   let cursor = 0, fatal = false;
@@ -74,7 +79,7 @@ app.whenReady().then(async () => {
         const script = scriptFor(scene);
         let generated;
         for (let attempt = 0; attempt < 4; attempt++) {
-          try { generated = await generateElevenLabsSpeech(scene.id, script.text); break; }
+          try { generated = await generateElevenLabsSpeech(scene.id, script.text, path.join(projectAssets, 'audio', 'elevenlabs')); break; }
           catch (error) {
             if (!/429|502|503|504|fetch failed/i.test(error.message) || attempt === 3) throw error;
             await new Promise(resolve => setTimeout(resolve, 2000 * (attempt + 1)));

@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 2,
+  "id": "meme-ginyu-force",
+  "name": "Ginyu Force Formation",
+  "category": "group",
+  "tags": [
+    "meme-pack-2026",
+    "gender-inclusive",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the team formation",
+  "compatibility": {
+    "minPeople": 5,
+    "maxPeople": 5,
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "animation": {
+    "durationMs": 8550,
+    "captions": [
+      {
+        "text": "Spread into five spots",
+        "timeMs": 0
+      },
+      {
+        "text": "Choose different levels",
+        "timeMs": 2517
+      },
+      {
+        "text": "Strike big superhero shapes",
+        "timeMs": 5033
+      },
+      {
+        "text": "Hold the team formation",
+        "timeMs": 7550
+      }
+    ]
+  },
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/meme-ginyu-force.webp",
+    "alt": "Five friends in a balanced formation at different standing and crouching levels, exaggerated different superhero arm shapes; no costumes.",
+    "accent": "#8c40ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/meme-ginyu-force-d643c0fb1da7e8.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

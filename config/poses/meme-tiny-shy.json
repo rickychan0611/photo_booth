@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 2,
+  "id": "meme-tiny-shy",
+  "name": "Tiny Shy Pose",
+  "category": "solo",
+  "tags": [
+    "meme-pack-2026",
+    "gender-inclusive",
+    "child-safe",
+    "solo"
+  ],
+  "instruction": "Hold your shy smile",
+  "compatibility": {
+    "minPeople": 1,
+    "maxPeople": 2,
+    "styles": [
+      "solo",
+      "couple",
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "animation": {
+    "durationMs": 7690,
+    "captions": [
+      {
+        "text": "Hands at chest height",
+        "timeMs": 0
+      },
+      {
+        "text": "Touch your index fingertips",
+        "timeMs": 2230
+      },
+      {
+        "text": "Look a little bashful",
+        "timeMs": 4460
+      },
+      {
+        "text": "Hold your shy smile",
+        "timeMs": 6690
+      }
+    ]
+  },
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/meme-tiny-shy.webp",
+    "alt": "Index fingertips touching at chest height, shoulders gently tucked, bashful smile.",
+    "accent": "#1769ff"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/meme-tiny-shy-549886cebf3b64.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

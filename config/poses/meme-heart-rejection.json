@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 2,
+  "id": "meme-heart-rejection",
+  "name": "Heart + Rejection",
+  "category": "friends",
+  "tags": [
+    "meme-pack-2026",
+    "gender-inclusive",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold the playful rejection",
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 2,
+    "styles": [
+      "couple",
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "animation": {
+    "durationMs": 8550,
+    "captions": [
+      {
+        "text": "One offers a hand heart",
+        "timeMs": 0
+      },
+      {
+        "text": "The other folds their arms",
+        "timeMs": 2517
+      },
+      {
+        "text": "Add a deadpan stare",
+        "timeMs": 5033
+      },
+      {
+        "text": "Hold the playful rejection",
+        "timeMs": 7550
+      }
+    ]
+  },
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/meme-heart-rejection.webp",
+    "alt": "One offers a hand heart toward the other, who folds their arms with a humorous deadpan expression.",
+    "accent": "#ff8214"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/meme-heart-rejection-3c0dabd504a8af.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

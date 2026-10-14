@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 2,
+  "id": "meme-siuuu",
+  "name": "Siuuu Freeze",
+  "category": "solo",
+  "tags": [
+    "meme-pack-2026",
+    "gender-inclusive",
+    "child-safe",
+    "solo"
+  ],
+  "instruction": "Hold your victory pose",
+  "compatibility": {
+    "minPeople": 1,
+    "maxPeople": 8,
+    "styles": [
+      "solo",
+      "couple",
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "animation": {
+    "durationMs": 7350,
+    "captions": [
+      {
+        "text": "Plant your feet wide",
+        "timeMs": 0
+      },
+      {
+        "text": "Arms down and outward",
+        "timeMs": 2117
+      },
+      {
+        "text": "Lift your chin",
+        "timeMs": 4233
+      },
+      {
+        "text": "Hold your victory pose",
+        "timeMs": 6350
+      }
+    ]
+  },
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/meme-siuuu.webp",
+    "alt": "Feet planted wide, arms straight down and outward, chest lifted and chin raised in a triumphant celebration.",
+    "accent": "#ff168f"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/meme-siuuu-62ebb05704a0ea.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

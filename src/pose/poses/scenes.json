@@ -16012,5 +16012,2370 @@
         "repeatable": true
       }
     ]
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-six-seven",
+    "name": "6–7 Hands",
+    "category": "solo",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "solo"
+    ],
+    "instruction": "Hold your six seven",
+    "compatibility": {
+      "minPeople": 1,
+      "maxPeople": 8,
+      "styles": [
+        "solo",
+        "couple",
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Raise both hands"
+        },
+        {
+          "timeMs": 500,
+          "text": "Turn your palms up"
+        },
+        {
+          "timeMs": 1000,
+          "text": "One high, one low"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold your six seven"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-six-seven-wave",
+    "name": "6–7 Squad Wave",
+    "category": "group",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Hold the squad wave",
+    "compatibility": {
+      "minPeople": 3,
+      "maxPeople": 8,
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand in a row"
+        },
+        {
+          "timeMs": 500,
+          "text": "Palms facing up"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Alternate high and low"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold the squad wave"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-aura-farmer",
+    "name": "Aura Farmer",
+    "category": "solo",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "solo"
+    ],
+    "instruction": "Hold that aura",
+    "compatibility": {
+      "minPeople": 1,
+      "maxPeople": 1,
+      "styles": [
+        "solo"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": false
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand confidently"
+        },
+        {
+          "timeMs": 500,
+          "text": "Relax your shoulders"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Freeze your coolest move"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold that aura"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-aura-battle",
+    "name": "Aura Battle",
+    "category": "friends",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Hold the aura battle",
+    "compatibility": {
+      "minPeople": 2,
+      "maxPeople": 2,
+      "styles": [
+        "couple",
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": false
+      },
+      {
+        "role": "any",
+        "repeatable": false
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Face each other"
+        },
+        {
+          "timeMs": 500,
+          "text": "Choose a dramatic pose"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Keep a serious face"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold the aura battle"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-main-character",
+    "name": "Main Character + Crew",
+    "category": "group",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Hold your star moment",
+    "compatibility": {
+      "minPeople": 3,
+      "maxPeople": 8,
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Choose your main character"
+        },
+        {
+          "timeMs": 500,
+          "text": "They step in front"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Everyone else looks impressed"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold your star moment"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-jawline-check",
+    "name": "Jawline Check",
+    "category": "solo",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "solo"
+    ],
+    "instruction": "Hold the jawline check",
+    "compatibility": {
+      "minPeople": 1,
+      "maxPeople": 2,
+      "styles": [
+        "solo",
+        "couple",
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Turn slightly sideways"
+        },
+        {
+          "timeMs": 500,
+          "text": "Point along your jaw"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Give a serious stare"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold the jawline check"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-sigma-smirk",
+    "name": "Sigma Smirk",
+    "category": "solo",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "solo"
+    ],
+    "instruction": "Hold the intense stare",
+    "compatibility": {
+      "minPeople": 1,
+      "maxPeople": 1,
+      "styles": [
+        "solo"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": false
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Look into the lens"
+        },
+        {
+          "timeMs": 500,
+          "text": "Raise one eyebrow"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Make a tiny smirk"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold the intense stare"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-side-eye",
+    "name": "Bombastic Side-Eye",
+    "category": "friends",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Hold that side eye",
+    "compatibility": {
+      "minPeople": 2,
+      "maxPeople": 8,
+      "styles": [
+        "couple",
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Keep your head forward"
+        },
+        {
+          "timeMs": 500,
+          "text": "Look sharply sideways"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Add a suspicious face"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold that side eye"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-rock-eyebrow",
+    "name": "The Rock Eyebrow",
+    "category": "solo",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "solo"
+    ],
+    "instruction": "Hold that eyebrow",
+    "compatibility": {
+      "minPeople": 1,
+      "maxPeople": 2,
+      "styles": [
+        "solo",
+        "couple",
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Face the camera"
+        },
+        {
+          "timeMs": 500,
+          "text": "Raise one eyebrow"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Look very suspicious"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold that eyebrow"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-absolute-cinema",
+    "name": "Absolute Cinema",
+    "category": "solo",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "solo"
+    ],
+    "instruction": "Hold absolute cinema",
+    "compatibility": {
+      "minPeople": 1,
+      "maxPeople": 8,
+      "styles": [
+        "solo",
+        "couple",
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Lift both hands"
+        },
+        {
+          "timeMs": 500,
+          "text": "Open palms beside your head"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Look dramatically impressed"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold absolute cinema"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-finger-heart",
+    "name": "Finger Heart",
+    "category": "solo",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "solo"
+    ],
+    "instruction": "Smile and hold",
+    "compatibility": {
+      "minPeople": 1,
+      "maxPeople": 8,
+      "styles": [
+        "solo",
+        "couple",
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Lift one hand"
+        },
+        {
+          "timeMs": 500,
+          "text": "Cross thumb and index finger"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Bring the tiny heart near your face"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Smile and hold"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-double-finger-hearts",
+    "name": "Double Finger Hearts",
+    "category": "friends",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Smile together",
+    "compatibility": {
+      "minPeople": 2,
+      "maxPeople": 2,
+      "styles": [
+        "couple",
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": false
+      },
+      {
+        "role": "any",
+        "repeatable": false
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Lift both hands"
+        },
+        {
+          "timeMs": 500,
+          "text": "Make two tiny finger hearts"
+        },
+        {
+          "timeMs": 1000,
+          "text": "One beside each cheek"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Smile together"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-gyaru-peace",
+    "name": "Gyaru Peace",
+    "category": "friends",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Hold your playful smile",
+    "compatibility": {
+      "minPeople": 2,
+      "maxPeople": 6,
+      "styles": [
+        "couple",
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Make a peace sign"
+        },
+        {
+          "timeMs": 500,
+          "text": "Angle your fingers downward"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Reach toward the lens"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold your playful smile"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-cheek-heart",
+    "name": "Cheek Heart",
+    "category": "solo",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "solo"
+    ],
+    "instruction": "Hold a sweet smile",
+    "compatibility": {
+      "minPeople": 1,
+      "maxPeople": 1,
+      "styles": [
+        "solo"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": false
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Curve one hand"
+        },
+        {
+          "timeMs": 500,
+          "text": "Make a half heart"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Rest it against your cheek"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold a sweet smile"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-flower-face",
+    "name": "Flower Face",
+    "category": "friends",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Smile like a flower",
+    "compatibility": {
+      "minPeople": 2,
+      "maxPeople": 2,
+      "styles": [
+        "couple",
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": false
+      },
+      {
+        "role": "any",
+        "repeatable": false
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Open both palms"
+        },
+        {
+          "timeMs": 500,
+          "text": "Put them beneath your chin"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Tilt your head"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Smile like a flower"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-cat-paws",
+    "name": "Cat Paws",
+    "category": "group",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Hold your cat faces",
+    "compatibility": {
+      "minPeople": 3,
+      "maxPeople": 6,
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Lift hands beside your cheeks"
+        },
+        {
+          "timeMs": 500,
+          "text": "Curl them like paws"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Tilt your heads"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold your cat faces"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-cheek-poke",
+    "name": "Cheek Poke",
+    "category": "friends",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Hold the cheek poke",
+    "compatibility": {
+      "minPeople": 2,
+      "maxPeople": 2,
+      "styles": [
+        "couple",
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": false
+      },
+      {
+        "role": "any",
+        "repeatable": false
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Raise one index finger"
+        },
+        {
+          "timeMs": 500,
+          "text": "Touch your own cheek"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Smile or pout"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold the cheek poke"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-peace-wink",
+    "name": "Double Peace + Wink",
+    "category": "group",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Hold the happy pose",
+    "compatibility": {
+      "minPeople": 3,
+      "maxPeople": 8,
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Make two peace signs"
+        },
+        {
+          "timeMs": 500,
+          "text": "Place them beside your eyes"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Give the camera a wink"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold the happy pose"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-hand-goggles",
+    "name": "Hand Goggles",
+    "category": "friends",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Freeze the silly face",
+    "compatibility": {
+      "minPeople": 2,
+      "maxPeople": 6,
+      "styles": [
+        "couple",
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Make circles with your fingers"
+        },
+        {
+          "timeMs": 500,
+          "text": "Hold them around your eyes"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Look through your goggles"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Freeze the silly face"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-tiny-shy",
+    "name": "Tiny Shy Pose",
+    "category": "solo",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "solo"
+    ],
+    "instruction": "Hold your shy smile",
+    "compatibility": {
+      "minPeople": 1,
+      "maxPeople": 2,
+      "styles": [
+        "solo",
+        "couple",
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Hands at chest height"
+        },
+        {
+          "timeMs": 500,
+          "text": "Touch your index fingertips"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Look a little bashful"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold your shy smile"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-shared-heart",
+    "name": "Shared Heart",
+    "category": "friends",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Smile through your heart",
+    "compatibility": {
+      "minPeople": 2,
+      "maxPeople": 2,
+      "styles": [
+        "couple",
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": false
+      },
+      {
+        "role": "any",
+        "repeatable": false
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand close together"
+        },
+        {
+          "timeMs": 500,
+          "text": "Make half a heart each"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Join hands in the middle"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Smile through your heart"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-overhead-heart",
+    "name": "Overhead Heart",
+    "category": "friends",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Hold your big heart",
+    "compatibility": {
+      "minPeople": 2,
+      "maxPeople": 2,
+      "styles": [
+        "couple",
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": false
+      },
+      {
+        "role": "any",
+        "repeatable": false
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand side by side"
+        },
+        {
+          "timeMs": 500,
+          "text": "Raise your outer arms"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Curve them into one heart"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold your big heart"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-heart-rejection",
+    "name": "Heart + Rejection",
+    "category": "friends",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Hold the playful rejection",
+    "compatibility": {
+      "minPeople": 2,
+      "maxPeople": 2,
+      "styles": [
+        "couple",
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": false
+      },
+      {
+        "role": "any",
+        "repeatable": false
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "One offers a hand heart"
+        },
+        {
+          "timeMs": 500,
+          "text": "The other folds their arms"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Add a deadpan stare"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold the playful rejection"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-spider-point",
+    "name": "Spider-Man Pointing",
+    "category": "group",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Hold the pointing circle",
+    "compatibility": {
+      "minPeople": 3,
+      "maxPeople": 4,
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Face your friends"
+        },
+        {
+          "timeMs": 500,
+          "text": "Point at one another"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Look very surprised"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold the pointing circle"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-distracted-trio",
+    "name": "Distracted Trio",
+    "category": "group",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Freeze the distraction",
+    "compatibility": {
+      "minPeople": 3,
+      "maxPeople": 3,
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": false
+      },
+      {
+        "role": "any",
+        "repeatable": false
+      },
+      {
+        "role": "any",
+        "repeatable": false
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Two stand together"
+        },
+        {
+          "timeMs": 500,
+          "text": "One looks at the third friend"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Their partner looks shocked"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Freeze the distraction"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-is-this-pigeon",
+    "name": "Is This a Pigeon?",
+    "category": "friends",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Hold the question",
+    "compatibility": {
+      "minPeople": 2,
+      "maxPeople": 2,
+      "styles": [
+        "couple",
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": false
+      },
+      {
+        "role": "any",
+        "repeatable": false
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "One presents an open palm"
+        },
+        {
+          "timeMs": 500,
+          "text": "The other gestures toward it"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Look completely confused"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold the question"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-cool-chaotic",
+    "name": "Cool Friend / Chaotic Friend",
+    "category": "friends",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Hold both reactions",
+    "compatibility": {
+      "minPeople": 2,
+      "maxPeople": 2,
+      "styles": [
+        "couple",
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": false
+      },
+      {
+        "role": "any",
+        "repeatable": false
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand side by side"
+        },
+        {
+          "timeMs": 500,
+          "text": "One stays perfectly cool"
+        },
+        {
+          "timeMs": 1000,
+          "text": "The other makes a wild face"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold both reactions"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-back-to-back-agents",
+    "name": "Back-to-Back Agents",
+    "category": "friends",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Hold your spy stare",
+    "compatibility": {
+      "minPeople": 2,
+      "maxPeople": 2,
+      "styles": [
+        "couple",
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": false
+      },
+      {
+        "role": "any",
+        "repeatable": false
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand back to back"
+        },
+        {
+          "timeMs": 500,
+          "text": "Fold your arms"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Look in opposite directions"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold your spy stare"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-album-cover",
+    "name": "Imaginary Album Cover",
+    "category": "group",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Hold your album cover",
+    "compatibility": {
+      "minPeople": 3,
+      "maxPeople": 5,
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand at different depths"
+        },
+        {
+          "timeMs": 500,
+          "text": "Choose different head angles"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Keep serious faces"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold your album cover"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-sunglasses-reveal",
+    "name": "Sunglasses Reveal",
+    "category": "friends",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Hold your cool reveal",
+    "compatibility": {
+      "minPeople": 2,
+      "maxPeople": 8,
+      "styles": [
+        "couple",
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Touch your sunglasses"
+        },
+        {
+          "timeMs": 500,
+          "text": "Lower them just a little"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Look over the frames"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold your cool reveal"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-siuuu",
+    "name": "Siuuu Freeze",
+    "category": "solo",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "solo"
+    ],
+    "instruction": "Hold your victory pose",
+    "compatibility": {
+      "minPeople": 1,
+      "maxPeople": 8,
+      "styles": [
+        "solo",
+        "couple",
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Plant your feet wide"
+        },
+        {
+          "timeMs": 500,
+          "text": "Arms down and outward"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Lift your chin"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold your victory pose"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-dab",
+    "name": "Dab Throwback",
+    "category": "group",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Freeze your dab",
+    "compatibility": {
+      "minPeople": 3,
+      "maxPeople": 8,
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Bend one elbow"
+        },
+        {
+          "timeMs": 500,
+          "text": "Hide your face in it"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Reach the other arm diagonally"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Freeze your dab"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-jojo",
+    "name": "JoJo Dramatic Pose",
+    "category": "solo",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "solo"
+    ],
+    "instruction": "Hold the dramatic pose",
+    "compatibility": {
+      "minPeople": 1,
+      "maxPeople": 4,
+      "styles": [
+        "solo",
+        "couple",
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Bend one knee"
+        },
+        {
+          "timeMs": 500,
+          "text": "Twist your shoulders slightly"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Frame your face with one hand"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold the dramatic pose"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-ginyu-force",
+    "name": "Ginyu Force Formation",
+    "category": "group",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Hold the team formation",
+    "compatibility": {
+      "minPeople": 5,
+      "maxPeople": 5,
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": false
+      },
+      {
+        "role": "any",
+        "repeatable": false
+      },
+      {
+        "role": "any",
+        "repeatable": false
+      },
+      {
+        "role": "any",
+        "repeatable": false
+      },
+      {
+        "role": "any",
+        "repeatable": false
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Spread into five spots"
+        },
+        {
+          "timeMs": 500,
+          "text": "Choose different levels"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Strike big superhero shapes"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold the team formation"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-npc-lineup",
+    "name": "NPC Lineup",
+    "category": "group",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Hold the robot lineup",
+    "compatibility": {
+      "minPeople": 3,
+      "maxPeople": 8,
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand evenly spaced"
+        },
+        {
+          "timeMs": 500,
+          "text": "Keep your arms stiff"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Give a blank expression"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold the robot lineup"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-buffering",
+    "name": "Loading / Buffering",
+    "category": "friends",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Hold while you buffer",
+    "compatibility": {
+      "minPeople": 2,
+      "maxPeople": 8,
+      "styles": [
+        "couple",
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Start a small gesture"
+        },
+        {
+          "timeMs": 500,
+          "text": "Stop halfway through"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Stare completely blankly"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold while you buffer"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-one-brain-cell",
+    "name": "One Brain Cell",
+    "category": "group",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Hold the last brain cell",
+    "compatibility": {
+      "minPeople": 3,
+      "maxPeople": 6,
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Choose one friend"
+        },
+        {
+          "timeMs": 500,
+          "text": "Everyone else points to them"
+        },
+        {
+          "timeMs": 1000,
+          "text": "They look completely confused"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold the last brain cell"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-bodyguards",
+    "name": "Bodyguard Squad",
+    "category": "group",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Hold your celebrity squad",
+    "compatibility": {
+      "minPeople": 5,
+      "maxPeople": 7,
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "One star takes the middle"
+        },
+        {
+          "timeMs": 500,
+          "text": "Everyone else folds their arms"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Star smiles, guards stay serious"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold your celebrity squad"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-peekaboo-stack",
+    "name": "Peekaboo Stack",
+    "category": "group",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Hold your peekaboo smiles",
+    "compatibility": {
+      "minPeople": 3,
+      "maxPeople": 6,
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Line up behind each other"
+        },
+        {
+          "timeMs": 500,
+          "text": "Peek out on alternating sides"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Keep every face visible"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Hold your peekaboo smiles"
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 2,
+    "id": "meme-reaction-mix",
+    "name": "Everyone Has a Different Reaction",
+    "category": "group",
+    "tags": [
+      "meme-pack-2026",
+      "gender-inclusive",
+      "child-safe",
+      "cooperative"
+    ],
+    "instruction": "Freeze every funny face",
+    "compatibility": {
+      "minPeople": 4,
+      "maxPeople": 8,
+      "styles": [
+        "friends",
+        "family",
+        "group"
+      ],
+      "framing": [
+        "full",
+        "half"
+      ],
+      "childSafe": true
+    },
+    "roles": [
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      },
+      {
+        "role": "any",
+        "repeatable": true
+      }
+    ],
+    "animation": {
+      "durationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Gather close together"
+        },
+        {
+          "timeMs": 500,
+          "text": "Each choose a different reaction"
+        },
+        {
+          "timeMs": 1000,
+          "text": "Shock, suspicion, joy or confusion"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Freeze every funny face"
+        }
+      ]
+    }
   }
 ]

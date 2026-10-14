@@ -1,0 +1,2690 @@
+{
+  "packId": "meme-pack-2026",
+  "poses": [
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-six-seven",
+        "name": "6–7 Hands",
+        "category": "solo",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "solo"
+        ],
+        "instruction": "Hold your six seven",
+        "compatibility": {
+          "minPeople": 1,
+          "maxPeople": 8,
+          "styles": [
+            "solo",
+            "couple",
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Raise both hands"
+            },
+            {
+              "timeMs": 500,
+              "text": "Turn your palms up"
+            },
+            {
+              "timeMs": 1000,
+              "text": "One high, one low"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold your six seven"
+            }
+          ]
+        }
+      },
+      "people": 1,
+      "title": "6–7",
+      "description": "Both open palms face up at chest height, one hand visibly higher than the other, as if weighing choices; playful confused face.",
+      "accent": "#ff168f",
+      "assetPath": "pose-guides/meme-six-seven.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 1 people: one East Asian young adult woman. Pose: Both open palms face up at chest height, one hand visibly higher than the other, as if weighing choices; playful confused face. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"6–7\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-six-seven-wave",
+        "name": "6–7 Squad Wave",
+        "category": "group",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Hold the squad wave",
+        "compatibility": {
+          "minPeople": 3,
+          "maxPeople": 8,
+          "styles": [
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Stand in a row"
+            },
+            {
+              "timeMs": 500,
+              "text": "Palms facing up"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Alternate high and low"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold the squad wave"
+            }
+          ]
+        }
+      },
+      "people": 4,
+      "title": "6–7 SQUAD WAVE",
+      "description": "Four friends in a row with both palms facing up, alternating high and low hands across the row.",
+      "accent": "#1769ff",
+      "assetPath": "pose-guides/meme-six-seven-wave.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 4 people: four adult friends, two men and two women, East Asian and white. Pose: Four friends in a row with both palms facing up, alternating high and low hands across the row. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"6–7 SQUAD WAVE\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-aura-farmer",
+        "name": "Aura Farmer",
+        "category": "solo",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "solo"
+        ],
+        "instruction": "Hold that aura",
+        "compatibility": {
+          "minPeople": 1,
+          "maxPeople": 1,
+          "styles": [
+            "solo"
+          ],
+          "framing": [
+            "full"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": false
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Stand confidently"
+            },
+            {
+              "timeMs": 500,
+              "text": "Relax your shoulders"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Freeze your coolest move"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold that aura"
+            }
+          ]
+        }
+      },
+      "people": 1,
+      "title": "AURA FARMER",
+      "description": "Sunglasses, confident relaxed full-body stance, one hand near chest and the other extended loosely in a stylish dance freeze.",
+      "accent": "#ffd21a",
+      "assetPath": "pose-guides/meme-aura-farmer.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 1 people: one white young adult man wearing sunglasses. Pose: Sunglasses, confident relaxed full-body stance, one hand near chest and the other extended loosely in a stylish dance freeze. Show one static final pose, never a sequence or collage. Full bodies, every foot visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"AURA FARMER\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Sunglasses are required for this pose."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-aura-battle",
+        "name": "Aura Battle",
+        "category": "friends",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Hold the aura battle",
+        "compatibility": {
+          "minPeople": 2,
+          "maxPeople": 2,
+          "styles": [
+            "couple",
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": false
+          },
+          {
+            "role": "any",
+            "repeatable": false
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Face each other"
+            },
+            {
+              "timeMs": 500,
+              "text": "Choose a dramatic pose"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Keep a serious face"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold the aura battle"
+            }
+          ]
+        }
+      },
+      "people": 2,
+      "title": "AURA BATTLE",
+      "description": "Two friends face one another in contrasting dramatic confident poses with serious faces; turn enough for both faces to be visible.",
+      "accent": "#8c40ff",
+      "assetPath": "pose-guides/meme-aura-battle.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 2 people: two adult women, one East Asian and one white. Pose: Two friends face one another in contrasting dramatic confident poses with serious faces; turn enough for both faces to be visible. Show one static final pose, never a sequence or collage. Full bodies, every foot visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"AURA BATTLE\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-main-character",
+        "name": "Main Character + Crew",
+        "category": "group",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Hold your star moment",
+        "compatibility": {
+          "minPeople": 3,
+          "maxPeople": 8,
+          "styles": [
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Choose your main character"
+            },
+            {
+              "timeMs": 500,
+              "text": "They step in front"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Everyone else looks impressed"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold your star moment"
+            }
+          ]
+        }
+      },
+      "people": 4,
+      "title": "MAIN CHARACTER & CREW",
+      "description": "One person confidently in front, three friends behind them with exaggerated impressed expressions and gestures.",
+      "accent": "#ff8214",
+      "assetPath": "pose-guides/meme-main-character.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 4 people: four adult friends, two men and two women, one Black, one white and two East Asian. Pose: One person confidently in front, three friends behind them with exaggerated impressed expressions and gestures. Show one static final pose, never a sequence or collage. Full bodies, every foot visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"MAIN CHARACTER & CREW\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-jawline-check",
+        "name": "Jawline Check",
+        "category": "solo",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "solo"
+        ],
+        "instruction": "Hold the jawline check",
+        "compatibility": {
+          "minPeople": 1,
+          "maxPeople": 2,
+          "styles": [
+            "solo",
+            "couple",
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Turn slightly sideways"
+            },
+            {
+              "timeMs": 500,
+              "text": "Point along your jaw"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Give a serious stare"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold the jawline check"
+            }
+          ]
+        }
+      },
+      "people": 1,
+      "title": "JAWLINE CHECK",
+      "description": "Slight side angle, index finger pointing along own jawline, exaggerated serious expression.",
+      "accent": "#14bda8",
+      "assetPath": "pose-guides/meme-jawline-check.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 1 people: one East Asian adult man. Pose: Slight side angle, index finger pointing along own jawline, exaggerated serious expression. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"JAWLINE CHECK\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-sigma-smirk",
+        "name": "Sigma Smirk",
+        "category": "solo",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "solo"
+        ],
+        "instruction": "Hold the intense stare",
+        "compatibility": {
+          "minPeople": 1,
+          "maxPeople": 1,
+          "styles": [
+            "solo"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": false
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Look into the lens"
+            },
+            {
+              "timeMs": 500,
+              "text": "Raise one eyebrow"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Make a tiny smirk"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold the intense stare"
+            }
+          ]
+        }
+      },
+      "people": 1,
+      "title": "SIGMA SMIRK",
+      "description": "One eyebrow raised, lips slightly pursed into a tiny smug smirk, intense camera stare.",
+      "accent": "#ff168f",
+      "assetPath": "pose-guides/meme-sigma-smirk.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 1 people: one white adult woman. Pose: One eyebrow raised, lips slightly pursed into a tiny smug smirk, intense camera stare. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"SIGMA SMIRK\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-side-eye",
+        "name": "Bombastic Side-Eye",
+        "category": "friends",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Hold that side eye",
+        "compatibility": {
+          "minPeople": 2,
+          "maxPeople": 8,
+          "styles": [
+            "couple",
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Keep your head forward"
+            },
+            {
+              "timeMs": 500,
+              "text": "Look sharply sideways"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Add a suspicious face"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold that side eye"
+            }
+          ]
+        }
+      },
+      "people": 2,
+      "title": "BOMBASTIC SIDE-EYE",
+      "description": "Heads mostly facing forward, eyes sharply sideways, suspicious expressions.",
+      "accent": "#1769ff",
+      "assetPath": "pose-guides/meme-side-eye.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 2 people: two adult men, East Asian and white. Pose: Heads mostly facing forward, eyes sharply sideways, suspicious expressions. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"BOMBASTIC SIDE-EYE\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-rock-eyebrow",
+        "name": "The Rock Eyebrow",
+        "category": "solo",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "solo"
+        ],
+        "instruction": "Hold that eyebrow",
+        "compatibility": {
+          "minPeople": 1,
+          "maxPeople": 2,
+          "styles": [
+            "solo",
+            "couple",
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Face the camera"
+            },
+            {
+              "timeMs": 500,
+              "text": "Raise one eyebrow"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Look very suspicious"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold that eyebrow"
+            }
+          ]
+        }
+      },
+      "people": 1,
+      "title": "THE ROCK EYEBROW",
+      "description": "One eyebrow visibly raised with an exaggerated suspicious facial expression.",
+      "accent": "#ffd21a",
+      "assetPath": "pose-guides/meme-rock-eyebrow.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 1 people: one East Asian adult woman. Pose: One eyebrow visibly raised with an exaggerated suspicious facial expression. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"THE ROCK EYEBROW\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-absolute-cinema",
+        "name": "Absolute Cinema",
+        "category": "solo",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "solo"
+        ],
+        "instruction": "Hold absolute cinema",
+        "compatibility": {
+          "minPeople": 1,
+          "maxPeople": 8,
+          "styles": [
+            "solo",
+            "couple",
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Lift both hands"
+            },
+            {
+              "timeMs": 500,
+              "text": "Open palms beside your head"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Look dramatically impressed"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold absolute cinema"
+            }
+          ]
+        }
+      },
+      "people": 1,
+      "title": "ABSOLUTE CINEMA",
+      "description": "Both open hands beside head with palms toward camera, dramatically impressed expression.",
+      "accent": "#8c40ff",
+      "assetPath": "pose-guides/meme-absolute-cinema.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 1 people: one white adult man. Pose: Both open hands beside head with palms toward camera, dramatically impressed expression. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"ABSOLUTE CINEMA\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-finger-heart",
+        "name": "Finger Heart",
+        "category": "solo",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "solo"
+        ],
+        "instruction": "Smile and hold",
+        "compatibility": {
+          "minPeople": 1,
+          "maxPeople": 8,
+          "styles": [
+            "solo",
+            "couple",
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Lift one hand"
+            },
+            {
+              "timeMs": 500,
+              "text": "Cross thumb and index finger"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Bring the tiny heart near your face"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Smile and hold"
+            }
+          ]
+        }
+      },
+      "people": 1,
+      "title": "FINGER HEART",
+      "description": "Thumb and index finger crossed into a small finger heart beside face; warm smile.",
+      "accent": "#ff8214",
+      "assetPath": "pose-guides/meme-finger-heart.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 1 people: one East Asian adult woman. Pose: Thumb and index finger crossed into a small finger heart beside face; warm smile. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"FINGER HEART\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-double-finger-hearts",
+        "name": "Double Finger Hearts",
+        "category": "friends",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Smile together",
+        "compatibility": {
+          "minPeople": 2,
+          "maxPeople": 2,
+          "styles": [
+            "couple",
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": false
+          },
+          {
+            "role": "any",
+            "repeatable": false
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Lift both hands"
+            },
+            {
+              "timeMs": 500,
+              "text": "Make two tiny finger hearts"
+            },
+            {
+              "timeMs": 1000,
+              "text": "One beside each cheek"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Smile together"
+            }
+          ]
+        }
+      },
+      "people": 2,
+      "title": "DOUBLE FINGER HEARTS",
+      "description": "Each person holds a crossed-thumb-and-index finger heart beside each cheek, two tiny hearts per person.",
+      "accent": "#14bda8",
+      "assetPath": "pose-guides/meme-double-finger-hearts.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 2 people: two adult men, East Asian and white. Pose: Each person holds a crossed-thumb-and-index finger heart beside each cheek, two tiny hearts per person. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"DOUBLE FINGER HEARTS\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-gyaru-peace",
+        "name": "Gyaru Peace",
+        "category": "friends",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Hold your playful smile",
+        "compatibility": {
+          "minPeople": 2,
+          "maxPeople": 6,
+          "styles": [
+            "couple",
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Make a peace sign"
+            },
+            {
+              "timeMs": 500,
+              "text": "Angle your fingers downward"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Reach toward the lens"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold your playful smile"
+            }
+          ]
+        }
+      },
+      "people": 2,
+      "title": "GYARU PEACE",
+      "description": "Inverted V peace sign reaching toward camera, fingers angled down, playful smile.",
+      "accent": "#ff168f",
+      "assetPath": "pose-guides/meme-gyaru-peace.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 2 people: two adult women, East Asian and white. Pose: Inverted V peace sign reaching toward camera, fingers angled down, playful smile. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"GYARU PEACE\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-cheek-heart",
+        "name": "Cheek Heart",
+        "category": "solo",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "solo"
+        ],
+        "instruction": "Hold a sweet smile",
+        "compatibility": {
+          "minPeople": 1,
+          "maxPeople": 1,
+          "styles": [
+            "solo"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": false
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Curve one hand"
+            },
+            {
+              "timeMs": 500,
+              "text": "Make a half heart"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Rest it against your cheek"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold a sweet smile"
+            }
+          ]
+        }
+      },
+      "people": 1,
+      "title": "CHEEK HEART",
+      "description": "One hand forms a curved half-heart against own cheek, sweet smile.",
+      "accent": "#1769ff",
+      "assetPath": "pose-guides/meme-cheek-heart.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 1 people: one white adult man. Pose: One hand forms a curved half-heart against own cheek, sweet smile. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"CHEEK HEART\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-flower-face",
+        "name": "Flower Face",
+        "category": "friends",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Smile like a flower",
+        "compatibility": {
+          "minPeople": 2,
+          "maxPeople": 2,
+          "styles": [
+            "couple",
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": false
+          },
+          {
+            "role": "any",
+            "repeatable": false
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Open both palms"
+            },
+            {
+              "timeMs": 500,
+              "text": "Put them beneath your chin"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Tilt your head"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Smile like a flower"
+            }
+          ]
+        }
+      },
+      "people": 2,
+      "title": "FLOWER FACE",
+      "description": "Two open palms beneath own chin like flower petals, cheerful tilted heads.",
+      "accent": "#ffd21a",
+      "assetPath": "pose-guides/meme-flower-face.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 2 people: two adult women, East Asian and white. Pose: Two open palms beneath own chin like flower petals, cheerful tilted heads. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"FLOWER FACE\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-cat-paws",
+        "name": "Cat Paws",
+        "category": "group",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Hold your cat faces",
+        "compatibility": {
+          "minPeople": 3,
+          "maxPeople": 6,
+          "styles": [
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Lift hands beside your cheeks"
+            },
+            {
+              "timeMs": 500,
+              "text": "Curl them like paws"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Tilt your heads"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold your cat faces"
+            }
+          ]
+        }
+      },
+      "people": 3,
+      "title": "CAT PAWS",
+      "description": "Hands curled like cat paws beside cheeks, heads tilted playfully.",
+      "accent": "#8c40ff",
+      "assetPath": "pose-guides/meme-cat-paws.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 3 people: three adult friends, two men and one woman, East Asian and white. Pose: Hands curled like cat paws beside cheeks, heads tilted playfully. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"CAT PAWS\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-cheek-poke",
+        "name": "Cheek Poke",
+        "category": "friends",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Hold the cheek poke",
+        "compatibility": {
+          "minPeople": 2,
+          "maxPeople": 2,
+          "styles": [
+            "couple",
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": false
+          },
+          {
+            "role": "any",
+            "repeatable": false
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Raise one index finger"
+            },
+            {
+              "timeMs": 500,
+              "text": "Touch your own cheek"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Smile or pout"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold the cheek poke"
+            }
+          ]
+        }
+      },
+      "people": 2,
+      "title": "CHEEK POKE",
+      "description": "One index finger touching own cheek, smiling or pouting.",
+      "accent": "#ff8214",
+      "assetPath": "pose-guides/meme-cheek-poke.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 2 people: two adult men, East Asian and white. Pose: One index finger touching own cheek, smiling or pouting. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"CHEEK POKE\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-peace-wink",
+        "name": "Double Peace + Wink",
+        "category": "group",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Hold the happy pose",
+        "compatibility": {
+          "minPeople": 3,
+          "maxPeople": 8,
+          "styles": [
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Make two peace signs"
+            },
+            {
+              "timeMs": 500,
+              "text": "Place them beside your eyes"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Give the camera a wink"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold the happy pose"
+            }
+          ]
+        }
+      },
+      "people": 3,
+      "title": "DOUBLE PEACE & WINK",
+      "description": "Two V peace signs beside eyes, each person winking playfully.",
+      "accent": "#14bda8",
+      "assetPath": "pose-guides/meme-peace-wink.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 3 people: three adult women, one Black, one East Asian and one white. Pose: Two V peace signs beside eyes, each person winking playfully. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"DOUBLE PEACE & WINK\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-hand-goggles",
+        "name": "Hand Goggles",
+        "category": "friends",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Freeze the silly face",
+        "compatibility": {
+          "minPeople": 2,
+          "maxPeople": 6,
+          "styles": [
+            "couple",
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Make circles with your fingers"
+            },
+            {
+              "timeMs": 500,
+              "text": "Hold them around your eyes"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Look through your goggles"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Freeze the silly face"
+            }
+          ]
+        }
+      },
+      "people": 2,
+      "title": "HAND GOGGLES",
+      "description": "Finger circles around both eyes as pretend goggles, silly wide-eyed expression.",
+      "accent": "#ff168f",
+      "assetPath": "pose-guides/meme-hand-goggles.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 2 people: two adult friends, one man and one woman, East Asian and white. Pose: Finger circles around both eyes as pretend goggles, silly wide-eyed expression. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"HAND GOGGLES\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-tiny-shy",
+        "name": "Tiny Shy Pose",
+        "category": "solo",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "solo"
+        ],
+        "instruction": "Hold your shy smile",
+        "compatibility": {
+          "minPeople": 1,
+          "maxPeople": 2,
+          "styles": [
+            "solo",
+            "couple",
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Hands at chest height"
+            },
+            {
+              "timeMs": 500,
+              "text": "Touch your index fingertips"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Look a little bashful"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold your shy smile"
+            }
+          ]
+        }
+      },
+      "people": 1,
+      "title": "TINY SHY POSE",
+      "description": "Index fingertips touching at chest height, shoulders gently tucked, bashful smile.",
+      "accent": "#1769ff",
+      "assetPath": "pose-guides/meme-tiny-shy.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 1 people: one East Asian adult man. Pose: Index fingertips touching at chest height, shoulders gently tucked, bashful smile. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"TINY SHY POSE\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-shared-heart",
+        "name": "Shared Heart",
+        "category": "friends",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Smile through your heart",
+        "compatibility": {
+          "minPeople": 2,
+          "maxPeople": 2,
+          "styles": [
+            "couple",
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": false
+          },
+          {
+            "role": "any",
+            "repeatable": false
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Stand close together"
+            },
+            {
+              "timeMs": 500,
+              "text": "Make half a heart each"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Join hands in the middle"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Smile through your heart"
+            }
+          ]
+        }
+      },
+      "people": 2,
+      "title": "SHARED HEART",
+      "description": "Each partner forms one half of the same hand heart, hands joined between them, happy smiles.",
+      "accent": "#ffd21a",
+      "assetPath": "pose-guides/meme-shared-heart.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 2 people: two adult women, East Asian and white. Pose: Each partner forms one half of the same hand heart, hands joined between them, happy smiles. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"SHARED HEART\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-overhead-heart",
+        "name": "Overhead Heart",
+        "category": "friends",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Hold your big heart",
+        "compatibility": {
+          "minPeople": 2,
+          "maxPeople": 2,
+          "styles": [
+            "couple",
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": false
+          },
+          {
+            "role": "any",
+            "repeatable": false
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Stand side by side"
+            },
+            {
+              "timeMs": 500,
+              "text": "Raise your outer arms"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Curve them into one heart"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold your big heart"
+            }
+          ]
+        }
+      },
+      "people": 2,
+      "title": "OVERHEAD HEART",
+      "description": "Side by side with outer arms curved overhead to form one large shared heart; full bodies visible.",
+      "accent": "#8c40ff",
+      "assetPath": "pose-guides/meme-overhead-heart.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 2 people: two adult men, East Asian and white. Pose: Side by side with outer arms curved overhead to form one large shared heart; full bodies visible. Show one static final pose, never a sequence or collage. Full bodies, every foot visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"OVERHEAD HEART\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-heart-rejection",
+        "name": "Heart + Rejection",
+        "category": "friends",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Hold the playful rejection",
+        "compatibility": {
+          "minPeople": 2,
+          "maxPeople": 2,
+          "styles": [
+            "couple",
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": false
+          },
+          {
+            "role": "any",
+            "repeatable": false
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "One offers a hand heart"
+            },
+            {
+              "timeMs": 500,
+              "text": "The other folds their arms"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Add a deadpan stare"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold the playful rejection"
+            }
+          ]
+        }
+      },
+      "people": 2,
+      "title": "HEART & REJECTION",
+      "description": "One offers a hand heart toward the other, who folds their arms with a humorous deadpan expression.",
+      "accent": "#ff8214",
+      "assetPath": "pose-guides/meme-heart-rejection.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 2 people: two adult friends, one man and one woman, East Asian and white. Pose: One offers a hand heart toward the other, who folds their arms with a humorous deadpan expression. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"HEART & REJECTION\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-spider-point",
+        "name": "Spider-Man Pointing",
+        "category": "group",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Hold the pointing circle",
+        "compatibility": {
+          "minPeople": 3,
+          "maxPeople": 4,
+          "styles": [
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Face your friends"
+            },
+            {
+              "timeMs": 500,
+              "text": "Point at one another"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Look very surprised"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold the pointing circle"
+            }
+          ]
+        }
+      },
+      "people": 3,
+      "title": "SPIDER-MAN POINTING",
+      "description": "Three friends point at each other in a triangle, surprised expressions, all faces visible; ordinary clothes, no costumes.",
+      "accent": "#14bda8",
+      "assetPath": "pose-guides/meme-spider-point.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 3 people: three adult friends, two men and one woman, East Asian and white. Pose: Three friends point at each other in a triangle, surprised expressions, all faces visible; ordinary clothes, no costumes. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"SPIDER-MAN POINTING\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-distracted-trio",
+        "name": "Distracted Trio",
+        "category": "group",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Freeze the distraction",
+        "compatibility": {
+          "minPeople": 3,
+          "maxPeople": 3,
+          "styles": [
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": false
+          },
+          {
+            "role": "any",
+            "repeatable": false
+          },
+          {
+            "role": "any",
+            "repeatable": false
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Two stand together"
+            },
+            {
+              "timeMs": 500,
+              "text": "One looks at the third friend"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Their partner looks shocked"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Freeze the distraction"
+            }
+          ]
+        }
+      },
+      "people": 3,
+      "title": "DISTRACTED TRIO",
+      "description": "Three-person scene: two companions together, one turns to admire third friend while their companion looks shocked; playful, all faces visible.",
+      "accent": "#ff168f",
+      "assetPath": "pose-guides/meme-distracted-trio.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 3 people: three adult friends, two women and one man, East Asian and white. Pose: Three-person scene: two companions together, one turns to admire third friend while their companion looks shocked; playful, all faces visible. Show one static final pose, never a sequence or collage. Full bodies, every foot visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"DISTRACTED TRIO\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-is-this-pigeon",
+        "name": "Is This a Pigeon?",
+        "category": "friends",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Hold the question",
+        "compatibility": {
+          "minPeople": 2,
+          "maxPeople": 2,
+          "styles": [
+            "couple",
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": false
+          },
+          {
+            "role": "any",
+            "repeatable": false
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "One presents an open palm"
+            },
+            {
+              "timeMs": 500,
+              "text": "The other gestures toward it"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Look completely confused"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold the question"
+            }
+          ]
+        }
+      },
+      "people": 2,
+      "title": "IS THIS A PIGEON?",
+      "description": "One friend presents an empty open palm as an imaginary object; the other gestures toward it with exaggerated confusion.",
+      "accent": "#1769ff",
+      "assetPath": "pose-guides/meme-is-this-pigeon.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 2 people: two adult men, East Asian and white. Pose: One friend presents an empty open palm as an imaginary object; the other gestures toward it with exaggerated confusion. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"IS THIS A PIGEON?\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-cool-chaotic",
+        "name": "Cool Friend / Chaotic Friend",
+        "category": "friends",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Hold both reactions",
+        "compatibility": {
+          "minPeople": 2,
+          "maxPeople": 2,
+          "styles": [
+            "couple",
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": false
+          },
+          {
+            "role": "any",
+            "repeatable": false
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Stand side by side"
+            },
+            {
+              "timeMs": 500,
+              "text": "One stays perfectly cool"
+            },
+            {
+              "timeMs": 1000,
+              "text": "The other makes a wild face"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold both reactions"
+            }
+          ]
+        }
+      },
+      "people": 2,
+      "title": "COOL FRIEND & CHAOTIC FRIEND",
+      "description": "One friend perfectly composed and cool; the other beside them makes an outrageous wide-eyed open-mouth face.",
+      "accent": "#ffd21a",
+      "assetPath": "pose-guides/meme-cool-chaotic.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 2 people: two adult women, East Asian and white. Pose: One friend perfectly composed and cool; the other beside them makes an outrageous wide-eyed open-mouth face. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"COOL FRIEND & CHAOTIC FRIEND\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-back-to-back-agents",
+        "name": "Back-to-Back Agents",
+        "category": "friends",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Hold your spy stare",
+        "compatibility": {
+          "minPeople": 2,
+          "maxPeople": 2,
+          "styles": [
+            "couple",
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": false
+          },
+          {
+            "role": "any",
+            "repeatable": false
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Stand back to back"
+            },
+            {
+              "timeMs": 500,
+              "text": "Fold your arms"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Look in opposite directions"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold your spy stare"
+            }
+          ]
+        }
+      },
+      "people": 2,
+      "title": "BACK-TO-BACK AGENTS",
+      "description": "Back to back, arms folded, looking in opposite directions; both faces visible in three-quarter profile.",
+      "accent": "#8c40ff",
+      "assetPath": "pose-guides/meme-back-to-back-agents.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 2 people: two adult friends, one man and one woman, East Asian and white. Pose: Back to back, arms folded, looking in opposite directions; both faces visible in three-quarter profile. Show one static final pose, never a sequence or collage. Full bodies, every foot visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"BACK-TO-BACK AGENTS\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-album-cover",
+        "name": "Imaginary Album Cover",
+        "category": "group",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Hold your album cover",
+        "compatibility": {
+          "minPeople": 3,
+          "maxPeople": 5,
+          "styles": [
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Stand at different depths"
+            },
+            {
+              "timeMs": 500,
+              "text": "Choose different head angles"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Keep serious faces"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold your album cover"
+            }
+          ]
+        }
+      },
+      "people": 4,
+      "title": "IMAGINARY ALBUM COVER",
+      "description": "Friends at staggered depths with contrasting head angles and serious faces, a stylish imaginary band album portrait.",
+      "accent": "#ff8214",
+      "assetPath": "pose-guides/meme-album-cover.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 4 people: four adult friends, two men and two women, one Black, one white and two East Asian. Pose: Friends at staggered depths with contrasting head angles and serious faces, a stylish imaginary band album portrait. Show one static final pose, never a sequence or collage. Full bodies, every foot visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"IMAGINARY ALBUM COVER\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-sunglasses-reveal",
+        "name": "Sunglasses Reveal",
+        "category": "friends",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Hold your cool reveal",
+        "compatibility": {
+          "minPeople": 2,
+          "maxPeople": 8,
+          "styles": [
+            "couple",
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Touch your sunglasses"
+            },
+            {
+              "timeMs": 500,
+              "text": "Lower them just a little"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Look over the frames"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold your cool reveal"
+            }
+          ]
+        }
+      },
+      "people": 2,
+      "title": "SUNGLASSES REVEAL",
+      "description": "Each person lowers their sunglasses slightly with one hand and peers over the frames with a confident stare.",
+      "accent": "#14bda8",
+      "assetPath": "pose-guides/meme-sunglasses-reveal.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 2 people: two adult women wearing sunglasses, East Asian and white. Pose: Each person lowers their sunglasses slightly with one hand and peers over the frames with a confident stare. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"SUNGLASSES REVEAL\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Sunglasses are required for this pose."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-siuuu",
+        "name": "Siuuu Freeze",
+        "category": "solo",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "solo"
+        ],
+        "instruction": "Hold your victory pose",
+        "compatibility": {
+          "minPeople": 1,
+          "maxPeople": 8,
+          "styles": [
+            "solo",
+            "couple",
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Plant your feet wide"
+            },
+            {
+              "timeMs": 500,
+              "text": "Arms down and outward"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Lift your chin"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold your victory pose"
+            }
+          ]
+        }
+      },
+      "people": 1,
+      "title": "SIUUU FREEZE",
+      "description": "Feet planted wide, arms straight down and outward, chest lifted and chin raised in a triumphant celebration.",
+      "accent": "#ff168f",
+      "assetPath": "pose-guides/meme-siuuu.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 1 people: one East Asian adult man. Pose: Feet planted wide, arms straight down and outward, chest lifted and chin raised in a triumphant celebration. Show one static final pose, never a sequence or collage. Full bodies, every foot visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"SIUUU FREEZE\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-dab",
+        "name": "Dab Throwback",
+        "category": "group",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Freeze your dab",
+        "compatibility": {
+          "minPeople": 3,
+          "maxPeople": 8,
+          "styles": [
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Bend one elbow"
+            },
+            {
+              "timeMs": 500,
+              "text": "Hide your face in it"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Reach the other arm diagonally"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Freeze your dab"
+            }
+          ]
+        }
+      },
+      "people": 3,
+      "title": "DAB THROWBACK",
+      "description": "Each person hides face in a bent elbow while extending the opposite arm diagonally; recognizable dab.",
+      "accent": "#1769ff",
+      "assetPath": "pose-guides/meme-dab.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 3 people: three adult friends, two men and one woman, East Asian and white. Pose: Each person hides face in a bent elbow while extending the opposite arm diagonally; recognizable dab. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"DAB THROWBACK\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-jojo",
+        "name": "JoJo Dramatic Pose",
+        "category": "solo",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "solo"
+        ],
+        "instruction": "Hold the dramatic pose",
+        "compatibility": {
+          "minPeople": 1,
+          "maxPeople": 4,
+          "styles": [
+            "solo",
+            "couple",
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Bend one knee"
+            },
+            {
+              "timeMs": 500,
+              "text": "Twist your shoulders slightly"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Frame your face with one hand"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold the dramatic pose"
+            }
+          ]
+        }
+      },
+      "people": 1,
+      "title": "JOJO DRAMATIC POSE",
+      "description": "One knee bent, torso slightly twisted, one hand framing face, theatrical expressive pose; ordinary clothes.",
+      "accent": "#ffd21a",
+      "assetPath": "pose-guides/meme-jojo.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 1 people: one white adult woman. Pose: One knee bent, torso slightly twisted, one hand framing face, theatrical expressive pose; ordinary clothes. Show one static final pose, never a sequence or collage. Full bodies, every foot visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"JOJO DRAMATIC POSE\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-ginyu-force",
+        "name": "Ginyu Force Formation",
+        "category": "group",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Hold the team formation",
+        "compatibility": {
+          "minPeople": 5,
+          "maxPeople": 5,
+          "styles": [
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": false
+          },
+          {
+            "role": "any",
+            "repeatable": false
+          },
+          {
+            "role": "any",
+            "repeatable": false
+          },
+          {
+            "role": "any",
+            "repeatable": false
+          },
+          {
+            "role": "any",
+            "repeatable": false
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Spread into five spots"
+            },
+            {
+              "timeMs": 500,
+              "text": "Choose different levels"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Strike big superhero shapes"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold the team formation"
+            }
+          ]
+        }
+      },
+      "people": 5,
+      "title": "GINYU FORCE FORMATION",
+      "description": "Five friends in a balanced formation at different standing and crouching levels, exaggerated different superhero arm shapes; no costumes.",
+      "accent": "#8c40ff",
+      "assetPath": "pose-guides/meme-ginyu-force.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 5 people: five adult friends, three women and two men, East Asian and white. Pose: Five friends in a balanced formation at different standing and crouching levels, exaggerated different superhero arm shapes; no costumes. Show one static final pose, never a sequence or collage. Full bodies, every foot visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"GINYU FORCE FORMATION\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-npc-lineup",
+        "name": "NPC Lineup",
+        "category": "group",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Hold the robot lineup",
+        "compatibility": {
+          "minPeople": 3,
+          "maxPeople": 8,
+          "styles": [
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Stand evenly spaced"
+            },
+            {
+              "timeMs": 500,
+              "text": "Keep your arms stiff"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Give a blank expression"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold the robot lineup"
+            }
+          ]
+        }
+      },
+      "people": 4,
+      "title": "NPC LINEUP",
+      "description": "Four people in an evenly spaced row with identical blank faces, straight stiff arms at sides.",
+      "accent": "#ff8214",
+      "assetPath": "pose-guides/meme-npc-lineup.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 4 people: four adult men, one Black, one white and two East Asian. Pose: Four people in an evenly spaced row with identical blank faces, straight stiff arms at sides. Show one static final pose, never a sequence or collage. Full bodies, every foot visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"NPC LINEUP\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-buffering",
+        "name": "Loading / Buffering",
+        "category": "friends",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Hold while you buffer",
+        "compatibility": {
+          "minPeople": 2,
+          "maxPeople": 8,
+          "styles": [
+            "couple",
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Start a small gesture"
+            },
+            {
+              "timeMs": 500,
+              "text": "Stop halfway through"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Stare completely blankly"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold while you buffer"
+            }
+          ]
+        }
+      },
+      "people": 2,
+      "title": "LOADING & BUFFERING",
+      "description": "Freeze with one hand halfway through a small gesture, vacant eyes and blank expression as if buffering.",
+      "accent": "#14bda8",
+      "assetPath": "pose-guides/meme-buffering.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 2 people: two adult women, East Asian and white. Pose: Freeze with one hand halfway through a small gesture, vacant eyes and blank expression as if buffering. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"LOADING & BUFFERING\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-one-brain-cell",
+        "name": "One Brain Cell",
+        "category": "group",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Hold the last brain cell",
+        "compatibility": {
+          "minPeople": 3,
+          "maxPeople": 6,
+          "styles": [
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Choose one friend"
+            },
+            {
+              "timeMs": 500,
+              "text": "Everyone else points to them"
+            },
+            {
+              "timeMs": 1000,
+              "text": "They look completely confused"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold the last brain cell"
+            }
+          ]
+        }
+      },
+      "people": 4,
+      "title": "ONE BRAIN CELL",
+      "description": "Three friends point to the fourth in the center, who looks completely confused.",
+      "accent": "#ff168f",
+      "assetPath": "pose-guides/meme-one-brain-cell.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 4 people: four adult friends, two men and two women, East Asian and white. Pose: Three friends point to the fourth in the center, who looks completely confused. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"ONE BRAIN CELL\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-bodyguards",
+        "name": "Bodyguard Squad",
+        "category": "group",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Hold your celebrity squad",
+        "compatibility": {
+          "minPeople": 5,
+          "maxPeople": 7,
+          "styles": [
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "One star takes the middle"
+            },
+            {
+              "timeMs": 500,
+              "text": "Everyone else folds their arms"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Star smiles, guards stay serious"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold your celebrity squad"
+            }
+          ]
+        }
+      },
+      "people": 5,
+      "title": "BODYGUARD SQUAD",
+      "description": "One smiling celebrity in center, four serious arms-crossed bodyguards arranged around them.",
+      "accent": "#1769ff",
+      "assetPath": "pose-guides/meme-bodyguards.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 5 people: five adult friends, three women and two men, East Asian and white. Pose: One smiling celebrity in center, four serious arms-crossed bodyguards arranged around them. Show one static final pose, never a sequence or collage. Full bodies, every foot visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"BODYGUARD SQUAD\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-peekaboo-stack",
+        "name": "Peekaboo Stack",
+        "category": "group",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Hold your peekaboo smiles",
+        "compatibility": {
+          "minPeople": 3,
+          "maxPeople": 6,
+          "styles": [
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Line up behind each other"
+            },
+            {
+              "timeMs": 500,
+              "text": "Peek out on alternating sides"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Keep every face visible"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Hold your peekaboo smiles"
+            }
+          ]
+        }
+      },
+      "people": 4,
+      "title": "PEEKABOO STACK",
+      "description": "Four friends in a compact vertical-depth stack, peeking alternately left and right; all four faces clearly visible.",
+      "accent": "#ffd21a",
+      "assetPath": "pose-guides/meme-peekaboo-stack.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 4 people: four adult women, East Asian and white. Pose: Four friends in a compact vertical-depth stack, peeking alternately left and right; all four faces clearly visible. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"PEEKABOO STACK\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    },
+    {
+      "scene": {
+        "schemaVersion": 2,
+        "id": "meme-reaction-mix",
+        "name": "Everyone Has a Different Reaction",
+        "category": "group",
+        "tags": [
+          "meme-pack-2026",
+          "gender-inclusive",
+          "child-safe",
+          "cooperative"
+        ],
+        "instruction": "Freeze every funny face",
+        "compatibility": {
+          "minPeople": 4,
+          "maxPeople": 8,
+          "styles": [
+            "friends",
+            "family",
+            "group"
+          ],
+          "framing": [
+            "full",
+            "half"
+          ],
+          "childSafe": true
+        },
+        "roles": [
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          },
+          {
+            "role": "any",
+            "repeatable": true
+          }
+        ],
+        "animation": {
+          "durationMs": 7000,
+          "captions": [
+            {
+              "timeMs": 0,
+              "text": "Gather close together"
+            },
+            {
+              "timeMs": 500,
+              "text": "Each choose a different reaction"
+            },
+            {
+              "timeMs": 1000,
+              "text": "Shock, suspicion, joy or confusion"
+            },
+            {
+              "timeMs": 1500,
+              "text": "Freeze every funny face"
+            }
+          ]
+        }
+      },
+      "people": 6,
+      "title": "EVERYONE HAS A DIFFERENT REACTION",
+      "description": "Six friends tightly grouped, each with a distinct shocked, suspicious, smug, mock-crying, confused or delighted facial expression.",
+      "accent": "#8c40ff",
+      "assetPath": "pose-guides/meme-reaction-mix.webp",
+      "prompt": "Use case: photorealistic-natural. Create ONE photo booth pose-guide sticker. Match reference for photorealistic people, thick white sticker border, thin colorful neon outline and bold colorful dimensional arcade title. Exactly 6 people: six adult friends, three men and three women, one Black, two white and three East Asian. Pose: Six friends tightly grouped, each with a distinct shocked, suspicious, smug, mock-crying, confused or delighted facial expression. Show one static final pose, never a sequence or collage. Waist-up framing, all heads and hands visible. Eye-level straight-on studio portrait. Natural anatomy and accurate hands. Contemporary colorful casual clothing. Integrate the exact title \"EVERYONE HAS A DIFFERENT REACTION\" beneath the people without obscuring hands or faces. Genuine transparent background with clear empty space, no glow backdrop, no scenery, no floor, no panel, no additional text, no watermark. Empty hands, no props or sunglasses."
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 2,
+  "id": "meme-sunglasses-reveal",
+  "name": "Sunglasses Reveal",
+  "category": "friends",
+  "tags": [
+    "meme-pack-2026",
+    "gender-inclusive",
+    "child-safe",
+    "cooperative"
+  ],
+  "instruction": "Hold your cool reveal",
+  "compatibility": {
+    "minPeople": 2,
+    "maxPeople": 8,
+    "styles": [
+      "couple",
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": true
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "animation": {
+    "durationMs": 7690,
+    "captions": [
+      {
+        "text": "Touch your sunglasses",
+        "timeMs": 0
+      },
+      {
+        "text": "Lower them just a little",
+        "timeMs": 2230
+      },
+      {
+        "text": "Look over the frames",
+        "timeMs": 4460
+      },
+      {
+        "text": "Hold your cool reveal",
+        "timeMs": 6690
+      }
+    ]
+  },
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/meme-sunglasses-reveal.webp",
+    "alt": "Each person lowers their sunglasses slightly with one hand and peers over the frames with a confident stare.",
+    "accent": "#14bda8"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/meme-sunglasses-reveal-0665cd29262ab1.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}

@@ -2803,5 +2803,445 @@
       "No wiggling",
       "Hold completely still"
     ]
+  },
+  "meme-aura-farmer": {
+    "filePath": "project-asset:audio/elevenlabs/meme-aura-farmer-c63fd83f79aeff.mp3",
+    "durationMs": 6350,
+    "script": "Stand confidently. Relax your shoulders. Freeze your coolest move. Hold that aura!",
+    "cues": [
+      "Stand confidently",
+      "Relax your shoulders",
+      "Freeze your coolest move",
+      "Hold that aura"
+    ]
+  },
+  "meme-six-seven-wave": {
+    "filePath": "project-asset:audio/elevenlabs/meme-six-seven-wave-a145958b3862ac.mp3",
+    "durationMs": 5880,
+    "script": "Stand in a row. Palms facing up. Alternate high and low. Hold the squad wave!",
+    "cues": [
+      "Stand in a row",
+      "Palms facing up",
+      "Alternate high and low",
+      "Hold the squad wave"
+    ]
+  },
+  "meme-six-seven": {
+    "filePath": "project-asset:audio/elevenlabs/meme-six-seven-18034894f5aca9.mp3",
+    "durationMs": 6190,
+    "script": "Raise both hands. Turn your palms up. One high, one low. Hold your six seven!",
+    "cues": [
+      "Raise both hands",
+      "Turn your palms up",
+      "One high, one low",
+      "Hold your six seven"
+    ]
+  },
+  "meme-aura-battle": {
+    "filePath": "project-asset:audio/elevenlabs/meme-aura-battle-626f6a4afa8541.mp3",
+    "durationMs": 6610,
+    "script": "Face each other. Choose a dramatic pose. Keep a serious face. Hold the aura battle!",
+    "cues": [
+      "Face each other",
+      "Choose a dramatic pose",
+      "Keep a serious face",
+      "Hold the aura battle"
+    ]
+  },
+  "meme-jawline-check": {
+    "filePath": "project-asset:audio/elevenlabs/meme-jawline-check-4ca8090f0aa05a.mp3",
+    "durationMs": 6920,
+    "script": "Turn slightly sideways. Point along your jaw. Give a serious stare. Hold the jawline check!",
+    "cues": [
+      "Turn slightly sideways",
+      "Point along your jaw",
+      "Give a serious stare",
+      "Hold the jawline check"
+    ]
+  },
+  "meme-main-character": {
+    "filePath": "project-asset:audio/elevenlabs/meme-main-character-738c467adc94bb.mp3",
+    "durationMs": 6840,
+    "script": "Choose your main character. They step in front. Everyone else looks impressed. Hold your star moment!",
+    "cues": [
+      "Choose your main character",
+      "They step in front",
+      "Everyone else looks impressed",
+      "Hold your star moment"
+    ]
+  },
+  "meme-sigma-smirk": {
+    "filePath": "project-asset:audio/elevenlabs/meme-sigma-smirk-db260515760bd3.mp3",
+    "durationMs": 6690,
+    "script": "Look into the lens. Raise one eyebrow. Make a tiny smirk. Hold the intense stare!",
+    "cues": [
+      "Look into the lens",
+      "Raise one eyebrow",
+      "Make a tiny smirk",
+      "Hold the intense stare"
+    ]
+  },
+  "meme-side-eye": {
+    "filePath": "project-asset:audio/elevenlabs/meme-side-eye-4536eace38606b.mp3",
+    "durationMs": 6530,
+    "script": "Keep your head forward. Look sharply sideways. Add a suspicious face. Hold that side eye!",
+    "cues": [
+      "Keep your head forward",
+      "Look sharply sideways",
+      "Add a suspicious face",
+      "Hold that side eye"
+    ]
+  },
+  "meme-rock-eyebrow": {
+    "filePath": "project-asset:audio/elevenlabs/meme-rock-eyebrow-06e3c92a2afc3b.mp3",
+    "durationMs": 6270,
+    "script": "Face the camera. Raise one eyebrow. Look very suspicious. Hold that eyebrow!",
+    "cues": [
+      "Face the camera",
+      "Raise one eyebrow",
+      "Look very suspicious",
+      "Hold that eyebrow"
+    ]
+  },
+  "meme-absolute-cinema": {
+    "filePath": "project-asset:audio/elevenlabs/meme-absolute-cinema-724ae63aa6af5a.mp3",
+    "durationMs": 8050,
+    "script": "Lift both hands. Open palms beside your head. Look dramatically impressed. Hold absolute cinema!",
+    "cues": [
+      "Lift both hands",
+      "Open palms beside your head",
+      "Look dramatically impressed",
+      "Hold absolute cinema"
+    ]
+  },
+  "meme-finger-heart": {
+    "filePath": "project-asset:audio/elevenlabs/meme-finger-heart-da33e5eb452cd8.mp3",
+    "durationMs": 7630,
+    "script": "Lift one hand. Cross thumb and index finger. Bring the tiny heart near your face. Smile and hold!",
+    "cues": [
+      "Lift one hand",
+      "Cross thumb and index finger",
+      "Bring the tiny heart near your face",
+      "Smile and hold"
+    ]
+  },
+  "meme-double-finger-hearts": {
+    "filePath": "project-asset:audio/elevenlabs/meme-double-finger-hearts-487856e985f8cc.mp3",
+    "durationMs": 6770,
+    "script": "Lift both hands. Make two tiny finger hearts. One beside each cheek. Smile together!",
+    "cues": [
+      "Lift both hands",
+      "Make two tiny finger hearts",
+      "One beside each cheek",
+      "Smile together"
+    ]
+  },
+  "meme-gyaru-peace": {
+    "filePath": "project-asset:audio/elevenlabs/meme-gyaru-peace-6670348f7d018d.mp3",
+    "durationMs": 6770,
+    "script": "Make a peace sign. Angle your fingers downward. Reach toward the lens. Hold your playful smile!",
+    "cues": [
+      "Make a peace sign",
+      "Angle your fingers downward",
+      "Reach toward the lens",
+      "Hold your playful smile"
+    ]
+  },
+  "meme-cheek-heart": {
+    "filePath": "project-asset:audio/elevenlabs/meme-cheek-heart-5b4dc84621d6fd.mp3",
+    "durationMs": 6030,
+    "script": "Curve one hand. Make a half heart. Rest it against your cheek. Hold a sweet smile!",
+    "cues": [
+      "Curve one hand",
+      "Make a half heart",
+      "Rest it against your cheek",
+      "Hold a sweet smile"
+    ]
+  },
+  "meme-flower-face": {
+    "filePath": "project-asset:audio/elevenlabs/meme-flower-face-bcbf821bb23111.mp3",
+    "durationMs": 5880,
+    "script": "Open both palms. Put them beneath your chin. Tilt your head. Smile like a flower!",
+    "cues": [
+      "Open both palms",
+      "Put them beneath your chin",
+      "Tilt your head",
+      "Smile like a flower"
+    ]
+  },
+  "meme-cat-paws": {
+    "filePath": "project-asset:audio/elevenlabs/meme-cat-paws-5d12dc920f3081.mp3",
+    "durationMs": 6610,
+    "script": "Lift hands beside your cheeks. Curl them like paws. Tilt your heads. Hold your cat faces!",
+    "cues": [
+      "Lift hands beside your cheeks",
+      "Curl them like paws",
+      "Tilt your heads",
+      "Hold your cat faces"
+    ]
+  },
+  "meme-cheek-poke": {
+    "filePath": "project-asset:audio/elevenlabs/meme-cheek-poke-c004b8b1163da8.mp3",
+    "durationMs": 6190,
+    "script": "Raise one index finger. Touch your own cheek. Smile or pout. Hold the cheek poke!",
+    "cues": [
+      "Raise one index finger",
+      "Touch your own cheek",
+      "Smile or pout",
+      "Hold the cheek poke"
+    ]
+  },
+  "meme-peace-wink": {
+    "filePath": "project-asset:audio/elevenlabs/meme-peace-wink-708ef3723bbe36.mp3",
+    "durationMs": 6690,
+    "script": "Make two peace signs. Place them beside your eyes. Give the camera a wink. Hold the happy pose!",
+    "cues": [
+      "Make two peace signs",
+      "Place them beside your eyes",
+      "Give the camera a wink",
+      "Hold the happy pose"
+    ]
+  },
+  "meme-hand-goggles": {
+    "filePath": "project-asset:audio/elevenlabs/meme-hand-goggles-bc862596870ee8.mp3",
+    "durationMs": 6530,
+    "script": "Make circles with your fingers. Hold them around your eyes. Look through your goggles. Freeze the silly face!",
+    "cues": [
+      "Make circles with your fingers",
+      "Hold them around your eyes",
+      "Look through your goggles",
+      "Freeze the silly face"
+    ]
+  },
+  "meme-tiny-shy": {
+    "filePath": "project-asset:audio/elevenlabs/meme-tiny-shy-549886cebf3b64.mp3",
+    "durationMs": 6690,
+    "script": "Hands at chest height. Touch your index fingertips. Look a little bashful. Hold your shy smile!",
+    "cues": [
+      "Hands at chest height",
+      "Touch your index fingertips",
+      "Look a little bashful",
+      "Hold your shy smile"
+    ]
+  },
+  "meme-shared-heart": {
+    "filePath": "project-asset:audio/elevenlabs/meme-shared-heart-ce6b2c6a61d6da.mp3",
+    "durationMs": 6430,
+    "script": "Stand close together. Make half a heart each. Join hands in the middle. Smile through your heart!",
+    "cues": [
+      "Stand close together",
+      "Make half a heart each",
+      "Join hands in the middle",
+      "Smile through your heart"
+    ]
+  },
+  "meme-overhead-heart": {
+    "filePath": "project-asset:audio/elevenlabs/meme-overhead-heart-696ba995eed183.mp3",
+    "durationMs": 7000,
+    "script": "Stand side by side. Raise your outer arms. Curve them into one heart. Hold your big heart!",
+    "cues": [
+      "Stand side by side",
+      "Raise your outer arms",
+      "Curve them into one heart",
+      "Hold your big heart"
+    ]
+  },
+  "meme-heart-rejection": {
+    "filePath": "project-asset:audio/elevenlabs/meme-heart-rejection-3c0dabd504a8af.mp3",
+    "durationMs": 7550,
+    "script": "One offers a hand heart. The other folds their arms. Add a deadpan stare. Hold the playful rejection!",
+    "cues": [
+      "One offers a hand heart",
+      "The other folds their arms",
+      "Add a deadpan stare",
+      "Hold the playful rejection"
+    ]
+  },
+  "meme-spider-point": {
+    "filePath": "project-asset:audio/elevenlabs/meme-spider-point-7a753ed12baed6.mp3",
+    "durationMs": 5960,
+    "script": "Face your friends. Point at one another. Look very surprised. Hold the pointing circle!",
+    "cues": [
+      "Face your friends",
+      "Point at one another",
+      "Look very surprised",
+      "Hold the pointing circle"
+    ]
+  },
+  "meme-distracted-trio": {
+    "filePath": "project-asset:audio/elevenlabs/meme-distracted-trio-319553265109ab.mp3",
+    "durationMs": 6690,
+    "script": "Two stand together. One looks at the third friend. Their partner looks shocked. Freeze the distraction!",
+    "cues": [
+      "Two stand together",
+      "One looks at the third friend",
+      "Their partner looks shocked",
+      "Freeze the distraction"
+    ]
+  },
+  "meme-is-this-pigeon": {
+    "filePath": "project-asset:audio/elevenlabs/meme-is-this-pigeon-64b8808fdd38e2.mp3",
+    "durationMs": 7160,
+    "script": "One presents an open palm. The other gestures toward it. Look completely confused. Hold the question!",
+    "cues": [
+      "One presents an open palm",
+      "The other gestures toward it",
+      "Look completely confused",
+      "Hold the question"
+    ]
+  },
+  "meme-cool-chaotic": {
+    "filePath": "project-asset:audio/elevenlabs/meme-cool-chaotic-6edd30a709c720.mp3",
+    "durationMs": 7470,
+    "script": "Stand side by side. One stays perfectly cool. The other makes a wild face. Hold both reactions!",
+    "cues": [
+      "Stand side by side",
+      "One stays perfectly cool",
+      "The other makes a wild face",
+      "Hold both reactions"
+    ]
+  },
+  "meme-back-to-back-agents": {
+    "filePath": "project-asset:audio/elevenlabs/meme-back-to-back-agents-079a705f3dc716.mp3",
+    "durationMs": 6690,
+    "script": "Stand back to back. Fold your arms. Look in opposite directions. Hold your spy stare!",
+    "cues": [
+      "Stand back to back",
+      "Fold your arms",
+      "Look in opposite directions",
+      "Hold your spy stare"
+    ]
+  },
+  "meme-album-cover": {
+    "filePath": "project-asset:audio/elevenlabs/meme-album-cover-1e21f79f308b87.mp3",
+    "durationMs": 6770,
+    "script": "Stand at different depths. Choose different head angles. Keep serious faces. Hold your album cover!",
+    "cues": [
+      "Stand at different depths",
+      "Choose different head angles",
+      "Keep serious faces",
+      "Hold your album cover"
+    ]
+  },
+  "meme-sunglasses-reveal": {
+    "filePath": "project-asset:audio/elevenlabs/meme-sunglasses-reveal-0665cd29262ab1.mp3",
+    "durationMs": 6690,
+    "script": "Touch your sunglasses. Lower them just a little. Look over the frames. Hold your cool reveal!",
+    "cues": [
+      "Touch your sunglasses",
+      "Lower them just a little",
+      "Look over the frames",
+      "Hold your cool reveal"
+    ]
+  },
+  "meme-siuuu": {
+    "filePath": "project-asset:audio/elevenlabs/meme-siuuu-62ebb05704a0ea.mp3",
+    "durationMs": 6350,
+    "script": "Plant your feet wide. Arms down and outward. Lift your chin. Hold your victory pose!",
+    "cues": [
+      "Plant your feet wide",
+      "Arms down and outward",
+      "Lift your chin",
+      "Hold your victory pose"
+    ]
+  },
+  "meme-dab": {
+    "filePath": "project-asset:audio/elevenlabs/meme-dab-97e06b5bd74188.mp3",
+    "durationMs": 6190,
+    "script": "Bend one elbow. Hide your face in it. Reach the other arm diagonally. Freeze your dab!",
+    "cues": [
+      "Bend one elbow",
+      "Hide your face in it",
+      "Reach the other arm diagonally",
+      "Freeze your dab"
+    ]
+  },
+  "meme-jojo": {
+    "filePath": "project-asset:audio/elevenlabs/meme-jojo-2ecd8464604240.mp3",
+    "durationMs": 7160,
+    "script": "Bend one knee. Twist your shoulders slightly. Frame your face with one hand. Hold the dramatic pose!",
+    "cues": [
+      "Bend one knee",
+      "Twist your shoulders slightly",
+      "Frame your face with one hand",
+      "Hold the dramatic pose"
+    ]
+  },
+  "meme-ginyu-force": {
+    "filePath": "project-asset:audio/elevenlabs/meme-ginyu-force-d643c0fb1da7e8.mp3",
+    "durationMs": 7550,
+    "script": "Spread into five spots. Choose different levels. Strike big superhero shapes. Hold the team formation!",
+    "cues": [
+      "Spread into five spots",
+      "Choose different levels",
+      "Strike big superhero shapes",
+      "Hold the team formation"
+    ]
+  },
+  "meme-npc-lineup": {
+    "filePath": "project-asset:audio/elevenlabs/meme-npc-lineup-5de53f18728345.mp3",
+    "durationMs": 6920,
+    "script": "Stand evenly spaced. Keep your arms stiff. Give a blank expression. Hold the robot lineup!",
+    "cues": [
+      "Stand evenly spaced",
+      "Keep your arms stiff",
+      "Give a blank expression",
+      "Hold the robot lineup"
+    ]
+  },
+  "meme-buffering": {
+    "filePath": "project-asset:audio/elevenlabs/meme-buffering-95dd8167b9c629.mp3",
+    "durationMs": 7000,
+    "script": "Start a small gesture. Stop halfway through. Stare completely blankly. Hold while you buffer!",
+    "cues": [
+      "Start a small gesture",
+      "Stop halfway through",
+      "Stare completely blankly",
+      "Hold while you buffer"
+    ]
+  },
+  "meme-one-brain-cell": {
+    "filePath": "project-asset:audio/elevenlabs/meme-one-brain-cell-4970077a0dd968.mp3",
+    "durationMs": 7240,
+    "script": "Choose one friend. Everyone else points to them. They look completely confused. Hold the last brain cell!",
+    "cues": [
+      "Choose one friend",
+      "Everyone else points to them",
+      "They look completely confused",
+      "Hold the last brain cell"
+    ]
+  },
+  "meme-peekaboo-stack": {
+    "filePath": "project-asset:audio/elevenlabs/meme-peekaboo-stack-7ce35416b514d2.mp3",
+    "durationMs": 7810,
+    "script": "Line up behind each other. Peek out on alternating sides. Keep every face visible. Hold your peekaboo smiles!",
+    "cues": [
+      "Line up behind each other",
+      "Peek out on alternating sides",
+      "Keep every face visible",
+      "Hold your peekaboo smiles"
+    ]
+  },
+  "meme-bodyguards": {
+    "filePath": "project-asset:audio/elevenlabs/meme-bodyguards-e2fbc8c35adb67.mp3",
+    "durationMs": 8910,
+    "script": "One star takes the middle. Everyone else folds their arms. Star smiles, guards stay serious. Hold your celebrity squad!",
+    "cues": [
+      "One star takes the middle",
+      "Everyone else folds their arms",
+      "Star smiles, guards stay serious",
+      "Hold your celebrity squad"
+    ]
+  },
+  "meme-reaction-mix": {
+    "filePath": "project-asset:audio/elevenlabs/meme-reaction-mix-a203498b1b6caf.mp3",
+    "durationMs": 8990,
+    "script": "Gather close together. Each choose a different reaction. Shock, suspicion, joy or confusion. Freeze every funny face!",
+    "cues": [
+      "Gather close together",
+      "Each choose a different reaction",
+      "Shock, suspicion, joy or confusion",
+      "Freeze every funny face"
+    ]
   }
 }

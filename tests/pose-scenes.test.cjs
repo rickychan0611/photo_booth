@@ -54,7 +54,7 @@ test('photo guide catalog contains a packaged cutout for every bundled scene', (
 test('photo prompt manifest covers every non-pilot library scene exactly once', () => {
   const pilot = new Set(photoPromptManifest.pilotExcluded);
   const source = require('../src/pose/poses/scenes.json');
-  const expected = source.filter(scene => !pilot.has(scene.id) && !scene.tags.includes('creative-pack')).map(scene => scene.id).sort();
+  const expected = source.filter(scene => !pilot.has(scene.id) && !scene.tags.includes('creative-pack') && !scene.tags.includes('meme-pack-2026')).map(scene => scene.id).sort();
   const actual = photoPromptManifest.jobs.map(job => job.poseId).sort();
   assert.deepEqual(actual, expected);
   for (const job of photoPromptManifest.jobs) {

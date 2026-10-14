@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 2,
+  "id": "meme-jawline-check",
+  "name": "Jawline Check",
+  "category": "solo",
+  "tags": [
+    "meme-pack-2026",
+    "gender-inclusive",
+    "child-safe",
+    "solo"
+  ],
+  "instruction": "Hold the jawline check",
+  "compatibility": {
+    "minPeople": 1,
+    "maxPeople": 2,
+    "styles": [
+      "solo",
+      "couple",
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "animation": {
+    "durationMs": 7920,
+    "captions": [
+      {
+        "text": "Turn slightly sideways",
+        "timeMs": 0
+      },
+      {
+        "text": "Point along your jaw",
+        "timeMs": 2307
+      },
+      {
+        "text": "Give a serious stare",
+        "timeMs": 4613
+      },
+      {
+        "text": "Hold the jawline check",
+        "timeMs": 6920
+      }
+    ]
+  },
+  "visual": {
+    "kind": "photo-cutout",
+    "assetPath": "pose-guides/meme-jawline-check.webp",
+    "alt": "Slight side angle, index finger pointing along own jawline, exaggerated serious expression.",
+    "accent": "#14bda8"
+  },
+  "audio": {
+    "filePath": "project-asset:audio/elevenlabs/meme-jawline-check-4ca8090f0aa05a.mp3",
+    "startMs": 0,
+    "markers": []
+  }
+}
