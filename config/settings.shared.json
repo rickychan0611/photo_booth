@@ -67,7 +67,7 @@
     "enabled": true,
     "masterVolume": 1,
     "voiceVolume": 1,
-    "musicVolume": 0.25,
+    "musicVolume": 0.15,
     "sfxVolume": 1,
     "enableHostVoice": true,
     "voiceEngine": "kokoro",
@@ -117,12 +117,12 @@
         "label": "Who's joining screen",
         "mode": "host",
         "channel": "voice",
-        "text": "How many people are in the shot? Pick your style!",
-        "filePath": "project-asset:audio/generated/elevenlabs/people-c7844f3ff8ec48.mp3",
+        "text": "How many people are in the shot?  Pick your group size to unlock fun Pose Challenges! Or go freestyle and pose your own way!",
+        "filePath": "project-asset:audio/generated/elevenlabs/people-8aef46953543a7.mp3",
         "loop": false,
         "volume": 1,
         "enabled": true,
-        "updatedAt": "2026-10-05T00:17:43.638Z"
+        "updatedAt": "2026-10-14T06:41:21.063Z"
       },
       "intro": {
         "id": "intro",
@@ -3464,25 +3464,25 @@
       {
         "message": "Pose Challenge! Follow the moves!",
         "cameraBeforeMessageMs": 0,
-        "messageMs": 2000,
+        "messageMs": 3000,
         "cameraBeforeCountdownMs": 0
       },
       {
         "message": "Nice! Next one!",
         "cameraBeforeMessageMs": 0,
-        "messageMs": 1000,
+        "messageMs": 3000,
         "cameraBeforeCountdownMs": 0
       },
       {
         "message": "Looking good, now do this!",
         "cameraBeforeMessageMs": 0,
-        "messageMs": 2000,
+        "messageMs": 3000,
         "cameraBeforeCountdownMs": 0
       },
       {
         "message": "Last shot! make it count!",
         "cameraBeforeMessageMs": 0,
-        "messageMs": 2000,
+        "messageMs": 3000,
         "cameraBeforeCountdownMs": 0
       },
       {
@@ -3540,5 +3540,22 @@
     "showGrid": true,
     "showAi": true,
     "showFuture": true
+  },
+  "layoutPrinters": {
+    "template-1782967801040": "",
+    "template-1782967906564": "",
+    "template-1783325483798": "",
+    "template-1783325728012": "",
+    "template-1784394814811": "",
+    "template-1784394985069": "",
+    "template-1787792969849": "",
+    "template-1787795793963": "",
+    "template-1787795859775": "",
+    "template-1787795887287": "",
+    "template-1790395204465": "",
+    "template-1790395365786": "",
+    "template-1790395411663": "",
+    "template-1790395470444": "",
+    "template-1791068582205": ""
   }
 }
