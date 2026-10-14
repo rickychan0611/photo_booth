@@ -13,7 +13,7 @@ import {
   type SoftwareCameraKey
 } from './cameraImage';
 import { GuestScreenLockProvider, KioskButton } from './KioskButton';
-import { playAudioCue, playAudioCueObject, stopAllAudio, stopAudioChannel, stopAudioCue } from './audio';
+import { playAudioCue, playAudioCueObject, preloadAudioCue, stopAllAudio, stopAudioChannel, stopAudioCue } from './audio';
 import { createBoothGallerySession, createQueueRealtimeClient, fetchQueueSnapshot, isRealtimeConfigured, isWebQueueConfigured, publicWebUrl, validateBoothCode } from './webBackend';
 import { PoseGuideOverlay, type PoseGuideHandle } from './pose/PoseGuideOverlay';
 import { GuestCompositionScreen, CompositionControls } from './pose/GuestCompositionScreen';
@@ -203,6 +203,7 @@ function GuestApp() {
   const pendingVideoTicketIdRef = useRef<string | null>(null);
   const isUploadingSessionVideoRef = useRef(false);
   const confirmPrintLockRef = useRef(false);
+  const thanksVoiceStartedRef = useRef(false);
   const pendingGalleryUploadRef = useRef<{ settings: AppSettings; session: BoothSession | null; finalPath: string } | null>(null);
   const pendingPhoneSubmissionRef = useRef<PendingPhoneSubmission | null>(null);
   const lastShortcutRef = useRef('');
@@ -343,7 +344,12 @@ function GuestApp() {
   }, [settings?.audio, step]);
 
   useEffect(() => {
+    if (settings && step !== 'thanks') void preloadAudioCue(settings, settings.audio.cues.thanks);
+  }, [settings?.audio, step]);
+
+  useEffect(() => {
     if (!settings) return;
+    if (step !== 'thanks') thanksVoiceStartedRef.current = false;
     const cueByStep: Partial<Record<GuestStep, string>> = {
       welcome: 'welcome',
       style: 'style',
@@ -361,7 +367,10 @@ function GuestApp() {
 
     if (step === 'intro') void playAudioCueObject(settings, workflow?.screenCues?.intro, workflow?.introMessage);
     if (step === 'select') void playAudioCueObject(settings, workflow?.screenCues?.select);
-    if (step === 'thanks') void playAudioCueObject(settings, workflow?.screenCues?.thanks, workflow?.thankYouMessage);
+    if (step === 'thanks' && !thanksVoiceStartedRef.current) {
+      thanksVoiceStartedRef.current = true;
+      void playAudioCueObject(settings, workflow?.screenCues?.thanks, workflow?.thankYouMessage);
+    }
   }, [settings, settings?.audio, step, selectedTemplateId, selectedDesignId]);
 
   useEffect(() => {
@@ -641,9 +650,9 @@ function GuestApp() {
 
   const pickRecorderMimeType = () => {
     const candidates = [
-      'video/webm;codecs=vp9,opus',
       'video/webm;codecs=h264,opus',
       'video/webm;codecs=vp8,opus',
+      'video/webm;codecs=vp9,opus',
       'video/webm'
     ];
     if (typeof MediaRecorder === 'undefined') return '';
@@ -658,18 +667,21 @@ function GuestApp() {
   };
 
   // Captures the booth window (camera, countdown, and messages) plus the
-  // microphone at the window's own pixel size. The capture stays temporary
+  // microphone with a 1280-pixel long-edge limit. The capture stays temporary
   // until the outro writes the one saved video.
   const startSessionRecording = async () => {
     if (mediaRecorderRef.current || typeof MediaRecorder === 'undefined') return;
     try {
       const pixelWidth = Math.max(1, Math.round(window.innerWidth * window.devicePixelRatio));
       const pixelHeight = Math.max(1, Math.round(window.innerHeight * window.devicePixelRatio));
+      const recordingScale = Math.min(1, 1280 / Math.max(pixelWidth, pixelHeight));
+      const recordingWidth = Math.max(2, Math.floor(pixelWidth * recordingScale / 2) * 2);
+      const recordingHeight = Math.max(2, Math.floor(pixelHeight * recordingScale / 2) * 2);
       const displayStream = await navigator.mediaDevices.getDisplayMedia({
         video: {
-          frameRate: { ideal: 30 },
-          width: { ideal: pixelWidth },
-          height: { ideal: pixelHeight }
+          frameRate: { ideal: 24, max: 24 },
+          width: { ideal: recordingWidth, max: recordingWidth },
+          height: { ideal: recordingHeight, max: recordingHeight }
         },
         audio: false
       });
@@ -696,7 +708,7 @@ function GuestApp() {
       const mimeType = pickRecorderMimeType();
       const recorder = new MediaRecorder(merged, {
         ...(mimeType ? { mimeType } : {}),
-        videoBitsPerSecond: 20_000_000,
+        videoBitsPerSecond: 5_000_000,
         audioBitsPerSecond: 128_000
       });
       recorder.ondataavailable = (event) => {
@@ -1284,6 +1296,10 @@ function GuestApp() {
     pendingPhoneSubmissionRef.current = null;
     setIsFinalPreparing(true);
     setIsAiGenerating(design.usesAi);
+    thanksVoiceStartedRef.current = true;
+    const voiceStarted = playAudioCue(settings, 'thanks').catch(error => {
+      console.warn('Phone entry voice could not play.', error);
+    });
     setStep('thanks');
     setIsBusy(false);
 
@@ -1371,6 +1387,8 @@ function GuestApp() {
     };
 
     try {
+      // play() resolves once playback starts, without waiting for the narration to finish.
+      await voiceStarted;
       await printFinal();
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Could not prepare photo.');

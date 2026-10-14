@@ -4,6 +4,30 @@ const activeAudio = new Map<string, HTMLAudioElement>();
 const activeLoopTimers = new Map<string, number>();
 const activeLoopTimerChannels = new Map<string, AudioChannel>();
 const cueTokens = new Map<string, number>();
+const preparedAudio = new Map<string, { key: string; audio: Promise<HTMLAudioElement | undefined> }>();
+
+// Load and decode screen narration while the guest is still taking photos.
+export const preloadAudioCue = (settings: AppSettings, cue: AudioCue | undefined) => {
+  if (!settings.audio.enabled || !cue?.enabled || !cue.filePath ||
+      (cue.mode !== 'mp3' && cue.mode !== 'host') ||
+      (cue.mode === 'host' && !settings.audio.enableHostVoice)) return Promise.resolve(undefined);
+  const key = JSON.stringify([cue.filePath, cue.updatedAt]);
+  const existing = preparedAudio.get(cue.id);
+  if (existing?.key === key) return existing.audio;
+  const audio = window.photoBooth.getAudioDataUrl(cue.filePath).then(dataUrl => {
+    if (!dataUrl) return undefined;
+    const element = new Audio(dataUrl);
+    element.preload = 'auto';
+    element.load();
+    return element;
+  }).catch(error => {
+    if (preparedAudio.get(cue.id)?.key === key) preparedAudio.delete(cue.id);
+    console.warn('Audio cue could not preload.', error);
+    return undefined;
+  });
+  preparedAudio.set(cue.id, { key, audio });
+  return audio;
+};
 
 const invalidateCue = (cueId: string) => {
   const token = (cueTokens.get(cueId) ?? 0) + 1;
@@ -74,10 +98,15 @@ export const playAudioCueObject = async (settings: AppSettings, cue: AudioCue | 
   if (cue.mode === 'host' && (!settings.audio.enableHostVoice || !cue.filePath)) return;
 
   if ((cue.mode === 'mp3' || cue.mode === 'host') && cue.filePath) {
-    const dataUrl = preparedDataUrl ?? await window.photoBooth.getAudioDataUrl(cue.filePath);
+    const prepared = preparedAudio.get(cueId);
+    const preloaded = !preparedDataUrl && prepared?.key === JSON.stringify([cue.filePath, cue.updatedAt])
+      ? await prepared.audio : undefined;
+    if (preloaded && preparedAudio.get(cueId) === prepared) preparedAudio.delete(cueId);
     if (!isCueCurrent(cueId, token)) return;
-    if (!dataUrl) return;
-    const audio = new Audio(dataUrl);
+    const dataUrl = preloaded ? undefined : preparedDataUrl ?? await window.photoBooth.getAudioDataUrl(cue.filePath);
+    if (!isCueCurrent(cueId, token)) return;
+    if (!preloaded && !dataUrl) return;
+    const audio = preloaded ?? new Audio(dataUrl);
     const useRepeatTimer = cueId === 'welcome' && cue.loop;
     audio.loop = cue.loop && !useRepeatTimer;
     audio.volume = cueVolume(settings, cue);

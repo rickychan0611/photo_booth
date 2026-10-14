@@ -3,10 +3,11 @@ import { app, BrowserWindow, desktopCapturer, dialog, ipcMain, nativeImage, sess
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
-import { exec, spawn } from 'node:child_process';
+import { exec } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import crypto from 'node:crypto';
 import ffmpegStatic from 'ffmpeg-static';
+import { enqueueVideoJob, runVideoProcess, sessionVideoOutroArgs } from './videoProcessing';
 import { captureCanonStill, connectCanon, getCanonLiveViewFrame, prepareCanonCapture, releaseCanonFocus, stopCanonService } from './canon';
 import { generateElevenLabsSpeech, listStoredPoses, registerPoseStorage, replaceStoredPoses } from './poseStorage';
 import { registerPoseAi } from './poseAi';
@@ -1872,18 +1873,15 @@ const resolveFfmpegPath = () => {
 };
 
 function transcodeToMp4(inputPath: string, outputPath: string, profile: VideoTranscodeProfile = VIDEO_TRANSCODE_PROFILES[0]) {
-  return new Promise<void>((resolve, reject) => {
+  return enqueueVideoJob(async () => {
     const ffmpegPath = resolveFfmpegPath();
-    if (!ffmpegPath) {
-      reject(new Error('ffmpeg binary not available.'));
-      return;
-    }
     // Downscale the longer edge to the selected profile (keeping aspect, even
     // dimensions) and encode H.264/AAC with faststart for broad playback.
     const scaleFilter =
       `fps=24,scale='if(gt(a,1),min(${profile.maxLongEdge},iw),-2)':'if(gt(a,1),-2,min(${profile.maxLongEdge},ih))'`;
     const args = [
       '-y',
+      '-threads', '1',
       '-i', inputPath,
       '-vf', scaleFilter,
       '-c:v', 'libx264',
@@ -1899,16 +1897,7 @@ function transcodeToMp4(inputPath: string, outputPath: string, profile: VideoTra
       '-movflags', '+faststart',
       outputPath
     ];
-    const child = spawn(ffmpegPath, args, { windowsHide: true });
-    let stderr = '';
-    child.stderr?.on('data', (chunk) => {
-      stderr += String(chunk);
-    });
-    child.on('error', reject);
-    child.on('close', (code) => {
-      if (code === 0) resolve();
-      else reject(new Error(`ffmpeg exited with code ${code}: ${stderr.slice(-500)}`));
-    });
+    await runVideoProcess(ffmpegPath, args);
   });
 }
 
@@ -1968,55 +1957,19 @@ async function saveSessionVideoData(request: SaveVideoRequest): Promise<SaveVide
 }
 
 async function appendSessionVideoOutro(videoPath: string, finalImagePath: string, logoPath = '') {
-  if (!(await fileExists(videoPath))) throw new Error('Session video was not found.');
-  if (!(await fileExists(finalImagePath))) throw new Error('Final photo was not found.');
-  const usableLogo = logoPath && await fileExists(logoPath) ? logoPath : '';
-  const settings = await readSettings();
-  await ensureEventFolders(settings.eventFolder);
-  const outputPath = path.join(settings.eventFolder, 'videos', `${await nextVideoName(settings.eventFolder)}.mp4`);
-  const args = ['-y', '-i', videoPath, '-loop', '1', '-framerate', '24', '-t', '5', '-i', finalImagePath];
-  if (usableLogo) args.push('-loop', '1', '-framerate', '24', '-t', '2.5', '-i', usableLogo);
-
-  const canvas = "scale=1080:1920:force_original_aspect_ratio=decrease:flags=lanczos,pad=1080:1920:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1";
-  const filters = [
-    `[0:v]${canvas},fps=24,setpts=PTS-STARTPTS[v0]`,
-    '[1:v]split=2[photoBg][photoFg]',
-    '[photoBg]scale=90:160:force_original_aspect_ratio=increase,crop=90:160,gblur=sigma=22,scale=1080:1920:flags=bicubic,eq=brightness=-0.24:saturation=1.15[photoBgReady]',
-    '[photoFg]scale=1000:1800:force_original_aspect_ratio=decrease[photoFgReady]',
-    `[photoBgReady][photoFgReady]overlay=(W-w)/2:(H-h)/2,zoompan=z='min(zoom+0.00042,1.05)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1080x1920:fps=24,fade=t=in:st=0:d=0.35,fade=t=out:st=4.5:d=0.5,setpts=PTS-STARTPTS[v1]`
-  ];
-  if (usableLogo) {
-    filters.push(
-      `[2:v]scale=650:650:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1,fps=24,fade=t=in:st=0:d=0.4,fade=t=out:st=2:d=0.5,setpts=PTS-STARTPTS[v2]`,
-      '[v0][v1][v2]concat=n=3:v=1:a=0[outv]'
-    );
-  } else {
-    filters.push('[v0][v1]concat=n=2:v=1:a=0[outv]');
-  }
-  args.push(
-    '-filter_complex', filters.join(';'),
-    '-map', '[outv]', '-map', '0:a?',
-    '-af', `apad=pad_dur=${usableLogo ? '7.5' : '5'}`,
-    '-c:v', 'libx264', '-preset', 'medium', '-crf', '16',
-    '-pix_fmt', 'yuv420p', '-r', '24', '-video_track_timescale', '24000', '-tag:v', 'avc1',
-    '-c:a', 'aac', '-b:a', '128k', '-shortest', '-movflags', '+faststart', outputPath
-  );
-
-  await new Promise<void>((resolve, reject) => {
-    const ffmpegPath = resolveFfmpegPath();
-    if (!ffmpegPath) return reject(new Error('ffmpeg binary not available.'));
-    const child = spawn(ffmpegPath, args, { windowsHide: true });
-    let stderr = '';
-    child.stderr?.on('data', (chunk) => { stderr += String(chunk); });
-    child.on('error', reject);
-    child.on('close', (code) => {
-      if (code === 0) resolve();
-      else reject(new Error(`Could not add video outro (${code}): ${stderr.slice(-700)}`));
-    });
+  return enqueueVideoJob(async () => {
+    if (!(await fileExists(videoPath))) throw new Error('Session video was not found.');
+    if (!(await fileExists(finalImagePath))) throw new Error('Final photo was not found.');
+    const usableLogo = logoPath && await fileExists(logoPath) ? logoPath : '';
+    const settings = await readSettings();
+    await ensureEventFolders(settings.eventFolder);
+    const outputPath = path.join(settings.eventFolder, 'videos', `${await nextVideoName(settings.eventFolder)}.mp4`);
+    const args = sessionVideoOutroArgs(videoPath, finalImagePath, usableLogo, outputPath);
+    await runVideoProcess(resolveFfmpegPath(), args);
+    await fs.rm(videoPath, { force: true });
+    console.log(`[video] saved ${outputPath}`);
+    return outputPath;
   });
-  await fs.rm(videoPath, { force: true });
-  console.log(`[video] saved ${outputPath}`);
-  return outputPath;
 }
 
 async function uploadSessionVideoInBackground(
