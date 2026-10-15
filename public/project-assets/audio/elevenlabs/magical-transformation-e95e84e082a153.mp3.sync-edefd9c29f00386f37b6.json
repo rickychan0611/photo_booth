@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6030,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Turn one foot"
+    },
+    {
+      "timeMs": 1400,
+      "text": "Twist your body"
+    },
+    {
+      "timeMs": 2780,
+      "text": "Sweep your arms up"
+    },
+    {
+      "timeMs": 4360,
+      "text": "Transformation finish!"
+    }
+  ]
+}

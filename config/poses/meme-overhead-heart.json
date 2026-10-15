@@ -38,20 +38,20 @@
     "durationMs": 8000,
     "captions": [
       {
-        "text": "Stand side by side",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Stand side by side"
       },
       {
-        "text": "Raise your outer arms",
-        "timeMs": 2333
+        "timeMs": 1940,
+        "text": "Raise your outer arms"
       },
       {
-        "text": "Curve them into one heart",
-        "timeMs": 4667
+        "timeMs": 3620,
+        "text": "Curve them into one heart"
       },
       {
-        "text": "Hold your big heart",
-        "timeMs": 7000
+        "timeMs": 5600,
+        "text": "Hold your big heart"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-overhead-heart-696ba995eed183.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand side by side"
+        },
+        {
+          "timeMs": 1940,
+          "text": "Raise your outer arms"
+        },
+        {
+          "timeMs": 3620,
+          "text": "Curve them into one heart"
+        },
+        {
+          "timeMs": 5600,
+          "text": "Hold your big heart"
+        }
+      ]
+    }
   }
 }

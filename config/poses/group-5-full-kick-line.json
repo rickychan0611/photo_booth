@@ -17,20 +17,20 @@
     "durationMs": 5440,
     "captions": [
       {
-        "text": "Link elbows",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Link elbows"
       },
       {
-        "text": "Same leg ready",
-        "timeMs": 1480
+        "timeMs": 1380,
+        "text": "Same leg ready"
       },
       {
-        "text": "Kick once",
-        "timeMs": 2960
+        "timeMs": 2520,
+        "text": "Kick once"
       },
       {
-        "text": "Hold it up",
-        "timeMs": 4440
+        "timeMs": 3520,
+        "text": "Hold it up"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-full-kick-line-0ffc8535f78297.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 4440,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Link elbows"
+        },
+        {
+          "timeMs": 1380,
+          "text": "Same leg ready"
+        },
+        {
+          "timeMs": 2520,
+          "text": "Kick once"
+        },
+        {
+          "timeMs": 3520,
+          "text": "Hold it up"
+        }
+      ]
+    }
   }
 }

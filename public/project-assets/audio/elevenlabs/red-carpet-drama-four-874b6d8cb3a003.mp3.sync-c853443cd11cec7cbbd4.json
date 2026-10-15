@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6840,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Star takes the center"
+    },
+    {
+      "timeMs": 1860,
+      "text": "Bodyguard steps close"
+    },
+    {
+      "timeMs": 3540,
+      "text": "Paparazzi aims"
+    },
+    {
+      "timeMs": 5140,
+      "text": "Fan loses control"
+    }
+  ]
+}

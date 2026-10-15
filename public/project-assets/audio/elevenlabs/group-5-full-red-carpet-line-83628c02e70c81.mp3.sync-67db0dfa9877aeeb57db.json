@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5560,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Stagger a long line"
+    },
+    {
+      "timeMs": 2120,
+      "text": "One hand on a hip"
+    },
+    {
+      "timeMs": 3420,
+      "text": "Chin up"
+    },
+    {
+      "timeMs": 4260,
+      "text": "Hold the arrival"
+    }
+  ]
+}

@@ -17,20 +17,20 @@
     "durationMs": 6640,
     "captions": [
       {
-        "text": "Middle friend hops",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Middle friend hops"
       },
       {
-        "text": "Two friends support him",
-        "timeMs": 1880
+        "timeMs": 1660,
+        "text": "Two friends support him"
       },
       {
-        "text": "One fist up",
-        "timeMs": 3760
+        "timeMs": 3380,
+        "text": "One fist up"
       },
       {
-        "text": "Hold the lift",
-        "timeMs": 5640
+        "timeMs": 4580,
+        "text": "Hold the lift"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/men-3-full-lift-the-middle-e50e25b0a89549.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5640,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Middle friend hops"
+        },
+        {
+          "timeMs": 1660,
+          "text": "Two friends support him"
+        },
+        {
+          "timeMs": 3380,
+          "text": "One fist up"
+        },
+        {
+          "timeMs": 4580,
+          "text": "Hold the lift"
+        }
+      ]
+    }
   }
 }

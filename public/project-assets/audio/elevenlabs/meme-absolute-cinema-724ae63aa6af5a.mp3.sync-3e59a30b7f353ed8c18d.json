@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 8050,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Lift both hands"
+    },
+    {
+      "timeMs": 1700,
+      "text": "Open palms beside your head"
+    },
+    {
+      "timeMs": 3620,
+      "text": "Look dramatically impressed"
+    },
+    {
+      "timeMs": 5680,
+      "text": "Hold absolute cinema"
+    }
+  ]
+}

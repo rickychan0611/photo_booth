@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5640,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Count together"
+    },
+    {
+      "timeMs": 1460,
+      "text": "Jump like you just arrived"
+    },
+    {
+      "timeMs": 3300,
+      "text": "Arms up"
+    },
+    {
+      "timeMs": 4240,
+      "text": "Land laughing"
+    }
+  ]
+}

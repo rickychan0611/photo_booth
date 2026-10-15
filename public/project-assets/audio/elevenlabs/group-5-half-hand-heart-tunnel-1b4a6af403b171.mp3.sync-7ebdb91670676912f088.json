@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5880,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Hands make a tunnel of hearts"
+    },
+    {
+      "timeMs": 2200,
+      "text": "Faces peek through"
+    },
+    {
+      "timeMs": 3640,
+      "text": "Find the lens"
+    },
+    {
+      "timeMs": 4720,
+      "text": "Hold the tunnel"
+    }
+  ]
+}

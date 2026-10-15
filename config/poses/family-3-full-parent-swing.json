@@ -18,20 +18,20 @@
     "durationMs": 7430,
     "captions": [
       {
-        "text": "Child holds both hands",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Child holds both hands"
       },
       {
-        "text": "Grownups lift gently",
-        "timeMs": 2143
+        "timeMs": 2140,
+        "text": "Grownups lift gently"
       },
       {
-        "text": "Swing once",
-        "timeMs": 4287
+        "timeMs": 3960,
+        "text": "Swing once"
       },
       {
-        "text": "Smile at the child",
-        "timeMs": 6430
+        "timeMs": 5140,
+        "text": "Smile at the child"
       }
     ]
   },
@@ -69,6 +69,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/family-3-full-parent-swing-89b4b749fe8c03.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6430,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Child holds both hands"
+        },
+        {
+          "timeMs": 2140,
+          "text": "Grownups lift gently"
+        },
+        {
+          "timeMs": 3960,
+          "text": "Swing once"
+        },
+        {
+          "timeMs": 5140,
+          "text": "Smile at the child"
+        }
+      ]
+    }
   }
 }

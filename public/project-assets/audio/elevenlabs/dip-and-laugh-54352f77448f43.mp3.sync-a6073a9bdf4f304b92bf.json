@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5560,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Connect hands"
+    },
+    {
+      "timeMs": 1340,
+      "text": "Support the waist"
+    },
+    {
+      "timeMs": 2680,
+      "text": "Make a tiny dip"
+    },
+    {
+      "timeMs": 4340,
+      "text": "Laugh together"
+    }
+  ]
+}

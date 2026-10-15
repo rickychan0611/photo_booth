@@ -17,20 +17,20 @@
     "durationMs": 6560,
     "captions": [
       {
-        "text": "Offer one hand",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Offer one hand"
       },
       {
-        "text": "Step in together",
-        "timeMs": 1853
+        "timeMs": 1660,
+        "text": "Step in together"
       },
       {
-        "text": "Sway on the spot",
-        "timeMs": 3707
+        "timeMs": 3060,
+        "text": "Sway on the spot"
       },
       {
-        "text": "Rest your heads",
-        "timeMs": 5560
+        "timeMs": 4500,
+        "text": "Rest your heads"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/lovers-full-slow-dance-488f0e376b051e.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5560,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Offer one hand"
+        },
+        {
+          "timeMs": 1660,
+          "text": "Step in together"
+        },
+        {
+          "timeMs": 3060,
+          "text": "Sway on the spot"
+        },
+        {
+          "timeMs": 4500,
+          "text": "Rest your heads"
+        }
+      ]
+    }
   }
 }

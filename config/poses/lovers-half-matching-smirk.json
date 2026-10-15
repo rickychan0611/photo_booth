@@ -17,20 +17,20 @@
     "durationMs": 6410,
     "captions": [
       {
-        "text": "Same head tilt",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Same head tilt"
       },
       {
-        "text": "One eyebrow up",
-        "timeMs": 1803
+        "timeMs": 1580,
+        "text": "One eyebrow up"
       },
       {
-        "text": "Match the smirk",
-        "timeMs": 3607
+        "timeMs": 2920,
+        "text": "Match the smirk"
       },
       {
-        "text": "Do not blink",
-        "timeMs": 5410
+        "timeMs": 4180,
+        "text": "Do not blink"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/lovers-half-matching-smirk-ffb79acc6b441f.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5410,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Same head tilt"
+        },
+        {
+          "timeMs": 1580,
+          "text": "One eyebrow up"
+        },
+        {
+          "timeMs": 2920,
+          "text": "Match the smirk"
+        },
+        {
+          "timeMs": 4180,
+          "text": "Do not blink"
+        }
+      ]
+    }
   }
 }

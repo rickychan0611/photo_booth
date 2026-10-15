@@ -17,20 +17,20 @@
     "durationMs": 7110,
     "captions": [
       {
-        "text": "Choose one person",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Choose one person"
       },
       {
-        "text": "Everyone else frames their face",
-        "timeMs": 2037
+        "timeMs": 1660,
+        "text": "Everyone else frames their face"
       },
       {
-        "text": "That person poses",
-        "timeMs": 4073
+        "timeMs": 3620,
+        "text": "That person poses"
       },
       {
-        "text": "Hold the frame",
-        "timeMs": 6110
+        "timeMs": 5060,
+        "text": "Hold the frame"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-half-frame-one-8b7f12616ddacc.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6110,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Choose one person"
+        },
+        {
+          "timeMs": 1660,
+          "text": "Everyone else frames their face"
+        },
+        {
+          "timeMs": 3620,
+          "text": "That person poses"
+        },
+        {
+          "timeMs": 5060,
+          "text": "Hold the frame"
+        }
+      ]
+    }
   }
 }

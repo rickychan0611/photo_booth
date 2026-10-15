@@ -17,20 +17,20 @@
     "durationMs": 6490,
     "captions": [
       {
-        "text": "Hands under your chins",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Hands under your chins"
       },
       {
-        "text": "Tilt together",
-        "timeMs": 1830
+        "timeMs": 1740,
+        "text": "Tilt together"
       },
       {
-        "text": "Soft eye contact",
-        "timeMs": 3660
+        "timeMs": 3020,
+        "text": "Soft eye contact"
       },
       {
-        "text": "Stay sweet",
-        "timeMs": 5490
+        "timeMs": 4620,
+        "text": "Stay sweet"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-2-half-heart-cheeks-7c2ad4d3daadc6.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5490,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Hands under your chins"
+        },
+        {
+          "timeMs": 1740,
+          "text": "Tilt together"
+        },
+        {
+          "timeMs": 3020,
+          "text": "Soft eye contact"
+        },
+        {
+          "timeMs": 4620,
+          "text": "Stay sweet"
+        }
+      ]
+    }
   }
 }

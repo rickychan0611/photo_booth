@@ -17,20 +17,20 @@
     "durationMs": 5830,
     "captions": [
       {
-        "text": "Pack in tight",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Pack in tight"
       },
       {
-        "text": "Heads touching",
-        "timeMs": 1610
+        "timeMs": 1340,
+        "text": "Heads touching"
       },
       {
-        "text": "Kind eyes",
-        "timeMs": 3220
+        "timeMs": 2480,
+        "text": "Kind eyes"
       },
       {
-        "text": "Hold the portrait",
-        "timeMs": 4830
+        "timeMs": 3680,
+        "text": "Hold the portrait"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/family-4-half-close-portrait-a37c53846377e9.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 4830,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Pack in tight"
+        },
+        {
+          "timeMs": 1340,
+          "text": "Heads touching"
+        },
+        {
+          "timeMs": 2480,
+          "text": "Kind eyes"
+        },
+        {
+          "timeMs": 3680,
+          "text": "Hold the portrait"
+        }
+      ]
+    }
   }
 }

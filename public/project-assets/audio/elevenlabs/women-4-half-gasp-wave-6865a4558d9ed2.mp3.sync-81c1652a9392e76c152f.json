@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5880,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Gasp from left to right"
+    },
+    {
+      "timeMs": 2020,
+      "text": "Hands to cheeks"
+    },
+    {
+      "timeMs": 3280,
+      "text": "Last friend points"
+    },
+    {
+      "timeMs": 4720,
+      "text": "Hold the wave"
+    }
+  ]
+}

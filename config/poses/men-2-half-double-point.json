@@ -17,20 +17,20 @@
     "durationMs": 6330,
     "captions": [
       {
-        "text": "Point at the lens",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Point at the lens"
       },
       {
-        "text": "Lean in hard",
-        "timeMs": 1777
+        "timeMs": 1420,
+        "text": "Lean in hard"
       },
       {
-        "text": "Eyebrows up",
-        "timeMs": 3553
+        "timeMs": 2720,
+        "text": "Eyebrows up"
       },
       {
-        "text": "Hold the accusation",
-        "timeMs": 5330
+        "timeMs": 3880,
+        "text": "Hold the accusation"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/men-2-half-double-point-f48dd0b371f4cd.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5330,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Point at the lens"
+        },
+        {
+          "timeMs": 1420,
+          "text": "Lean in hard"
+        },
+        {
+          "timeMs": 2720,
+          "text": "Eyebrows up"
+        },
+        {
+          "timeMs": 3880,
+          "text": "Hold the accusation"
+        }
+      ]
+    }
   }
 }

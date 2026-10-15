@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6530,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Kids make a crown with hands"
+    },
+    {
+      "timeMs": 2120,
+      "text": "One child wears it"
+    },
+    {
+      "timeMs": 3560,
+      "text": "Grownup steadies the pose"
+    },
+    {
+      "timeMs": 5380,
+      "text": "Hold the crown"
+    }
+  ]
+}

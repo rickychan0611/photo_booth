@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6430,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Child chooses the pose"
+    },
+    {
+      "timeMs": 1820,
+      "text": "Adults copy the body"
+    },
+    {
+      "timeMs": 3660,
+      "text": "Match every hand"
+    },
+    {
+      "timeMs": 5160,
+      "text": "Child does it best"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6350,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Fill the frame"
+    },
+    {
+      "timeMs": 1320,
+      "text": "Choose different body lines"
+    },
+    {
+      "timeMs": 3000,
+      "text": "Make every face unique"
+    },
+    {
+      "timeMs": 5060,
+      "text": "Freeze the chaos"
+    }
+  ]
+}

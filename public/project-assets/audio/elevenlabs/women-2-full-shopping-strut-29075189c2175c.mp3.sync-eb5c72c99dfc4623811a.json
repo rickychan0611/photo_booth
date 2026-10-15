@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5490,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "One foot in front"
+    },
+    {
+      "timeMs": 1560,
+      "text": "Hands on hips"
+    },
+    {
+      "timeMs": 2780,
+      "text": "Strut two steps"
+    },
+    {
+      "timeMs": 4100,
+      "text": "Hit a cover pose"
+    }
+  ]
+}

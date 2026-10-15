@@ -16,20 +16,20 @@
     "durationMs": 6800,
     "captions": [
       {
-        "text": "Make a triangle",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Make a triangle"
       },
       {
-        "text": "Turn three directions",
-        "timeMs": 1933
+        "timeMs": 1620,
+        "text": "Turn three directions"
       },
       {
-        "text": "Ready your hands",
-        "timeMs": 3867
+        "timeMs": 3420,
+        "text": "Ready your hands"
       },
       {
-        "text": "Spy faces",
-        "timeMs": 5800
+        "timeMs": 4720,
+        "text": "Spy faces"
       }
     ]
   },
@@ -69,6 +69,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/spy-trio-4585a81e2e8c44.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5800,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Make a triangle"
+        },
+        {
+          "timeMs": 1620,
+          "text": "Turn three directions"
+        },
+        {
+          "timeMs": 3420,
+          "text": "Ready your hands"
+        },
+        {
+          "timeMs": 4720,
+          "text": "Spy faces"
+        }
+      ]
+    }
   }
 }

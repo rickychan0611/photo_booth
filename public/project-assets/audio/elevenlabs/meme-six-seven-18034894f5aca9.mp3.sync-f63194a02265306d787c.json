@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6190,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Raise both hands"
+    },
+    {
+      "timeMs": 1700,
+      "text": "Turn your palms up"
+    },
+    {
+      "timeMs": 3060,
+      "text": "One high, one low"
+    },
+    {
+      "timeMs": 4820,
+      "text": "Hold your six seven"
+    }
+  ]
+}

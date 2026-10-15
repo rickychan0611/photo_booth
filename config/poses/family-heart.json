@@ -16,20 +16,20 @@
     "durationMs": 7030,
     "captions": [
       {
-        "text": "Build a family cluster",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Build a family cluster"
       },
       {
-        "text": "Raise your hands",
-        "timeMs": 2010
+        "timeMs": 1880,
+        "text": "Raise your hands"
       },
       {
-        "text": "Make matching hearts",
-        "timeMs": 4020
+        "timeMs": 3040,
+        "text": "Make matching hearts"
       },
       {
-        "text": "Family smiles",
-        "timeMs": 6030
+        "timeMs": 4520,
+        "text": "Family smiles"
       }
     ]
   },
@@ -67,6 +67,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/family-heart-1b56d5731ea65e.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6030,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Build a family cluster"
+        },
+        {
+          "timeMs": 1880,
+          "text": "Raise your hands"
+        },
+        {
+          "timeMs": 3040,
+          "text": "Make matching hearts"
+        },
+        {
+          "timeMs": 4520,
+          "text": "Family smiles"
+        }
+      ]
+    }
   }
 }

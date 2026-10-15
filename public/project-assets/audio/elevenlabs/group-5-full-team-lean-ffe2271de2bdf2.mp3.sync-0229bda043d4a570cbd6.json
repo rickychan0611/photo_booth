@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5640,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Front row kneels"
+    },
+    {
+      "timeMs": 1640,
+      "text": "Back row stands"
+    },
+    {
+      "timeMs": 3080,
+      "text": "Lean in as one"
+    },
+    {
+      "timeMs": 4420,
+      "text": "Hold the team"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5330,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Lift both hands"
+    },
+    {
+      "timeMs": 1680,
+      "text": "Touch your cheeks"
+    },
+    {
+      "timeMs": 2940,
+      "text": "Tilt your head"
+    },
+    {
+      "timeMs": 4120,
+      "text": "Big surprise"
+    }
+  ]
+}

@@ -17,20 +17,20 @@
     "durationMs": 7350,
     "captions": [
       {
-        "text": "Same chin height",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Same chin height"
       },
       {
-        "text": "Same stare",
-        "timeMs": 2117
+        "timeMs": 1560,
+        "text": "Same stare"
       },
       {
-        "text": "No smiling yet",
-        "timeMs": 4233
+        "timeMs": 2780,
+        "text": "No smiling yet"
       },
       {
-        "text": "Hold, then one smile",
-        "timeMs": 6350
+        "timeMs": 4120,
+        "text": "Hold, then one smile"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/men-3-half-chin-up-trio-9b26526a18a716.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6350,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Same chin height"
+        },
+        {
+          "timeMs": 1560,
+          "text": "Same stare"
+        },
+        {
+          "timeMs": 2780,
+          "text": "No smiling yet"
+        },
+        {
+          "timeMs": 4120,
+          "text": "Hold, then one smile"
+        }
+      ]
+    }
   }
 }

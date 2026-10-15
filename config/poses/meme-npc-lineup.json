@@ -41,20 +41,20 @@
     "durationMs": 7920,
     "captions": [
       {
-        "text": "Stand evenly spaced",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Stand evenly spaced"
       },
       {
-        "text": "Keep your arms stiff",
-        "timeMs": 2307
+        "timeMs": 1960,
+        "text": "Keep your arms stiff"
       },
       {
-        "text": "Give a blank expression",
-        "timeMs": 4613
+        "timeMs": 3640,
+        "text": "Give a blank expression"
       },
       {
-        "text": "Hold the robot lineup",
-        "timeMs": 6920
+        "timeMs": 5360,
+        "text": "Hold the robot lineup"
       }
     ]
   },
@@ -67,6 +67,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-npc-lineup-5de53f18728345.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6920,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand evenly spaced"
+        },
+        {
+          "timeMs": 1960,
+          "text": "Keep your arms stiff"
+        },
+        {
+          "timeMs": 3640,
+          "text": "Give a blank expression"
+        },
+        {
+          "timeMs": 5360,
+          "text": "Hold the robot lineup"
+        }
+      ]
+    }
   }
 }

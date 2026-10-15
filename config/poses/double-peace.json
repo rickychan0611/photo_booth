@@ -16,20 +16,20 @@
     "durationMs": 7110,
     "captions": [
       {
-        "text": "Lift both hands",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Lift both hands"
       },
       {
-        "text": "Make two peace signs",
-        "timeMs": 2037
+        "timeMs": 1800,
+        "text": "Make two peace signs"
       },
       {
-        "text": "Tilt your head",
-        "timeMs": 4073
+        "timeMs": 3480,
+        "text": "Tilt your head"
       },
       {
-        "text": "Big happy eyes",
-        "timeMs": 6110
+        "timeMs": 4660,
+        "text": "Big happy eyes"
       }
     ]
   },
@@ -59,6 +59,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/double-peace-20addda560be24.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6110,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Lift both hands"
+        },
+        {
+          "timeMs": 1800,
+          "text": "Make two peace signs"
+        },
+        {
+          "timeMs": 3480,
+          "text": "Tilt your head"
+        },
+        {
+          "timeMs": 4660,
+          "text": "Big happy eyes"
+        }
+      ]
+    }
   }
 }

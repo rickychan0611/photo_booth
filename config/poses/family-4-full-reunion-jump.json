@@ -17,20 +17,20 @@
     "durationMs": 6640,
     "captions": [
       {
-        "text": "Count together",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Count together"
       },
       {
-        "text": "Jump like you just arrived",
-        "timeMs": 1880
+        "timeMs": 1460,
+        "text": "Jump like you just arrived"
       },
       {
-        "text": "Arms up",
-        "timeMs": 3760
+        "timeMs": 3300,
+        "text": "Arms up"
       },
       {
-        "text": "Land laughing",
-        "timeMs": 5640
+        "timeMs": 4240,
+        "text": "Land laughing"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/family-4-full-reunion-jump-b93ae64496da75.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5640,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Count together"
+        },
+        {
+          "timeMs": 1460,
+          "text": "Jump like you just arrived"
+        },
+        {
+          "timeMs": 3300,
+          "text": "Arms up"
+        },
+        {
+          "timeMs": 4240,
+          "text": "Land laughing"
+        }
+      ]
+    }
   }
 }

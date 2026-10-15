@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5800,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Lift your chest"
+    },
+    {
+      "timeMs": 1440,
+      "text": "Throw hands upward"
+    },
+    {
+      "timeMs": 2980,
+      "text": "Tip your head back"
+    },
+    {
+      "timeMs": 4340,
+      "text": "Maximum drama!"
+    }
+  ]
+}

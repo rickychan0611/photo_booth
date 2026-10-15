@@ -41,20 +41,20 @@
     "durationMs": 7840,
     "captions": [
       {
-        "text": "Choose your main character",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Choose your main character"
       },
       {
-        "text": "They step in front",
-        "timeMs": 2280
+        "timeMs": 1820,
+        "text": "They step in front"
       },
       {
-        "text": "Everyone else looks impressed",
-        "timeMs": 4560
+        "timeMs": 3220,
+        "text": "Everyone else looks impressed"
       },
       {
-        "text": "Hold your star moment",
-        "timeMs": 6840
+        "timeMs": 5160,
+        "text": "Hold your star moment"
       }
     ]
   },
@@ -67,6 +67,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-main-character-738c467adc94bb.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6840,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Choose your main character"
+        },
+        {
+          "timeMs": 1820,
+          "text": "They step in front"
+        },
+        {
+          "timeMs": 3220,
+          "text": "Everyone else looks impressed"
+        },
+        {
+          "timeMs": 5160,
+          "text": "Hold your star moment"
+        }
+      ]
+    }
   }
 }

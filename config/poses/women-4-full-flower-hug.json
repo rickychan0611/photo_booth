@@ -17,20 +17,20 @@
     "durationMs": 7610,
     "captions": [
       {
-        "text": "Step into one hug",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Step into one hug"
       },
       {
-        "text": "Outside friends wrap in",
-        "timeMs": 2203
+        "timeMs": 2060,
+        "text": "Outside friends wrap in"
       },
       {
-        "text": "Squeeze once",
-        "timeMs": 4407
+        "timeMs": 4100,
+        "text": "Squeeze once"
       },
       {
-        "text": "Smile in the bloom",
-        "timeMs": 6610
+        "timeMs": 5340,
+        "text": "Smile in the bloom"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-4-full-flower-hug-57baec607887fc.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6610,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Step into one hug"
+        },
+        {
+          "timeMs": 2060,
+          "text": "Outside friends wrap in"
+        },
+        {
+          "timeMs": 4100,
+          "text": "Squeeze once"
+        },
+        {
+          "timeMs": 5340,
+          "text": "Smile in the bloom"
+        }
+      ]
+    }
   }
 }

@@ -17,20 +17,20 @@
     "durationMs": 6960,
     "captions": [
       {
-        "text": "Same gentle smile",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Same gentle smile"
       },
       {
-        "text": "Same head height as you can",
-        "timeMs": 1987
+        "timeMs": 1880,
+        "text": "Same head height as you can"
       },
       {
-        "text": "Eyes kind",
-        "timeMs": 3973
+        "timeMs": 3640,
+        "text": "Eyes kind"
       },
       {
-        "text": "Hold the chorus",
-        "timeMs": 5960
+        "timeMs": 4880,
+        "text": "Hold the chorus"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-half-chorus-face-1e62cd5e8fb1cb.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5960,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Same gentle smile"
+        },
+        {
+          "timeMs": 1880,
+          "text": "Same head height as you can"
+        },
+        {
+          "timeMs": 3640,
+          "text": "Eyes kind"
+        },
+        {
+          "timeMs": 4880,
+          "text": "Hold the chorus"
+        }
+      ]
+    }
   }
 }

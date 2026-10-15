@@ -920,7 +920,12 @@ function GuestApp() {
       if (sessionRunRef.current !== runId) return false;
       setCountdown(value);
       if (settings) void playAudioCue(settings, `countdown${value}`, String(value));
-      await delay(1000);
+      const focus = value === 2 && settings?.canonEnabled
+        ? window.photoBooth.canonPrepareCapture().catch((focusError) => {
+          console.warn('Canon countdown autofocus was unavailable.', focusError);
+        })
+        : Promise.resolve();
+      await Promise.all([delay(1000), focus]);
     }
     if (sessionRunRef.current !== runId) return false;
     setCountdown(null);
@@ -1223,13 +1228,6 @@ function GuestApp() {
         if (guided) {
           await poseGuideRef.current?.dismiss();
           await nextPaint();
-        }
-        if (settings.canonEnabled) {
-          try {
-            await window.photoBooth.canonPrepareCapture();
-          } catch (focusError) {
-            console.warn('Canon countdown autofocus was unavailable.', focusError);
-          }
         }
         if (!(await runCountdown(runId))) {
           if (settings.canonEnabled) void window.photoBooth.canonReleaseFocus().catch(() => undefined);
@@ -1790,7 +1788,7 @@ function GuestApp() {
           </div>
           {captureMessage && (
             <div className="capture-message" style={{ '--message-fade-ms': `${captureMessageFadeMs}ms` } as CSSProperties}>
-              {captureMessage}
+              <span style={{ whiteSpace: 'pre-line' }}>{captureMessage.replace(/\\n/g, '\n')}</span>
             </div>
           )}
           {poseGuestPreview && <button className="pose-guest-exit" onClick={() => { setPoseGuestPreview(null); setPoseSessionEnabled(false); poseGuideRef.current?.stop(); setStep('welcome'); }}>Exit</button>}
@@ -1798,6 +1796,7 @@ function GuestApp() {
             <>
               <div className="capture-camera-arrow" aria-hidden="true">
                 <ArrowUp strokeWidth={2.25} />
+                <span className="capture-camera-label">LOOK HERE!</span>
               </div>
               <div className="countdown">{countdown}</div>
             </>
@@ -3705,6 +3704,7 @@ function AdminApp() {
                           <label>Photo message
                             <DraftInput value={mode === 'fun' ? shot.message : shot.normalMessage ?? NORMAL_PHOTO_MESSAGE}
                               onSave={value => saveWorkflowShot(shotIndex, mode === 'fun' ? { message: value } : { normalMessage: value })} />
+                            <small>Type {'\\n'} to start a new line.</small>
                           </label>
                           <AudioCueCard
                             cue={cue ? { ...cue, label: `${label} photo ${shotIndex + 1} voice` } : undefined}

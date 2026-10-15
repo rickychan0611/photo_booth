@@ -17,20 +17,20 @@
     "durationMs": 7030,
     "captions": [
       {
-        "text": "Face each other",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Face each other"
       },
       {
-        "text": "Hold both hands tight",
-        "timeMs": 2010
+        "timeMs": 1280,
+        "text": "Hold both hands tight"
       },
       {
-        "text": "Lean back together",
-        "timeMs": 4020
+        "timeMs": 3020,
+        "text": "Lean back together"
       },
       {
-        "text": "Balance and smile",
-        "timeMs": 6030
+        "timeMs": 4420,
+        "text": "Balance and smile"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/lovers-full-trust-lean-70a94198487f02.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6030,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Face each other"
+        },
+        {
+          "timeMs": 1280,
+          "text": "Hold both hands tight"
+        },
+        {
+          "timeMs": 3020,
+          "text": "Lean back together"
+        },
+        {
+          "timeMs": 4420,
+          "text": "Balance and smile"
+        }
+      ]
+    }
   }
 }

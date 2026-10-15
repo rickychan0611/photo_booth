@@ -17,20 +17,20 @@
     "durationMs": 6720,
     "captions": [
       {
-        "text": "Start serious",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Start serious"
       },
       {
-        "text": "Hold one beat",
-        "timeMs": 1907
+        "timeMs": 1620,
+        "text": "Hold one beat"
       },
       {
-        "text": "Let one smile slip",
-        "timeMs": 3813
+        "timeMs": 2920,
+        "text": "Let one smile slip"
       },
       {
-        "text": "Hold the mix",
-        "timeMs": 5720
+        "timeMs": 4580,
+        "text": "Hold the mix"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-half-cool-stare-6fb896484fb97b.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5720,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Start serious"
+        },
+        {
+          "timeMs": 1620,
+          "text": "Hold one beat"
+        },
+        {
+          "timeMs": 2920,
+          "text": "Let one smile slip"
+        },
+        {
+          "timeMs": 4580,
+          "text": "Hold the mix"
+        }
+      ]
+    }
   }
 }

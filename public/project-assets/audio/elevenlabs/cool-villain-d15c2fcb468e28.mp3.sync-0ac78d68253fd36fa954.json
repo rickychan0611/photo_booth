@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5720,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Turn into shadow"
+    },
+    {
+      "timeMs": 1520,
+      "text": "Raise one hand"
+    },
+    {
+      "timeMs": 2980,
+      "text": "Lower your chin"
+    },
+    {
+      "timeMs": 4200,
+      "text": "Give a villain smirk"
+    }
+  ]
+}

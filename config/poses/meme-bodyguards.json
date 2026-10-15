@@ -49,20 +49,20 @@
     "durationMs": 9910,
     "captions": [
       {
-        "text": "One star takes the middle",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "One star takes the middle"
       },
       {
-        "text": "Everyone else folds their arms",
-        "timeMs": 2970
+        "timeMs": 2200,
+        "text": "Everyone else folds their arms"
       },
       {
-        "text": "Star smiles, guards stay serious",
-        "timeMs": 5940
+        "timeMs": 4360,
+        "text": "Star smiles, guards stay serious"
       },
       {
-        "text": "Hold your celebrity squad",
-        "timeMs": 8910
+        "timeMs": 7160,
+        "text": "Hold your celebrity squad"
       }
     ]
   },
@@ -75,6 +75,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-bodyguards-e2fbc8c35adb67.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 8910,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "One star takes the middle"
+        },
+        {
+          "timeMs": 2200,
+          "text": "Everyone else folds their arms"
+        },
+        {
+          "timeMs": 4360,
+          "text": "Star smiles, guards stay serious"
+        },
+        {
+          "timeMs": 7160,
+          "text": "Hold your celebrity squad"
+        }
+      ]
+    }
   }
 }

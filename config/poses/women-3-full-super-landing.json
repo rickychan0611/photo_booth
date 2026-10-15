@@ -17,20 +17,20 @@
     "durationMs": 6330,
     "captions": [
       {
-        "text": "Crouch low",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Crouch low"
       },
       {
-        "text": "One arm back",
-        "timeMs": 1777
+        "timeMs": 1240,
+        "text": "One arm back"
       },
       {
-        "text": "Pop up into heroes",
-        "timeMs": 3553
+        "timeMs": 2340,
+        "text": "Pop up into heroes"
       },
       {
-        "text": "Freeze the landing",
-        "timeMs": 5330
+        "timeMs": 4040,
+        "text": "Freeze the landing"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-3-full-super-landing-3d17c316cfd62e.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5330,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Crouch low"
+        },
+        {
+          "timeMs": 1240,
+          "text": "One arm back"
+        },
+        {
+          "timeMs": 2340,
+          "text": "Pop up into heroes"
+        },
+        {
+          "timeMs": 4040,
+          "text": "Freeze the landing"
+        }
+      ]
+    }
   }
 }

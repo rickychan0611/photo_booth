@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6110,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Puppet master in front"
+    },
+    {
+      "timeMs": 1740,
+      "text": "Adults become puppets"
+    },
+    {
+      "timeMs": 3540,
+      "text": "Bend strange angles"
+    },
+    {
+      "timeMs": 5400,
+      "text": "Freeze!"
+    }
+  ]
+}

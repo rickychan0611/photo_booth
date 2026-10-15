@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6610,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Outside guests frame"
+    },
+    {
+      "timeMs": 1960,
+      "text": "Inside guests move close"
+    },
+    {
+      "timeMs": 4100,
+      "text": "Build the picture"
+    },
+    {
+      "timeMs": 5340,
+      "text": "Everyone reacts"
+    }
+  ]
+}

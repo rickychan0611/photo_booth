@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5960,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "One tells a tiny story"
+    },
+    {
+      "timeMs": 2200,
+      "text": "The others break"
+    },
+    {
+      "timeMs": 3560,
+      "text": "Hands over mouths"
+    },
+    {
+      "timeMs": 4800,
+      "text": "Hold the laugh"
+    }
+  ]
+}

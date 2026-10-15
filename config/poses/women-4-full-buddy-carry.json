@@ -17,20 +17,20 @@
     "durationMs": 6880,
     "captions": [
       {
-        "text": "Pair up",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Pair up"
       },
       {
-        "text": "Playful lifts or leans",
-        "timeMs": 1960
+        "timeMs": 1040,
+        "text": "Playful lifts or leans"
       },
       {
-        "text": "Kick a free foot",
-        "timeMs": 3920
+        "timeMs": 2980,
+        "text": "Kick a free foot"
       },
       {
-        "text": "Laugh and freeze",
-        "timeMs": 5880
+        "timeMs": 4280,
+        "text": "Laugh and freeze"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-4-full-buddy-carry-626c8ee7156f6c.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5880,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Pair up"
+        },
+        {
+          "timeMs": 1040,
+          "text": "Playful lifts or leans"
+        },
+        {
+          "timeMs": 2980,
+          "text": "Kick a free foot"
+        },
+        {
+          "timeMs": 4280,
+          "text": "Laugh and freeze"
+        }
+      ]
+    }
   }
 }

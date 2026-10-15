@@ -16,20 +16,20 @@
     "durationMs": 7840,
     "captions": [
       {
-        "text": "Star takes the center",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Star takes the center"
       },
       {
-        "text": "Bodyguard steps close",
-        "timeMs": 2280
+        "timeMs": 1860,
+        "text": "Bodyguard steps close"
       },
       {
-        "text": "Paparazzi aims",
-        "timeMs": 4560
+        "timeMs": 3540,
+        "text": "Paparazzi aims"
       },
       {
-        "text": "Fan loses control",
-        "timeMs": 6840
+        "timeMs": 5140,
+        "text": "Fan loses control"
       }
     ]
   },
@@ -73,6 +73,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/red-carpet-drama-four-874b6d8cb3a003.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6840,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Star takes the center"
+        },
+        {
+          "timeMs": 1860,
+          "text": "Bodyguard steps close"
+        },
+        {
+          "timeMs": 3540,
+          "text": "Paparazzi aims"
+        },
+        {
+          "timeMs": 5140,
+          "text": "Fan loses control"
+        }
+      ]
+    }
   }
 }

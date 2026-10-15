@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5720,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Start serious"
+    },
+    {
+      "timeMs": 1620,
+      "text": "Hold one beat"
+    },
+    {
+      "timeMs": 2920,
+      "text": "Let one smile slip"
+    },
+    {
+      "timeMs": 4580,
+      "text": "Hold the mix"
+    }
+  ]
+}

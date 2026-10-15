@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5960,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "One person kneels"
+    },
+    {
+      "timeMs": 1620,
+      "text": "Present the ring"
+    },
+    {
+      "timeMs": 2900,
+      "text": "React with both hands"
+    },
+    {
+      "timeMs": 4680,
+      "text": "Big surprise!"
+    }
+  ]
+}

@@ -16,20 +16,20 @@
     "durationMs": 6150,
     "captions": [
       {
-        "text": "Turn your body",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Turn your body"
       },
       {
-        "text": "Bend one knee",
-        "timeMs": 1717
+        "timeMs": 1480,
+        "text": "Bend one knee"
       },
       {
-        "text": "Hand near pocket",
-        "timeMs": 3433
+        "timeMs": 2680,
+        "text": "Hand near pocket"
       },
       {
-        "text": "Give a small smirk",
-        "timeMs": 5150
+        "timeMs": 3960,
+        "text": "Give a small smirk"
       }
     ]
   },
@@ -60,6 +60,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/pocket-angle-7acb7348869bb1.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5150,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Turn your body"
+        },
+        {
+          "timeMs": 1480,
+          "text": "Bend one knee"
+        },
+        {
+          "timeMs": 2680,
+          "text": "Hand near pocket"
+        },
+        {
+          "timeMs": 3960,
+          "text": "Give a small smirk"
+        }
+      ]
+    }
   }
 }

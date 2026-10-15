@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5490,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Stand side by side"
+    },
+    {
+      "timeMs": 1860,
+      "text": "Wrap an arm around"
+    },
+    {
+      "timeMs": 3340,
+      "text": "Sway once"
+    },
+    {
+      "timeMs": 4520,
+      "text": "Cheek to cheek"
+    }
+  ]
+}

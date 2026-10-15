@@ -49,6 +49,7 @@ const cueVolume = (settings: AppSettings, cue: AudioCue) =>
 // Editor transport shares the existing cue registry, channel levels and cleanup.
 export function seekAudioCue(id: string, seconds: number) { const audio = activeAudio.get(id); if (audio && Number.isFinite(seconds)) audio.currentTime = Math.max(0, Math.min(Number.isFinite(audio.duration) ? audio.duration : seconds, seconds)); }
 export function pauseAudioCue(id: string) { activeAudio.get(id)?.pause(); }
+export function getAudioCueElement(id: string) { return activeAudio.get(id) ?? null; }
 export async function resumeAudioCue(id: string) { await activeAudio.get(id)?.play(); }
 
 export const stopAudioCue = (cueId: string) => {

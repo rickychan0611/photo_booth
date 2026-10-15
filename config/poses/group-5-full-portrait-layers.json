@@ -17,20 +17,20 @@
     "durationMs": 6720,
     "captions": [
       {
-        "text": "Tallest in the back",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Tallest in the back"
       },
       {
-        "text": "Shortest in front",
-        "timeMs": 1907
+        "timeMs": 1520,
+        "text": "Shortest in front"
       },
       {
-        "text": "Hands relaxed",
-        "timeMs": 3813
+        "timeMs": 2920,
+        "text": "Hands relaxed"
       },
       {
-        "text": "One warm portrait",
-        "timeMs": 5720
+        "timeMs": 4220,
+        "text": "One warm portrait"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-full-portrait-layers-e718aeb54b7923.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5720,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Tallest in the back"
+        },
+        {
+          "timeMs": 1520,
+          "text": "Shortest in front"
+        },
+        {
+          "timeMs": 2920,
+          "text": "Hands relaxed"
+        },
+        {
+          "timeMs": 4220,
+          "text": "One warm portrait"
+        }
+      ]
+    }
   }
 }

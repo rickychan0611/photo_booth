@@ -16,20 +16,20 @@
     "durationMs": 6800,
     "captions": [
       {
-        "text": "Lift your chest",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Lift your chest"
       },
       {
-        "text": "Throw hands upward",
-        "timeMs": 1933
+        "timeMs": 1440,
+        "text": "Throw hands upward"
       },
       {
-        "text": "Tip your head back",
-        "timeMs": 3867
+        "timeMs": 2980,
+        "text": "Tip your head back"
       },
       {
-        "text": "Maximum drama!",
-        "timeMs": 5800
+        "timeMs": 4340,
+        "text": "Maximum drama!"
       }
     ]
   },
@@ -60,6 +60,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/drama-queen-dbce3fd98f9d7d.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5800,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Lift your chest"
+        },
+        {
+          "timeMs": 1440,
+          "text": "Throw hands upward"
+        },
+        {
+          "timeMs": 2980,
+          "text": "Tip your head back"
+        },
+        {
+          "timeMs": 4340,
+          "text": "Maximum drama!"
+        }
+      ]
+    }
   }
 }

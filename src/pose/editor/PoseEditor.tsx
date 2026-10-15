@@ -1,7 +1,8 @@
+import { applySpeechTiming, hasMatchingSpeechTiming } from '../../../electron/poseAlignment';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { Mic } from 'lucide-react';
 import type { AppSettings } from '../../types';
-import { pauseAudioCue, playAudioCueObject, resumeAudioCue, seekAudioCue, stopAudioCue } from '../../audio';
+import { getAudioCueElement, pauseAudioCue, playAudioCueObject, resumeAudioCue, seekAudioCue, stopAudioCue } from '../../audio';
 import { isBundledPoseAsset, resolvePoseAsset } from '../assets';
 import { loadPhotoGuideCatalog } from '../repository';
 import { BUNDLED_SCENES, PHOTO_GUIDE_SCENES, captionAt, sceneMatches } from '../scenes';
@@ -85,6 +86,9 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
   }, [catalog, libraryCategory, librarySearch]);
   const caption = captionAt(draft, time).caption;
   const [narrationScript, setNarrationScript] = useState('');
+  const [syncingAll, setSyncingAll] = useState(false);
+  const cancelSync = useRef(false);
+  useEffect(() => () => { cancelSync.current = true; }, []);
   const refresh = async () => { const result = await loadPhotoGuideCatalog(); setCatalog(result.poses); if (result.errors.length) setMessage(result.errors.join('\n')); };
   useEffect(() => { void refresh(); }, []);
   useLayoutEffect(() => {
@@ -138,16 +142,22 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
   useEffect(() => {
     if (!playing) return;
     let active = true, frame = 0, audioStarted = false, audioPending = false, lastRender = -100;
+    let previewAudio: HTMLAudioElement | null = null, endedAt: number | null = null;
     const from = time >= draft.animation.durationMs ? 0 : time, began = performance.now();
     const tick = () => {
       if (!active) return;
-      const next = Math.min(draft.animation.durationMs, from + performance.now() - began);
+      let next = Math.min(draft.animation.durationMs, from + performance.now() - began);
+      if (audioPending && !audioStarted) next = from;
+      if (previewAudio?.currentSrc && !previewAudio.error && Number.isFinite(previewAudio.duration)) {
+        if (previewAudio.ended && endedAt === null) endedAt = performance.now();
+        next = Math.min(draft.animation.durationMs, (draft.audio?.startMs ?? 0) + previewAudio.currentTime * 1000 + (endedAt === null ? 0 : performance.now() - endedAt));
+      }
       if (narration.dataUrl && draft.audio && settings.audio.enabled && !audioStarted && !audioPending && next >= (draft.audio.startMs ?? 0)) {
         audioPending = true;
         void playAudioCueObject(settings, { id: CUE, label: draft.name, mode: 'mp3', channel: 'voice', text: '', filePath: draft.audio.filePath, enabled: true, loop: false, volume: 1, updatedAt: '' }, '', narration.dataUrl).then(async () => {
           if (!active) { pauseAudioCue(CUE); return; }
-          seekAudioCue(CUE, Math.max(0, from + performance.now() - began - (draft.audio?.startMs ?? 0)) / 1000); await resumeAudioCue(CUE); audioStarted = true;
-        }).catch(error => setMessage(String(error)));
+          seekAudioCue(CUE, Math.max(0, from - (draft.audio?.startMs ?? 0)) / 1000); await resumeAudioCue(CUE); previewAudio = getAudioCueElement(CUE); audioStarted = true; audioPending = false;
+        }).catch(error => { audioStarted = true; audioPending = false; setMessage(String(error)); });
       }
       if (next - lastRender >= 32 || next === draft.animation.durationMs) { setTime(Math.round(next)); lastRender = next; }
       if (next >= draft.animation.durationMs) { setPlaying(false); pauseAudioCue(CUE); return; }
@@ -174,7 +184,7 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
   const write = async (action: () => Promise<unknown>, success: string) => { setBusy(true); try { await action(); setMessage(success); } catch (error) { setMessage(String(error)); } finally { setBusy(false); } };
   const save = () => write(async () => {
     let scene = validateScene(cloneScene(draft));
-    if (narration.durationMs && scene.audio) scene = fitSceneToNarration(scene, narration.durationMs);
+    scene = fitSceneToNarration(scene, narration.durationMs);
     const stored = await window.photoBooth.savePose(scene); setDraft(stored); setSaved(cloneScene(stored)); await refresh();
   }, 'Pose saved. It will be available next session.');
   const updatePoseGenerator = async (provider: typeof aiProvider, patch: Partial<{ apiUrl: string; model: string }> = {}) => {
@@ -195,14 +205,49 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
   const generateNarration = async () => {
     stopPreview(); stopAudioCue(CUE); setBusy(true); setNarrationMessage('Generating narration with ElevenLabs…'); setMessage('');
     try {
-      const result = await window.photoBooth.generatePoseNarration({ poseId: draft.id, text: narrationScript.trim() });
+      const result = await window.photoBooth.generatePoseNarration({ poseId: draft.id, text: narrationScript.trim(), captions: draft.animation.captions.map(caption => spokenCue(caption.text)).filter((text, index, all) => text && all.indexOf(text) === index) });
       const audio = await readNarration(result.filePath);
-      apply(scene => fitSceneToNarration({ ...scene, audio: { filePath: result.filePath, startMs: 0, markers: [] } }, audio.durationMs));
+      if (!result.speechTiming) throw new Error('Speech timestamps were not returned. Try syncing captions for this recording.');
+      apply(scene => applySpeechTiming({ ...scene, audio: { filePath: result.filePath, startMs: 0, markers: [] } }, result.speechTiming!));
       setNarration(audio);
       const success = `${result.cached ? 'Loaded cached' : 'Generated'} narration: ${result.name}. Pose timing and captions were set automatically.`;
       setNarrationMessage(success); setMessage(success);
     } catch (error) { const failure = error instanceof Error ? error.message : String(error); setNarrationMessage(failure); setMessage(failure); }
     finally { setBusy(false); }
+  };
+  const syncCaptions = async () => {
+    stopPreview(); setBusy(true); setNarrationMessage('Matching captions to the saved recording…');
+    try {
+      const next = await window.photoBooth.syncPoseNarration(cloneScene(draft));
+      apply(() => next);
+      setNarrationMessage('Captions synced to speech. Save the pose to keep the timing.');
+    } catch (error) { setNarrationMessage(error instanceof Error ? error.message : String(error)); }
+    finally { setBusy(false); }
+  };
+  const syncAllCaptions = async () => {
+    if (busy || syncingAll) return;
+    cancelSync.current = false; setSyncingAll(true); setBusy(true);
+    let synced = 0, skipped = 0;
+    const failures: string[] = [];
+    try {
+      const library = await loadPhotoGuideCatalog();
+      for (const [index, scene] of library.poses.entries()) {
+        if (cancelSync.current) break;
+        if (hasMatchingSpeechTiming(scene)) { skipped++; continue; }
+        setMessage(`Syncing captions ${index + 1}/${library.poses.length}: ${scene.name}`);
+        try {
+          const next = await window.photoBooth.syncPoseNarration(scene);
+          await window.photoBooth.savePose(next); synced++;
+        } catch (error) {
+          const detail = error instanceof Error ? error.message : String(error);
+          failures.push(`${scene.name}: ${detail}`);
+          if (/401|402|403|permission|API key|quota/i.test(detail)) break;
+        }
+      }
+      await refresh();
+      setMessage(`${cancelSync.current ? 'Stopped. ' : ''}${synced} poses synced; ${skipped} already synced; ${failures.length} failed.${failures.length ? '\n' + failures.join('\n') : ''}`);
+    } catch (error) { setMessage(error instanceof Error ? error.message : String(error)); }
+    finally { setSyncingAll(false); setBusy(false); }
   };
   const playNarration = async () => {
     if (!draft.audio || !narration.dataUrl) return;
@@ -221,10 +266,12 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
     <div className="pose-library-filters">
       <input aria-label="Search poses" value={librarySearch} onChange={event => setLibrarySearch(event.target.value)} placeholder="Search poses" />
       <select aria-label="Pose category" value={libraryCategory} onChange={event => setLibraryCategory(event.target.value)}><option value="all">All categories</option>{libraryCategories.map(category => <option key={category} value={category}>{category}</option>)}</select>
-      <button onClick={() => openScene(blankPose())}>New</button>
+      <button disabled={busy} onClick={() => openScene(blankPose())}>New</button>
+      <button disabled={busy} onClick={() => void syncAllCaptions()}>Sync all captions</button>
+      {syncingAll && <button onClick={() => { cancelSync.current = true; }}>Stop after current pose</button>}
     </div>
     {message ? <p className="pose-editor-message" role="status">{message}</p> : null}
-    {visibleCatalog.length ? <div className="pose-library-list">{visibleCatalog.map(scene => <PoseGalleryCard key={scene.id} scene={scene} onOpen={() => openScene(scene)} />)}</div> : <p className="pose-gallery-empty">No poses match this filter.</p>}
+    {visibleCatalog.length ? <div className="pose-library-list">{visibleCatalog.map(scene => <PoseGalleryCard key={scene.id} scene={scene} onOpen={() => { if (!busy) openScene(scene); }} />)}</div> : <p className="pose-gallery-empty">No poses match this filter.</p>}
   </div>;
 
   return <>
@@ -315,13 +362,13 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
             <div className="pose-caption-list">{draft.animation.captions.map((caption, index) => <div className="pose-caption-row" key={`${caption.timeMs}-${index}`}>
               <strong className="pose-caption-number">{index + 1}</strong>
               <TextField label="Caption" value={caption.text} onSave={value => { if (value !== caption.text) apply(scene => { scene.animation.captions[index].text = value; return scene; }); }} />
-              <button disabled={draft.animation.captions.length === 1} onClick={() => apply(scene => { scene.animation.captions.splice(index, 1); return narration.durationMs ? fitSceneToNarration(scene, narration.durationMs) : scene; })}>Remove</button>
-            </div>)}<button onClick={() => apply(scene => { scene.animation.captions.push({ timeMs: Math.max(1, scene.animation.durationMs - 1), text: 'New caption' }); return narration.durationMs ? fitSceneToNarration(scene, narration.durationMs) : scene; })}>Add caption</button><p className="pose-timing-note">Caption timing is automatic. Captions are spaced evenly through the narration, followed by a 1 second final-pose hold.</p></div>
+              <button disabled={draft.animation.captions.length === 1} onClick={() => apply(scene => { scene.animation.captions.splice(index, 1); return fitSceneToNarration(scene, narration.durationMs); })}>Remove</button>
+            </div>)}<button onClick={() => apply(scene => { scene.animation.captions.push({ timeMs: Math.max(1, scene.animation.durationMs - 1), text: 'New caption' }); return fitSceneToNarration(scene, narration.durationMs); })}>Add caption</button><p className="pose-timing-note">{hasMatchingSpeechTiming(draft) ? 'Captions follow the spoken phrases. The guide ends one second after narration.' : 'Captions are not speech-aligned yet. Generate narration or use Sync captions to match the recording.'}</p></div>
             <label className="pose-narration-script">Narration script<textarea rows={4} value={narrationScript} readOnly /></label>
-            <div className="pose-editor-actions"><button onClick={() => setNarrationScript(captionScript(draft))}>Build script</button><button className="primary" disabled={busy || !narrationScript.trim()} onClick={() => void generateNarration()}>Generate MP3</button><button disabled={!draft.audio || !narration.dataUrl} onClick={() => void playNarration()}>Play</button><button disabled={!draft.audio} onClick={() => stopAudioCue(CUE)}>Stop</button></div>
+            <div className="pose-editor-actions"><button onClick={() => setNarrationScript(captionScript(draft))}>Build script</button><button className="primary" disabled={busy || !narrationScript.trim()} onClick={() => void generateNarration()}>Generate MP3</button><button disabled={busy || !draft.audio} onClick={() => void syncCaptions()}>Sync captions</button><button disabled={!draft.audio || !narration.dataUrl} onClick={() => void playNarration()}>Play</button><button disabled={!draft.audio} onClick={() => stopAudioCue(CUE)}>Stop</button></div>
             {narrationMessage ? <p className="pose-narration-status" role="status">{narrationMessage}</p> : null}
             <p className="pose-audio-path">{draft.audio?.filePath ?? 'No narration assigned'}</p><div className="pose-editor-actions"><button aria-label="Assign audio file" onClick={() => void write(async () => { const file = await window.photoBooth.importPoseAudio(); if (file) { const audio = await readNarration(file.filePath); apply(scene => fitSceneToNarration({ ...scene, audio: { filePath: file.filePath, startMs: 0, markers: [] } }, audio.durationMs)); setNarration(audio); } }, 'Narration selected. Pose timing and captions were set automatically.')}>Assign audio</button><button disabled={!draft.audio} onClick={() => apply(scene => { delete scene.audio; scene.animation.captions.forEach(caption => { delete caption.markerId; delete caption.markerOffsetMs; }); return scene; })}>Remove audio</button></div>
-            {draft.audio && narration.durationMs ? <p className="pose-timing-note">{(narration.durationMs / 1000).toFixed(1)}s narration + 1.0s final hold = {(draft.animation.durationMs / 1000).toFixed(1)}s pose.</p> : null}
+            {draft.audio && narration.durationMs ? <p className="pose-timing-note">{(narration.durationMs / 1000).toFixed(1)}s narration · {(draft.animation.durationMs / 1000).toFixed(1)}s guide, including a 1 second final hold.</p> : null}
           </div>
         </details>
 

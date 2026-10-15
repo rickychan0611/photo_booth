@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 4440,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Link elbows"
+    },
+    {
+      "timeMs": 1380,
+      "text": "Same leg ready"
+    },
+    {
+      "timeMs": 2520,
+      "text": "Kick once"
+    },
+    {
+      "timeMs": 3520,
+      "text": "Hold it up"
+    }
+  ]
+}

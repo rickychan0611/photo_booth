@@ -12,6 +12,8 @@ const { captionAt, PHOTO_GUIDE_SCENES } = require('../src/pose/scenes.ts');
 const { validateScene } = require('../src/pose/validation.ts');
 const { createPoseAudioHooks } = require('../src/pose/audio.ts');
 const { fitSceneToNarration } = require('../src/pose/editor/operations.ts');
+const { withNarration } = require('../src/pose/scenes.ts');
+const { applySpeechTiming } = require('../electron/poseAlignment.ts');
 const pose = PHOTO_GUIDE_SCENES.find(scene => scene.id === 'peace-and-wink');
 const copy = () => structuredClone(pose);
 const flush = async () => { for (let i = 0; i < 8; i++) await Promise.resolve(); };
@@ -36,7 +38,7 @@ test('photo guides teach on the scene clock and hold the final caption', () => {
   assert.equal(captionAt(pose, 9000).elapsedMs, 7000);
 });
 
-test('narration automatically sets pose duration and evenly spaces captions', () => {
+test('unaligned narration temporarily uses evenly spaced captions', () => {
   const scene = copy();
   scene.audio = { filePath: 'C:\\poses\\peace.mp3', startMs: 700, markers: [{ id: 'old', timeMs: 900 }] };
   scene.animation.captions = [
@@ -50,6 +52,51 @@ test('narration automatically sets pose duration and evenly spaces captions', ()
   assert.equal(fitted.audio.startMs, 0);
   assert.deepEqual(fitted.audio.markers, []);
   assert.equal('markerId' in fitted.animation.captions[0], false);
+});
+
+function alignedPose() {
+  const scene = copy();
+  scene.audio = { filePath: 'saved.mp3', startMs: 0, markers: [] };
+  return applySpeechTiming(scene, { version: 1, audioDurationMs: 4200,
+    captions: scene.animation.captions.map((caption, index) => ({ text: caption.text, timeMs: [0, 900, 1700, 2800][index] })) });
+}
+
+test('saved speech timestamps survive catalog loading and editor saves', () => {
+  const aligned = alignedPose();
+  const loaded = withNarration(aligned);
+  assert.equal(loaded.animation.durationMs, 5200);
+  assert.deepEqual(loaded.animation.captions.map(caption => caption.timeMs), [0, 900, 1700, 2800]);
+  assert.equal(captionAt(loaded, 899).caption, loaded.animation.captions[0].text);
+  assert.equal(captionAt(loaded, 900).caption, loaded.animation.captions[1].text);
+  assert.deepEqual(fitSceneToNarration(loaded, 4200), loaded);
+  assert.equal(loaded.animation.captions.length, 4);
+});
+
+test('editing caption wording invalidates old alignment without losing the recording', () => {
+  const aligned = alignedPose();
+  aligned.animation.captions[1].text = 'A changed instruction';
+  const fitted = fitSceneToNarration(aligned, 4200);
+  assert.equal(fitted.audio.speechTiming, undefined);
+  assert.equal(fitted.audio.filePath, 'saved.mp3');
+  assert.equal(fitted.animation.captions[1].text, 'A changed instruction');
+});
+
+test('captions use actual audio time through delays and finish one second after audio', async () => {
+  const clock = new Clock(), frames = [];
+  let position = { timeMs: 0, ended: false }, stops = 0;
+  const scene = alignedPose();
+  const player = new PosePlayer({ clock, onFrame: frame => frames.push(frame),
+    audio: { prepare: async () => {}, start() {}, position: () => position, stop() { stops++; } } });
+  const pending = player.play(scene); await flush();
+  const before = stops;
+  clock.advance(3000);
+  assert.equal(frames.at(-1).elapsedMs, 0);
+  position = { timeMs: 900, ended: false }; clock.advance(10);
+  assert.equal(frames.at(-1).caption, scene.animation.captions[1].text);
+  position = { timeMs: 4200, ended: true }; clock.advance(10);
+  clock.advance(999); assert.equal(stops, before);
+  clock.advance(1); assert.equal(await pending, 'completed');
+  assert.equal(stops, before + 1);
 });
 
 test('validation rejects malformed cutout scenes before they can play', () => {

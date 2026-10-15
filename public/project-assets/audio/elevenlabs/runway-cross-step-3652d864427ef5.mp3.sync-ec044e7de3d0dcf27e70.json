@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5640,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Cross one step"
+    },
+    {
+      "timeMs": 1580,
+      "text": "Lengthen your body"
+    },
+    {
+      "timeMs": 2980,
+      "text": "Relax your arms"
+    },
+    {
+      "timeMs": 4580,
+      "text": "Runway eyes"
+    }
+  ]
+}

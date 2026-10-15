@@ -37,6 +37,7 @@ const api = {
   getPoseNarrationSettings: () => ipcRenderer.invoke('poses:narration-settings:get') as Promise<PoseNarrationSettings>,
   updatePoseNarrationSettings: (settings: PoseNarrationSettingsUpdate) => ipcRenderer.invoke('poses:narration-settings:set', settings) as Promise<PoseNarrationSettings>,
   generatePoseNarration: (request: PoseNarrationGenerateRequest) => ipcRenderer.invoke('poses:narration-generate', request) as Promise<PoseNarrationGenerateResult>,
+  syncPoseNarration: (pose: PoseScene) => ipcRenderer.invoke('poses:narration-sync', pose) as Promise<PoseScene>,
   getSettings: () => ipcRenderer.invoke('settings:get') as Promise<AppSettings>,
   updateSettings: (settings: Partial<AppSettings>) =>
     ipcRenderer.invoke('settings:update', settings) as Promise<AppSettings>,

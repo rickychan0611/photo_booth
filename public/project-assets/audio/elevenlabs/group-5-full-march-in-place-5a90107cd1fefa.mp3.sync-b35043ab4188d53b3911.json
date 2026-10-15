@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 4910,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Knees up together"
+    },
+    {
+      "timeMs": 1560,
+      "text": "Two marches"
+    },
+    {
+      "timeMs": 2700,
+      "text": "Stop mid-step"
+    },
+    {
+      "timeMs": 3940,
+      "text": "Hold the march"
+    }
+  ]
+}

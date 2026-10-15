@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 4990,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Turn toward center"
+    },
+    {
+      "timeMs": 1480,
+      "text": "Point to someone else"
+    },
+    {
+      "timeMs": 2920,
+      "text": "Look at camera"
+    },
+    {
+      "timeMs": 4040,
+      "text": "Who did it?"
+    }
+  ]
+}

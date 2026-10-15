@@ -16,20 +16,20 @@
     "durationMs": 7530,
     "captions": [
       {
-        "text": "Choose the center idol",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Choose the center idol"
       },
       {
-        "text": "Hide behind in layers",
-        "timeMs": 2177
+        "timeMs": 1780,
+        "text": "Hide behind in layers"
       },
       {
-        "text": "Fan every arm outward",
-        "timeMs": 4353
+        "timeMs": 3580,
+        "text": "Fan every arm outward"
       },
       {
-        "text": "Idol face",
-        "timeMs": 6530
+        "timeMs": 5580,
+        "text": "Idol face"
       }
     ]
   },
@@ -77,6 +77,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/many-armed-idol-8667f62be2f186.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6530,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Choose the center idol"
+        },
+        {
+          "timeMs": 1780,
+          "text": "Hide behind in layers"
+        },
+        {
+          "timeMs": 3580,
+          "text": "Fan every arm outward"
+        },
+        {
+          "timeMs": 5580,
+          "text": "Idol face"
+        }
+      ]
+    }
   }
 }

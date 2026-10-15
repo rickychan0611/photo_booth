@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6270,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "One looks hopeful"
+    },
+    {
+      "timeMs": 1600,
+      "text": "The other looks shocked"
+    },
+    {
+      "timeMs": 3400,
+      "text": "Hands on cheeks"
+    },
+    {
+      "timeMs": 4680,
+      "text": "Burst into a grin"
+    }
+  ]
+}

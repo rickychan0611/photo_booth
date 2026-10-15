@@ -16,20 +16,20 @@
     "durationMs": 6330,
     "captions": [
       {
-        "text": "Face each other",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Face each other"
       },
       {
-        "text": "Take battle stances",
-        "timeMs": 1777
+        "timeMs": 1260,
+        "text": "Take battle stances"
       },
       {
-        "text": "Ready your fists",
-        "timeMs": 3553
+        "timeMs": 2920,
+        "text": "Ready your fists"
       },
       {
-        "text": "Rival eyes",
-        "timeMs": 5330
+        "timeMs": 4240,
+        "text": "Rival eyes"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/anime-rivals-0648f04bbd5b63.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5330,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Face each other"
+        },
+        {
+          "timeMs": 1260,
+          "text": "Take battle stances"
+        },
+        {
+          "timeMs": 2920,
+          "text": "Ready your fists"
+        },
+        {
+          "timeMs": 4240,
+          "text": "Rival eyes"
+        }
+      ]
+    }
   }
 }

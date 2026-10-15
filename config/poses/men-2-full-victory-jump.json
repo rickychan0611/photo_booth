@@ -17,20 +17,20 @@
     "durationMs": 6720,
     "captions": [
       {
-        "text": "Wind up",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Wind up"
       },
       {
-        "text": "Jump with fists up",
-        "timeMs": 1907
+        "timeMs": 1240,
+        "text": "Jump with fists up"
       },
       {
-        "text": "Shout the win",
-        "timeMs": 3813
+        "timeMs": 2900,
+        "text": "Shout the win"
       },
       {
-        "text": "Land and hold",
-        "timeMs": 5720
+        "timeMs": 4140,
+        "text": "Land and hold"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/men-2-full-victory-jump-b6ce042e6def9b.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5720,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Wind up"
+        },
+        {
+          "timeMs": 1240,
+          "text": "Jump with fists up"
+        },
+        {
+          "timeMs": 2900,
+          "text": "Shout the win"
+        },
+        {
+          "timeMs": 4140,
+          "text": "Land and hold"
+        }
+      ]
+    }
   }
 }

@@ -16,20 +16,20 @@
     "durationMs": 5830,
     "captions": [
       {
-        "text": "Face each other",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Face each other"
       },
       {
-        "text": "Step close",
-        "timeMs": 1610
+        "timeMs": 1380,
+        "text": "Step close"
       },
       {
-        "text": "Touch foreheads",
-        "timeMs": 3220
+        "timeMs": 2500,
+        "text": "Touch foreheads"
       },
       {
-        "text": "Close your eyes",
-        "timeMs": 4830
+        "timeMs": 3780,
+        "text": "Close your eyes"
       }
     ]
   },
@@ -63,6 +63,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/forehead-touch-f1c9949316e664.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 4830,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Face each other"
+        },
+        {
+          "timeMs": 1380,
+          "text": "Step close"
+        },
+        {
+          "timeMs": 2500,
+          "text": "Touch foreheads"
+        },
+        {
+          "timeMs": 3780,
+          "text": "Close your eyes"
+        }
+      ]
+    }
   }
 }

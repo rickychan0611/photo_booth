@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 7000,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Stand side by side"
+    },
+    {
+      "timeMs": 1940,
+      "text": "Raise your outer arms"
+    },
+    {
+      "timeMs": 3620,
+      "text": "Curve them into one heart"
+    },
+    {
+      "timeMs": 5600,
+      "text": "Hold your big heart"
+    }
+  ]
+}

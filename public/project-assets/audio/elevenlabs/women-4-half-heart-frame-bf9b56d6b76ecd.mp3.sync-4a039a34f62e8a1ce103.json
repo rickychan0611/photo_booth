@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6690,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Outside hands make a heart"
+    },
+    {
+      "timeMs": 2120,
+      "text": "Inside friends pose inside it"
+    },
+    {
+      "timeMs": 4340,
+      "text": "Everyone looks through"
+    },
+    {
+      "timeMs": 5700,
+      "text": "Hold the heart"
+    }
+  ]
+}

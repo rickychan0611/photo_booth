@@ -17,20 +17,20 @@
     "durationMs": 5990,
     "captions": [
       {
-        "text": "Hands ready",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Hands ready"
       },
       {
-        "text": "Gasp together",
-        "timeMs": 1663
+        "timeMs": 1320,
+        "text": "Gasp together"
       },
       {
-        "text": "Eyes wide",
-        "timeMs": 3327
+        "timeMs": 2700,
+        "text": "Eyes wide"
       },
       {
-        "text": "Hold the gasp",
-        "timeMs": 4990
+        "timeMs": 3940,
+        "text": "Hold the gasp"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-half-sync-gasp-01d6b33e914104.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 4990,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Hands ready"
+        },
+        {
+          "timeMs": 1320,
+          "text": "Gasp together"
+        },
+        {
+          "timeMs": 2700,
+          "text": "Eyes wide"
+        },
+        {
+          "timeMs": 3940,
+          "text": "Hold the gasp"
+        }
+      ]
+    }
   }
 }

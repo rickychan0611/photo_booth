@@ -17,20 +17,20 @@
     "durationMs": 6330,
     "captions": [
       {
-        "text": "Lock pinkies",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Lock pinkies"
       },
       {
-        "text": "Bend your knees",
-        "timeMs": 1777
+        "timeMs": 1640,
+        "text": "Bend your knees"
       },
       {
-        "text": "Jump together",
-        "timeMs": 3553
+        "timeMs": 2760,
+        "text": "Jump together"
       },
       {
-        "text": "Land still smiling",
-        "timeMs": 5330
+        "timeMs": 3860,
+        "text": "Land still smiling"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-2-full-pinky-jump-0e278b695a37a3.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5330,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Lock pinkies"
+        },
+        {
+          "timeMs": 1640,
+          "text": "Bend your knees"
+        },
+        {
+          "timeMs": 2760,
+          "text": "Jump together"
+        },
+        {
+          "timeMs": 3860,
+          "text": "Land still smiling"
+        }
+      ]
+    }
   }
 }

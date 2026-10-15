@@ -46,20 +46,20 @@
     "durationMs": 9990,
     "captions": [
       {
-        "text": "Gather close together",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Gather close together"
       },
       {
-        "text": "Each choose a different reaction",
-        "timeMs": 2997
+        "timeMs": 1760,
+        "text": "Each choose a different reaction"
       },
       {
-        "text": "Shock, suspicion, joy or confusion",
-        "timeMs": 5993
+        "timeMs": 3760,
+        "text": "Shock, suspicion, joy or confusion"
       },
       {
-        "text": "Freeze every funny face",
-        "timeMs": 8990
+        "timeMs": 7140,
+        "text": "Freeze every funny face"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-reaction-mix-a203498b1b6caf.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 8990,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Gather close together"
+        },
+        {
+          "timeMs": 1760,
+          "text": "Each choose a different reaction"
+        },
+        {
+          "timeMs": 3760,
+          "text": "Shock, suspicion, joy or confusion"
+        },
+        {
+          "timeMs": 7140,
+          "text": "Freeze every funny face"
+        }
+      ]
+    }
   }
 }

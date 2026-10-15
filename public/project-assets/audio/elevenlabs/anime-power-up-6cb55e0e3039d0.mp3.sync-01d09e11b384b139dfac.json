@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 4830,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Step wide"
+    },
+    {
+      "timeMs": 1420,
+      "text": "Bend your knees"
+    },
+    {
+      "timeMs": 2540,
+      "text": "Clench your fists"
+    },
+    {
+      "timeMs": 3920,
+      "text": "Power up!"
+    }
+  ]
+}

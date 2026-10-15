@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6350,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Stand confidently"
+    },
+    {
+      "timeMs": 1660,
+      "text": "Relax your shoulders"
+    },
+    {
+      "timeMs": 3180,
+      "text": "Freeze your coolest move"
+    },
+    {
+      "timeMs": 5060,
+      "text": "Hold that aura"
+    }
+  ]
+}

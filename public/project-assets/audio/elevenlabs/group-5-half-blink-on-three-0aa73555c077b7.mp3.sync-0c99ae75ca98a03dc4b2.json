@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5490,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Eyes open"
+    },
+    {
+      "timeMs": 1160,
+      "text": "Count together"
+    },
+    {
+      "timeMs": 2340,
+      "text": "Blink once"
+    },
+    {
+      "timeMs": 3540,
+      "text": "Reopen and smile"
+    }
+  ]
+}

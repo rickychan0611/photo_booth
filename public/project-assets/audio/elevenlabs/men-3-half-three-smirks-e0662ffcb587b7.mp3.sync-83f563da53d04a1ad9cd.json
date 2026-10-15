@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 4830,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Lean in a triangle"
+    },
+    {
+      "timeMs": 1800,
+      "text": "Same smirk"
+    },
+    {
+      "timeMs": 2940,
+      "text": "Eyes on the lens"
+    },
+    {
+      "timeMs": 4160,
+      "text": "Hold it"
+    }
+  ]
+}

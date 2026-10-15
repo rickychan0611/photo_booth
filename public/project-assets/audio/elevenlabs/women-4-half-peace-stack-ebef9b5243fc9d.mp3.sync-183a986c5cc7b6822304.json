@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5330,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Four peace signs"
+    },
+    {
+      "timeMs": 1740,
+      "text": "Stack them high"
+    },
+    {
+      "timeMs": 2940,
+      "text": "Smile under them"
+    },
+    {
+      "timeMs": 4160,
+      "text": "Hold the stack"
+    }
+  ]
+}

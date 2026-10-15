@@ -17,20 +17,20 @@
     "durationMs": 6800,
     "captions": [
       {
-        "text": "One crouches",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "One crouches"
       },
       {
-        "text": "The other sits tall",
-        "timeMs": 1933
+        "timeMs": 1480,
+        "text": "The other sits tall"
       },
       {
-        "text": "Both point forward",
-        "timeMs": 3867
+        "timeMs": 3240,
+        "text": "Both point forward"
       },
       {
-        "text": "Hold the joke",
-        "timeMs": 5800
+        "timeMs": 4660,
+        "text": "Hold the joke"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/men-2-full-shoulder-ride-joke-eacfcfbc1fc839.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5800,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "One crouches"
+        },
+        {
+          "timeMs": 1480,
+          "text": "The other sits tall"
+        },
+        {
+          "timeMs": 3240,
+          "text": "Both point forward"
+        },
+        {
+          "timeMs": 4660,
+          "text": "Hold the joke"
+        }
+      ]
+    }
   }
 }

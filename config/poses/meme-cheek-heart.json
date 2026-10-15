@@ -32,20 +32,20 @@
     "durationMs": 7030,
     "captions": [
       {
-        "text": "Curve one hand",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Curve one hand"
       },
       {
-        "text": "Make a half heart",
-        "timeMs": 2010
+        "timeMs": 1560,
+        "text": "Make a half heart"
       },
       {
-        "text": "Rest it against your cheek",
-        "timeMs": 4020
+        "timeMs": 2860,
+        "text": "Rest it against your cheek"
       },
       {
-        "text": "Hold a sweet smile",
-        "timeMs": 6030
+        "timeMs": 4480,
+        "text": "Hold a sweet smile"
       }
     ]
   },
@@ -58,6 +58,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-cheek-heart-5b4dc84621d6fd.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6030,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Curve one hand"
+        },
+        {
+          "timeMs": 1560,
+          "text": "Make a half heart"
+        },
+        {
+          "timeMs": 2860,
+          "text": "Rest it against your cheek"
+        },
+        {
+          "timeMs": 4480,
+          "text": "Hold a sweet smile"
+        }
+      ]
+    }
   }
 }

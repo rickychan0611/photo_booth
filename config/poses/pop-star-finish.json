@@ -16,20 +16,20 @@
     "durationMs": 7430,
     "captions": [
       {
-        "text": "Step to the side",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Step to the side"
       },
       {
-        "text": "Reach one arm high",
-        "timeMs": 2143
+        "timeMs": 1500,
+        "text": "Reach one arm high"
       },
       {
-        "text": "Grab the imaginary mic",
-        "timeMs": 4287
+        "timeMs": 3000,
+        "text": "Grab the imaginary mic"
       },
       {
-        "text": "Big stage smile",
-        "timeMs": 6430
+        "timeMs": 4840,
+        "text": "Big stage smile"
       }
     ]
   },
@@ -59,6 +59,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/pop-star-finish-98e92cbfdb6db9.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6430,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Step to the side"
+        },
+        {
+          "timeMs": 1500,
+          "text": "Reach one arm high"
+        },
+        {
+          "timeMs": 3000,
+          "text": "Grab the imaginary mic"
+        },
+        {
+          "timeMs": 4840,
+          "text": "Big stage smile"
+        }
+      ]
+    }
   }
 }

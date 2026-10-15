@@ -16,20 +16,20 @@
     "durationMs": 6150,
     "captions": [
       {
-        "text": "Raise your hands",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Raise your hands"
       },
       {
-        "text": "Bring them together",
-        "timeMs": 1717
+        "timeMs": 1380,
+        "text": "Bring them together"
       },
       {
-        "text": "Make a heart",
-        "timeMs": 3433
+        "timeMs": 2700,
+        "text": "Make a heart"
       },
       {
-        "text": "Smile through it",
-        "timeMs": 5150
+        "timeMs": 3880,
+        "text": "Smile through it"
       }
     ]
   },
@@ -59,6 +59,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/heart-hands-68a968b3efca39.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5150,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Raise your hands"
+        },
+        {
+          "timeMs": 1380,
+          "text": "Bring them together"
+        },
+        {
+          "timeMs": 2700,
+          "text": "Make a heart"
+        },
+        {
+          "timeMs": 3880,
+          "text": "Smile through it"
+        }
+      ]
+    }
   }
 }

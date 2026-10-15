@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5960,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Run at each other"
+    },
+    {
+      "timeMs": 1540,
+      "text": "Jump into a high five"
+    },
+    {
+      "timeMs": 3260,
+      "text": "Stop exactly there"
+    },
+    {
+      "timeMs": 4880,
+      "text": "Hold the slap"
+    }
+  ]
+}

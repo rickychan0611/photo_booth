@@ -18,20 +18,20 @@
     "durationMs": 7430,
     "captions": [
       {
-        "text": "Grownup plants their feet",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Grownup plants their feet"
       },
       {
-        "text": "Kids stretch out like wings",
-        "timeMs": 2143
+        "timeMs": 2020,
+        "text": "Kids stretch out like wings"
       },
       {
-        "text": "One foot pops",
-        "timeMs": 4287
+        "timeMs": 4040,
+        "text": "One foot pops"
       },
       {
-        "text": "Hold the flight",
-        "timeMs": 6430
+        "timeMs": 5300,
+        "text": "Hold the flight"
       }
     ]
   },
@@ -69,6 +69,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/family-3-full-airplane-kids-ea55e6237d603f.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6430,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Grownup plants their feet"
+        },
+        {
+          "timeMs": 2020,
+          "text": "Kids stretch out like wings"
+        },
+        {
+          "timeMs": 4040,
+          "text": "One foot pops"
+        },
+        {
+          "timeMs": 5300,
+          "text": "Hold the flight"
+        }
+      ]
+    }
   }
 }

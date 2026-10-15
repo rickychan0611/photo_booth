@@ -17,20 +17,20 @@
     "durationMs": 6150,
     "captions": [
       {
-        "text": "Find a face",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Find a face"
       },
       {
-        "text": "Hands freeze",
-        "timeMs": 1717
+        "timeMs": 1240,
+        "text": "Hands freeze"
       },
       {
-        "text": "No wiggling",
-        "timeMs": 3433
+        "timeMs": 2360,
+        "text": "No wiggling"
       },
       {
-        "text": "Hold completely still",
-        "timeMs": 5150
+        "timeMs": 3360,
+        "text": "Hold completely still"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-half-stillness-challenge-cd369a04a65f44.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5150,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Find a face"
+        },
+        {
+          "timeMs": 1240,
+          "text": "Hands freeze"
+        },
+        {
+          "timeMs": 2360,
+          "text": "No wiggling"
+        },
+        {
+          "timeMs": 3360,
+          "text": "Hold completely still"
+        }
+      ]
+    }
   }
 }

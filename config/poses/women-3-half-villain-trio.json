@@ -17,20 +17,20 @@
     "durationMs": 7430,
     "captions": [
       {
-        "text": "Lean in like a council",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Lean in like a council"
       },
       {
-        "text": "One brow up each",
-        "timeMs": 2143
+        "timeMs": 1880,
+        "text": "One brow up each"
       },
       {
-        "text": "Slow evil smile",
-        "timeMs": 4287
+        "timeMs": 3340,
+        "text": "Slow evil smile"
       },
       {
-        "text": "Hold the plot",
-        "timeMs": 6430
+        "timeMs": 5280,
+        "text": "Hold the plot"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-3-half-villain-trio-64a4dbfce9037e.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6430,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Lean in like a council"
+        },
+        {
+          "timeMs": 1880,
+          "text": "One brow up each"
+        },
+        {
+          "timeMs": 3340,
+          "text": "Slow evil smile"
+        },
+        {
+          "timeMs": 5280,
+          "text": "Hold the plot"
+        }
+      ]
+    }
   }
 }

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 7000,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Start a small gesture"
+    },
+    {
+      "timeMs": 1820,
+      "text": "Stop halfway through"
+    },
+    {
+      "timeMs": 3420,
+      "text": "Stare completely blankly"
+    },
+    {
+      "timeMs": 5540,
+      "text": "Hold while you buffer"
+    }
+  ]
+}

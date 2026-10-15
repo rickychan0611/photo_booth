@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 7390,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Tiny hero steps forward"
+    },
+    {
+      "timeMs": 2360,
+      "text": "Villains loom behind"
+    },
+    {
+      "timeMs": 4180,
+      "text": "Hero powers up"
+    },
+    {
+      "timeMs": 5800,
+      "text": "Villains are defeated"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5560,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Walk in pairs"
+    },
+    {
+      "timeMs": 1420,
+      "text": "Swing your arms"
+    },
+    {
+      "timeMs": 2840,
+      "text": "Arrive in a line"
+    },
+    {
+      "timeMs": 4320,
+      "text": "Hold the stroll"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5640,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Lean in a staircase"
+    },
+    {
+      "timeMs": 1720,
+      "text": "Chins almost touching"
+    },
+    {
+      "timeMs": 3500,
+      "text": "Bright eyes"
+    },
+    {
+      "timeMs": 4540,
+      "text": "Hold the stack"
+    }
+  ]
+}

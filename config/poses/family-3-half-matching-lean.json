@@ -17,20 +17,20 @@
     "durationMs": 6800,
     "captions": [
       {
-        "text": "Same shoulder angle",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Same shoulder angle"
       },
       {
-        "text": "Same calm face",
-        "timeMs": 1933
+        "timeMs": 1820,
+        "text": "Same calm face"
       },
       {
-        "text": "Look into the lens",
-        "timeMs": 3867
+        "timeMs": 3240,
+        "text": "Look into the lens"
       },
       {
-        "text": "Hold the lean",
-        "timeMs": 5800
+        "timeMs": 4560,
+        "text": "Hold the lean"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/family-3-half-matching-lean-087838d99277b1.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5800,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Same shoulder angle"
+        },
+        {
+          "timeMs": 1820,
+          "text": "Same calm face"
+        },
+        {
+          "timeMs": 3240,
+          "text": "Look into the lens"
+        },
+        {
+          "timeMs": 4560,
+          "text": "Hold the lean"
+        }
+      ]
+    }
   }
 }

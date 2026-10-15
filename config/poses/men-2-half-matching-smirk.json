@@ -17,20 +17,20 @@
     "durationMs": 5910,
     "captions": [
       {
-        "text": "Same tilt",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Same tilt"
       },
       {
-        "text": "Same squint",
-        "timeMs": 1637
+        "timeMs": 1300,
+        "text": "Same squint"
       },
       {
-        "text": "Same smirk",
-        "timeMs": 3273
+        "timeMs": 2520,
+        "text": "Same smirk"
       },
       {
-        "text": "Do not break",
-        "timeMs": 4910
+        "timeMs": 3700,
+        "text": "Do not break"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/men-2-half-matching-smirk-4e1768a5230f2a.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 4910,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Same tilt"
+        },
+        {
+          "timeMs": 1300,
+          "text": "Same squint"
+        },
+        {
+          "timeMs": 2520,
+          "text": "Same smirk"
+        },
+        {
+          "timeMs": 3700,
+          "text": "Do not break"
+        }
+      ]
+    }
   }
 }

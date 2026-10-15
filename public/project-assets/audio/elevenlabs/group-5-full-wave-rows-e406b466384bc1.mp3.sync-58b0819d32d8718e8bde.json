@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5640,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Back row starts the wave"
+    },
+    {
+      "timeMs": 2040,
+      "text": "Front row follows"
+    },
+    {
+      "timeMs": 3400,
+      "text": "Hands high"
+    },
+    {
+      "timeMs": 4400,
+      "text": "Hold the crest"
+    }
+  ]
+}

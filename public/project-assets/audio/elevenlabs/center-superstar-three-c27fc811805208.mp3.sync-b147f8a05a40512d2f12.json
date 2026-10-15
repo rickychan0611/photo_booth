@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6350,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Center takes the mark"
+    },
+    {
+      "timeMs": 1820,
+      "text": "Sides lean inward"
+    },
+    {
+      "timeMs": 3460,
+      "text": "Present the star"
+    },
+    {
+      "timeMs": 4860,
+      "text": "Star stays cool"
+    }
+  ]
+}

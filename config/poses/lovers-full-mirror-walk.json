@@ -17,20 +17,20 @@
     "durationMs": 6960,
     "captions": [
       {
-        "text": "Walk in the same step",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Walk in the same step"
       },
       {
-        "text": "Match your arm swing",
-        "timeMs": 1987
+        "timeMs": 1860,
+        "text": "Match your arm swing"
       },
       {
-        "text": "Hit the same pose",
-        "timeMs": 3973
+        "timeMs": 3300,
+        "text": "Hit the same pose"
       },
       {
-        "text": "Hold the mirror",
-        "timeMs": 5960
+        "timeMs": 4880,
+        "text": "Hold the mirror"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/lovers-full-mirror-walk-fd8ed8be07e14c.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5960,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Walk in the same step"
+        },
+        {
+          "timeMs": 1860,
+          "text": "Match your arm swing"
+        },
+        {
+          "timeMs": 3300,
+          "text": "Hit the same pose"
+        },
+        {
+          "timeMs": 4880,
+          "text": "Hold the mirror"
+        }
+      ]
+    }
   }
 }

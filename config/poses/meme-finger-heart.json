@@ -36,20 +36,20 @@
     "durationMs": 8630,
     "captions": [
       {
-        "text": "Lift one hand",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Lift one hand"
       },
       {
-        "text": "Cross thumb and index finger",
-        "timeMs": 2543
+        "timeMs": 1620,
+        "text": "Cross thumb and index finger"
       },
       {
-        "text": "Bring the tiny heart near your face",
-        "timeMs": 5087
+        "timeMs": 3620,
+        "text": "Bring the tiny heart near your face"
       },
       {
-        "text": "Smile and hold",
-        "timeMs": 7630
+        "timeMs": 6040,
+        "text": "Smile and hold"
       }
     ]
   },
@@ -62,6 +62,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-finger-heart-da33e5eb452cd8.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 7630,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Lift one hand"
+        },
+        {
+          "timeMs": 1620,
+          "text": "Cross thumb and index finger"
+        },
+        {
+          "timeMs": 3620,
+          "text": "Bring the tiny heart near your face"
+        },
+        {
+          "timeMs": 6040,
+          "text": "Smile and hold"
+        }
+      ]
+    }
   }
 }

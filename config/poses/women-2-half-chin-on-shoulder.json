@@ -17,20 +17,20 @@
     "durationMs": 7030,
     "captions": [
       {
-        "text": "One rests her chin",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "One rests her chin"
       },
       {
-        "text": "The other leans in",
-        "timeMs": 2010
+        "timeMs": 1600,
+        "text": "The other leans in"
       },
       {
-        "text": "Match the smile",
-        "timeMs": 4020
+        "timeMs": 3300,
+        "text": "Match the smile"
       },
       {
-        "text": "Do not look away",
-        "timeMs": 6030
+        "timeMs": 4500,
+        "text": "Do not look away"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-2-half-chin-on-shoulder-04bfad21511a19.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6030,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "One rests her chin"
+        },
+        {
+          "timeMs": 1600,
+          "text": "The other leans in"
+        },
+        {
+          "timeMs": 3300,
+          "text": "Match the smile"
+        },
+        {
+          "timeMs": 4500,
+          "text": "Do not look away"
+        }
+      ]
+    }
   }
 }

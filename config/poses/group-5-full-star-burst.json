@@ -17,20 +17,20 @@
     "durationMs": 6410,
     "captions": [
       {
-        "text": "Cluster tight",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Cluster tight"
       },
       {
-        "text": "Burst one step out",
-        "timeMs": 1803
+        "timeMs": 1440,
+        "text": "Burst one step out"
       },
       {
-        "text": "Arms like a star",
-        "timeMs": 3607
+        "timeMs": 3000,
+        "text": "Arms like a star"
       },
       {
-        "text": "Hold the burst",
-        "timeMs": 5410
+        "timeMs": 4320,
+        "text": "Hold the burst"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-full-star-burst-10c2726466d62d.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5410,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Cluster tight"
+        },
+        {
+          "timeMs": 1440,
+          "text": "Burst one step out"
+        },
+        {
+          "timeMs": 3000,
+          "text": "Arms like a star"
+        },
+        {
+          "timeMs": 4320,
+          "text": "Hold the burst"
+        }
+      ]
+    }
   }
 }

@@ -17,20 +17,20 @@
     "durationMs": 6560,
     "captions": [
       {
-        "text": "Stagger a long line",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Stagger a long line"
       },
       {
-        "text": "One hand on a hip",
-        "timeMs": 1853
+        "timeMs": 2120,
+        "text": "One hand on a hip"
       },
       {
-        "text": "Chin up",
-        "timeMs": 3707
+        "timeMs": 3420,
+        "text": "Chin up"
       },
       {
-        "text": "Hold the arrival",
-        "timeMs": 5560
+        "timeMs": 4260,
+        "text": "Hold the arrival"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-full-red-carpet-line-83628c02e70c81.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5560,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stagger a long line"
+        },
+        {
+          "timeMs": 2120,
+          "text": "One hand on a hip"
+        },
+        {
+          "timeMs": 3420,
+          "text": "Chin up"
+        },
+        {
+          "timeMs": 4260,
+          "text": "Hold the arrival"
+        }
+      ]
+    }
   }
 }

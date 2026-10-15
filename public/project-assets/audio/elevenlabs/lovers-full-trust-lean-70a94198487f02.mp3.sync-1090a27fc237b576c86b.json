@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6030,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Face each other"
+    },
+    {
+      "timeMs": 1280,
+      "text": "Hold both hands tight"
+    },
+    {
+      "timeMs": 3020,
+      "text": "Lean back together"
+    },
+    {
+      "timeMs": 4420,
+      "text": "Balance and smile"
+    }
+  ]
+}

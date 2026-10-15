@@ -17,20 +17,20 @@
     "durationMs": 5910,
     "captions": [
       {
-        "text": "Hands down",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Hands down"
       },
       {
-        "text": "Hit pose one",
-        "timeMs": 1637
+        "timeMs": 1300,
+        "text": "Hit pose one"
       },
       {
-        "text": "Hit pose two",
-        "timeMs": 3273
+        "timeMs": 2500,
+        "text": "Hit pose two"
       },
       {
-        "text": "Freeze together",
-        "timeMs": 4910
+        "timeMs": 3760,
+        "text": "Freeze together"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-4-half-pose-on-beat-c5f37bb48e1a50.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 4910,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Hands down"
+        },
+        {
+          "timeMs": 1300,
+          "text": "Hit pose one"
+        },
+        {
+          "timeMs": 2500,
+          "text": "Hit pose two"
+        },
+        {
+          "timeMs": 3760,
+          "text": "Freeze together"
+        }
+      ]
+    }
   }
 }

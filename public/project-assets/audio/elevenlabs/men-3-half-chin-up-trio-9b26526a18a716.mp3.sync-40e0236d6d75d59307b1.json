@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6350,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Same chin height"
+    },
+    {
+      "timeMs": 1560,
+      "text": "Same stare"
+    },
+    {
+      "timeMs": 2780,
+      "text": "No smiling yet"
+    },
+    {
+      "timeMs": 4120,
+      "text": "Hold, then one smile"
+    }
+  ]
+}

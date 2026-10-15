@@ -17,20 +17,20 @@
     "durationMs": 7610,
     "captions": [
       {
-        "text": "Front row drops to a knee",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Front row drops to a knee"
       },
       {
-        "text": "Back row leans over",
-        "timeMs": 2203
+        "timeMs": 2200,
+        "text": "Back row leans over"
       },
       {
-        "text": "Everyone cracks up",
-        "timeMs": 4407
+        "timeMs": 3920,
+        "text": "Everyone cracks up"
       },
       {
-        "text": "Hold the pile",
-        "timeMs": 6610
+        "timeMs": 5440,
+        "text": "Hold the pile"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-full-laughing-kneel-150d6235832ba2.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6610,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Front row drops to a knee"
+        },
+        {
+          "timeMs": 2200,
+          "text": "Back row leans over"
+        },
+        {
+          "timeMs": 3920,
+          "text": "Everyone cracks up"
+        },
+        {
+          "timeMs": 5440,
+          "text": "Hold the pile"
+        }
+      ]
+    }
   }
 }

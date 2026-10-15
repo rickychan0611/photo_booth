@@ -16,20 +16,20 @@
     "durationMs": 7350,
     "captions": [
       {
-        "text": "Stand shoulder-to-shoulder",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Stand shoulder-to-shoulder"
       },
       {
-        "text": "Mirror your bodies",
-        "timeMs": 2117
+        "timeMs": 2100,
+        "text": "Mirror your bodies"
       },
       {
-        "text": "Match your hands",
-        "timeMs": 4233
+        "timeMs": 3560,
+        "text": "Match your hands"
       },
       {
-        "text": "Twin fashion faces",
-        "timeMs": 6350
+        "timeMs": 4760,
+        "text": "Twin fashion faces"
       }
     ]
   },
@@ -65,6 +65,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/mirror-twins-7c9ce0f65edd3c.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6350,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand shoulder-to-shoulder"
+        },
+        {
+          "timeMs": 2100,
+          "text": "Mirror your bodies"
+        },
+        {
+          "timeMs": 3560,
+          "text": "Match your hands"
+        },
+        {
+          "timeMs": 4760,
+          "text": "Twin fashion faces"
+        }
+      ]
+    }
   }
 }

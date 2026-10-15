@@ -17,20 +17,20 @@
     "durationMs": 7110,
     "captions": [
       {
-        "text": "Stand shoulder to shoulder",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Stand shoulder to shoulder"
       },
       {
-        "text": "One leans her head",
-        "timeMs": 2037
+        "timeMs": 2120,
+        "text": "One leans her head"
       },
       {
-        "text": "The other steadies her",
-        "timeMs": 4073
+        "timeMs": 3400,
+        "text": "The other steadies her"
       },
       {
-        "text": "Soft smiles",
-        "timeMs": 6110
+        "timeMs": 5000,
+        "text": "Soft smiles"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-2-full-lean-on-me-02f69ccd0df5cd.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6110,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand shoulder to shoulder"
+        },
+        {
+          "timeMs": 2120,
+          "text": "One leans her head"
+        },
+        {
+          "timeMs": 3400,
+          "text": "The other steadies her"
+        },
+        {
+          "timeMs": 5000,
+          "text": "Soft smiles"
+        }
+      ]
+    }
   }
 }

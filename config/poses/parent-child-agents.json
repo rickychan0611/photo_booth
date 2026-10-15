@@ -16,20 +16,20 @@
     "durationMs": 7110,
     "captions": [
       {
-        "text": "Stand back-to-back",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Stand back-to-back"
       },
       {
-        "text": "Choose agent poses",
-        "timeMs": 2037
+        "timeMs": 1720,
+        "text": "Choose agent poses"
       },
       {
-        "text": "Set your hands",
-        "timeMs": 4073
+        "timeMs": 3340,
+        "text": "Set your hands"
       },
       {
-        "text": "Secret-agent faces",
-        "timeMs": 6110
+        "timeMs": 4580,
+        "text": "Secret-agent faces"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/parent-child-agents-9fc007fb2adec6.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6110,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand back-to-back"
+        },
+        {
+          "timeMs": 1720,
+          "text": "Choose agent poses"
+        },
+        {
+          "timeMs": 3340,
+          "text": "Set your hands"
+        },
+        {
+          "timeMs": 4580,
+          "text": "Secret-agent faces"
+        }
+      ]
+    }
   }
 }

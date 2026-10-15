@@ -17,20 +17,20 @@
     "durationMs": 6410,
     "captions": [
       {
-        "text": "Clasp hands",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Clasp hands"
       },
       {
-        "text": "Yank into a lean",
-        "timeMs": 1803
+        "timeMs": 1440,
+        "text": "Yank into a lean"
       },
       {
-        "text": "One foot up",
-        "timeMs": 3607
+        "timeMs": 2920,
+        "text": "One foot up"
       },
       {
-        "text": "Freeze the stumble",
-        "timeMs": 5410
+        "timeMs": 3980,
+        "text": "Freeze the stumble"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/men-2-full-bro-pull-e31bb8ade3ca30.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5410,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Clasp hands"
+        },
+        {
+          "timeMs": 1440,
+          "text": "Yank into a lean"
+        },
+        {
+          "timeMs": 2920,
+          "text": "One foot up"
+        },
+        {
+          "timeMs": 3980,
+          "text": "Freeze the stumble"
+        }
+      ]
+    }
   }
 }

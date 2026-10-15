@@ -1,10 +1,12 @@
 export type Timed = { timeMs: number };
-export type PoseAudio = { filePath: string; startMs?: number; markers?: Array<Timed & { id: string }> };
+export type PoseSpeechTiming = { version: 1; audioDurationMs: number; captions: Array<Timed & { text: string }> };
+export type PoseAudio = { filePath: string; startMs?: number; markers?: Array<Timed & { id: string }>; speechTiming?: PoseSpeechTiming };
 
 export interface PoseAudioHooks {
   prepare(pose: PoseScene, signal: AbortSignal): Promise<void>;
   start(pose: PoseScene): void | Promise<void>;
   stop(): void;
+  position?(): { timeMs: number; ended: boolean } | null;
 }
 
 export interface PlaybackClock {
@@ -59,8 +61,8 @@ export type PoseNarrationSettings = {
   direction: string;
 };
 export type PoseNarrationSettingsUpdate = Omit<PoseNarrationSettings, 'configured'> & { apiKey?: string };
-export type PoseNarrationGenerateRequest = { poseId: string; text: string };
-export type PoseNarrationGenerateResult = { filePath: string; name: string; cached: boolean };
+export type PoseNarrationGenerateRequest = { poseId: string; text: string; captions?: string[] };
+export type PoseNarrationGenerateResult = { filePath: string; name: string; cached: boolean; speechTiming?: PoseSpeechTiming };
 export type PoseGuideSettings = { enabled: boolean; selectionEnabled?: boolean; groupCapacity?: number; defaultComposition?: GuestComposition };
 export function normalizePoseGuide(value: Partial<PoseGuideSettings> | undefined): PoseGuideSettings {
   const capacity = Math.max(1, Math.min(30, Math.round(Number(value?.groupCapacity) || 12)));

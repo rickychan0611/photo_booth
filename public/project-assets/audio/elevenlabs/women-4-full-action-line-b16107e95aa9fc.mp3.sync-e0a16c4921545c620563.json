@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5800,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Stagger your heights"
+    },
+    {
+      "timeMs": 1640,
+      "text": "One arm forward each"
+    },
+    {
+      "timeMs": 3240,
+      "text": "Lean into the shot"
+    },
+    {
+      "timeMs": 4540,
+      "text": "Hold the poster"
+    }
+  ]
+}

@@ -16,20 +16,20 @@
     "durationMs": 6150,
     "captions": [
       {
-        "text": "Turn away",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Turn away"
       },
       {
-        "text": "Bring one shoulder back",
-        "timeMs": 1717
+        "timeMs": 1140,
+        "text": "Bring one shoulder back"
       },
       {
-        "text": "Look over it",
-        "timeMs": 3433
+        "timeMs": 2760,
+        "text": "Look over it"
       },
       {
-        "text": "Hold that gaze",
-        "timeMs": 5150
+        "timeMs": 3780,
+        "text": "Hold that gaze"
       }
     ]
   },
@@ -59,6 +59,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/shoulder-turn-29cea25612e719.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5150,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Turn away"
+        },
+        {
+          "timeMs": 1140,
+          "text": "Bring one shoulder back"
+        },
+        {
+          "timeMs": 2760,
+          "text": "Look over it"
+        },
+        {
+          "timeMs": 3780,
+          "text": "Hold that gaze"
+        }
+      ]
+    }
   }
 }

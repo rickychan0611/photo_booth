@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 7550,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "One offers a hand heart"
+    },
+    {
+      "timeMs": 1920,
+      "text": "The other folds their arms"
+    },
+    {
+      "timeMs": 3820,
+      "text": "Add a deadpan stare"
+    },
+    {
+      "timeMs": 5540,
+      "text": "Hold the playful rejection"
+    }
+  ]
+}

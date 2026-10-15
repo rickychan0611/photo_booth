@@ -16,20 +16,20 @@
     "durationMs": 7430,
     "captions": [
       {
-        "text": "Enter the runway",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Enter the runway"
       },
       {
-        "text": "Break your body lines",
-        "timeMs": 2143
+        "timeMs": 1480,
+        "text": "Break your body lines"
       },
       {
-        "text": "Reach like zombies",
-        "timeMs": 4287
+        "timeMs": 3140,
+        "text": "Reach like zombies"
       },
       {
-        "text": "Dead-serious fashion",
-        "timeMs": 6430
+        "timeMs": 4840,
+        "text": "Dead-serious fashion"
       }
     ]
   },
@@ -73,6 +73,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/zombie-fashion-show-707231ebcee0ea.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6430,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Enter the runway"
+        },
+        {
+          "timeMs": 1480,
+          "text": "Break your body lines"
+        },
+        {
+          "timeMs": 3140,
+          "text": "Reach like zombies"
+        },
+        {
+          "timeMs": 4840,
+          "text": "Dead-serious fashion"
+        }
+      ]
+    }
   }
 }

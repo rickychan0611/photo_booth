@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5070,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Step wide"
+    },
+    {
+      "timeMs": 1440,
+      "text": "Stand tall"
+    },
+    {
+      "timeMs": 2600,
+      "text": "Set your fists"
+    },
+    {
+      "timeMs": 3860,
+      "text": "Own the camera"
+    }
+  ]
+}

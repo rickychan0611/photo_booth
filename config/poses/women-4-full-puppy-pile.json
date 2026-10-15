@@ -17,20 +17,20 @@
     "durationMs": 7110,
     "captions": [
       {
-        "text": "Kneel and lean in",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Kneel and lean in"
       },
       {
-        "text": "Stack the hug low",
-        "timeMs": 2037
+        "timeMs": 1980,
+        "text": "Stack the hug low"
       },
       {
-        "text": "Everyone makes a face",
-        "timeMs": 4073
+        "timeMs": 3440,
+        "text": "Everyone makes a face"
       },
       {
-        "text": "Hold the pile",
-        "timeMs": 6110
+        "timeMs": 4960,
+        "text": "Hold the pile"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-4-full-puppy-pile-0df2ae5d72210f.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6110,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Kneel and lean in"
+        },
+        {
+          "timeMs": 1980,
+          "text": "Stack the hug low"
+        },
+        {
+          "timeMs": 3440,
+          "text": "Everyone makes a face"
+        },
+        {
+          "timeMs": 4960,
+          "text": "Hold the pile"
+        }
+      ]
+    }
   }
 }

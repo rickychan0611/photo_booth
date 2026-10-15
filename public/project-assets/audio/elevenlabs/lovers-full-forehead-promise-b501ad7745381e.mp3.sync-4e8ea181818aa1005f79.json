@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5640,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Stand toe to toe"
+    },
+    {
+      "timeMs": 1700,
+      "text": "Hold both hands"
+    },
+    {
+      "timeMs": 3200,
+      "text": "Lean in gently"
+    },
+    {
+      "timeMs": 4580,
+      "text": "Touch foreheads"
+    }
+  ]
+}

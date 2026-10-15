@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6190,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Raise one index finger"
+    },
+    {
+      "timeMs": 2040,
+      "text": "Touch your own cheek"
+    },
+    {
+      "timeMs": 3380,
+      "text": "Smile or pout"
+    },
+    {
+      "timeMs": 4900,
+      "text": "Hold the cheek poke"
+    }
+  ]
+}

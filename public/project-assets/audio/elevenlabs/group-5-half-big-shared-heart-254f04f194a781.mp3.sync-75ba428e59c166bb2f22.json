@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6190,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Outside hands start a heart"
+    },
+    {
+      "timeMs": 2220,
+      "text": "Everyone else tucks inside"
+    },
+    {
+      "timeMs": 4260,
+      "text": "Look through it"
+    },
+    {
+      "timeMs": 5260,
+      "text": "Hold the heart"
+    }
+  ]
+}

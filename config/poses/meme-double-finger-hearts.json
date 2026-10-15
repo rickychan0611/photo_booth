@@ -39,20 +39,20 @@
     "durationMs": 7770,
     "captions": [
       {
-        "text": "Lift both hands",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Lift both hands"
       },
       {
-        "text": "Make two tiny finger hearts",
-        "timeMs": 2257
+        "timeMs": 1720,
+        "text": "Make two tiny finger hearts"
       },
       {
-        "text": "One beside each cheek",
-        "timeMs": 4513
+        "timeMs": 3940,
+        "text": "One beside each cheek"
       },
       {
-        "text": "Smile together",
-        "timeMs": 6770
+        "timeMs": 5620,
+        "text": "Smile together"
       }
     ]
   },
@@ -65,6 +65,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-double-finger-hearts-487856e985f8cc.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6770,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Lift both hands"
+        },
+        {
+          "timeMs": 1720,
+          "text": "Make two tiny finger hearts"
+        },
+        {
+          "timeMs": 3940,
+          "text": "One beside each cheek"
+        },
+        {
+          "timeMs": 5620,
+          "text": "Smile together"
+        }
+      ]
+    }
   }
 }

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 7240,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Choose one friend"
+    },
+    {
+      "timeMs": 1620,
+      "text": "Everyone else points to them"
+    },
+    {
+      "timeMs": 3300,
+      "text": "They look completely confused"
+    },
+    {
+      "timeMs": 5520,
+      "text": "Hold the last brain cell"
+    }
+  ]
+}

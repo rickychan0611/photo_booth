@@ -17,20 +17,20 @@
     "durationMs": 6560,
     "captions": [
       {
-        "text": "Walk in pairs",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Walk in pairs"
       },
       {
-        "text": "Swing your arms",
-        "timeMs": 1853
+        "timeMs": 1420,
+        "text": "Swing your arms"
       },
       {
-        "text": "Arrive in a line",
-        "timeMs": 3707
+        "timeMs": 2840,
+        "text": "Arrive in a line"
       },
       {
-        "text": "Hold the stroll",
-        "timeMs": 5560
+        "timeMs": 4320,
+        "text": "Hold the stroll"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-4-full-promenade-4b7de521881229.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5560,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Walk in pairs"
+        },
+        {
+          "timeMs": 1420,
+          "text": "Swing your arms"
+        },
+        {
+          "timeMs": 2840,
+          "text": "Arrive in a line"
+        },
+        {
+          "timeMs": 4320,
+          "text": "Hold the stroll"
+        }
+      ]
+    }
   }
 }

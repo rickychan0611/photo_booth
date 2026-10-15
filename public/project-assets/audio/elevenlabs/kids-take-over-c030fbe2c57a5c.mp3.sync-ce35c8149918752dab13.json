@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6840,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Kids take the center"
+    },
+    {
+      "timeMs": 1560,
+      "text": "Adults move behind"
+    },
+    {
+      "timeMs": 3380,
+      "text": "Kids act like bosses"
+    },
+    {
+      "timeMs": 5140,
+      "text": "Adults look worried"
+    }
+  ]
+}

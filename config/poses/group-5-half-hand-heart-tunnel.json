@@ -17,20 +17,20 @@
     "durationMs": 6880,
     "captions": [
       {
-        "text": "Hands make a tunnel of hearts",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Hands make a tunnel of hearts"
       },
       {
-        "text": "Faces peek through",
-        "timeMs": 1960
+        "timeMs": 2200,
+        "text": "Faces peek through"
       },
       {
-        "text": "Find the lens",
-        "timeMs": 3920
+        "timeMs": 3640,
+        "text": "Find the lens"
       },
       {
-        "text": "Hold the tunnel",
-        "timeMs": 5880
+        "timeMs": 4720,
+        "text": "Hold the tunnel"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-half-hand-heart-tunnel-1b4a6af403b171.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5880,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Hands make a tunnel of hearts"
+        },
+        {
+          "timeMs": 2200,
+          "text": "Faces peek through"
+        },
+        {
+          "timeMs": 3640,
+          "text": "Find the lens"
+        },
+        {
+          "timeMs": 4720,
+          "text": "Hold the tunnel"
+        }
+      ]
+    }
   }
 }

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5960,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Choose your animals"
+    },
+    {
+      "timeMs": 1420,
+      "text": "Make ears and paws"
+    },
+    {
+      "timeMs": 3080,
+      "text": "Lean into the pack"
+    },
+    {
+      "timeMs": 4640,
+      "text": "Animal faces!"
+    }
+  ]
+}

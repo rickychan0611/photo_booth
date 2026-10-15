@@ -639,6 +639,19 @@ button:disabled {
   display: block;
 }
 
+.capture-camera-label {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 8px;
+  font-size: clamp(20px, 3vw, 32px);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
 @keyframes capture-camera-arrow-bob {
   0%,
   100% {
@@ -1235,7 +1248,8 @@ button:disabled {
 }
 
 .capture-message {
-  font-size: clamp(42px, 7vw, 96px);
+  font-size: clamp(29.4px, 4.9vw, 67.2px);
+  line-height: 1.6;
   padding: 24px;
   transform: translateY(25vh);
   animation: capture-message-fade var(--message-fade-ms, 2s) ease-in-out forwards;

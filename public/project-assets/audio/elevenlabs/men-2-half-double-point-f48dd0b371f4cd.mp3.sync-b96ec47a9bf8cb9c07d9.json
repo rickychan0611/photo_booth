@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5330,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Point at the lens"
+    },
+    {
+      "timeMs": 1420,
+      "text": "Lean in hard"
+    },
+    {
+      "timeMs": 2720,
+      "text": "Eyebrows up"
+    },
+    {
+      "timeMs": 3880,
+      "text": "Hold the accusation"
+    }
+  ]
+}

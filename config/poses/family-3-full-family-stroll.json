@@ -17,20 +17,20 @@
     "durationMs": 6560,
     "captions": [
       {
-        "text": "Walk arm in arm",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Walk arm in arm"
       },
       {
-        "text": "Match your steps",
-        "timeMs": 1853
+        "timeMs": 1600,
+        "text": "Match your steps"
       },
       {
-        "text": "Stop in a line",
-        "timeMs": 3707
+        "timeMs": 3000,
+        "text": "Stop in a line"
       },
       {
-        "text": "Easy smiles",
-        "timeMs": 5560
+        "timeMs": 4300,
+        "text": "Easy smiles"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/family-3-full-family-stroll-8ac9f99c72ae69.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5560,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Walk arm in arm"
+        },
+        {
+          "timeMs": 1600,
+          "text": "Match your steps"
+        },
+        {
+          "timeMs": 3000,
+          "text": "Stop in a line"
+        },
+        {
+          "timeMs": 4300,
+          "text": "Easy smiles"
+        }
+      ]
+    }
   }
 }

@@ -17,20 +17,20 @@
     "durationMs": 8890,
     "captions": [
       {
-        "text": "Cute, cool, shocked, unhinged",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Cute, cool, shocked, unhinged"
       },
       {
-        "text": "Switch on one count",
-        "timeMs": 2630
+        "timeMs": 3640,
+        "text": "Switch on one count"
       },
       {
-        "text": "New face each",
-        "timeMs": 5260
+        "timeMs": 5080,
+        "text": "New face each"
       },
       {
-        "text": "Freeze the wildest",
-        "timeMs": 7890
+        "timeMs": 6360,
+        "text": "Freeze the wildest"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-4-half-expression-parade-aef6d2a4cfd1d6.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 7890,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Cute, cool, shocked, unhinged"
+        },
+        {
+          "timeMs": 3640,
+          "text": "Switch on one count"
+        },
+        {
+          "timeMs": 5080,
+          "text": "New face each"
+        },
+        {
+          "timeMs": 6360,
+          "text": "Freeze the wildest"
+        }
+      ]
+    }
   }
 }

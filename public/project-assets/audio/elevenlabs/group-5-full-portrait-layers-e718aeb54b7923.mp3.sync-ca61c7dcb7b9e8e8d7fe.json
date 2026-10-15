@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5720,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Tallest in the back"
+    },
+    {
+      "timeMs": 1520,
+      "text": "Shortest in front"
+    },
+    {
+      "timeMs": 2920,
+      "text": "Hands relaxed"
+    },
+    {
+      "timeMs": 4220,
+      "text": "One warm portrait"
+    }
+  ]
+}

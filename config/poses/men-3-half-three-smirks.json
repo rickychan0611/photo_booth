@@ -17,20 +17,20 @@
     "durationMs": 5830,
     "captions": [
       {
-        "text": "Lean in a triangle",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Lean in a triangle"
       },
       {
-        "text": "Same smirk",
-        "timeMs": 1610
+        "timeMs": 1800,
+        "text": "Same smirk"
       },
       {
-        "text": "Eyes on the lens",
-        "timeMs": 3220
+        "timeMs": 2940,
+        "text": "Eyes on the lens"
       },
       {
-        "text": "Hold it",
-        "timeMs": 4830
+        "timeMs": 4160,
+        "text": "Hold it"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/men-3-half-three-smirks-e0662ffcb587b7.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 4830,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Lean in a triangle"
+        },
+        {
+          "timeMs": 1800,
+          "text": "Same smirk"
+        },
+        {
+          "timeMs": 2940,
+          "text": "Eyes on the lens"
+        },
+        {
+          "timeMs": 4160,
+          "text": "Hold it"
+        }
+      ]
+    }
   }
 }

@@ -18,20 +18,20 @@
     "durationMs": 7530,
     "captions": [
       {
-        "text": "Kids make a crown with hands",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Kids make a crown with hands"
       },
       {
-        "text": "One child wears it",
-        "timeMs": 2177
+        "timeMs": 2120,
+        "text": "One child wears it"
       },
       {
-        "text": "Grownup steadies the pose",
-        "timeMs": 4353
+        "timeMs": 3560,
+        "text": "Grownup steadies the pose"
       },
       {
-        "text": "Hold the crown",
-        "timeMs": 6530
+        "timeMs": 5380,
+        "text": "Hold the crown"
       }
     ]
   },
@@ -73,6 +73,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/family-4-half-crown-the-kid-153ccaf08550c9.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6530,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Kids make a crown with hands"
+        },
+        {
+          "timeMs": 2120,
+          "text": "One child wears it"
+        },
+        {
+          "timeMs": 3560,
+          "text": "Grownup steadies the pose"
+        },
+        {
+          "timeMs": 5380,
+          "text": "Hold the crown"
+        }
+      ]
+    }
   }
 }

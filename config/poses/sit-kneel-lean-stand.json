@@ -16,20 +16,20 @@
     "durationMs": 7190,
     "captions": [
       {
-        "text": "Choose four heights",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Choose four heights"
       },
       {
-        "text": "Build a diagonal",
-        "timeMs": 2063
+        "timeMs": 1660,
+        "text": "Build a diagonal"
       },
       {
-        "text": "Overlap carefully",
-        "timeMs": 4127
+        "timeMs": 3100,
+        "text": "Overlap carefully"
       },
       {
-        "text": "Freeze like fashion",
-        "timeMs": 6190
+        "timeMs": 4680,
+        "text": "Freeze like fashion"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/sit-kneel-lean-stand-6443b68d1c0d3d.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6190,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Choose four heights"
+        },
+        {
+          "timeMs": 1660,
+          "text": "Build a diagonal"
+        },
+        {
+          "timeMs": 3100,
+          "text": "Overlap carefully"
+        },
+        {
+          "timeMs": 4680,
+          "text": "Freeze like fashion"
+        }
+      ]
+    }
   }
 }

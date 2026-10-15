@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5560,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Press cheek to cheek"
+    },
+    {
+      "timeMs": 1600,
+      "text": "Middle friend centers it"
+    },
+    {
+      "timeMs": 3160,
+      "text": "Close your eyes"
+    },
+    {
+      "timeMs": 4440,
+      "text": "Stay in the row"
+    }
+  ]
+}

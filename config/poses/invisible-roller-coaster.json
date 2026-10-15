@@ -16,20 +16,20 @@
     "durationMs": 7530,
     "captions": [
       {
-        "text": "Make one tight row",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Make one tight row"
       },
       {
-        "text": "Grab the safety bar",
-        "timeMs": 2177
+        "timeMs": 1960,
+        "text": "Grab the safety bar"
       },
       {
-        "text": "Lean through the turn",
-        "timeMs": 4353
+        "timeMs": 3380,
+        "text": "Lean through the turn"
       },
       {
-        "text": "Roller-coaster faces!",
-        "timeMs": 6530
+        "timeMs": 4820,
+        "text": "Roller-coaster faces!"
       }
     ]
   },
@@ -73,6 +73,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/invisible-roller-coaster-16973b44d3b68e.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6530,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Make one tight row"
+        },
+        {
+          "timeMs": 1960,
+          "text": "Grab the safety bar"
+        },
+        {
+          "timeMs": 3380,
+          "text": "Lean through the turn"
+        },
+        {
+          "timeMs": 4820,
+          "text": "Roller-coaster faces!"
+        }
+      ]
+    }
   }
 }

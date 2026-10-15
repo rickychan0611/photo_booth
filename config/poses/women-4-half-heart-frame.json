@@ -17,20 +17,20 @@
     "durationMs": 7690,
     "captions": [
       {
-        "text": "Outside hands make a heart",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Outside hands make a heart"
       },
       {
-        "text": "Inside friends pose inside it",
-        "timeMs": 2230
+        "timeMs": 2120,
+        "text": "Inside friends pose inside it"
       },
       {
-        "text": "Everyone looks through",
-        "timeMs": 4460
+        "timeMs": 4340,
+        "text": "Everyone looks through"
       },
       {
-        "text": "Hold the heart",
-        "timeMs": 6690
+        "timeMs": 5700,
+        "text": "Hold the heart"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-4-half-heart-frame-bf9b56d6b76ecd.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6690,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Outside hands make a heart"
+        },
+        {
+          "timeMs": 2120,
+          "text": "Inside friends pose inside it"
+        },
+        {
+          "timeMs": 4340,
+          "text": "Everyone looks through"
+        },
+        {
+          "timeMs": 5700,
+          "text": "Hold the heart"
+        }
+      ]
+    }
   }
 }

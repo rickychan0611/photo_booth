@@ -17,20 +17,20 @@
     "durationMs": 6410,
     "captions": [
       {
-        "text": "Crouch below the frame",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Crouch below the frame"
       },
       {
-        "text": "Wait one beat",
-        "timeMs": 1803
+        "timeMs": 1800,
+        "text": "Wait one beat"
       },
       {
-        "text": "Pop up together",
-        "timeMs": 3607
+        "timeMs": 2920,
+        "text": "Pop up together"
       },
       {
-        "text": "Hold the surprise",
-        "timeMs": 5410
+        "timeMs": 4180,
+        "text": "Hold the surprise"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-full-surprise-pop-8aefb334e324b3.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5410,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Crouch below the frame"
+        },
+        {
+          "timeMs": 1800,
+          "text": "Wait one beat"
+        },
+        {
+          "timeMs": 2920,
+          "text": "Pop up together"
+        },
+        {
+          "timeMs": 4180,
+          "text": "Hold the surprise"
+        }
+      ]
+    }
   }
 }

@@ -17,20 +17,20 @@
     "durationMs": 7270,
     "captions": [
       {
-        "text": "Hands on the shoulders ahead",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Hands on the shoulders ahead"
       },
       {
-        "text": "Two silly steps",
-        "timeMs": 2090
+        "timeMs": 1940,
+        "text": "Two silly steps"
       },
       {
-        "text": "Stop in the line",
-        "timeMs": 4180
+        "timeMs": 3500,
+        "text": "Stop in the line"
       },
       {
-        "text": "Look back and grin",
-        "timeMs": 6270
+        "timeMs": 4720,
+        "text": "Look back and grin"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-full-conga-freeze-40d2ad92dd2f6b.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6270,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Hands on the shoulders ahead"
+        },
+        {
+          "timeMs": 1940,
+          "text": "Two silly steps"
+        },
+        {
+          "timeMs": 3500,
+          "text": "Stop in the line"
+        },
+        {
+          "timeMs": 4720,
+          "text": "Look back and grin"
+        }
+      ]
+    }
   }
 }

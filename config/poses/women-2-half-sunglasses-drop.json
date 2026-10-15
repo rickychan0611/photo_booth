@@ -17,20 +17,20 @@
     "durationMs": 6800,
     "captions": [
       {
-        "text": "Start with glasses on",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Start with glasses on"
       },
       {
-        "text": "Drop them together",
-        "timeMs": 1933
+        "timeMs": 1800,
+        "text": "Drop them together"
       },
       {
-        "text": "One eyebrow up",
-        "timeMs": 3867
+        "timeMs": 3300,
+        "text": "One eyebrow up"
       },
       {
-        "text": "Hold the reveal",
-        "timeMs": 5800
+        "timeMs": 4560,
+        "text": "Hold the reveal"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-2-half-sunglasses-drop-dfc5deed8a6b26.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5800,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Start with glasses on"
+        },
+        {
+          "timeMs": 1800,
+          "text": "Drop them together"
+        },
+        {
+          "timeMs": 3300,
+          "text": "One eyebrow up"
+        },
+        {
+          "timeMs": 4560,
+          "text": "Hold the reveal"
+        }
+      ]
+    }
   }
 }

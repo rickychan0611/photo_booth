@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5800,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Line up tightly"
+    },
+    {
+      "timeMs": 1540,
+      "text": "Look down the line"
+    },
+    {
+      "timeMs": 2820,
+      "text": "Pass the reaction"
+    },
+    {
+      "timeMs": 4120,
+      "text": "Explode at the end"
+    }
+  ]
+}

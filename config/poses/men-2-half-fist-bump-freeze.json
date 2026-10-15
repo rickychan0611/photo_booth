@@ -17,20 +17,20 @@
     "durationMs": 6250,
     "captions": [
       {
-        "text": "Raise your fists",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Raise your fists"
       },
       {
-        "text": "Meet in the middle",
-        "timeMs": 1750
+        "timeMs": 1520,
+        "text": "Meet in the middle"
       },
       {
-        "text": "Stop on contact",
-        "timeMs": 3500
+        "timeMs": 2840,
+        "text": "Stop on contact"
       },
       {
-        "text": "Hold the bump",
-        "timeMs": 5250
+        "timeMs": 4260,
+        "text": "Hold the bump"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/men-2-half-fist-bump-freeze-e05975ab4e2ae7.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5250,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Raise your fists"
+        },
+        {
+          "timeMs": 1520,
+          "text": "Meet in the middle"
+        },
+        {
+          "timeMs": 2840,
+          "text": "Stop on contact"
+        },
+        {
+          "timeMs": 4260,
+          "text": "Hold the bump"
+        }
+      ]
+    }
   }
 }

@@ -17,20 +17,20 @@
     "durationMs": 6490,
     "captions": [
       {
-        "text": "Press cheeks together",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Press cheeks together"
       },
       {
-        "text": "Close your eyes",
-        "timeMs": 1830
+        "timeMs": 1540,
+        "text": "Close your eyes"
       },
       {
-        "text": "Soft little smiles",
-        "timeMs": 3660
+        "timeMs": 2840,
+        "text": "Soft little smiles"
       },
       {
-        "text": "Stay right there",
-        "timeMs": 5490
+        "timeMs": 4380,
+        "text": "Stay right there"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/lovers-half-cheek-press-7a1b72ebc2620f.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5490,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Press cheeks together"
+        },
+        {
+          "timeMs": 1540,
+          "text": "Close your eyes"
+        },
+        {
+          "timeMs": 2840,
+          "text": "Soft little smiles"
+        },
+        {
+          "timeMs": 4380,
+          "text": "Stay right there"
+        }
+      ]
+    }
   }
 }

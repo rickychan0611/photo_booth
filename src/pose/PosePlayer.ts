@@ -47,16 +47,31 @@ export class PosePlayer {
       const clock = this.options.clock ?? browserClock;
       const start = clock.now();
       let audioStarted = false;
+      let audioPending = false, wallOffset = 0, endedAt: number | null = null;
       const markers = new Set<string>();
       return await new Promise<PlaybackResult>((resolve) => {
         this.finish = resolve;
         const tick = () => {
           if (token !== this.generation || controller.signal.aborted) return;
           try {
-            const elapsed = Math.min(pose.animation.durationMs, Math.max(0, clock.now() - start));
+            let elapsed = Math.min(pose.animation.durationMs, Math.max(0, clock.now() - start - wallOffset));
             if (!audioStarted && pose.audio?.filePath && elapsed >= (pose.audio.startMs ?? 0)) {
               audioStarted = true;
-              void Promise.resolve(this.options.audio?.start(pose)).catch((error) => this.options.onError?.(error));
+              const requestedAt = clock.now();
+              const playback = this.options.audio?.start(pose);
+              if (playback && typeof playback.then === 'function') {
+                audioPending = true;
+                void playback.catch(error => this.options.onError?.(error)).finally(() => {
+                  wallOffset += clock.now() - requestedAt;
+                  audioPending = false;
+                });
+              }
+            }
+            const position = audioStarted ? this.options.audio?.position?.() : null;
+            if (audioPending) elapsed = pose.audio?.startMs ?? 0;
+            else if (position) {
+              if (position.ended && endedAt === null) endedAt = clock.now();
+              elapsed = Math.min(pose.animation.durationMs, (pose.audio?.startMs ?? 0) + position.timeMs + (endedAt === null ? 0 : clock.now() - endedAt));
             }
             for (const marker of pose.audio?.markers ?? []) if (elapsed >= marker.timeMs && !markers.has(marker.id)) {
               markers.add(marker.id); this.options.onAudioMarker?.(marker.id);

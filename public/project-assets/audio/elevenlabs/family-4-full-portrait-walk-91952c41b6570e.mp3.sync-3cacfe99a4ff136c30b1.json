@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5560,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Walk toward the camera"
+    },
+    {
+      "timeMs": 1560,
+      "text": "Arms loosely linked"
+    },
+    {
+      "timeMs": 3260,
+      "text": "Stop in a row"
+    },
+    {
+      "timeMs": 4440,
+      "text": "Warm smiles"
+    }
+  ]
+}

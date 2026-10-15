@@ -17,20 +17,20 @@
     "durationMs": 5830,
     "captions": [
       {
-        "text": "Huddle tight",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Huddle tight"
       },
       {
-        "text": "Hands in",
-        "timeMs": 1610
+        "timeMs": 1220,
+        "text": "Hands in"
       },
       {
-        "text": "Break toward the camera",
-        "timeMs": 3220
+        "timeMs": 2280,
+        "text": "Break toward the camera"
       },
       {
-        "text": "Hold the shout",
-        "timeMs": 4830
+        "timeMs": 3680,
+        "text": "Hold the shout"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/men-3-full-huddle-break-0f6dd34112ecc3.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 4830,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Huddle tight"
+        },
+        {
+          "timeMs": 1220,
+          "text": "Hands in"
+        },
+        {
+          "timeMs": 2280,
+          "text": "Break toward the camera"
+        },
+        {
+          "timeMs": 3680,
+          "text": "Hold the shout"
+        }
+      ]
+    }
   }
 }

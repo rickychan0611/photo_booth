@@ -18,20 +18,20 @@
     "durationMs": 6150,
     "captions": [
       {
-        "text": "Kids in the middle",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Kids in the middle"
       },
       {
-        "text": "Grownups wrap in",
-        "timeMs": 1717
+        "timeMs": 1420,
+        "text": "Grownups wrap in"
       },
       {
-        "text": "Cheeks touching",
-        "timeMs": 3433
+        "timeMs": 2920,
+        "text": "Cheeks touching"
       },
       {
-        "text": "Hold the sandwich",
-        "timeMs": 5150
+        "timeMs": 4019,
+        "text": "Hold the sandwich"
       }
     ]
   },
@@ -73,6 +73,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/family-4-half-sandwich-hug-d568a03fa23be4.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5150,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Kids in the middle"
+        },
+        {
+          "timeMs": 1420,
+          "text": "Grownups wrap in"
+        },
+        {
+          "timeMs": 2920,
+          "text": "Cheeks touching"
+        },
+        {
+          "timeMs": 4019,
+          "text": "Hold the sandwich"
+        }
+      ]
+    }
   }
 }

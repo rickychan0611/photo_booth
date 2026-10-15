@@ -17,20 +17,20 @@
     "durationMs": 6800,
     "captions": [
       {
-        "text": "Heads together",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Heads together"
       },
       {
-        "text": "Soft matching smiles",
-        "timeMs": 1933
+        "timeMs": 1460,
+        "text": "Soft matching smiles"
       },
       {
-        "text": "Eyes kind",
-        "timeMs": 3867
+        "timeMs": 3320,
+        "text": "Eyes kind"
       },
       {
-        "text": "Hold the warmth",
-        "timeMs": 5800
+        "timeMs": 4560,
+        "text": "Hold the warmth"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/family-3-half-three-smiles-5b571b83909c1f.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5800,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Heads together"
+        },
+        {
+          "timeMs": 1460,
+          "text": "Soft matching smiles"
+        },
+        {
+          "timeMs": 3320,
+          "text": "Eyes kind"
+        },
+        {
+          "timeMs": 4560,
+          "text": "Hold the warmth"
+        }
+      ]
+    }
   }
 }

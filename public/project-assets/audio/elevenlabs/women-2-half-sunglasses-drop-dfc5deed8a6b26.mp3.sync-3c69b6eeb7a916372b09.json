@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5800,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Start with glasses on"
+    },
+    {
+      "timeMs": 1800,
+      "text": "Drop them together"
+    },
+    {
+      "timeMs": 3300,
+      "text": "One eyebrow up"
+    },
+    {
+      "timeMs": 4560,
+      "text": "Hold the reveal"
+    }
+  ]
+}

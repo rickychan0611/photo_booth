@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5560,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Offer one hand"
+    },
+    {
+      "timeMs": 1660,
+      "text": "Step in together"
+    },
+    {
+      "timeMs": 3060,
+      "text": "Sway on the spot"
+    },
+    {
+      "timeMs": 4500,
+      "text": "Rest your heads"
+    }
+  ]
+}

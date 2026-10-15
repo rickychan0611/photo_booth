@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5560,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "One starts laughing"
+    },
+    {
+      "timeMs": 1640,
+      "text": "Pass it down the row"
+    },
+    {
+      "timeMs": 3000,
+      "text": "Last person breaks"
+    },
+    {
+      "timeMs": 4420,
+      "text": "Hold the line"
+    }
+  ]
+}

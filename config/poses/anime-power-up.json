@@ -16,20 +16,20 @@
     "durationMs": 5830,
     "captions": [
       {
-        "text": "Step wide",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Step wide"
       },
       {
-        "text": "Bend your knees",
-        "timeMs": 1610
+        "timeMs": 1420,
+        "text": "Bend your knees"
       },
       {
-        "text": "Clench your fists",
-        "timeMs": 3220
+        "timeMs": 2540,
+        "text": "Clench your fists"
       },
       {
-        "text": "Power up!",
-        "timeMs": 4830
+        "timeMs": 3920,
+        "text": "Power up!"
       }
     ]
   },
@@ -59,6 +59,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/anime-power-up-6cb55e0e3039d0.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 4830,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Step wide"
+        },
+        {
+          "timeMs": 1420,
+          "text": "Bend your knees"
+        },
+        {
+          "timeMs": 2540,
+          "text": "Clench your fists"
+        },
+        {
+          "timeMs": 3920,
+          "text": "Power up!"
+        }
+      ]
+    }
   }
 }

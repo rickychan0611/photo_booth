@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5150,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Turn away"
+    },
+    {
+      "timeMs": 1140,
+      "text": "Bring one shoulder back"
+    },
+    {
+      "timeMs": 2760,
+      "text": "Look over it"
+    },
+    {
+      "timeMs": 3780,
+      "text": "Hold that gaze"
+    }
+  ]
+}

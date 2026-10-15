@@ -16,20 +16,20 @@
     "durationMs": 7610,
     "captions": [
       {
-        "text": "Outside guests frame",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Outside guests frame"
       },
       {
-        "text": "Inside guests move close",
-        "timeMs": 2203
+        "timeMs": 1960,
+        "text": "Inside guests move close"
       },
       {
-        "text": "Build the picture",
-        "timeMs": 4407
+        "timeMs": 4100,
+        "text": "Build the picture"
       },
       {
-        "text": "Everyone reacts",
-        "timeMs": 6610
+        "timeMs": 5340,
+        "text": "Everyone reacts"
       }
     ]
   },
@@ -73,6 +73,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/human-picture-frame-c52c88d87fb21d.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6610,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Outside guests frame"
+        },
+        {
+          "timeMs": 1960,
+          "text": "Inside guests move close"
+        },
+        {
+          "timeMs": 4100,
+          "text": "Build the picture"
+        },
+        {
+          "timeMs": 5340,
+          "text": "Everyone reacts"
+        }
+      ]
+    }
   }
 }

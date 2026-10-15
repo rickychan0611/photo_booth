@@ -17,20 +17,20 @@
     "durationMs": 5750,
     "captions": [
       {
-        "text": "Arms up",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Arms up"
       },
       {
-        "text": "Count to three",
-        "timeMs": 1583
+        "timeMs": 1080,
+        "text": "Count to three"
       },
       {
-        "text": "Jump at once",
-        "timeMs": 3167
+        "timeMs": 2280,
+        "text": "Jump at once"
       },
       {
-        "text": "Land in a cheer",
-        "timeMs": 4750
+        "timeMs": 3480,
+        "text": "Land in a cheer"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-4-full-cheer-jump-7b613699285641.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 4750,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Arms up"
+        },
+        {
+          "timeMs": 1080,
+          "text": "Count to three"
+        },
+        {
+          "timeMs": 2280,
+          "text": "Jump at once"
+        },
+        {
+          "timeMs": 3480,
+          "text": "Land in a cheer"
+        }
+      ]
+    }
   }
 }

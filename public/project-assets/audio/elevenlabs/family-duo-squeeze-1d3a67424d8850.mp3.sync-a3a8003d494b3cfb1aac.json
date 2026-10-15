@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5960,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Move close together"
+    },
+    {
+      "timeMs": 1680,
+      "text": "Lean toward the middle"
+    },
+    {
+      "timeMs": 3140,
+      "text": "Touch shoulders"
+    },
+    {
+      "timeMs": 4460,
+      "text": "Squeeze and smile"
+    }
+  ]
+}

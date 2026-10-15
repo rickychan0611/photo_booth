@@ -16,20 +16,20 @@
     "durationMs": 6330,
     "captions": [
       {
-        "text": "Turn toward each other",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Turn toward each other"
       },
       {
-        "text": "Move close",
-        "timeMs": 1777
+        "timeMs": 1540,
+        "text": "Move close"
       },
       {
-        "text": "Hold at the waist",
-        "timeMs": 3553
+        "timeMs": 2760,
+        "text": "Hold at the waist"
       },
       {
-        "text": "Almost kiss",
-        "timeMs": 5330
+        "timeMs": 4140,
+        "text": "Almost kiss"
       }
     ]
   },
@@ -63,6 +63,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/cinematic-almost-kiss-6c6267ccc68fca.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5330,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Turn toward each other"
+        },
+        {
+          "timeMs": 1540,
+          "text": "Move close"
+        },
+        {
+          "timeMs": 2760,
+          "text": "Hold at the waist"
+        },
+        {
+          "timeMs": 4140,
+          "text": "Almost kiss"
+        }
+      ]
+    }
   }
 }

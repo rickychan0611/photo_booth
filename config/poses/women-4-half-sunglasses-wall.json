@@ -17,20 +17,20 @@
     "durationMs": 6330,
     "captions": [
       {
-        "text": "Glasses on",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Glasses on"
       },
       {
-        "text": "Lower them together",
-        "timeMs": 1777
+        "timeMs": 1340,
+        "text": "Lower them together"
       },
       {
-        "text": "One cool stare",
-        "timeMs": 3553
+        "timeMs": 2780,
+        "text": "One cool stare"
       },
       {
-        "text": "Hold the wall",
-        "timeMs": 5330
+        "timeMs": 4180,
+        "text": "Hold the wall"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-4-half-sunglasses-wall-5b89473e037cca.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5330,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Glasses on"
+        },
+        {
+          "timeMs": 1340,
+          "text": "Lower them together"
+        },
+        {
+          "timeMs": 2780,
+          "text": "One cool stare"
+        },
+        {
+          "timeMs": 4180,
+          "text": "Hold the wall"
+        }
+      ]
+    }
   }
 }

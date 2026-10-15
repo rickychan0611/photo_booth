@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5720,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "One runs ahead"
+    },
+    {
+      "timeMs": 1480,
+      "text": "Two reach to grab him"
+    },
+    {
+      "timeMs": 3300,
+      "text": "Everyone looks back"
+    },
+    {
+      "timeMs": 4600,
+      "text": "Freeze the chase"
+    }
+  ]
+}

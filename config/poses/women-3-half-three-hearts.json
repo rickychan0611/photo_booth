@@ -17,20 +17,20 @@
     "durationMs": 7030,
     "captions": [
       {
-        "text": "Each make a tiny heart",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Each make a tiny heart"
       },
       {
-        "text": "Bring them together",
-        "timeMs": 2010
+        "timeMs": 1880,
+        "text": "Bring them together"
       },
       {
-        "text": "Peek over your hands",
-        "timeMs": 4020
+        "timeMs": 3180,
+        "text": "Peek over your hands"
       },
       {
-        "text": "Soft smiles",
-        "timeMs": 6030
+        "timeMs": 4740,
+        "text": "Soft smiles"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-3-half-three-hearts-0ffbad55243deb.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6030,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Each make a tiny heart"
+        },
+        {
+          "timeMs": 1880,
+          "text": "Bring them together"
+        },
+        {
+          "timeMs": 3180,
+          "text": "Peek over your hands"
+        },
+        {
+          "timeMs": 4740,
+          "text": "Soft smiles"
+        }
+      ]
+    }
   }
 }

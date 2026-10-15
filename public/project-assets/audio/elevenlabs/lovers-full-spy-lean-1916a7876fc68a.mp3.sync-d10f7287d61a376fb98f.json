@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5880,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Stand back to back"
+    },
+    {
+      "timeMs": 1760,
+      "text": "Look over one shoulder"
+    },
+    {
+      "timeMs": 3360,
+      "text": "Cross one ankle"
+    },
+    {
+      "timeMs": 4800,
+      "text": "Smirk together"
+    }
+  ]
+}

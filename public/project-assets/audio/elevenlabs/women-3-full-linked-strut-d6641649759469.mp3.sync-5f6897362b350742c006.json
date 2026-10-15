@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5070,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Link elbows"
+    },
+    {
+      "timeMs": 1560,
+      "text": "Walk three steps"
+    },
+    {
+      "timeMs": 3020,
+      "text": "Stop in a line"
+    },
+    {
+      "timeMs": 4280,
+      "text": "Chin up"
+    }
+  ]
+}

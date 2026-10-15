@@ -17,20 +17,20 @@
     "durationMs": 6490,
     "captions": [
       {
-        "text": "Three peace signs",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Three peace signs"
       },
       {
-        "text": "Stack them in front",
-        "timeMs": 1830
+        "timeMs": 1700,
+        "text": "Stack them in front"
       },
       {
-        "text": "Cheesy grins",
-        "timeMs": 3660
+        "timeMs": 3120,
+        "text": "Cheesy grins"
       },
       {
-        "text": "Hold the stack",
-        "timeMs": 5490
+        "timeMs": 4320,
+        "text": "Hold the stack"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/men-3-half-stacked-peace-7de2a5b43894e3.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5490,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Three peace signs"
+        },
+        {
+          "timeMs": 1700,
+          "text": "Stack them in front"
+        },
+        {
+          "timeMs": 3120,
+          "text": "Cheesy grins"
+        },
+        {
+          "timeMs": 4320,
+          "text": "Hold the stack"
+        }
+      ]
+    }
   }
 }

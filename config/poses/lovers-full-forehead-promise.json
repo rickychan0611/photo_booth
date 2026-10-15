@@ -17,20 +17,20 @@
     "durationMs": 6640,
     "captions": [
       {
-        "text": "Stand toe to toe",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Stand toe to toe"
       },
       {
-        "text": "Hold both hands",
-        "timeMs": 1880
+        "timeMs": 1700,
+        "text": "Hold both hands"
       },
       {
-        "text": "Lean in gently",
-        "timeMs": 3760
+        "timeMs": 3200,
+        "text": "Lean in gently"
       },
       {
-        "text": "Touch foreheads",
-        "timeMs": 5640
+        "timeMs": 4580,
+        "text": "Touch foreheads"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/lovers-full-forehead-promise-b501ad7745381e.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5640,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand toe to toe"
+        },
+        {
+          "timeMs": 1700,
+          "text": "Hold both hands"
+        },
+        {
+          "timeMs": 3200,
+          "text": "Lean in gently"
+        },
+        {
+          "timeMs": 4580,
+          "text": "Touch foreheads"
+        }
+      ]
+    }
   }
 }

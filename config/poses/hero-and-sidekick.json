@@ -16,20 +16,20 @@
     "durationMs": 6960,
     "captions": [
       {
-        "text": "Hero steps forward",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Hero steps forward"
       },
       {
-        "text": "Sidekick peeks out",
-        "timeMs": 1987
+        "timeMs": 1800,
+        "text": "Sidekick peeks out"
       },
       {
-        "text": "Strike your signs",
-        "timeMs": 3973
+        "timeMs": 3500,
+        "text": "Strike your signs"
       },
       {
-        "text": "Save the world",
-        "timeMs": 5960
+        "timeMs": 4800,
+        "text": "Save the world"
       }
     ]
   },
@@ -65,6 +65,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/hero-and-sidekick-a8b71d64ae0d9a.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5960,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Hero steps forward"
+        },
+        {
+          "timeMs": 1800,
+          "text": "Sidekick peeks out"
+        },
+        {
+          "timeMs": 3500,
+          "text": "Strike your signs"
+        },
+        {
+          "timeMs": 4800,
+          "text": "Save the world"
+        }
+      ]
+    }
   }
 }

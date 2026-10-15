@@ -16,20 +16,20 @@
     "durationMs": 7270,
     "captions": [
       {
-        "text": "Build three levels",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Build three levels"
       },
       {
-        "text": "Angle toward center",
-        "timeMs": 2090
+        "timeMs": 1800,
+        "text": "Angle toward center"
       },
       {
-        "text": "Shape your arms",
-        "timeMs": 4180
+        "timeMs": 3440,
+        "text": "Shape your arms"
       },
       {
-        "text": "Fashion stillness",
-        "timeMs": 6270
+        "timeMs": 4820,
+        "text": "Fashion stillness"
       }
     ]
   },
@@ -69,6 +69,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/editorial-triangle-da24000c05d324.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6270,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Build three levels"
+        },
+        {
+          "timeMs": 1800,
+          "text": "Angle toward center"
+        },
+        {
+          "timeMs": 3440,
+          "text": "Shape your arms"
+        },
+        {
+          "timeMs": 4820,
+          "text": "Fashion stillness"
+        }
+      ]
+    }
   }
 }

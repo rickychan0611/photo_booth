@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6110,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Child takes the lead"
+    },
+    {
+      "timeMs": 1560,
+      "text": "Adult copies the body"
+    },
+    {
+      "timeMs": 3460,
+      "text": "Match both hands"
+    },
+    {
+      "timeMs": 4900,
+      "text": "Child wins!"
+    }
+  ]
+}

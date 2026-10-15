@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 4910,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Same tilt"
+    },
+    {
+      "timeMs": 1300,
+      "text": "Same squint"
+    },
+    {
+      "timeMs": 2520,
+      "text": "Same smirk"
+    },
+    {
+      "timeMs": 3700,
+      "text": "Do not break"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5330,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "One leans back"
+    },
+    {
+      "timeMs": 1300,
+      "text": "The other catches"
+    },
+    {
+      "timeMs": 2700,
+      "text": "Stop before the fall"
+    },
+    {
+      "timeMs": 4080,
+      "text": "Hold the trust"
+    }
+  ]
+}

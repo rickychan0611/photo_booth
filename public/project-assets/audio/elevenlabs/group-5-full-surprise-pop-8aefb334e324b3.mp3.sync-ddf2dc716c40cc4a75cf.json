@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5410,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Crouch below the frame"
+    },
+    {
+      "timeMs": 1800,
+      "text": "Wait one beat"
+    },
+    {
+      "timeMs": 2920,
+      "text": "Pop up together"
+    },
+    {
+      "timeMs": 4180,
+      "text": "Hold the surprise"
+    }
+  ]
+}

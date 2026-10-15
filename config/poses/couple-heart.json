@@ -16,20 +16,20 @@
     "durationMs": 7270,
     "captions": [
       {
-        "text": "Stand close together",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Stand close together"
       },
       {
-        "text": "Raise both hands",
-        "timeMs": 2090
+        "timeMs": 1720,
+        "text": "Raise both hands"
       },
       {
-        "text": "Build matching hearts",
-        "timeMs": 4180
+        "timeMs": 3280,
+        "text": "Build matching hearts"
       },
       {
-        "text": "Smile together",
-        "timeMs": 6270
+        "timeMs": 4920,
+        "text": "Smile together"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/couple-heart-5b04e6f03d16a0.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6270,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand close together"
+        },
+        {
+          "timeMs": 1720,
+          "text": "Raise both hands"
+        },
+        {
+          "timeMs": 3280,
+          "text": "Build matching hearts"
+        },
+        {
+          "timeMs": 4920,
+          "text": "Smile together"
+        }
+      ]
+    }
   }
 }

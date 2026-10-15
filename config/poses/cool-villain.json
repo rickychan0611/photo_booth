@@ -16,20 +16,20 @@
     "durationMs": 6720,
     "captions": [
       {
-        "text": "Turn into shadow",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Turn into shadow"
       },
       {
-        "text": "Raise one hand",
-        "timeMs": 1907
+        "timeMs": 1520,
+        "text": "Raise one hand"
       },
       {
-        "text": "Lower your chin",
-        "timeMs": 3813
+        "timeMs": 2980,
+        "text": "Lower your chin"
       },
       {
-        "text": "Give a villain smirk",
-        "timeMs": 5720
+        "timeMs": 4200,
+        "text": "Give a villain smirk"
       }
     ]
   },
@@ -60,6 +60,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/cool-villain-d15c2fcb468e28.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5720,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Turn into shadow"
+        },
+        {
+          "timeMs": 1520,
+          "text": "Raise one hand"
+        },
+        {
+          "timeMs": 2980,
+          "text": "Lower your chin"
+        },
+        {
+          "timeMs": 4200,
+          "text": "Give a villain smirk"
+        }
+      ]
+    }
   }
 }

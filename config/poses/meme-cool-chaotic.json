@@ -39,20 +39,20 @@
     "durationMs": 8470,
     "captions": [
       {
-        "text": "Stand side by side",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Stand side by side"
       },
       {
-        "text": "One stays perfectly cool",
-        "timeMs": 2490
+        "timeMs": 1900,
+        "text": "One stays perfectly cool"
       },
       {
-        "text": "The other makes a wild face",
-        "timeMs": 4980
+        "timeMs": 3840,
+        "text": "The other makes a wild face"
       },
       {
-        "text": "Hold both reactions",
-        "timeMs": 7470
+        "timeMs": 5920,
+        "text": "Hold both reactions"
       }
     ]
   },
@@ -65,6 +65,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-cool-chaotic-6edd30a709c720.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 7470,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand side by side"
+        },
+        {
+          "timeMs": 1900,
+          "text": "One stays perfectly cool"
+        },
+        {
+          "timeMs": 3840,
+          "text": "The other makes a wild face"
+        },
+        {
+          "timeMs": 5920,
+          "text": "Hold both reactions"
+        }
+      ]
+    }
   }
 }

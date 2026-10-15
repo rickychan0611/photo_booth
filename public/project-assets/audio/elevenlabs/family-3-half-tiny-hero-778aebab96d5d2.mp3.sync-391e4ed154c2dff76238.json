@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6430,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Child centers the frame"
+    },
+    {
+      "timeMs": 1960,
+      "text": "Grownup frames them"
+    },
+    {
+      "timeMs": 3560,
+      "text": "Hero hands on hips"
+    },
+    {
+      "timeMs": 5200,
+      "text": "Hold the star"
+    }
+  ]
+}

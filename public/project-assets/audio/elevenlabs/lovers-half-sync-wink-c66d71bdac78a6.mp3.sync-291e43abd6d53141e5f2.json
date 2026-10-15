@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5960,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Same smile first"
+    },
+    {
+      "timeMs": 1880,
+      "text": "Count silently"
+    },
+    {
+      "timeMs": 3340,
+      "text": "Wink the same eye"
+    },
+    {
+      "timeMs": 4900,
+      "text": "Hold the wink"
+    }
+  ]
+}

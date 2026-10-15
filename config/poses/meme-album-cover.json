@@ -41,20 +41,20 @@
     "durationMs": 7770,
     "captions": [
       {
-        "text": "Stand at different depths",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Stand at different depths"
       },
       {
-        "text": "Choose different head angles",
-        "timeMs": 2257
+        "timeMs": 1780,
+        "text": "Choose different head angles"
       },
       {
-        "text": "Keep serious faces",
-        "timeMs": 4513
+        "timeMs": 3480,
+        "text": "Keep serious faces"
       },
       {
-        "text": "Hold your album cover",
-        "timeMs": 6770
+        "timeMs": 5300,
+        "text": "Hold your album cover"
       }
     ]
   },
@@ -67,6 +67,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-album-cover-1e21f79f308b87.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6770,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand at different depths"
+        },
+        {
+          "timeMs": 1780,
+          "text": "Choose different head angles"
+        },
+        {
+          "timeMs": 3480,
+          "text": "Keep serious faces"
+        },
+        {
+          "timeMs": 5300,
+          "text": "Hold your album cover"
+        }
+      ]
+    }
   }
 }

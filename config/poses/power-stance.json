@@ -16,20 +16,20 @@
     "durationMs": 6070,
     "captions": [
       {
-        "text": "Step wide",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Step wide"
       },
       {
-        "text": "Stand tall",
-        "timeMs": 1690
+        "timeMs": 1440,
+        "text": "Stand tall"
       },
       {
-        "text": "Set your fists",
-        "timeMs": 3380
+        "timeMs": 2600,
+        "text": "Set your fists"
       },
       {
-        "text": "Own the camera",
-        "timeMs": 5070
+        "timeMs": 3860,
+        "text": "Own the camera"
       }
     ]
   },
@@ -59,6 +59,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/power-stance-64d627cb408931.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5070,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Step wide"
+        },
+        {
+          "timeMs": 1440,
+          "text": "Stand tall"
+        },
+        {
+          "timeMs": 2600,
+          "text": "Set your fists"
+        },
+        {
+          "timeMs": 3860,
+          "text": "Own the camera"
+        }
+      ]
+    }
   }
 }

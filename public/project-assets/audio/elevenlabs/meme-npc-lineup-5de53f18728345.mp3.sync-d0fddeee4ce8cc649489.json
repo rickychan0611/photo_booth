@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6920,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Stand evenly spaced"
+    },
+    {
+      "timeMs": 1960,
+      "text": "Keep your arms stiff"
+    },
+    {
+      "timeMs": 3640,
+      "text": "Give a blank expression"
+    },
+    {
+      "timeMs": 5360,
+      "text": "Hold the robot lineup"
+    }
+  ]
+}

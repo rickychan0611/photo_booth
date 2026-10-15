@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5490,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Three peace signs"
+    },
+    {
+      "timeMs": 1700,
+      "text": "Stack them in front"
+    },
+    {
+      "timeMs": 3120,
+      "text": "Cheesy grins"
+    },
+    {
+      "timeMs": 4320,
+      "text": "Hold the stack"
+    }
+  ]
+}

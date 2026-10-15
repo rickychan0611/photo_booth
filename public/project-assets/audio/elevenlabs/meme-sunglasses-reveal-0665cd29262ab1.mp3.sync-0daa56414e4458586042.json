@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6690,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Touch your sunglasses"
+    },
+    {
+      "timeMs": 1640,
+      "text": "Lower them just a little"
+    },
+    {
+      "timeMs": 3540,
+      "text": "Look over the frames"
+    },
+    {
+      "timeMs": 4920,
+      "text": "Hold your cool reveal"
+    }
+  ]
+}

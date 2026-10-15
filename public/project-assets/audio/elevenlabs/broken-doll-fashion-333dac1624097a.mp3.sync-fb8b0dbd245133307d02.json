@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5720,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Break your hip line"
+    },
+    {
+      "timeMs": 1520,
+      "text": "Tilt your shoulders"
+    },
+    {
+      "timeMs": 2860,
+      "text": "Bend your wrists"
+    },
+    {
+      "timeMs": 4120,
+      "text": "Blank fashion face"
+    }
+  ]
+}

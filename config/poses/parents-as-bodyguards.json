@@ -16,20 +16,20 @@
     "durationMs": 8000,
     "captions": [
       {
-        "text": "Star stands in front",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Star stands in front"
       },
       {
-        "text": "Guards close behind",
-        "timeMs": 2333
+        "timeMs": 1980,
+        "text": "Guards close behind"
       },
       {
-        "text": "Set protective hands",
-        "timeMs": 4667
+        "timeMs": 3700,
+        "text": "Set protective hands"
       },
       {
-        "text": "Cool family faces",
-        "timeMs": 7000
+        "timeMs": 5360,
+        "text": "Cool family faces"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/parents-as-bodyguards-41cb9036b3ec6d.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Star stands in front"
+        },
+        {
+          "timeMs": 1980,
+          "text": "Guards close behind"
+        },
+        {
+          "timeMs": 3700,
+          "text": "Set protective hands"
+        },
+        {
+          "timeMs": 5360,
+          "text": "Cool family faces"
+        }
+      ]
+    }
   }
 }

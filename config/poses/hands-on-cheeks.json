@@ -16,20 +16,20 @@
     "durationMs": 6330,
     "captions": [
       {
-        "text": "Lift both hands",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Lift both hands"
       },
       {
-        "text": "Touch your cheeks",
-        "timeMs": 1777
+        "timeMs": 1680,
+        "text": "Touch your cheeks"
       },
       {
-        "text": "Tilt your head",
-        "timeMs": 3553
+        "timeMs": 2940,
+        "text": "Tilt your head"
       },
       {
-        "text": "Big surprise",
-        "timeMs": 5330
+        "timeMs": 4120,
+        "text": "Big surprise"
       }
     ]
   },
@@ -59,6 +59,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/hands-on-cheeks-f18685c8d614e7.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5330,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Lift both hands"
+        },
+        {
+          "timeMs": 1680,
+          "text": "Touch your cheeks"
+        },
+        {
+          "timeMs": 2940,
+          "text": "Tilt your head"
+        },
+        {
+          "timeMs": 4120,
+          "text": "Big surprise"
+        }
+      ]
+    }
   }
 }

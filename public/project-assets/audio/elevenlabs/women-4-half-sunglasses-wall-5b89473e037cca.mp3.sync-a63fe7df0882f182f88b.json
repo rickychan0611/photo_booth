@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5330,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Glasses on"
+    },
+    {
+      "timeMs": 1340,
+      "text": "Lower them together"
+    },
+    {
+      "timeMs": 2780,
+      "text": "One cool stare"
+    },
+    {
+      "timeMs": 4180,
+      "text": "Hold the wall"
+    }
+  ]
+}

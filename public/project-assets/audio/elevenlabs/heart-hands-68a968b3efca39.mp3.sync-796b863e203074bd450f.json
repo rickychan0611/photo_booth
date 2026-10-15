@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5150,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Raise your hands"
+    },
+    {
+      "timeMs": 1380,
+      "text": "Bring them together"
+    },
+    {
+      "timeMs": 2700,
+      "text": "Make a heart"
+    },
+    {
+      "timeMs": 3880,
+      "text": "Smile through it"
+    }
+  ]
+}

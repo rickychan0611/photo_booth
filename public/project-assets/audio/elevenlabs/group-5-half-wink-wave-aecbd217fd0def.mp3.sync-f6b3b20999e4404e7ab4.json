@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6270,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Wink from one side to the other"
+    },
+    {
+      "timeMs": 2200,
+      "text": "Keep it moving"
+    },
+    {
+      "timeMs": 3380,
+      "text": "End on the last wink"
+    },
+    {
+      "timeMs": 5040,
+      "text": "Hold that face"
+    }
+  ]
+}

@@ -16,20 +16,20 @@
     "durationMs": 6720,
     "captions": [
       {
-        "text": "Turn slightly",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Turn slightly"
       },
       {
-        "text": "Lower your shoulders",
-        "timeMs": 1907
+        "timeMs": 1420,
+        "text": "Lower your shoulders"
       },
       {
-        "text": "Cross your arms",
-        "timeMs": 3813
+        "timeMs": 2820,
+        "text": "Cross your arms"
       },
       {
-        "text": "Cool confident face",
-        "timeMs": 5720
+        "timeMs": 4140,
+        "text": "Cool confident face"
       }
     ]
   },
@@ -59,6 +59,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/crossed-arms-cool-f8e8230b0f126a.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5720,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Turn slightly"
+        },
+        {
+          "timeMs": 1420,
+          "text": "Lower your shoulders"
+        },
+        {
+          "timeMs": 2820,
+          "text": "Cross your arms"
+        },
+        {
+          "timeMs": 4140,
+          "text": "Cool confident face"
+        }
+      ]
+    }
   }
 }

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 4830,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Face each other"
+    },
+    {
+      "timeMs": 1380,
+      "text": "Step close"
+    },
+    {
+      "timeMs": 2500,
+      "text": "Touch foreheads"
+    },
+    {
+      "timeMs": 3780,
+      "text": "Close your eyes"
+    }
+  ]
+}

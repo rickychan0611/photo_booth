@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6030,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Heads in a huddle"
+    },
+    {
+      "timeMs": 1380,
+      "text": "One spills the secret"
+    },
+    {
+      "timeMs": 3140,
+      "text": "Three react differently"
+    },
+    {
+      "timeMs": 4900,
+      "text": "Freeze the gossip"
+    }
+  ]
+}

@@ -42,20 +42,20 @@
     "durationMs": 6880,
     "captions": [
       {
-        "text": "Stand in a row",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Stand in a row"
       },
       {
-        "text": "Palms facing up",
-        "timeMs": 1960
+        "timeMs": 1400,
+        "text": "Palms facing up"
       },
       {
-        "text": "Alternate high and low",
-        "timeMs": 3920
+        "timeMs": 2740,
+        "text": "Alternate high and low"
       },
       {
-        "text": "Hold the squad wave",
-        "timeMs": 5880
+        "timeMs": 4580,
+        "text": "Hold the squad wave"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-six-seven-wave-a145958b3862ac.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5880,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand in a row"
+        },
+        {
+          "timeMs": 1400,
+          "text": "Palms facing up"
+        },
+        {
+          "timeMs": 2740,
+          "text": "Alternate high and low"
+        },
+        {
+          "timeMs": 4580,
+          "text": "Hold the squad wave"
+        }
+      ]
+    }
   }
 }

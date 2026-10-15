@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5640,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Pack into two rows"
+    },
+    {
+      "timeMs": 1780,
+      "text": "Bend your knees"
+    },
+    {
+      "timeMs": 3000,
+      "text": "Jump on three"
+    },
+    {
+      "timeMs": 4200,
+      "text": "Land with arms up"
+    }
+  ]
+}

@@ -17,20 +17,20 @@
     "durationMs": 6720,
     "captions": [
       {
-        "text": "One steps forward",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "One steps forward"
       },
       {
-        "text": "Two angle behind",
-        "timeMs": 1907
+        "timeMs": 1700,
+        "text": "Two angle behind"
       },
       {
-        "text": "Hands on hips",
-        "timeMs": 3813
+        "timeMs": 3320,
+        "text": "Hands on hips"
       },
       {
-        "text": "Power stare",
-        "timeMs": 5720
+        "timeMs": 4500,
+        "text": "Power stare"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-3-full-triangle-power-f8627aa999ceee.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5720,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "One steps forward"
+        },
+        {
+          "timeMs": 1700,
+          "text": "Two angle behind"
+        },
+        {
+          "timeMs": 3320,
+          "text": "Hands on hips"
+        },
+        {
+          "timeMs": 4500,
+          "text": "Power stare"
+        }
+      ]
+    }
   }
 }

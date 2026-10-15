@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6430,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "One tries to walk off"
+    },
+    {
+      "timeMs": 1680,
+      "text": "The other tugs her back"
+    },
+    {
+      "timeMs": 3440,
+      "text": "Both stumble into pose"
+    },
+    {
+      "timeMs": 5220,
+      "text": "Point at the camera"
+    }
+  ]
+}

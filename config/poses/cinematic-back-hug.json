@@ -16,20 +16,20 @@
     "durationMs": 7610,
     "captions": [
       {
-        "text": "Stand front and back",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Stand front and back"
       },
       {
-        "text": "Wrap arms gently",
-        "timeMs": 2203
+        "timeMs": 1880,
+        "text": "Wrap arms gently"
       },
       {
-        "text": "Turn your heads",
-        "timeMs": 4407
+        "timeMs": 3500,
+        "text": "Turn your heads"
       },
       {
-        "text": "Soft cinematic eyes",
-        "timeMs": 6610
+        "timeMs": 4780,
+        "text": "Soft cinematic eyes"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/cinematic-back-hug-5b7bbccd480873.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6610,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand front and back"
+        },
+        {
+          "timeMs": 1880,
+          "text": "Wrap arms gently"
+        },
+        {
+          "timeMs": 3500,
+          "text": "Turn your heads"
+        },
+        {
+          "timeMs": 4780,
+          "text": "Soft cinematic eyes"
+        }
+      ]
+    }
   }
 }

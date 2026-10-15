@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6030,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Couple takes the center"
+    },
+    {
+      "timeMs": 1680,
+      "text": "Friends crowd around"
+    },
+    {
+      "timeMs": 3400,
+      "text": "Couple leans in"
+    },
+    {
+      "timeMs": 4740,
+      "text": "Everyone reacts!"
+    }
+  ]
+}

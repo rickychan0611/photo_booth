@@ -17,20 +17,20 @@
     "durationMs": 7110,
     "captions": [
       {
-        "text": "Wide feet",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Wide feet"
       },
       {
-        "text": "Arms crossed or in pockets",
-        "timeMs": 2037
+        "timeMs": 1480,
+        "text": "Arms crossed or in pockets"
       },
       {
-        "text": "Stagger the line",
-        "timeMs": 4073
+        "timeMs": 3580,
+        "text": "Stagger the line"
       },
       {
-        "text": "Cool stare",
-        "timeMs": 6110
+        "timeMs": 4920,
+        "text": "Cool stare"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/men-3-full-squad-stance-8c5cccbde7c482.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6110,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Wide feet"
+        },
+        {
+          "timeMs": 1480,
+          "text": "Arms crossed or in pockets"
+        },
+        {
+          "timeMs": 3580,
+          "text": "Stagger the line"
+        },
+        {
+          "timeMs": 4920,
+          "text": "Cool stare"
+        }
+      ]
+    }
   }
 }

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5960,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Spread into formation"
+    },
+    {
+      "timeMs": 2000,
+      "text": "Bend your knees"
+    },
+    {
+      "timeMs": 3220,
+      "text": "Choose your power"
+    },
+    {
+      "timeMs": 4540,
+      "text": "Power up together!"
+    }
+  ]
+}

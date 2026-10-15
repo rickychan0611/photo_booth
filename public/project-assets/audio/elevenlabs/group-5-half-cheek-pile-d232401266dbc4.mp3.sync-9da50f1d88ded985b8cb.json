@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5070,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Pack your faces in"
+    },
+    {
+      "timeMs": 1660,
+      "text": "Cheeks touching"
+    },
+    {
+      "timeMs": 2820,
+      "text": "Bright eyes"
+    },
+    {
+      "timeMs": 3920,
+      "text": "Hold the pile"
+    }
+  ]
+}

@@ -17,20 +17,20 @@
     "durationMs": 7270,
     "captions": [
       {
-        "text": "One looks hopeful",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "One looks hopeful"
       },
       {
-        "text": "The other looks shocked",
-        "timeMs": 2090
+        "timeMs": 1600,
+        "text": "The other looks shocked"
       },
       {
-        "text": "Hands on cheeks",
-        "timeMs": 4180
+        "timeMs": 3400,
+        "text": "Hands on cheeks"
       },
       {
-        "text": "Burst into a grin",
-        "timeMs": 6270
+        "timeMs": 4680,
+        "text": "Burst into a grin"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/lovers-half-proposal-face-f6fbb630ec0524.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6270,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "One looks hopeful"
+        },
+        {
+          "timeMs": 1600,
+          "text": "The other looks shocked"
+        },
+        {
+          "timeMs": 3400,
+          "text": "Hands on cheeks"
+        },
+        {
+          "timeMs": 4680,
+          "text": "Burst into a grin"
+        }
+      ]
+    }
   }
 }

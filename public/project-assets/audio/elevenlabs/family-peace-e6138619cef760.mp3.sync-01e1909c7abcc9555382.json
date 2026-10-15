@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5720,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Build three levels"
+    },
+    {
+      "timeMs": 1760,
+      "text": "Raise your hands"
+    },
+    {
+      "timeMs": 2980,
+      "text": "Make peace signs"
+    },
+    {
+      "timeMs": 4460,
+      "text": "Smile together"
+    }
+  ]
+}

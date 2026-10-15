@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5800,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Same shoulder angle"
+    },
+    {
+      "timeMs": 1820,
+      "text": "Same calm face"
+    },
+    {
+      "timeMs": 3240,
+      "text": "Look into the lens"
+    },
+    {
+      "timeMs": 4560,
+      "text": "Hold the lean"
+    }
+  ]
+}

@@ -16,20 +16,20 @@
     "durationMs": 7610,
     "captions": [
       {
-        "text": "Connect inside hands",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Connect inside hands"
       },
       {
-        "text": "Step forward together",
-        "timeMs": 2203
+        "timeMs": 1900,
+        "text": "Step forward together"
       },
       {
-        "text": "Lean into the run",
-        "timeMs": 4407
+        "timeMs": 3640,
+        "text": "Lean into the run"
       },
       {
-        "text": "Laugh toward camera",
-        "timeMs": 6610
+        "timeMs": 5140,
+        "text": "Laugh toward camera"
       }
     ]
   },
@@ -63,6 +63,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/runaway-newlyweds-7801ffda074fa6.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6610,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Connect inside hands"
+        },
+        {
+          "timeMs": 1900,
+          "text": "Step forward together"
+        },
+        {
+          "timeMs": 3640,
+          "text": "Lean into the run"
+        },
+        {
+          "timeMs": 5140,
+          "text": "Laugh toward camera"
+        }
+      ]
+    }
   }
 }

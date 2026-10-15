@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6030,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "One rests her chin"
+    },
+    {
+      "timeMs": 1600,
+      "text": "The other leans in"
+    },
+    {
+      "timeMs": 3300,
+      "text": "Match the smile"
+    },
+    {
+      "timeMs": 4500,
+      "text": "Do not look away"
+    }
+  ]
+}

@@ -17,20 +17,20 @@
     "durationMs": 6490,
     "captions": [
       {
-        "text": "Tilt the same direction",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Tilt the same direction"
       },
       {
-        "text": "Same smile size",
-        "timeMs": 1830
+        "timeMs": 1800,
+        "text": "Same smile size"
       },
       {
-        "text": "Same timing",
-        "timeMs": 3660
+        "timeMs": 3220,
+        "text": "Same timing"
       },
       {
-        "text": "Hold the tilt",
-        "timeMs": 5490
+        "timeMs": 4340,
+        "text": "Hold the tilt"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-half-matching-tilt-f27c186387c80b.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5490,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Tilt the same direction"
+        },
+        {
+          "timeMs": 1800,
+          "text": "Same smile size"
+        },
+        {
+          "timeMs": 3220,
+          "text": "Same timing"
+        },
+        {
+          "timeMs": 4340,
+          "text": "Hold the tilt"
+        }
+      ]
+    }
   }
 }

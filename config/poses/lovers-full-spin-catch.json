@@ -17,20 +17,20 @@
     "durationMs": 7350,
     "captions": [
       {
-        "text": "Start two steps apart",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Start two steps apart"
       },
       {
-        "text": "Spin toward each other",
-        "timeMs": 2117
+        "timeMs": 2000,
+        "text": "Spin toward each other"
       },
       {
-        "text": "Catch hands and stop",
-        "timeMs": 4233
+        "timeMs": 3460,
+        "text": "Catch hands and stop"
       },
       {
-        "text": "Freeze mid-laugh",
-        "timeMs": 6350
+        "timeMs": 5140,
+        "text": "Freeze mid-laugh"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/lovers-full-spin-catch-3736b47d5fb386.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6350,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Start two steps apart"
+        },
+        {
+          "timeMs": 2000,
+          "text": "Spin toward each other"
+        },
+        {
+          "timeMs": 3460,
+          "text": "Catch hands and stop"
+        },
+        {
+          "timeMs": 5140,
+          "text": "Freeze mid-laugh"
+        }
+      ]
+    }
   }
 }

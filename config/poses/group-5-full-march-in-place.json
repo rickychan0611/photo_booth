@@ -17,20 +17,20 @@
     "durationMs": 5910,
     "captions": [
       {
-        "text": "Knees up together",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Knees up together"
       },
       {
-        "text": "Two marches",
-        "timeMs": 1637
+        "timeMs": 1560,
+        "text": "Two marches"
       },
       {
-        "text": "Stop mid-step",
-        "timeMs": 3273
+        "timeMs": 2700,
+        "text": "Stop mid-step"
       },
       {
-        "text": "Hold the march",
-        "timeMs": 4910
+        "timeMs": 3940,
+        "text": "Hold the march"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-full-march-in-place-5a90107cd1fefa.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 4910,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Knees up together"
+        },
+        {
+          "timeMs": 1560,
+          "text": "Two marches"
+        },
+        {
+          "timeMs": 2700,
+          "text": "Stop mid-step"
+        },
+        {
+          "timeMs": 3940,
+          "text": "Hold the march"
+        }
+      ]
+    }
   }
 }

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6030,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Everyone shows a number on their fingers"
+    },
+    {
+      "timeMs": 2440,
+      "text": "Drop the hands"
+    },
+    {
+      "timeMs": 3640,
+      "text": "Jump together"
+    },
+    {
+      "timeMs": 4880,
+      "text": "Stick the landing"
+    }
+  ]
+}

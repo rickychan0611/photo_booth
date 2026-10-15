@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5880,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Pair up"
+    },
+    {
+      "timeMs": 1040,
+      "text": "Playful lifts or leans"
+    },
+    {
+      "timeMs": 2980,
+      "text": "Kick a free foot"
+    },
+    {
+      "timeMs": 4280,
+      "text": "Laugh and freeze"
+    }
+  ]
+}

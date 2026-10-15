@@ -16,20 +16,20 @@
     "durationMs": 7110,
     "captions": [
       {
-        "text": "Stand shoulder-to-shoulder",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Stand shoulder-to-shoulder"
       },
       {
-        "text": "Raise one hand each",
-        "timeMs": 2037
+        "timeMs": 1920,
+        "text": "Raise one hand each"
       },
       {
-        "text": "Make peace signs",
-        "timeMs": 4073
+        "timeMs": 3480,
+        "text": "Make peace signs"
       },
       {
-        "text": "Smile and wink",
-        "timeMs": 6110
+        "timeMs": 4880,
+        "text": "Smile and wink"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/couple-peace-8eaa1c6ed44c3d.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6110,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand shoulder-to-shoulder"
+        },
+        {
+          "timeMs": 1920,
+          "text": "Raise one hand each"
+        },
+        {
+          "timeMs": 3480,
+          "text": "Make peace signs"
+        },
+        {
+          "timeMs": 4880,
+          "text": "Smile and wink"
+        }
+      ]
+    }
   }
 }

@@ -17,20 +17,20 @@
     "durationMs": 7190,
     "captions": [
       {
-        "text": "Outside hands start a heart",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Outside hands start a heart"
       },
       {
-        "text": "Everyone else tucks inside",
-        "timeMs": 2063
+        "timeMs": 2220,
+        "text": "Everyone else tucks inside"
       },
       {
-        "text": "Look through it",
-        "timeMs": 4127
+        "timeMs": 4260,
+        "text": "Look through it"
       },
       {
-        "text": "Hold the heart",
-        "timeMs": 6190
+        "timeMs": 5260,
+        "text": "Hold the heart"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-half-big-shared-heart-254f04f194a781.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6190,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Outside hands start a heart"
+        },
+        {
+          "timeMs": 2220,
+          "text": "Everyone else tucks inside"
+        },
+        {
+          "timeMs": 4260,
+          "text": "Look through it"
+        },
+        {
+          "timeMs": 5260,
+          "text": "Hold the heart"
+        }
+      ]
+    }
   }
 }

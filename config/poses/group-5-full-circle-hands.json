@@ -17,20 +17,20 @@
     "durationMs": 7110,
     "captions": [
       {
-        "text": "Make a loose circle",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Make a loose circle"
       },
       {
-        "text": "Hold your neighbors' hands",
-        "timeMs": 2037
+        "timeMs": 1720,
+        "text": "Hold your neighbors' hands"
       },
       {
-        "text": "Lean in",
-        "timeMs": 4073
+        "timeMs": 3360,
+        "text": "Lean in"
       },
       {
-        "text": "Smile across the circle",
-        "timeMs": 6110
+        "timeMs": 4420,
+        "text": "Smile across the circle"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-full-circle-hands-0566972dc7327f.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6110,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Make a loose circle"
+        },
+        {
+          "timeMs": 1720,
+          "text": "Hold your neighbors' hands"
+        },
+        {
+          "timeMs": 3360,
+          "text": "Lean in"
+        },
+        {
+          "timeMs": 4420,
+          "text": "Smile across the circle"
+        }
+      ]
+    }
   }
 }

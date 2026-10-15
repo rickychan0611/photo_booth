@@ -17,20 +17,20 @@
     "durationMs": 6560,
     "captions": [
       {
-        "text": "Walk toward the camera",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Walk toward the camera"
       },
       {
-        "text": "Arms loosely linked",
-        "timeMs": 1853
+        "timeMs": 1560,
+        "text": "Arms loosely linked"
       },
       {
-        "text": "Stop in a row",
-        "timeMs": 3707
+        "timeMs": 3260,
+        "text": "Stop in a row"
       },
       {
-        "text": "Warm smiles",
-        "timeMs": 5560
+        "timeMs": 4440,
+        "text": "Warm smiles"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/family-4-full-portrait-walk-91952c41b6570e.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5560,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Walk toward the camera"
+        },
+        {
+          "timeMs": 1560,
+          "text": "Arms loosely linked"
+        },
+        {
+          "timeMs": 3260,
+          "text": "Stop in a row"
+        },
+        {
+          "timeMs": 4440,
+          "text": "Warm smiles"
+        }
+      ]
+    }
   }
 }

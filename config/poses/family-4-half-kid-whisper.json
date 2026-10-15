@@ -18,20 +18,20 @@
     "durationMs": 7350,
     "captions": [
       {
-        "text": "Child whispers to one grownup",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Child whispers to one grownup"
       },
       {
-        "text": "That face changes",
-        "timeMs": 2117
+        "timeMs": 2260,
+        "text": "That face changes"
       },
       {
-        "text": "The others lean in",
-        "timeMs": 4233
+        "timeMs": 3860,
+        "text": "The others lean in"
       },
       {
-        "text": "Hold the secret",
-        "timeMs": 6350
+        "timeMs": 5280,
+        "text": "Hold the secret"
       }
     ]
   },
@@ -73,6 +73,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/family-4-half-kid-whisper-6f535268771f80.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6350,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Child whispers to one grownup"
+        },
+        {
+          "timeMs": 2260,
+          "text": "That face changes"
+        },
+        {
+          "timeMs": 3860,
+          "text": "The others lean in"
+        },
+        {
+          "timeMs": 5280,
+          "text": "Hold the secret"
+        }
+      ]
+    }
   }
 }

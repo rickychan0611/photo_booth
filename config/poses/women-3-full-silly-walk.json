@@ -17,20 +17,20 @@
     "durationMs": 7770,
     "captions": [
       {
-        "text": "Each pick a silly step",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Each pick a silly step"
       },
       {
-        "text": "March toward the camera",
-        "timeMs": 2257
+        "timeMs": 2020,
+        "text": "March toward the camera"
       },
       {
-        "text": "Stop at the same time",
-        "timeMs": 4513
+        "timeMs": 3600,
+        "text": "Stop at the same time"
       },
       {
-        "text": "Hold the nonsense",
-        "timeMs": 6770
+        "timeMs": 5220,
+        "text": "Hold the nonsense"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-3-full-silly-walk-90adb5c0b79d5c.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6770,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Each pick a silly step"
+        },
+        {
+          "timeMs": 2020,
+          "text": "March toward the camera"
+        },
+        {
+          "timeMs": 3600,
+          "text": "Stop at the same time"
+        },
+        {
+          "timeMs": 5220,
+          "text": "Hold the nonsense"
+        }
+      ]
+    }
   }
 }

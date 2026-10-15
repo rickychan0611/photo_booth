@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6610,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Face each other"
+    },
+    {
+      "timeMs": 1320,
+      "text": "Choose a dramatic pose"
+    },
+    {
+      "timeMs": 3300,
+      "text": "Keep a serious face"
+    },
+    {
+      "timeMs": 5100,
+      "text": "Hold the aura battle"
+    }
+  ]
+}

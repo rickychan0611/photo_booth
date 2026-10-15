@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5330,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Connect one hand"
+    },
+    {
+      "timeMs": 1700,
+      "text": "Lean apart"
+    },
+    {
+      "timeMs": 2880,
+      "text": "Stretch the line"
+    },
+    {
+      "timeMs": 4260,
+      "text": "Model eyes"
+    }
+  ]
+}

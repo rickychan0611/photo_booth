@@ -340,6 +340,7 @@ export function installMockApi() {
     getPoseNarrationSettings: async () => ({ configured: false, voiceId: '0S5oIfi8zOZixuSj8K6n', modelId: 'eleven_v4_turbo', stability: .5, similarityBoost: .75, style: .2, speed: 1, direction: '[energetic] [happy] [Make it upbeat, fun]' }),
     updatePoseNarrationSettings: async value => ({ ...value, configured: Boolean(value.apiKey), apiKey: undefined }),
     generatePoseNarration: async () => { throw new Error('ElevenLabs narration generation is available in the Electron app.'); },
+    syncPoseNarration: async () => { throw new Error('Speech alignment is available in the Electron app.'); },
     getSettings: async () => readSettings(),
     updateSettings: async (partial: Partial<AppSettings>) => {
       const current = readSettings();

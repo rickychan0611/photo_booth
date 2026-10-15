@@ -17,20 +17,20 @@
     "durationMs": 5830,
     "captions": [
       {
-        "text": "Same head angle",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Same head angle"
       },
       {
-        "text": "Count to three",
-        "timeMs": 1610
+        "timeMs": 1400,
+        "text": "Count to three"
       },
       {
-        "text": "Wink together",
-        "timeMs": 3220
+        "timeMs": 2560,
+        "text": "Wink together"
       },
       {
-        "text": "Keep the smile",
-        "timeMs": 4830
+        "timeMs": 3620,
+        "text": "Keep the smile"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-2-half-wink-sync-6bdd998f548b78.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 4830,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Same head angle"
+        },
+        {
+          "timeMs": 1400,
+          "text": "Count to three"
+        },
+        {
+          "timeMs": 2560,
+          "text": "Wink together"
+        },
+        {
+          "timeMs": 3620,
+          "text": "Keep the smile"
+        }
+      ]
+    }
   }
 }

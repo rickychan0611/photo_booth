@@ -17,20 +17,20 @@
     "durationMs": 6250,
     "captions": [
       {
-        "text": "Stand side by side",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Stand side by side"
       },
       {
-        "text": "Arms linked",
-        "timeMs": 1750
+        "timeMs": 1840,
+        "text": "Arms linked"
       },
       {
-        "text": "Kick the same leg",
-        "timeMs": 3500
+        "timeMs": 2920,
+        "text": "Kick the same leg"
       },
       {
-        "text": "Hold it up",
-        "timeMs": 5250
+        "timeMs": 4240,
+        "text": "Hold it up"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-2-full-sync-kick-2e9177e7fd1177.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5250,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand side by side"
+        },
+        {
+          "timeMs": 1840,
+          "text": "Arms linked"
+        },
+        {
+          "timeMs": 2920,
+          "text": "Kick the same leg"
+        },
+        {
+          "timeMs": 4240,
+          "text": "Hold it up"
+        }
+      ]
+    }
   }
 }

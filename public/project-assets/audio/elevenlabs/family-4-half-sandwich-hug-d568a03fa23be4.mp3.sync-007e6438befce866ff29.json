@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5150,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Kids in the middle"
+    },
+    {
+      "timeMs": 1420,
+      "text": "Grownups wrap in"
+    },
+    {
+      "timeMs": 2920,
+      "text": "Cheeks touching"
+    },
+    {
+      "timeMs": 4019,
+      "text": "Hold the sandwich"
+    }
+  ]
+}

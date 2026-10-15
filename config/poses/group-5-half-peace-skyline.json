@@ -17,20 +17,20 @@
     "durationMs": 7530,
     "captions": [
       {
-        "text": "Peace signs at different heights",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Peace signs at different heights"
       },
       {
-        "text": "Pack the faces under them",
-        "timeMs": 2177
+        "timeMs": 2120,
+        "text": "Pack the faces under them"
       },
       {
-        "text": "Big smiles",
-        "timeMs": 4353
+        "timeMs": 3800,
+        "text": "Big smiles"
       },
       {
-        "text": "Hold the skyline",
-        "timeMs": 6530
+        "timeMs": 5140,
+        "text": "Hold the skyline"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-half-peace-skyline-f0e53a380d73f4.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6530,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Peace signs at different heights"
+        },
+        {
+          "timeMs": 2120,
+          "text": "Pack the faces under them"
+        },
+        {
+          "timeMs": 3800,
+          "text": "Big smiles"
+        },
+        {
+          "timeMs": 5140,
+          "text": "Hold the skyline"
+        }
+      ]
+    }
   }
 }

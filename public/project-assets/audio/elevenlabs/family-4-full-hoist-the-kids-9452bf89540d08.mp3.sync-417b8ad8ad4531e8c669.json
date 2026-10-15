@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5490,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Grownups get steady"
+    },
+    {
+      "timeMs": 1760,
+      "text": "Kids hop up for a hold"
+    },
+    {
+      "timeMs": 3640,
+      "text": "Arms out"
+    },
+    {
+      "timeMs": 4480,
+      "text": "Hold the lift"
+    }
+  ]
+}

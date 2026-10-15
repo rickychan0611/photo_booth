@@ -17,20 +17,20 @@
     "durationMs": 6960,
     "captions": [
       {
-        "text": "Boop her nose",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Boop her nose"
       },
       {
-        "text": "She boops back",
-        "timeMs": 1987
+        "timeMs": 1380,
+        "text": "She boops back"
       },
       {
-        "text": "Both wrinkle your noses",
-        "timeMs": 3973
+        "timeMs": 2820,
+        "text": "Both wrinkle your noses"
       },
       {
-        "text": "Laugh and hold",
-        "timeMs": 5960
+        "timeMs": 4700,
+        "text": "Laugh and hold"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-2-half-boop-battle-6c324406a8a8b3.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5960,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Boop her nose"
+        },
+        {
+          "timeMs": 1380,
+          "text": "She boops back"
+        },
+        {
+          "timeMs": 2820,
+          "text": "Both wrinkle your noses"
+        },
+        {
+          "timeMs": 4700,
+          "text": "Laugh and hold"
+        }
+      ]
+    }
   }
 }

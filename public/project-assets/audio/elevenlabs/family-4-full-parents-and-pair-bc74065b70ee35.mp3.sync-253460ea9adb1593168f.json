@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5720,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Kids in front"
+    },
+    {
+      "timeMs": 1240,
+      "text": "Grownups behind"
+    },
+    {
+      "timeMs": 2600,
+      "text": "Hands on shoulders"
+    },
+    {
+      "timeMs": 4019,
+      "text": "One family smile"
+    }
+  ]
+}

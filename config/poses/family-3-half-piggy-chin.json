@@ -18,20 +18,20 @@
     "durationMs": 7610,
     "captions": [
       {
-        "text": "Child in the middle",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Child in the middle"
       },
       {
-        "text": "Grownups rest chins close",
-        "timeMs": 2203
+        "timeMs": 1560,
+        "text": "Grownups rest chins close"
       },
       {
-        "text": "All scrunch noses",
-        "timeMs": 4407
+        "timeMs": 3720,
+        "text": "All scrunch noses"
       },
       {
-        "text": "Hold the pile",
-        "timeMs": 6610
+        "timeMs": 5460,
+        "text": "Hold the pile"
       }
     ]
   },
@@ -69,6 +69,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/family-3-half-piggy-chin-dec150598f658d.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6610,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Child in the middle"
+        },
+        {
+          "timeMs": 1560,
+          "text": "Grownups rest chins close"
+        },
+        {
+          "timeMs": 3720,
+          "text": "All scrunch noses"
+        },
+        {
+          "timeMs": 5460,
+          "text": "Hold the pile"
+        }
+      ]
+    }
   }
 }

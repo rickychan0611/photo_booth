@@ -16,20 +16,20 @@
     "durationMs": 6960,
     "captions": [
       {
-        "text": "Spread into formation",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Spread into formation"
       },
       {
-        "text": "Bend your knees",
-        "timeMs": 1987
+        "timeMs": 2000,
+        "text": "Bend your knees"
       },
       {
-        "text": "Choose your power",
-        "timeMs": 3973
+        "timeMs": 3220,
+        "text": "Choose your power"
       },
       {
-        "text": "Power up together!",
-        "timeMs": 5960
+        "timeMs": 4540,
+        "text": "Power up together!"
       }
     ]
   },
@@ -77,6 +77,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-power-up-081b03d8f8a749.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5960,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Spread into formation"
+        },
+        {
+          "timeMs": 2000,
+          "text": "Bend your knees"
+        },
+        {
+          "timeMs": 3220,
+          "text": "Choose your power"
+        },
+        {
+          "timeMs": 4540,
+          "text": "Power up together!"
+        }
+      ]
+    }
   }
 }

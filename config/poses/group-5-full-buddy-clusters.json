@@ -17,20 +17,20 @@
     "durationMs": 7840,
     "captions": [
       {
-        "text": "Split into little pairs",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Split into little pairs"
       },
       {
-        "text": "Each pair picks a tiny pose",
-        "timeMs": 2280
+        "timeMs": 1840,
+        "text": "Each pair picks a tiny pose"
       },
       {
-        "text": "Look back at the camera",
-        "timeMs": 4560
+        "timeMs": 4140,
+        "text": "Look back at the camera"
       },
       {
-        "text": "Hold your cluster",
-        "timeMs": 6840
+        "timeMs": 5520,
+        "text": "Hold your cluster"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-full-buddy-clusters-16ab0704ee9711.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6840,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Split into little pairs"
+        },
+        {
+          "timeMs": 1840,
+          "text": "Each pair picks a tiny pose"
+        },
+        {
+          "timeMs": 4140,
+          "text": "Look back at the camera"
+        },
+        {
+          "timeMs": 5520,
+          "text": "Hold your cluster"
+        }
+      ]
+    }
   }
 }

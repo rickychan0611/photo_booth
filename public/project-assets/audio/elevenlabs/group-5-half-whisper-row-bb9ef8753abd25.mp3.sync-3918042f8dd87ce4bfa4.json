@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6030,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Pass a whisper across"
+    },
+    {
+      "timeMs": 1760,
+      "text": "Each face reacts"
+    },
+    {
+      "timeMs": 3320,
+      "text": "Last person gasps"
+    },
+    {
+      "timeMs": 4960,
+      "text": "Hold the row"
+    }
+  ]
+}

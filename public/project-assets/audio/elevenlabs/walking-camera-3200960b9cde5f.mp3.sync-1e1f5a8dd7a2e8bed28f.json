@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5410,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Step forward"
+    },
+    {
+      "timeMs": 1380,
+      "text": "Let your arms move"
+    },
+    {
+      "timeMs": 2820,
+      "text": "Lift your chin"
+    },
+    {
+      "timeMs": 4019,
+      "text": "Smile as you walk"
+    }
+  ]
+}

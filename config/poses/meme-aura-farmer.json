@@ -31,20 +31,20 @@
     "durationMs": 7350,
     "captions": [
       {
-        "text": "Stand confidently",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Stand confidently"
       },
       {
-        "text": "Relax your shoulders",
-        "timeMs": 2117
+        "timeMs": 1660,
+        "text": "Relax your shoulders"
       },
       {
-        "text": "Freeze your coolest move",
-        "timeMs": 4233
+        "timeMs": 3180,
+        "text": "Freeze your coolest move"
       },
       {
-        "text": "Hold that aura",
-        "timeMs": 6350
+        "timeMs": 5060,
+        "text": "Hold that aura"
       }
     ]
   },
@@ -57,6 +57,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-aura-farmer-c63fd83f79aeff.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6350,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand confidently"
+        },
+        {
+          "timeMs": 1660,
+          "text": "Relax your shoulders"
+        },
+        {
+          "timeMs": 3180,
+          "text": "Freeze your coolest move"
+        },
+        {
+          "timeMs": 5060,
+          "text": "Hold that aura"
+        }
+      ]
+    }
   }
 }

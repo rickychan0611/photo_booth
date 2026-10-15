@@ -17,20 +17,20 @@
     "durationMs": 6070,
     "captions": [
       {
-        "text": "Pack your faces in",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Pack your faces in"
       },
       {
-        "text": "Cheeks touching",
-        "timeMs": 1690
+        "timeMs": 1660,
+        "text": "Cheeks touching"
       },
       {
-        "text": "Bright eyes",
-        "timeMs": 3380
+        "timeMs": 2820,
+        "text": "Bright eyes"
       },
       {
-        "text": "Hold the pile",
-        "timeMs": 5070
+        "timeMs": 3920,
+        "text": "Hold the pile"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-half-cheek-pile-d232401266dbc4.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5070,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Pack your faces in"
+        },
+        {
+          "timeMs": 1660,
+          "text": "Cheeks touching"
+        },
+        {
+          "timeMs": 2820,
+          "text": "Bright eyes"
+        },
+        {
+          "timeMs": 3920,
+          "text": "Hold the pile"
+        }
+      ]
+    }
   }
 }

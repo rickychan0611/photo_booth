@@ -16,20 +16,20 @@
     "durationMs": 6800,
     "captions": [
       {
-        "text": "Stand shoulder-to-shoulder",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Stand shoulder-to-shoulder"
       },
       {
-        "text": "Angle outward",
-        "timeMs": 1933
+        "timeMs": 1940,
+        "text": "Angle outward"
       },
       {
-        "text": "Set your hands",
-        "timeMs": 3867
+        "timeMs": 3240,
+        "text": "Set your hands"
       },
       {
-        "text": "Power-couple eyes",
-        "timeMs": 5800
+        "timeMs": 4440,
+        "text": "Power-couple eyes"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/power-couple-025a4148c83793.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5800,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand shoulder-to-shoulder"
+        },
+        {
+          "timeMs": 1940,
+          "text": "Angle outward"
+        },
+        {
+          "timeMs": 3240,
+          "text": "Set your hands"
+        },
+        {
+          "timeMs": 4440,
+          "text": "Power-couple eyes"
+        }
+      ]
+    }
   }
 }

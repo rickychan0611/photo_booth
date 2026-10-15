@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5560,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Walk arm in arm"
+    },
+    {
+      "timeMs": 1600,
+      "text": "Match your steps"
+    },
+    {
+      "timeMs": 3000,
+      "text": "Stop in a line"
+    },
+    {
+      "timeMs": 4300,
+      "text": "Easy smiles"
+    }
+  ]
+}

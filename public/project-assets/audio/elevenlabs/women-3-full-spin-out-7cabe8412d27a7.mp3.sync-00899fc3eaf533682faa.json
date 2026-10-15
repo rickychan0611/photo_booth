@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5560,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Hold hands in a circle"
+    },
+    {
+      "timeMs": 1700,
+      "text": "Spin once"
+    },
+    {
+      "timeMs": 2820,
+      "text": "Break toward the camera"
+    },
+    {
+      "timeMs": 4260,
+      "text": "Freeze mid-turn"
+    }
+  ]
+}

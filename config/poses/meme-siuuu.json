@@ -35,20 +35,20 @@
     "durationMs": 7350,
     "captions": [
       {
-        "text": "Plant your feet wide",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Plant your feet wide"
       },
       {
-        "text": "Arms down and outward",
-        "timeMs": 2117
+        "timeMs": 1680,
+        "text": "Arms down and outward"
       },
       {
-        "text": "Lift your chin",
-        "timeMs": 4233
+        "timeMs": 3380,
+        "text": "Lift your chin"
       },
       {
-        "text": "Hold your victory pose",
-        "timeMs": 6350
+        "timeMs": 4480,
+        "text": "Hold your victory pose"
       }
     ]
   },
@@ -61,6 +61,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-siuuu-62ebb05704a0ea.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6350,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Plant your feet wide"
+        },
+        {
+          "timeMs": 1680,
+          "text": "Arms down and outward"
+        },
+        {
+          "timeMs": 3380,
+          "text": "Lift your chin"
+        },
+        {
+          "timeMs": 4480,
+          "text": "Hold your victory pose"
+        }
+      ]
+    }
   }
 }

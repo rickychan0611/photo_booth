@@ -16,20 +16,20 @@
     "durationMs": 6880,
     "captions": [
       {
-        "text": "Shift one hip",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Shift one hip"
       },
       {
-        "text": "Angle your shoulders",
-        "timeMs": 1960
+        "timeMs": 1620,
+        "text": "Angle your shoulders"
       },
       {
-        "text": "Place one hand",
-        "timeMs": 3920
+        "timeMs": 3000,
+        "text": "Place one hand"
       },
       {
-        "text": "Soft model eyes",
-        "timeMs": 5880
+        "timeMs": 4500,
+        "text": "Soft model eyes"
       }
     ]
   },
@@ -59,6 +59,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/editorial-s-curve-7aa8ba8fbbf9bf.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5880,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Shift one hip"
+        },
+        {
+          "timeMs": 1620,
+          "text": "Angle your shoulders"
+        },
+        {
+          "timeMs": 3000,
+          "text": "Place one hand"
+        },
+        {
+          "timeMs": 4500,
+          "text": "Soft model eyes"
+        }
+      ]
+    }
   }
 }

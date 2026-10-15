@@ -1,24 +1,11 @@
 import { captionAt } from '../scenes';
 import { validateScene } from '../validation';
 import type { PoseScene } from '../types';
+import { fitPoseToNarration } from '../timing';
 
 export const cloneScene = (scene: PoseScene) => structuredClone(scene);
 export function fitSceneToNarration(scene: PoseScene, narrationMs: number) {
-  const result = cloneScene(scene);
-  const audioDurationMs = Math.max(1, Math.round(narrationMs));
-  result.animation.durationMs = Math.min(120000, audioDurationMs + 1000);
-  const lastCaptionMs = Math.min(audioDurationMs, result.animation.durationMs - 1);
-  const count = result.animation.captions.length;
-  result.animation.captions.forEach((caption, index) => {
-    caption.timeMs = count === 1 ? 0 : Math.round(lastCaptionMs * index / (count - 1));
-    delete caption.markerId;
-    delete caption.markerOffsetMs;
-  });
-  if (result.audio) {
-    result.audio.startMs = 0;
-    result.audio.markers = [];
-  }
-  return validateScene(result);
+  return validateScene(fitPoseToNarration(scene, narrationMs));
 }
 export function addStep(scene: PoseScene, timeMs: number) {
   if (timeMs <= 0 || timeMs > scene.animation.durationMs) throw new Error('Choose a time after the starting frame.');

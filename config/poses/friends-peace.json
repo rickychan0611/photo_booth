@@ -16,20 +16,20 @@
     "durationMs": 6960,
     "captions": [
       {
-        "text": "Move close together",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Move close together"
       },
       {
-        "text": "Raise your hands",
-        "timeMs": 1987
+        "timeMs": 1640,
+        "text": "Raise your hands"
       },
       {
-        "text": "Fill the frame with peace",
-        "timeMs": 3973
+        "timeMs": 2960,
+        "text": "Fill the frame with peace"
       },
       {
-        "text": "Party smiles",
-        "timeMs": 5960
+        "timeMs": 4760,
+        "text": "Party smiles"
       }
     ]
   },
@@ -65,6 +65,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/friends-peace-44bcb1a2133b7d.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5960,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Move close together"
+        },
+        {
+          "timeMs": 1640,
+          "text": "Raise your hands"
+        },
+        {
+          "timeMs": 2960,
+          "text": "Fill the frame with peace"
+        },
+        {
+          "timeMs": 4760,
+          "text": "Party smiles"
+        }
+      ]
+    }
   }
 }

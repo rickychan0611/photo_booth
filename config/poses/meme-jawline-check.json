@@ -36,20 +36,20 @@
     "durationMs": 7920,
     "captions": [
       {
-        "text": "Turn slightly sideways",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Turn slightly sideways"
       },
       {
-        "text": "Point along your jaw",
-        "timeMs": 2307
+        "timeMs": 1940,
+        "text": "Point along your jaw"
       },
       {
-        "text": "Give a serious stare",
-        "timeMs": 4613
+        "timeMs": 3460,
+        "text": "Give a serious stare"
       },
       {
-        "text": "Hold the jawline check",
-        "timeMs": 6920
+        "timeMs": 5380,
+        "text": "Hold the jawline check"
       }
     ]
   },
@@ -62,6 +62,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-jawline-check-4ca8090f0aa05a.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6920,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Turn slightly sideways"
+        },
+        {
+          "timeMs": 1940,
+          "text": "Point along your jaw"
+        },
+        {
+          "timeMs": 3460,
+          "text": "Give a serious stare"
+        },
+        {
+          "timeMs": 5380,
+          "text": "Hold the jawline check"
+        }
+      ]
+    }
   }
 }

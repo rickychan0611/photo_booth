@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5720,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Wind up"
+    },
+    {
+      "timeMs": 1240,
+      "text": "Jump with fists up"
+    },
+    {
+      "timeMs": 2900,
+      "text": "Shout the win"
+    },
+    {
+      "timeMs": 4140,
+      "text": "Land and hold"
+    }
+  ]
+}

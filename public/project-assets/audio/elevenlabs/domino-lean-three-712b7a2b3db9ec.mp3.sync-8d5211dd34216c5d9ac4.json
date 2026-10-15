@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6030,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Stand in a row"
+    },
+    {
+      "timeMs": 1540,
+      "text": "Lean one direction"
+    },
+    {
+      "timeMs": 3080,
+      "text": "Increase each angle"
+    },
+    {
+      "timeMs": 4740,
+      "text": "Hold the domino"
+    }
+  ]
+}

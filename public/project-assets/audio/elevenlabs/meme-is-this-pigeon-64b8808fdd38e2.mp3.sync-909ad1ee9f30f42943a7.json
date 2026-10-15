@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 7160,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "One presents an open palm"
+    },
+    {
+      "timeMs": 2260,
+      "text": "The other gestures toward it"
+    },
+    {
+      "timeMs": 4180,
+      "text": "Look completely confused"
+    },
+    {
+      "timeMs": 6140,
+      "text": "Hold the question"
+    }
+  ]
+}

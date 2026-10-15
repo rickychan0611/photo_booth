@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6770,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Stand at different depths"
+    },
+    {
+      "timeMs": 1780,
+      "text": "Choose different head angles"
+    },
+    {
+      "timeMs": 3480,
+      "text": "Keep serious faces"
+    },
+    {
+      "timeMs": 5300,
+      "text": "Hold your album cover"
+    }
+  ]
+}

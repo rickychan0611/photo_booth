@@ -16,20 +16,20 @@
     "durationMs": 6410,
     "captions": [
       {
-        "text": "Step wide",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Step wide"
       },
       {
-        "text": "Lean backward",
-        "timeMs": 1803
+        "timeMs": 1380,
+        "text": "Lean backward"
       },
       {
-        "text": "Play air guitar",
-        "timeMs": 3607
+        "timeMs": 2580,
+        "text": "Play air guitar"
       },
       {
-        "text": "Rock-star face",
-        "timeMs": 5410
+        "timeMs": 4120,
+        "text": "Rock-star face"
       }
     ]
   },
@@ -59,6 +59,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/rock-star-lean-5a066140afa0c6.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5410,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Step wide"
+        },
+        {
+          "timeMs": 1380,
+          "text": "Lean backward"
+        },
+        {
+          "timeMs": 2580,
+          "text": "Play air guitar"
+        },
+        {
+          "timeMs": 4120,
+          "text": "Rock-star face"
+        }
+      ]
+    }
   }
 }

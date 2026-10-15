@@ -16,20 +16,20 @@
     "durationMs": 7030,
     "captions": [
       {
-        "text": "Couple takes the center",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Couple takes the center"
       },
       {
-        "text": "Friends crowd around",
-        "timeMs": 2010
+        "timeMs": 1680,
+        "text": "Friends crowd around"
       },
       {
-        "text": "Couple leans in",
-        "timeMs": 4020
+        "timeMs": 3400,
+        "text": "Couple leans in"
       },
       {
-        "text": "Everyone reacts!",
-        "timeMs": 6030
+        "timeMs": 4740,
+        "text": "Everyone reacts!"
       }
     ]
   },
@@ -75,6 +75,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/kiss-with-reaction-e37442be635156.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6030,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Couple takes the center"
+        },
+        {
+          "timeMs": 1680,
+          "text": "Friends crowd around"
+        },
+        {
+          "timeMs": 3400,
+          "text": "Couple leans in"
+        },
+        {
+          "timeMs": 4740,
+          "text": "Everyone reacts!"
+        }
+      ]
+    }
   }
 }

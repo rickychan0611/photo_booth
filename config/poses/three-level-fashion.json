@@ -16,20 +16,20 @@
     "durationMs": 7270,
     "captions": [
       {
-        "text": "Choose three heights",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Choose three heights"
       },
       {
-        "text": "Overlap shoulders",
-        "timeMs": 2090
+        "timeMs": 1740,
+        "text": "Overlap shoulders"
       },
       {
-        "text": "Make sharp lines",
-        "timeMs": 4180
+        "timeMs": 3180,
+        "text": "Make sharp lines"
       },
       {
-        "text": "Editorial faces",
-        "timeMs": 6270
+        "timeMs": 4740,
+        "text": "Editorial faces"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/three-level-fashion-6bf40145fad4ec.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6270,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Choose three heights"
+        },
+        {
+          "timeMs": 1740,
+          "text": "Overlap shoulders"
+        },
+        {
+          "timeMs": 3180,
+          "text": "Make sharp lines"
+        },
+        {
+          "timeMs": 4740,
+          "text": "Editorial faces"
+        }
+      ]
+    }
   }
 }

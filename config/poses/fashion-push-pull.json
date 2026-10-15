@@ -16,20 +16,20 @@
     "durationMs": 6330,
     "captions": [
       {
-        "text": "Connect one hand",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Connect one hand"
       },
       {
-        "text": "Lean apart",
-        "timeMs": 1777
+        "timeMs": 1700,
+        "text": "Lean apart"
       },
       {
-        "text": "Stretch the line",
-        "timeMs": 3553
+        "timeMs": 2880,
+        "text": "Stretch the line"
       },
       {
-        "text": "Model eyes",
-        "timeMs": 5330
+        "timeMs": 4260,
+        "text": "Model eyes"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/fashion-push-pull-b14faab214a195.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5330,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Connect one hand"
+        },
+        {
+          "timeMs": 1700,
+          "text": "Lean apart"
+        },
+        {
+          "timeMs": 2880,
+          "text": "Stretch the line"
+        },
+        {
+          "timeMs": 4260,
+          "text": "Model eyes"
+        }
+      ]
+    }
   }
 }

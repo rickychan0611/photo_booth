@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6350,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Royal takes the center"
+    },
+    {
+      "timeMs": 1920,
+      "text": "Court forms around"
+    },
+    {
+      "timeMs": 3460,
+      "text": "Choose your court role"
+    },
+    {
+      "timeMs": 4960,
+      "text": "Royal drama"
+    }
+  ]
+}

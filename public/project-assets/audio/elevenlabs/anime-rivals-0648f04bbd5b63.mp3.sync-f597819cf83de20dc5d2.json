@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5330,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Face each other"
+    },
+    {
+      "timeMs": 1260,
+      "text": "Take battle stances"
+    },
+    {
+      "timeMs": 2920,
+      "text": "Ready your fists"
+    },
+    {
+      "timeMs": 4240,
+      "text": "Rival eyes"
+    }
+  ]
+}

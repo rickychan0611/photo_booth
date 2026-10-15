@@ -17,20 +17,20 @@
     "durationMs": 7430,
     "captions": [
       {
-        "text": "Outside friends frame her face",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Outside friends frame her face"
       },
       {
-        "text": "Middle friend poses",
-        "timeMs": 2143
+        "timeMs": 2420,
+        "text": "Middle friend poses"
       },
       {
-        "text": "Everyone looks through",
-        "timeMs": 4287
+        "timeMs": 4019,
+        "text": "Everyone looks through"
       },
       {
-        "text": "Hold the frame",
-        "timeMs": 6430
+        "timeMs": 5340,
+        "text": "Hold the frame"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-3-half-frame-the-middle-91cc89c40b1ce0.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6430,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Outside friends frame her face"
+        },
+        {
+          "timeMs": 2420,
+          "text": "Middle friend poses"
+        },
+        {
+          "timeMs": 4019,
+          "text": "Everyone looks through"
+        },
+        {
+          "timeMs": 5340,
+          "text": "Hold the frame"
+        }
+      ]
+    }
   }
 }

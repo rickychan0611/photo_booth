@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5800,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Back to back"
+    },
+    {
+      "timeMs": 1340,
+      "text": "Look over opposite shoulders"
+    },
+    {
+      "timeMs": 3140,
+      "text": "Cross one leg"
+    },
+    {
+      "timeMs": 4340,
+      "text": "Cool half-smile"
+    }
+  ]
+}

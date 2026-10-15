@@ -16,20 +16,20 @@
     "durationMs": 7270,
     "captions": [
       {
-        "text": "Leader steps forward",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Leader steps forward"
       },
       {
-        "text": "Teammates fan out",
-        "timeMs": 2090
+        "timeMs": 1700,
+        "text": "Teammates fan out"
       },
       {
-        "text": "Power poses ready",
-        "timeMs": 4180
+        "timeMs": 3420,
+        "text": "Power poses ready"
       },
       {
-        "text": "Squad faces",
-        "timeMs": 6270
+        "timeMs": 5000,
+        "text": "Squad faces"
       }
     ]
   },
@@ -69,6 +69,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/anime-squad-three-3aee76b80aa10e.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6270,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Leader steps forward"
+        },
+        {
+          "timeMs": 1700,
+          "text": "Teammates fan out"
+        },
+        {
+          "timeMs": 3420,
+          "text": "Power poses ready"
+        },
+        {
+          "timeMs": 5000,
+          "text": "Squad faces"
+        }
+      ]
+    }
   }
 }

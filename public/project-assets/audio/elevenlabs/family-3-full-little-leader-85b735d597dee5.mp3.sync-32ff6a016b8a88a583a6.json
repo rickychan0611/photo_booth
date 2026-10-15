@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6270,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Child steps in front"
+    },
+    {
+      "timeMs": 1800,
+      "text": "Grownups kneel behind"
+    },
+    {
+      "timeMs": 3520,
+      "text": "Follow the kid's pose"
+    },
+    {
+      "timeMs": 4980,
+      "text": "Hold the little boss"
+    }
+  ]
+}

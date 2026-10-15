@@ -17,20 +17,20 @@
     "durationMs": 6070,
     "captions": [
       {
-        "text": "Puff your cheeks",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Puff your cheeks"
       },
       {
-        "text": "Lean in",
-        "timeMs": 1690
+        "timeMs": 1340,
+        "text": "Lean in"
       },
       {
-        "text": "Try not to laugh",
-        "timeMs": 3380
+        "timeMs": 2280,
+        "text": "Try not to laugh"
       },
       {
-        "text": "Hold the bubbles",
-        "timeMs": 5070
+        "timeMs": 3780,
+        "text": "Hold the bubbles"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-half-bubble-cheeks-31c9e22be10b56.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5070,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Puff your cheeks"
+        },
+        {
+          "timeMs": 1340,
+          "text": "Lean in"
+        },
+        {
+          "timeMs": 2280,
+          "text": "Try not to laugh"
+        },
+        {
+          "timeMs": 3780,
+          "text": "Hold the bubbles"
+        }
+      ]
+    }
   }
 }

@@ -16,20 +16,20 @@
     "durationMs": 6720,
     "captions": [
       {
-        "text": "Turn your toes in",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Turn your toes in"
       },
       {
-        "text": "Bring hands together",
-        "timeMs": 1907
+        "timeMs": 1540,
+        "text": "Bring hands together"
       },
       {
-        "text": "Tilt your head",
-        "timeMs": 3813
+        "timeMs": 3060,
+        "text": "Tilt your head"
       },
       {
-        "text": "Give a shy smile",
-        "timeMs": 5720
+        "timeMs": 4180,
+        "text": "Give a shy smile"
       }
     ]
   },
@@ -59,6 +59,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/shy-toe-turn-7f6d29bad0e5e0.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5720,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Turn your toes in"
+        },
+        {
+          "timeMs": 1540,
+          "text": "Bring hands together"
+        },
+        {
+          "timeMs": 3060,
+          "text": "Tilt your head"
+        },
+        {
+          "timeMs": 4180,
+          "text": "Give a shy smile"
+        }
+      ]
+    }
   }
 }

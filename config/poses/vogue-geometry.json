@@ -16,20 +16,20 @@
     "durationMs": 7110,
     "captions": [
       {
-        "text": "Angle your shoulders",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Angle your shoulders"
       },
       {
-        "text": "Lift both elbows",
-        "timeMs": 2037
+        "timeMs": 1640,
+        "text": "Lift both elbows"
       },
       {
-        "text": "Frame your face",
-        "timeMs": 4073
+        "timeMs": 3340,
+        "text": "Frame your face"
       },
       {
-        "text": "Editorial smirk",
-        "timeMs": 6110
+        "timeMs": 4580,
+        "text": "Editorial smirk"
       }
     ]
   },
@@ -59,6 +59,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/vogue-geometry-81d7e0f3545313.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6110,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Angle your shoulders"
+        },
+        {
+          "timeMs": 1640,
+          "text": "Lift both elbows"
+        },
+        {
+          "timeMs": 3340,
+          "text": "Frame your face"
+        },
+        {
+          "timeMs": 4580,
+          "text": "Editorial smirk"
+        }
+      ]
+    }
   }
 }

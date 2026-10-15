@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 7160,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Bend one knee"
+    },
+    {
+      "timeMs": 1480,
+      "text": "Twist your shoulders slightly"
+    },
+    {
+      "timeMs": 3400,
+      "text": "Frame your face with one hand"
+    },
+    {
+      "timeMs": 5460,
+      "text": "Hold the dramatic pose"
+    }
+  ]
+}

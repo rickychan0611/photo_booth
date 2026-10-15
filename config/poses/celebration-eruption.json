@@ -16,20 +16,20 @@
     "durationMs": 7610,
     "captions": [
       {
-        "text": "Center starts calm",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Center starts calm"
       },
       {
-        "text": "Raise hands outward",
-        "timeMs": 2203
+        "timeMs": 1980,
+        "text": "Raise hands outward"
       },
       {
-        "text": "Grow the energy",
-        "timeMs": 4407
+        "timeMs": 3460,
+        "text": "Grow the energy"
       },
       {
-        "text": "Celebration erupts!",
-        "timeMs": 6610
+        "timeMs": 4820,
+        "text": "Celebration erupts!"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/celebration-eruption-dad5ea1f0a55b6.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6610,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Center starts calm"
+        },
+        {
+          "timeMs": 1980,
+          "text": "Raise hands outward"
+        },
+        {
+          "timeMs": 3460,
+          "text": "Grow the energy"
+        },
+        {
+          "timeMs": 4820,
+          "text": "Celebration erupts!"
+        }
+      ]
+    }
   }
 }

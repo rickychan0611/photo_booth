@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5800,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Stand back-to-back"
+    },
+    {
+      "timeMs": 1700,
+      "text": "Cross your arms"
+    },
+    {
+      "timeMs": 3000,
+      "text": "Turn opposite ways"
+    },
+    {
+      "timeMs": 4640,
+      "text": "Wedding spies"
+    }
+  ]
+}

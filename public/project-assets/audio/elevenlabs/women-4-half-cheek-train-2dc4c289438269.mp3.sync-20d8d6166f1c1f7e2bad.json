@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5720,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Cheek to cheek across"
+    },
+    {
+      "timeMs": 1740,
+      "text": "Tilt the same way"
+    },
+    {
+      "timeMs": 3180,
+      "text": "Soft smiles"
+    },
+    {
+      "timeMs": 4500,
+      "text": "Stay tucked in"
+    }
+  ]
+}

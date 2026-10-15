@@ -16,20 +16,20 @@
     "durationMs": 6640,
     "captions": [
       {
-        "text": "Cross one step",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Cross one step"
       },
       {
-        "text": "Lengthen your body",
-        "timeMs": 1880
+        "timeMs": 1580,
+        "text": "Lengthen your body"
       },
       {
-        "text": "Relax your arms",
-        "timeMs": 3760
+        "timeMs": 2980,
+        "text": "Relax your arms"
       },
       {
-        "text": "Runway eyes",
-        "timeMs": 5640
+        "timeMs": 4580,
+        "text": "Runway eyes"
       }
     ]
   },
@@ -59,6 +59,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/runway-cross-step-3652d864427ef5.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5640,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Cross one step"
+        },
+        {
+          "timeMs": 1580,
+          "text": "Lengthen your body"
+        },
+        {
+          "timeMs": 2980,
+          "text": "Relax your arms"
+        },
+        {
+          "timeMs": 4580,
+          "text": "Runway eyes"
+        }
+      ]
+    }
   }
 }

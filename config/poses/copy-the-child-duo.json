@@ -16,20 +16,20 @@
     "durationMs": 7110,
     "captions": [
       {
-        "text": "Child takes the lead",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Child takes the lead"
       },
       {
-        "text": "Adult copies the body",
-        "timeMs": 2037
+        "timeMs": 1560,
+        "text": "Adult copies the body"
       },
       {
-        "text": "Match both hands",
-        "timeMs": 4073
+        "timeMs": 3460,
+        "text": "Match both hands"
       },
       {
-        "text": "Child wins!",
-        "timeMs": 6110
+        "timeMs": 4900,
+        "text": "Child wins!"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/copy-the-child-duo-4b5be0fd2fbeea.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6110,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Child takes the lead"
+        },
+        {
+          "timeMs": 1560,
+          "text": "Adult copies the body"
+        },
+        {
+          "timeMs": 3460,
+          "text": "Match both hands"
+        },
+        {
+          "timeMs": 4900,
+          "text": "Child wins!"
+        }
+      ]
+    }
   }
 }

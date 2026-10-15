@@ -17,20 +17,20 @@
     "durationMs": 5990,
     "captions": [
       {
-        "text": "One leads",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "One leads"
       },
       {
-        "text": "Two flank her",
-        "timeMs": 1663
+        "timeMs": 1160,
+        "text": "Two flank her"
       },
       {
-        "text": "One closes the back",
-        "timeMs": 3327
+        "timeMs": 2440,
+        "text": "One closes the back"
       },
       {
-        "text": "Hit the diamond",
-        "timeMs": 4990
+        "timeMs": 3780,
+        "text": "Hit the diamond"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-4-full-diamond-strut-1d13129f7cffb2.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 4990,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "One leads"
+        },
+        {
+          "timeMs": 1160,
+          "text": "Two flank her"
+        },
+        {
+          "timeMs": 2440,
+          "text": "One closes the back"
+        },
+        {
+          "timeMs": 3780,
+          "text": "Hit the diamond"
+        }
+      ]
+    }
   }
 }

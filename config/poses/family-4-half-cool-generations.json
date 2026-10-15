@@ -17,20 +17,20 @@
     "durationMs": 6960,
     "captions": [
       {
-        "text": "Same lean",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Same lean"
       },
       {
-        "text": "Mix smiles and smirks",
-        "timeMs": 1987
+        "timeMs": 1260,
+        "text": "Mix smiles and smirks"
       },
       {
-        "text": "Look just past the lens",
-        "timeMs": 3973
+        "timeMs": 3040,
+        "text": "Look just past the lens"
       },
       {
-        "text": "Hold the cool",
-        "timeMs": 5960
+        "timeMs": 4820,
+        "text": "Hold the cool"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/family-4-half-cool-generations-72c0e7c24a2d79.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5960,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Same lean"
+        },
+        {
+          "timeMs": 1260,
+          "text": "Mix smiles and smirks"
+        },
+        {
+          "timeMs": 3040,
+          "text": "Look just past the lens"
+        },
+        {
+          "timeMs": 4820,
+          "text": "Hold the cool"
+        }
+      ]
+    }
   }
 }

@@ -17,20 +17,20 @@
     "durationMs": 6560,
     "captions": [
       {
-        "text": "Squeeze into a hug",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Squeeze into a hug"
       },
       {
-        "text": "Bend your knees",
-        "timeMs": 1853
+        "timeMs": 1820,
+        "text": "Bend your knees"
       },
       {
-        "text": "Little jump together",
-        "timeMs": 3707
+        "timeMs": 3000,
+        "text": "Little jump together"
       },
       {
-        "text": "Land in the hug",
-        "timeMs": 5560
+        "timeMs": 4360,
+        "text": "Land in the hug"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-3-full-group-hug-jump-c714eedbb1e4ba.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5560,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Squeeze into a hug"
+        },
+        {
+          "timeMs": 1820,
+          "text": "Bend your knees"
+        },
+        {
+          "timeMs": 3000,
+          "text": "Little jump together"
+        },
+        {
+          "timeMs": 4360,
+          "text": "Land in the hug"
+        }
+      ]
+    }
   }
 }

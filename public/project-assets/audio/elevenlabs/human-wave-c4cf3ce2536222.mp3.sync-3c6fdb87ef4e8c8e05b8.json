@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5800,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Form a close line"
+    },
+    {
+      "timeMs": 1740,
+      "text": "Start leaning outside"
+    },
+    {
+      "timeMs": 3480,
+      "text": "Build a wave"
+    },
+    {
+      "timeMs": 4700,
+      "text": "Hold the wave"
+    }
+  ]
+}

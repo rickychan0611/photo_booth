@@ -38,20 +38,20 @@
     "durationMs": 7690,
     "captions": [
       {
-        "text": "Stand back to back",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Stand back to back"
       },
       {
-        "text": "Fold your arms",
-        "timeMs": 2230
+        "timeMs": 1760,
+        "text": "Fold your arms"
       },
       {
-        "text": "Look in opposite directions",
-        "timeMs": 4460
+        "timeMs": 3060,
+        "text": "Look in opposite directions"
       },
       {
-        "text": "Hold your spy stare",
-        "timeMs": 6690
+        "timeMs": 5000,
+        "text": "Hold your spy stare"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-back-to-back-agents-079a705f3dc716.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6690,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand back to back"
+        },
+        {
+          "timeMs": 1760,
+          "text": "Fold your arms"
+        },
+        {
+          "timeMs": 3060,
+          "text": "Look in opposite directions"
+        },
+        {
+          "timeMs": 5000,
+          "text": "Hold your spy stare"
+        }
+      ]
+    }
   }
 }

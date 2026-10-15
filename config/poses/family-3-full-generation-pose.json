@@ -17,20 +17,20 @@
     "durationMs": 7530,
     "captions": [
       {
-        "text": "Stagger your height",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Stagger your height"
       },
       {
-        "text": "Hands in pockets or on hips",
-        "timeMs": 2177
+        "timeMs": 1560,
+        "text": "Hands in pockets or on hips"
       },
       {
-        "text": "Look just off camera",
-        "timeMs": 4353
+        "timeMs": 3660,
+        "text": "Look just off camera"
       },
       {
-        "text": "Hold the portrait",
-        "timeMs": 6530
+        "timeMs": 5420,
+        "text": "Hold the portrait"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/family-3-full-generation-pose-434e168938a84f.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6530,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stagger your height"
+        },
+        {
+          "timeMs": 1560,
+          "text": "Hands in pockets or on hips"
+        },
+        {
+          "timeMs": 3660,
+          "text": "Look just off camera"
+        },
+        {
+          "timeMs": 5420,
+          "text": "Hold the portrait"
+        }
+      ]
+    }
   }
 }

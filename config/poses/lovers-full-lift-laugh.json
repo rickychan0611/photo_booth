@@ -17,20 +17,20 @@
     "durationMs": 7110,
     "captions": [
       {
-        "text": "Count down together",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Count down together"
       },
       {
-        "text": "Jump into a small lift",
-        "timeMs": 2037
+        "timeMs": 1640,
+        "text": "Jump into a small lift"
       },
       {
-        "text": "Kick one foot up",
-        "timeMs": 4073
+        "timeMs": 3440,
+        "text": "Kick one foot up"
       },
       {
-        "text": "Laugh at the camera",
-        "timeMs": 6110
+        "timeMs": 4920,
+        "text": "Laugh at the camera"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/lovers-full-lift-laugh-151598b9004e45.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6110,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Count down together"
+        },
+        {
+          "timeMs": 1640,
+          "text": "Jump into a small lift"
+        },
+        {
+          "timeMs": 3440,
+          "text": "Kick one foot up"
+        },
+        {
+          "timeMs": 4920,
+          "text": "Laugh at the camera"
+        }
+      ]
+    }
   }
 }

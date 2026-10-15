@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5490,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Fists in"
+    },
+    {
+      "timeMs": 1240,
+      "text": "Break outward"
+    },
+    {
+      "timeMs": 2480,
+      "text": "Roar the win"
+    },
+    {
+      "timeMs": 3720,
+      "text": "Freeze with arms wide"
+    }
+  ]
+}

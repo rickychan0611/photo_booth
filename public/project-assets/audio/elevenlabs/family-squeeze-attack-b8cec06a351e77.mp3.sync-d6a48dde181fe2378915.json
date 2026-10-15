@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6030,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Move close together"
+    },
+    {
+      "timeMs": 1700,
+      "text": "Lean toward the center"
+    },
+    {
+      "timeMs": 3240,
+      "text": "Squeeze gently"
+    },
+    {
+      "timeMs": 4840,
+      "text": "Laugh at the camera"
+    }
+  ]
+}

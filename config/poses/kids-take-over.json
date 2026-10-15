@@ -16,20 +16,20 @@
     "durationMs": 7840,
     "captions": [
       {
-        "text": "Kids take the center",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Kids take the center"
       },
       {
-        "text": "Adults move behind",
-        "timeMs": 2280
+        "timeMs": 1560,
+        "text": "Adults move behind"
       },
       {
-        "text": "Kids act like bosses",
-        "timeMs": 4560
+        "timeMs": 3380,
+        "text": "Kids act like bosses"
       },
       {
-        "text": "Adults look worried",
-        "timeMs": 6840
+        "timeMs": 5140,
+        "text": "Adults look worried"
       }
     ]
   },
@@ -67,6 +67,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/kids-take-over-c030fbe2c57a5c.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6840,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Kids take the center"
+        },
+        {
+          "timeMs": 1560,
+          "text": "Adults move behind"
+        },
+        {
+          "timeMs": 3380,
+          "text": "Kids act like bosses"
+        },
+        {
+          "timeMs": 5140,
+          "text": "Adults look worried"
+        }
+      ]
+    }
   }
 }

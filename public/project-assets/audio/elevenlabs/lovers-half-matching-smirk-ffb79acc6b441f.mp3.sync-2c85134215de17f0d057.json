@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5410,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Same head tilt"
+    },
+    {
+      "timeMs": 1580,
+      "text": "One eyebrow up"
+    },
+    {
+      "timeMs": 2920,
+      "text": "Match the smirk"
+    },
+    {
+      "timeMs": 4180,
+      "text": "Do not blink"
+    }
+  ]
+}

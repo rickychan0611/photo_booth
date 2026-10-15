@@ -17,20 +17,20 @@
     "durationMs": 7030,
     "captions": [
       {
-        "text": "Start stone faced",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Start stone faced"
       },
       {
-        "text": "Hold one beat",
-        "timeMs": 2010
+        "timeMs": 1700,
+        "text": "Hold one beat"
       },
       {
-        "text": "Explode into laughs",
-        "timeMs": 4020
+        "timeMs": 2960,
+        "text": "Explode into laughs"
       },
       {
-        "text": "Freeze the burst",
-        "timeMs": 6030
+        "timeMs": 4760,
+        "text": "Freeze the burst"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/men-3-half-serious-then-burst-9edebf83f807ea.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6030,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Start stone faced"
+        },
+        {
+          "timeMs": 1700,
+          "text": "Hold one beat"
+        },
+        {
+          "timeMs": 2960,
+          "text": "Explode into laughs"
+        },
+        {
+          "timeMs": 4760,
+          "text": "Freeze the burst"
+        }
+      ]
+    }
   }
 }

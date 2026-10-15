@@ -42,20 +42,20 @@
     "durationMs": 6960,
     "captions": [
       {
-        "text": "Face your friends",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Face your friends"
       },
       {
-        "text": "Point at one another",
-        "timeMs": 1987
+        "timeMs": 1380,
+        "text": "Point at one another"
       },
       {
-        "text": "Look very surprised",
-        "timeMs": 3973
+        "timeMs": 2620,
+        "text": "Look very surprised"
       },
       {
-        "text": "Hold the pointing circle",
-        "timeMs": 5960
+        "timeMs": 4340,
+        "text": "Hold the pointing circle"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-spider-point-7a753ed12baed6.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5960,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Face your friends"
+        },
+        {
+          "timeMs": 1380,
+          "text": "Point at one another"
+        },
+        {
+          "timeMs": 2620,
+          "text": "Look very surprised"
+        },
+        {
+          "timeMs": 4340,
+          "text": "Hold the pointing circle"
+        }
+      ]
+    }
   }
 }

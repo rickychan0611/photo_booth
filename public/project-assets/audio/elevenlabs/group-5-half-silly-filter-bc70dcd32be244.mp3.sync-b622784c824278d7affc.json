@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5960,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Pick the weirdest face you can"
+    },
+    {
+      "timeMs": 2160,
+      "text": "Show it at once"
+    },
+    {
+      "timeMs": 3400,
+      "text": "No matching allowed"
+    },
+    {
+      "timeMs": 4740,
+      "text": "Hold the mess"
+    }
+  ]
+}

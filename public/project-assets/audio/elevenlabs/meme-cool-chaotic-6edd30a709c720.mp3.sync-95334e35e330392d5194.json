@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 7470,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Stand side by side"
+    },
+    {
+      "timeMs": 1900,
+      "text": "One stays perfectly cool"
+    },
+    {
+      "timeMs": 3840,
+      "text": "The other makes a wild face"
+    },
+    {
+      "timeMs": 5920,
+      "text": "Hold both reactions"
+    }
+  ]
+}

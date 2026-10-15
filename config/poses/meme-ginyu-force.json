@@ -49,20 +49,20 @@
     "durationMs": 8550,
     "captions": [
       {
-        "text": "Spread into five spots",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Spread into five spots"
       },
       {
-        "text": "Choose different levels",
-        "timeMs": 2517
+        "timeMs": 2100,
+        "text": "Choose different levels"
       },
       {
-        "text": "Strike big superhero shapes",
-        "timeMs": 5033
+        "timeMs": 3600,
+        "text": "Strike big superhero shapes"
       },
       {
-        "text": "Hold the team formation",
-        "timeMs": 7550
+        "timeMs": 5900,
+        "text": "Hold the team formation"
       }
     ]
   },
@@ -75,6 +75,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-ginyu-force-d643c0fb1da7e8.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 7550,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Spread into five spots"
+        },
+        {
+          "timeMs": 2100,
+          "text": "Choose different levels"
+        },
+        {
+          "timeMs": 3600,
+          "text": "Strike big superhero shapes"
+        },
+        {
+          "timeMs": 5900,
+          "text": "Hold the team formation"
+        }
+      ]
+    }
   }
 }

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6840,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Split into little pairs"
+    },
+    {
+      "timeMs": 1840,
+      "text": "Each pair picks a tiny pose"
+    },
+    {
+      "timeMs": 4140,
+      "text": "Look back at the camera"
+    },
+    {
+      "timeMs": 5520,
+      "text": "Hold your cluster"
+    }
+  ]
+}

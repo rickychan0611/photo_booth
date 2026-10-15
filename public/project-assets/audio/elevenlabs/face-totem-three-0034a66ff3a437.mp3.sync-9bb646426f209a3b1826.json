@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 7000,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Stack diagonally"
+    },
+    {
+      "timeMs": 1680,
+      "text": "Lean into view"
+    },
+    {
+      "timeMs": 3040,
+      "text": "Keep every face clear"
+    },
+    {
+      "timeMs": 4980,
+      "text": "Three wild reactions"
+    }
+  ]
+}

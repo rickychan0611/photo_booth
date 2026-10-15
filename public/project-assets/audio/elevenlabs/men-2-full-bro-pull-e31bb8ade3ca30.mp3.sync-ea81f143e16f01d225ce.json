@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5410,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Clasp hands"
+    },
+    {
+      "timeMs": 1440,
+      "text": "Yank into a lean"
+    },
+    {
+      "timeMs": 2920,
+      "text": "One foot up"
+    },
+    {
+      "timeMs": 3980,
+      "text": "Freeze the stumble"
+    }
+  ]
+}

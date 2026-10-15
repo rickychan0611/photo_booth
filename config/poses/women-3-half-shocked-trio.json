@@ -17,20 +17,20 @@
     "durationMs": 6150,
     "captions": [
       {
-        "text": "Same gasp",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Same gasp"
       },
       {
-        "text": "Hands on cheeks",
-        "timeMs": 1717
+        "timeMs": 1380,
+        "text": "Hands on cheeks"
       },
       {
-        "text": "Eyes huge",
-        "timeMs": 3433
+        "timeMs": 2560,
+        "text": "Eyes huge"
       },
       {
-        "text": "Hold the shock",
-        "timeMs": 5150
+        "timeMs": 4019,
+        "text": "Hold the shock"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-3-half-shocked-trio-5a9a4337e9a32c.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5150,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Same gasp"
+        },
+        {
+          "timeMs": 1380,
+          "text": "Hands on cheeks"
+        },
+        {
+          "timeMs": 2560,
+          "text": "Eyes huge"
+        },
+        {
+          "timeMs": 4019,
+          "text": "Hold the shock"
+        }
+      ]
+    }
   }
 }

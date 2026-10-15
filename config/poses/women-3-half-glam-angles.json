@@ -17,20 +17,20 @@
     "durationMs": 6880,
     "captions": [
       {
-        "text": "Sharp chin angles",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Sharp chin angles"
       },
       {
-        "text": "One hand in your hair",
-        "timeMs": 1960
+        "timeMs": 1740,
+        "text": "One hand in your hair"
       },
       {
-        "text": "Look down the lens",
-        "timeMs": 3920
+        "timeMs": 3220,
+        "text": "Look down the lens"
       },
       {
-        "text": "Hold the editorial",
-        "timeMs": 5880
+        "timeMs": 4480,
+        "text": "Hold the editorial"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-3-half-glam-angles-a5d7fde0c79e22.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5880,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Sharp chin angles"
+        },
+        {
+          "timeMs": 1740,
+          "text": "One hand in your hair"
+        },
+        {
+          "timeMs": 3220,
+          "text": "Look down the lens"
+        },
+        {
+          "timeMs": 4480,
+          "text": "Hold the editorial"
+        }
+      ]
+    }
   }
 }

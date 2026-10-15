@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 4680,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Copy the leader"
+    },
+    {
+      "timeMs": 1420,
+      "text": "Same hands"
+    },
+    {
+      "timeMs": 2520,
+      "text": "Same foot"
+    },
+    {
+      "timeMs": 3460,
+      "text": "Hold the copy"
+    }
+  ]
+}

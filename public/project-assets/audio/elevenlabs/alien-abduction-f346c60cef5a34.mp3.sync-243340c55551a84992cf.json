@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6190,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Target reaches upward"
+    },
+    {
+      "timeMs": 1940,
+      "text": "Others grab on"
+    },
+    {
+      "timeMs": 3300,
+      "text": "Fight the tractor beam"
+    },
+    {
+      "timeMs": 4800,
+      "text": "Alien panic!"
+    }
+  ]
+}

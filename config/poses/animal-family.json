@@ -16,20 +16,20 @@
     "durationMs": 6960,
     "captions": [
       {
-        "text": "Choose your animals",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Choose your animals"
       },
       {
-        "text": "Make ears and paws",
-        "timeMs": 1987
+        "timeMs": 1420,
+        "text": "Make ears and paws"
       },
       {
-        "text": "Lean into the pack",
-        "timeMs": 3973
+        "timeMs": 3080,
+        "text": "Lean into the pack"
       },
       {
-        "text": "Animal faces!",
-        "timeMs": 5960
+        "timeMs": 4640,
+        "text": "Animal faces!"
       }
     ]
   },
@@ -69,6 +69,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/animal-family-80533e02bfec45.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5960,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Choose your animals"
+        },
+        {
+          "timeMs": 1420,
+          "text": "Make ears and paws"
+        },
+        {
+          "timeMs": 3080,
+          "text": "Lean into the pack"
+        },
+        {
+          "timeMs": 4640,
+          "text": "Animal faces!"
+        }
+      ]
+    }
   }
 }

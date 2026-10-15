@@ -39,20 +39,20 @@
     "durationMs": 8000,
     "captions": [
       {
-        "text": "Start a small gesture",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Start a small gesture"
       },
       {
-        "text": "Stop halfway through",
-        "timeMs": 2333
+        "timeMs": 1820,
+        "text": "Stop halfway through"
       },
       {
-        "text": "Stare completely blankly",
-        "timeMs": 4667
+        "timeMs": 3420,
+        "text": "Stare completely blankly"
       },
       {
-        "text": "Hold while you buffer",
-        "timeMs": 7000
+        "timeMs": 5540,
+        "text": "Hold while you buffer"
       }
     ]
   },
@@ -65,6 +65,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-buffering-95dd8167b9c629.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 7000,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Start a small gesture"
+        },
+        {
+          "timeMs": 1820,
+          "text": "Stop halfway through"
+        },
+        {
+          "timeMs": 3420,
+          "text": "Stare completely blankly"
+        },
+        {
+          "timeMs": 5540,
+          "text": "Hold while you buffer"
+        }
+      ]
+    }
   }
 }

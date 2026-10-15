@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5250,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Lean in close"
+    },
+    {
+      "timeMs": 1480,
+      "text": "Wrinkle your noses"
+    },
+    {
+      "timeMs": 2920,
+      "text": "Boop once"
+    },
+    {
+      "timeMs": 4040,
+      "text": "Giggle and hold"
+    }
+  ]
+}

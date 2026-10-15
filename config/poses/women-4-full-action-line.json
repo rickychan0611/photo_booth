@@ -17,20 +17,20 @@
     "durationMs": 6800,
     "captions": [
       {
-        "text": "Stagger your heights",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Stagger your heights"
       },
       {
-        "text": "One arm forward each",
-        "timeMs": 1933
+        "timeMs": 1640,
+        "text": "One arm forward each"
       },
       {
-        "text": "Lean into the shot",
-        "timeMs": 3867
+        "timeMs": 3240,
+        "text": "Lean into the shot"
       },
       {
-        "text": "Hold the poster",
-        "timeMs": 5800
+        "timeMs": 4540,
+        "text": "Hold the poster"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-4-full-action-line-b16107e95aa9fc.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5800,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stagger your heights"
+        },
+        {
+          "timeMs": 1640,
+          "text": "One arm forward each"
+        },
+        {
+          "timeMs": 3240,
+          "text": "Lean into the shot"
+        },
+        {
+          "timeMs": 4540,
+          "text": "Hold the poster"
+        }
+      ]
+    }
   }
 }

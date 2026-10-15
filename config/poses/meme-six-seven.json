@@ -36,20 +36,20 @@
     "durationMs": 7190,
     "captions": [
       {
-        "text": "Raise both hands",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Raise both hands"
       },
       {
-        "text": "Turn your palms up",
-        "timeMs": 2063
+        "timeMs": 1700,
+        "text": "Turn your palms up"
       },
       {
-        "text": "One high, one low",
-        "timeMs": 4127
+        "timeMs": 3060,
+        "text": "One high, one low"
       },
       {
-        "text": "Hold your six seven",
-        "timeMs": 6190
+        "timeMs": 4820,
+        "text": "Hold your six seven"
       }
     ]
   },
@@ -62,6 +62,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-six-seven-18034894f5aca9.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6190,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Raise both hands"
+        },
+        {
+          "timeMs": 1700,
+          "text": "Turn your palms up"
+        },
+        {
+          "timeMs": 3060,
+          "text": "One high, one low"
+        },
+        {
+          "timeMs": 4820,
+          "text": "Hold your six seven"
+        }
+      ]
+    }
   }
 }

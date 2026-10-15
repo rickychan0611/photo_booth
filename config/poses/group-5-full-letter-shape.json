@@ -17,20 +17,20 @@
     "durationMs": 7430,
     "captions": [
       {
-        "text": "Make the letter A with your bodies",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Make the letter A with your bodies"
       },
       {
-        "text": "Arms are the peak",
-        "timeMs": 2143
+        "timeMs": 2660,
+        "text": "Arms are the peak"
       },
       {
-        "text": "Feet plant the sides",
-        "timeMs": 4287
+        "timeMs": 3960,
+        "text": "Feet plant the sides"
       },
       {
-        "text": "Hold the letter",
-        "timeMs": 6430
+        "timeMs": 5480,
+        "text": "Hold the letter"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-full-letter-shape-cfb683a7a65133.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6430,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Make the letter A with your bodies"
+        },
+        {
+          "timeMs": 2660,
+          "text": "Arms are the peak"
+        },
+        {
+          "timeMs": 3960,
+          "text": "Feet plant the sides"
+        },
+        {
+          "timeMs": 5480,
+          "text": "Hold the letter"
+        }
+      ]
+    }
   }
 }

@@ -52,6 +52,16 @@ export function validateScene(value: unknown): PoseScene {
       markerTime = marker.timeMs;
     }
     if (new Set(markers.map(marker => marker.id)).size !== markers.length) fail('duplicate audio marker');
+    const timing = scene.audio.speechTiming;
+    if (timing !== undefined) {
+      if (!record(timing) || timing.version !== 1 || !finite(timing.audioDurationMs, 1, 119000) || !Array.isArray(timing.captions) || !timing.captions.length || timing.captions.length > 64) fail('speech timing');
+      let previous = -1;
+      for (const caption of timing.captions) {
+        if (!record(caption) || typeof caption.text !== 'string' || !caption.text.trim() || !finite(caption.timeMs, 0, timing.audioDurationMs) || caption.timeMs <= previous) fail('speech caption timing');
+        previous = caption.timeMs;
+      }
+      if (timing.captions[0].timeMs !== 0) fail('speech captions must start at zero');
+    }
   }
   for (const caption of scene.animation.captions) {
     if (caption.markerId !== undefined && (!scene.audio?.markers?.some(marker => marker.id === caption.markerId) || !finite(caption.markerOffsetMs ?? 0, -120000, 120000))) fail('caption marker');

@@ -17,20 +17,20 @@
     "durationMs": 6490,
     "captions": [
       {
-        "text": "One foot in front",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "One foot in front"
       },
       {
-        "text": "Hands on hips",
-        "timeMs": 1830
+        "timeMs": 1560,
+        "text": "Hands on hips"
       },
       {
-        "text": "Strut two steps",
-        "timeMs": 3660
+        "timeMs": 2780,
+        "text": "Strut two steps"
       },
       {
-        "text": "Hit a cover pose",
-        "timeMs": 5490
+        "timeMs": 4100,
+        "text": "Hit a cover pose"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-2-full-shopping-strut-29075189c2175c.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5490,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "One foot in front"
+        },
+        {
+          "timeMs": 1560,
+          "text": "Hands on hips"
+        },
+        {
+          "timeMs": 2780,
+          "text": "Strut two steps"
+        },
+        {
+          "timeMs": 4100,
+          "text": "Hit a cover pose"
+        }
+      ]
+    }
   }
 }

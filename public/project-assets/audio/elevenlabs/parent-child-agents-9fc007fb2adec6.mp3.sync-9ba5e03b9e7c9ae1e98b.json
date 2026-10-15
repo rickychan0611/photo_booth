@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6110,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Stand back-to-back"
+    },
+    {
+      "timeMs": 1720,
+      "text": "Choose agent poses"
+    },
+    {
+      "timeMs": 3340,
+      "text": "Set your hands"
+    },
+    {
+      "timeMs": 4580,
+      "text": "Secret-agent faces"
+    }
+  ]
+}

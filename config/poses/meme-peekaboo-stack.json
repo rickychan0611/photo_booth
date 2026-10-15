@@ -42,20 +42,20 @@
     "durationMs": 8810,
     "captions": [
       {
-        "text": "Line up behind each other",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Line up behind each other"
       },
       {
-        "text": "Peek out on alternating sides",
-        "timeMs": 2603
+        "timeMs": 1880,
+        "text": "Peek out on alternating sides"
       },
       {
-        "text": "Keep every face visible",
-        "timeMs": 5207
+        "timeMs": 4080,
+        "text": "Keep every face visible"
       },
       {
-        "text": "Hold your peekaboo smiles",
-        "timeMs": 7810
+        "timeMs": 6080,
+        "text": "Hold your peekaboo smiles"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-peekaboo-stack-7ce35416b514d2.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 7810,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Line up behind each other"
+        },
+        {
+          "timeMs": 1880,
+          "text": "Peek out on alternating sides"
+        },
+        {
+          "timeMs": 4080,
+          "text": "Keep every face visible"
+        },
+        {
+          "timeMs": 6080,
+          "text": "Hold your peekaboo smiles"
+        }
+      ]
+    }
   }
 }

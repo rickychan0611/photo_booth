@@ -39,20 +39,20 @@
     "durationMs": 7690,
     "captions": [
       {
-        "text": "Touch your sunglasses",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Touch your sunglasses"
       },
       {
-        "text": "Lower them just a little",
-        "timeMs": 2230
+        "timeMs": 1640,
+        "text": "Lower them just a little"
       },
       {
-        "text": "Look over the frames",
-        "timeMs": 4460
+        "timeMs": 3540,
+        "text": "Look over the frames"
       },
       {
-        "text": "Hold your cool reveal",
-        "timeMs": 6690
+        "timeMs": 4920,
+        "text": "Hold your cool reveal"
       }
     ]
   },
@@ -65,6 +65,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-sunglasses-reveal-0665cd29262ab1.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6690,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Touch your sunglasses"
+        },
+        {
+          "timeMs": 1640,
+          "text": "Lower them just a little"
+        },
+        {
+          "timeMs": 3540,
+          "text": "Look over the frames"
+        },
+        {
+          "timeMs": 4920,
+          "text": "Hold your cool reveal"
+        }
+      ]
+    }
   }
 }

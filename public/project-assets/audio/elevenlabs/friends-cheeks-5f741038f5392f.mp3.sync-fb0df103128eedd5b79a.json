@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5720,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Move close together"
+    },
+    {
+      "timeMs": 1740,
+      "text": "Lift both hands"
+    },
+    {
+      "timeMs": 3240,
+      "text": "Touch your cheeks"
+    },
+    {
+      "timeMs": 4440,
+      "text": "Cheeky faces"
+    }
+  ]
+}

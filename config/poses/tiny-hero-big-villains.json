@@ -16,20 +16,20 @@
     "durationMs": 8390,
     "captions": [
       {
-        "text": "Tiny hero steps forward",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Tiny hero steps forward"
       },
       {
-        "text": "Villains loom behind",
-        "timeMs": 2463
+        "timeMs": 2360,
+        "text": "Villains loom behind"
       },
       {
-        "text": "Hero powers up",
-        "timeMs": 4927
+        "timeMs": 4180,
+        "text": "Hero powers up"
       },
       {
-        "text": "Villains are defeated",
-        "timeMs": 7390
+        "timeMs": 5800,
+        "text": "Villains are defeated"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/tiny-hero-big-villains-a1643c52bb87dc.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 7390,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Tiny hero steps forward"
+        },
+        {
+          "timeMs": 2360,
+          "text": "Villains loom behind"
+        },
+        {
+          "timeMs": 4180,
+          "text": "Hero powers up"
+        },
+        {
+          "timeMs": 5800,
+          "text": "Villains are defeated"
+        }
+      ]
+    }
   }
 }

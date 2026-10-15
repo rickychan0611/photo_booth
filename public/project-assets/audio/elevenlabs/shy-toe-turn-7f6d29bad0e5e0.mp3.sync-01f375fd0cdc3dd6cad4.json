@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5720,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Turn your toes in"
+    },
+    {
+      "timeMs": 1540,
+      "text": "Bring hands together"
+    },
+    {
+      "timeMs": 3060,
+      "text": "Tilt your head"
+    },
+    {
+      "timeMs": 4180,
+      "text": "Give a shy smile"
+    }
+  ]
+}

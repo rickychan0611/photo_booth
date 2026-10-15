@@ -16,20 +16,20 @@
     "durationMs": 6720,
     "captions": [
       {
-        "text": "Break your hip line",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Break your hip line"
       },
       {
-        "text": "Tilt your shoulders",
-        "timeMs": 1907
+        "timeMs": 1520,
+        "text": "Tilt your shoulders"
       },
       {
-        "text": "Bend your wrists",
-        "timeMs": 3813
+        "timeMs": 2860,
+        "text": "Bend your wrists"
       },
       {
-        "text": "Blank fashion face",
-        "timeMs": 5720
+        "timeMs": 4120,
+        "text": "Blank fashion face"
       }
     ]
   },
@@ -59,6 +59,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/broken-doll-fashion-333dac1624097a.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5720,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Break your hip line"
+        },
+        {
+          "timeMs": 1520,
+          "text": "Tilt your shoulders"
+        },
+        {
+          "timeMs": 2860,
+          "text": "Bend your wrists"
+        },
+        {
+          "timeMs": 4120,
+          "text": "Blank fashion face"
+        }
+      ]
+    }
   }
 }

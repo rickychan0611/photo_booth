@@ -17,20 +17,20 @@
     "durationMs": 6330,
     "captions": [
       {
-        "text": "One leans back",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "One leans back"
       },
       {
-        "text": "The other catches",
-        "timeMs": 1777
+        "timeMs": 1300,
+        "text": "The other catches"
       },
       {
-        "text": "Stop before the fall",
-        "timeMs": 3553
+        "timeMs": 2700,
+        "text": "Stop before the fall"
       },
       {
-        "text": "Hold the trust",
-        "timeMs": 5330
+        "timeMs": 4080,
+        "text": "Hold the trust"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/men-2-full-trust-catch-29d68117da7925.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5330,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "One leans back"
+        },
+        {
+          "timeMs": 1300,
+          "text": "The other catches"
+        },
+        {
+          "timeMs": 2700,
+          "text": "Stop before the fall"
+        },
+        {
+          "timeMs": 4080,
+          "text": "Hold the trust"
+        }
+      ]
+    }
   }
 }

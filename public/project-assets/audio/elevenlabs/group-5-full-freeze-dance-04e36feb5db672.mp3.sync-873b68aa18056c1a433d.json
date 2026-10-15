@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5800,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Dance for one beat"
+    },
+    {
+      "timeMs": 1820,
+      "text": "Stop wherever you are"
+    },
+    {
+      "timeMs": 3300,
+      "text": "Do not fix it"
+    },
+    {
+      "timeMs": 4660,
+      "text": "Hold the accident"
+    }
+  ]
+}

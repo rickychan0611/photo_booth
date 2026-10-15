@@ -17,20 +17,20 @@
     "durationMs": 6800,
     "captions": [
       {
-        "text": "Dance for one beat",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Dance for one beat"
       },
       {
-        "text": "Stop wherever you are",
-        "timeMs": 1933
+        "timeMs": 1820,
+        "text": "Stop wherever you are"
       },
       {
-        "text": "Do not fix it",
-        "timeMs": 3867
+        "timeMs": 3300,
+        "text": "Do not fix it"
       },
       {
-        "text": "Hold the accident",
-        "timeMs": 5800
+        "timeMs": 4660,
+        "text": "Hold the accident"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-full-freeze-dance-04e36feb5db672.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5800,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Dance for one beat"
+        },
+        {
+          "timeMs": 1820,
+          "text": "Stop wherever you are"
+        },
+        {
+          "timeMs": 3300,
+          "text": "Do not fix it"
+        },
+        {
+          "timeMs": 4660,
+          "text": "Hold the accident"
+        }
+      ]
+    }
   }
 }

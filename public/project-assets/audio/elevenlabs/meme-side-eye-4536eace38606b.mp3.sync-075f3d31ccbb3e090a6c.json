@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6530,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Keep your head forward"
+    },
+    {
+      "timeMs": 1560,
+      "text": "Look sharply sideways"
+    },
+    {
+      "timeMs": 3320,
+      "text": "Add a suspicious face"
+    },
+    {
+      "timeMs": 5060,
+      "text": "Hold that side eye"
+    }
+  ]
+}

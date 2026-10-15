@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 4990,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Hands ready"
+    },
+    {
+      "timeMs": 1320,
+      "text": "Gasp together"
+    },
+    {
+      "timeMs": 2700,
+      "text": "Eyes wide"
+    },
+    {
+      "timeMs": 3940,
+      "text": "Hold the gasp"
+    }
+  ]
+}

@@ -17,20 +17,20 @@
     "durationMs": 6640,
     "captions": [
       {
-        "text": "One whispers",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "One whispers"
       },
       {
-        "text": "Second cracks",
-        "timeMs": 1880
+        "timeMs": 1680,
+        "text": "Second cracks"
       },
       {
-        "text": "Third is already gone",
-        "timeMs": 3760
+        "timeMs": 3060,
+        "text": "Third is already gone"
       },
       {
-        "text": "Hold the mess",
-        "timeMs": 5640
+        "timeMs": 4560,
+        "text": "Hold the mess"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/men-3-half-whisper-lose-it-5462a644f79737.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5640,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "One whispers"
+        },
+        {
+          "timeMs": 1680,
+          "text": "Second cracks"
+        },
+        {
+          "timeMs": 3060,
+          "text": "Third is already gone"
+        },
+        {
+          "timeMs": 4560,
+          "text": "Hold the mess"
+        }
+      ]
+    }
   }
 }

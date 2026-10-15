@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5560,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Each pick a face"
+    },
+    {
+      "timeMs": 1440,
+      "text": "Show them together"
+    },
+    {
+      "timeMs": 2660,
+      "text": "Kids may go wilder"
+    },
+    {
+      "timeMs": 4600,
+      "text": "Freeze the set"
+    }
+  ]
+}

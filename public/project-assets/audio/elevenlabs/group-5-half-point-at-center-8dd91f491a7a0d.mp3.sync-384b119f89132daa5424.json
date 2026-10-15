@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6270,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Center person poses"
+    },
+    {
+      "timeMs": 1920,
+      "text": "Everyone else points at them"
+    },
+    {
+      "timeMs": 3800,
+      "text": "Center owns it"
+    },
+    {
+      "timeMs": 5060,
+      "text": "Hold the spotlight"
+    }
+  ]
+}

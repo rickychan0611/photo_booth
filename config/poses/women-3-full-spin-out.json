@@ -17,20 +17,20 @@
     "durationMs": 6560,
     "captions": [
       {
-        "text": "Hold hands in a circle",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Hold hands in a circle"
       },
       {
-        "text": "Spin once",
-        "timeMs": 1853
+        "timeMs": 1700,
+        "text": "Spin once"
       },
       {
-        "text": "Break toward the camera",
-        "timeMs": 3707
+        "timeMs": 2820,
+        "text": "Break toward the camera"
       },
       {
-        "text": "Freeze mid-turn",
-        "timeMs": 5560
+        "timeMs": 4260,
+        "text": "Freeze mid-turn"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-3-full-spin-out-7cabe8412d27a7.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5560,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Hold hands in a circle"
+        },
+        {
+          "timeMs": 1700,
+          "text": "Spin once"
+        },
+        {
+          "timeMs": 2820,
+          "text": "Break toward the camera"
+        },
+        {
+          "timeMs": 4260,
+          "text": "Freeze mid-turn"
+        }
+      ]
+    }
   }
 }

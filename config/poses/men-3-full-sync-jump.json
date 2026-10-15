@@ -17,20 +17,20 @@
     "durationMs": 6640,
     "captions": [
       {
-        "text": "Line up",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Line up"
       },
       {
-        "text": "Bend together",
-        "timeMs": 1880
+        "timeMs": 1260,
+        "text": "Bend together"
       },
       {
-        "text": "Jump on one count",
-        "timeMs": 3760
+        "timeMs": 2520,
+        "text": "Jump on one count"
       },
       {
-        "text": "Land in the same pose",
-        "timeMs": 5640
+        "timeMs": 4100,
+        "text": "Land in the same pose"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/men-3-full-sync-jump-9af2e2ece942b2.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5640,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Line up"
+        },
+        {
+          "timeMs": 1260,
+          "text": "Bend together"
+        },
+        {
+          "timeMs": 2520,
+          "text": "Jump on one count"
+        },
+        {
+          "timeMs": 4100,
+          "text": "Land in the same pose"
+        }
+      ]
+    }
   }
 }

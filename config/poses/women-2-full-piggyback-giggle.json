@@ -17,20 +17,20 @@
     "durationMs": 6070,
     "captions": [
       {
-        "text": "One hops on",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "One hops on"
       },
       {
-        "text": "Hold on tight",
-        "timeMs": 1690
+        "timeMs": 1460,
+        "text": "Hold on tight"
       },
       {
-        "text": "Kick your feet",
-        "timeMs": 3380
+        "timeMs": 2640,
+        "text": "Kick your feet"
       },
       {
-        "text": "Laugh at the lens",
-        "timeMs": 5070
+        "timeMs": 3800,
+        "text": "Laugh at the lens"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-2-full-piggyback-giggle-9cf51584d3e35e.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5070,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "One hops on"
+        },
+        {
+          "timeMs": 1460,
+          "text": "Hold on tight"
+        },
+        {
+          "timeMs": 2640,
+          "text": "Kick your feet"
+        },
+        {
+          "timeMs": 3800,
+          "text": "Laugh at the lens"
+        }
+      ]
+    }
   }
 }

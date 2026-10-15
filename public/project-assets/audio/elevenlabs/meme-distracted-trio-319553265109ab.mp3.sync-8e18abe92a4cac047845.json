@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6690,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Two stand together"
+    },
+    {
+      "timeMs": 1800,
+      "text": "One looks at the third friend"
+    },
+    {
+      "timeMs": 3520,
+      "text": "Their partner looks shocked"
+    },
+    {
+      "timeMs": 5300,
+      "text": "Freeze the distraction"
+    }
+  ]
+}

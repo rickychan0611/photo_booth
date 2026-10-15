@@ -17,20 +17,20 @@
     "durationMs": 6560,
     "captions": [
       {
-        "text": "Press cheek to cheek",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Press cheek to cheek"
       },
       {
-        "text": "Middle friend centers it",
-        "timeMs": 1853
+        "timeMs": 1600,
+        "text": "Middle friend centers it"
       },
       {
-        "text": "Close your eyes",
-        "timeMs": 3707
+        "timeMs": 3160,
+        "text": "Close your eyes"
       },
       {
-        "text": "Stay in the row",
-        "timeMs": 5560
+        "timeMs": 4440,
+        "text": "Stay in the row"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-3-half-cheek-row-0c54da82357464.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5560,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Press cheek to cheek"
+        },
+        {
+          "timeMs": 1600,
+          "text": "Middle friend centers it"
+        },
+        {
+          "timeMs": 3160,
+          "text": "Close your eyes"
+        },
+        {
+          "timeMs": 4440,
+          "text": "Stay in the row"
+        }
+      ]
+    }
   }
 }

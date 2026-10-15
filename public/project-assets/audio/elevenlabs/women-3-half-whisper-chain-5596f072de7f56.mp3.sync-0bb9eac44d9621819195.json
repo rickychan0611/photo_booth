@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5640,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Whisper to the next friend"
+    },
+    {
+      "timeMs": 1720,
+      "text": "Pass it down the line"
+    },
+    {
+      "timeMs": 3140,
+      "text": "Last friend loses it"
+    },
+    {
+      "timeMs": 4640,
+      "text": "Freeze the laugh"
+    }
+  ]
+}

@@ -16,20 +16,20 @@
     "durationMs": 6330,
     "captions": [
       {
-        "text": "Turn slightly",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Turn slightly"
       },
       {
-        "text": "Shift your weight",
-        "timeMs": 1777
+        "timeMs": 1300,
+        "text": "Shift your weight"
       },
       {
-        "text": "Relax your hands",
-        "timeMs": 3553
+        "timeMs": 2540,
+        "text": "Relax your hands"
       },
       {
-        "text": "Confident eyes",
-        "timeMs": 5330
+        "timeMs": 4019,
+        "text": "Confident eyes"
       }
     ]
   },
@@ -60,6 +60,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/relaxed-confidence-9b06df28703546.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5330,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Turn slightly"
+        },
+        {
+          "timeMs": 1300,
+          "text": "Shift your weight"
+        },
+        {
+          "timeMs": 2540,
+          "text": "Relax your hands"
+        },
+        {
+          "timeMs": 4019,
+          "text": "Confident eyes"
+        }
+      ]
+    }
   }
 }

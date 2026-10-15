@@ -273,12 +273,12 @@
         "label": "Who's joining screen",
         "mode": "host",
         "channel": "voice",
-        "text": "How many people are in the shot?  Pick your group size to unlock fun Pose Challenges! Or go freestyle and pose your own way!",
-        "filePath": "project-asset:audio/generated/elevenlabs/people-8aef46953543a7.mp3",
+        "text": "How many people are in the shot?  Pick your group size to unlock fun Pose Challenges!",
+        "filePath": "project-asset:audio/generated/elevenlabs/people-5274c953201e79.mp3",
         "loop": false,
         "volume": 1,
         "enabled": true,
-        "updatedAt": "2026-10-14T06:41:21.063Z"
+        "updatedAt": "2026-10-15T05:53:01.255Z"
       },
       "intro": {
         "id": "intro",
@@ -4029,32 +4029,32 @@
     "thankYouMs": 30000,
     "shots": [
       {
-        "message": "Pose Challenge! Follow the moves!",
+        "message": "Pose Challenge! \\n Follow the moves!",
         "cameraBeforeMessageMs": 0,
         "messageMs": 3000,
         "cameraBeforeCountdownMs": 4000,
-        "normalMessage": "Get into position and strike your best pose!"
+        "normalMessage": "Get into position and \\n strike your best pose!"
       },
       {
         "message": "Nice! Next one!",
         "cameraBeforeMessageMs": 0,
         "messageMs": 3000,
         "cameraBeforeCountdownMs": 4000,
-        "normalMessage": "Switch it up! Try something different!"
+        "normalMessage": "Switch it up! \\n Try something different!"
       },
       {
-        "message": "Looking good, now do this!",
+        "message": "Looking good, \\n now do this!",
         "cameraBeforeMessageMs": 0,
         "messageMs": 3000,
         "cameraBeforeCountdownMs": 4000,
-        "normalMessage": "Looking great! Let's try something fun!"
+        "normalMessage": "Looking great! \\n Let's try \\n something fun!"
       },
       {
-        "message": "Last shot! make it count!",
+        "message": "Last shot! \\n make it count!",
         "cameraBeforeMessageMs": 0,
         "messageMs": 3000,
         "cameraBeforeCountdownMs": 4000,
-        "normalMessage": "Final shot! Make this one unforgettable!"
+        "normalMessage": "Final shot! \\n Make this one \\n unforgettable!"
       },
       {
         "message": "New Pose!",

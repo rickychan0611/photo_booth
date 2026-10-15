@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6920,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Turn slightly sideways"
+    },
+    {
+      "timeMs": 1940,
+      "text": "Point along your jaw"
+    },
+    {
+      "timeMs": 3460,
+      "text": "Give a serious stare"
+    },
+    {
+      "timeMs": 5380,
+      "text": "Hold the jawline check"
+    }
+  ]
+}

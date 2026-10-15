@@ -17,20 +17,20 @@
     "durationMs": 6490,
     "captions": [
       {
-        "text": "Fists in",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Fists in"
       },
       {
-        "text": "Break outward",
-        "timeMs": 1830
+        "timeMs": 1240,
+        "text": "Break outward"
       },
       {
-        "text": "Roar the win",
-        "timeMs": 3660
+        "timeMs": 2480,
+        "text": "Roar the win"
       },
       {
-        "text": "Freeze with arms wide",
-        "timeMs": 5490
+        "timeMs": 3720,
+        "text": "Freeze with arms wide"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-full-victory-roar-ab1489a05d1578.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5490,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Fists in"
+        },
+        {
+          "timeMs": 1240,
+          "text": "Break outward"
+        },
+        {
+          "timeMs": 2480,
+          "text": "Roar the win"
+        },
+        {
+          "timeMs": 3720,
+          "text": "Freeze with arms wide"
+        }
+      ]
+    }
   }
 }

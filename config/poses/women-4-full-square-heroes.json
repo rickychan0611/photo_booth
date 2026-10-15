@@ -17,20 +17,20 @@
     "durationMs": 7110,
     "captions": [
       {
-        "text": "Four low stances",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Four low stances"
       },
       {
-        "text": "Different arm shapes",
-        "timeMs": 2037
+        "timeMs": 1860,
+        "text": "Different arm shapes"
       },
       {
-        "text": "Pop tall together",
-        "timeMs": 4073
+        "timeMs": 3280,
+        "text": "Pop tall together"
       },
       {
-        "text": "Freeze the team",
-        "timeMs": 6110
+        "timeMs": 4900,
+        "text": "Freeze the team"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-4-full-square-heroes-2264fd9b87a87a.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6110,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Four low stances"
+        },
+        {
+          "timeMs": 1860,
+          "text": "Different arm shapes"
+        },
+        {
+          "timeMs": 3280,
+          "text": "Pop tall together"
+        },
+        {
+          "timeMs": 4900,
+          "text": "Freeze the team"
+        }
+      ]
+    }
   }
 }

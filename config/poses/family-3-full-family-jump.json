@@ -18,20 +18,20 @@
     "durationMs": 5910,
     "captions": [
       {
-        "text": "Hold hands",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Hold hands"
       },
       {
-        "text": "Crouch together",
-        "timeMs": 1637
+        "timeMs": 1300,
+        "text": "Crouch together"
       },
       {
-        "text": "Small jump",
-        "timeMs": 3273
+        "timeMs": 2600,
+        "text": "Small jump"
       },
       {
-        "text": "Land laughing",
-        "timeMs": 4910
+        "timeMs": 3700,
+        "text": "Land laughing"
       }
     ]
   },
@@ -69,6 +69,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/family-3-full-family-jump-89f2c1635a65c3.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 4910,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Hold hands"
+        },
+        {
+          "timeMs": 1300,
+          "text": "Crouch together"
+        },
+        {
+          "timeMs": 2600,
+          "text": "Small jump"
+        },
+        {
+          "timeMs": 3700,
+          "text": "Land laughing"
+        }
+      ]
+    }
   }
 }

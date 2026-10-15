@@ -17,20 +17,20 @@
     "durationMs": 6070,
     "captions": [
       {
-        "text": "Face one",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Face one"
       },
       {
-        "text": "Face two",
-        "timeMs": 1690
+        "timeMs": 1240,
+        "text": "Face two"
       },
       {
-        "text": "Face three",
-        "timeMs": 3380
+        "timeMs": 2420,
+        "text": "Face three"
       },
       {
-        "text": "Freeze the worst one",
-        "timeMs": 5070
+        "timeMs": 3540,
+        "text": "Freeze the worst one"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-half-expression-countdown-600fb86dbd6783.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5070,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Face one"
+        },
+        {
+          "timeMs": 1240,
+          "text": "Face two"
+        },
+        {
+          "timeMs": 2420,
+          "text": "Face three"
+        },
+        {
+          "timeMs": 3540,
+          "text": "Freeze the worst one"
+        }
+      ]
+    }
   }
 }

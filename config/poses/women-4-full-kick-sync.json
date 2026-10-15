@@ -17,20 +17,20 @@
     "durationMs": 5990,
     "captions": [
       {
-        "text": "Link arms",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Link arms"
       },
       {
-        "text": "Same leg ready",
-        "timeMs": 1663
+        "timeMs": 1300,
+        "text": "Same leg ready"
       },
       {
-        "text": "Kick on one count",
-        "timeMs": 3327
+        "timeMs": 2520,
+        "text": "Kick on one count"
       },
       {
-        "text": "Hold the line",
-        "timeMs": 4990
+        "timeMs": 3860,
+        "text": "Hold the line"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-4-full-kick-sync-05c12d1683144f.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 4990,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Link arms"
+        },
+        {
+          "timeMs": 1300,
+          "text": "Same leg ready"
+        },
+        {
+          "timeMs": 2520,
+          "text": "Kick on one count"
+        },
+        {
+          "timeMs": 3860,
+          "text": "Hold the line"
+        }
+      ]
+    }
   }
 }

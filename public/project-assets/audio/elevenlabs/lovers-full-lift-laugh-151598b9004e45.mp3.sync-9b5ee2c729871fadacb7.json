@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6110,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Count down together"
+    },
+    {
+      "timeMs": 1640,
+      "text": "Jump into a small lift"
+    },
+    {
+      "timeMs": 3440,
+      "text": "Kick one foot up"
+    },
+    {
+      "timeMs": 4920,
+      "text": "Laugh at the camera"
+    }
+  ]
+}

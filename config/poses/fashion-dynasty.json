@@ -16,20 +16,20 @@
     "durationMs": 7430,
     "captions": [
       {
-        "text": "Build a fashion pyramid",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Build a fashion pyramid"
       },
       {
-        "text": "Overlap shoulders",
-        "timeMs": 2143
+        "timeMs": 2060,
+        "text": "Overlap shoulders"
       },
       {
-        "text": "Vary every angle",
-        "timeMs": 4287
+        "timeMs": 3480,
+        "text": "Vary every angle"
       },
       {
-        "text": "Dynasty faces",
-        "timeMs": 6430
+        "timeMs": 5080,
+        "text": "Dynasty faces"
       }
     ]
   },
@@ -77,6 +77,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/fashion-dynasty-d290fa07ec254b.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6430,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Build a fashion pyramid"
+        },
+        {
+          "timeMs": 2060,
+          "text": "Overlap shoulders"
+        },
+        {
+          "timeMs": 3480,
+          "text": "Vary every angle"
+        },
+        {
+          "timeMs": 5080,
+          "text": "Dynasty faces"
+        }
+      ]
+    }
   }
 }

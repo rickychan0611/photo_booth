@@ -17,20 +17,20 @@
     "durationMs": 7030,
     "captions": [
       {
-        "text": "Heads in a huddle",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Heads in a huddle"
       },
       {
-        "text": "One spills the secret",
-        "timeMs": 2010
+        "timeMs": 1380,
+        "text": "One spills the secret"
       },
       {
-        "text": "Three react differently",
-        "timeMs": 4020
+        "timeMs": 3140,
+        "text": "Three react differently"
       },
       {
-        "text": "Freeze the gossip",
-        "timeMs": 6030
+        "timeMs": 4900,
+        "text": "Freeze the gossip"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-4-half-gossip-circle-0a2dd2df32dc43.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6030,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Heads in a huddle"
+        },
+        {
+          "timeMs": 1380,
+          "text": "One spills the secret"
+        },
+        {
+          "timeMs": 3140,
+          "text": "Three react differently"
+        },
+        {
+          "timeMs": 4900,
+          "text": "Freeze the gossip"
+        }
+      ]
+    }
   }
 }

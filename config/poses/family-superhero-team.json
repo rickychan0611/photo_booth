@@ -16,20 +16,20 @@
     "durationMs": 8240,
     "captions": [
       {
-        "text": "Adults anchor behind",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Adults anchor behind"
       },
       {
-        "text": "Hero steps forward",
-        "timeMs": 2413
+        "timeMs": 1980,
+        "text": "Hero steps forward"
       },
       {
-        "text": "Everyone powers up",
-        "timeMs": 4827
+        "timeMs": 3720,
+        "text": "Everyone powers up"
       },
       {
-        "text": "Family saves the day",
-        "timeMs": 7240
+        "timeMs": 5380,
+        "text": "Family saves the day"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/family-superhero-team-6dd555dfd282da.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 7240,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Adults anchor behind"
+        },
+        {
+          "timeMs": 1980,
+          "text": "Hero steps forward"
+        },
+        {
+          "timeMs": 3720,
+          "text": "Everyone powers up"
+        },
+        {
+          "timeMs": 5380,
+          "text": "Family saves the day"
+        }
+      ]
+    }
   }
 }

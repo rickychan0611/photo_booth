@@ -17,20 +17,20 @@
     "durationMs": 7430,
     "captions": [
       {
-        "text": "Strike three different statues",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Strike three different statues"
       },
       {
-        "text": "Do not wobble",
-        "timeMs": 2143
+        "timeMs": 2260,
+        "text": "Do not wobble"
       },
       {
-        "text": "Eyes on the lens",
-        "timeMs": 4287
+        "timeMs": 3620,
+        "text": "Eyes on the lens"
       },
       {
-        "text": "Hold perfectly still",
-        "timeMs": 6430
+        "timeMs": 4800,
+        "text": "Hold perfectly still"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-3-full-statue-challenge-56e4f17c3bd397.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6430,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Strike three different statues"
+        },
+        {
+          "timeMs": 2260,
+          "text": "Do not wobble"
+        },
+        {
+          "timeMs": 3620,
+          "text": "Eyes on the lens"
+        },
+        {
+          "timeMs": 4800,
+          "text": "Hold perfectly still"
+        }
+      ]
+    }
   }
 }

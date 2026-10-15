@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6110,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Choose the hero"
+    },
+    {
+      "timeMs": 1400,
+      "text": "Build layers behind"
+    },
+    {
+      "timeMs": 3080,
+      "text": "Give everyone a role"
+    },
+    {
+      "timeMs": 4700,
+      "text": "Movie-poster finish"
+    }
+  ]
+}

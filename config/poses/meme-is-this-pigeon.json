@@ -39,20 +39,20 @@
     "durationMs": 8160,
     "captions": [
       {
-        "text": "One presents an open palm",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "One presents an open palm"
       },
       {
-        "text": "The other gestures toward it",
-        "timeMs": 2387
+        "timeMs": 2260,
+        "text": "The other gestures toward it"
       },
       {
-        "text": "Look completely confused",
-        "timeMs": 4773
+        "timeMs": 4180,
+        "text": "Look completely confused"
       },
       {
-        "text": "Hold the question",
-        "timeMs": 7160
+        "timeMs": 6140,
+        "text": "Hold the question"
       }
     ]
   },
@@ -65,6 +65,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-is-this-pigeon-64b8808fdd38e2.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 7160,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "One presents an open palm"
+        },
+        {
+          "timeMs": 2260,
+          "text": "The other gestures toward it"
+        },
+        {
+          "timeMs": 4180,
+          "text": "Look completely confused"
+        },
+        {
+          "timeMs": 6140,
+          "text": "Hold the question"
+        }
+      ]
+    }
   }
 }

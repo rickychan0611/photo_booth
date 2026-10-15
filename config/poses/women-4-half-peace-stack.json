@@ -17,20 +17,20 @@
     "durationMs": 6330,
     "captions": [
       {
-        "text": "Four peace signs",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Four peace signs"
       },
       {
-        "text": "Stack them high",
-        "timeMs": 1777
+        "timeMs": 1740,
+        "text": "Stack them high"
       },
       {
-        "text": "Smile under them",
-        "timeMs": 3553
+        "timeMs": 2940,
+        "text": "Smile under them"
       },
       {
-        "text": "Hold the stack",
-        "timeMs": 5330
+        "timeMs": 4160,
+        "text": "Hold the stack"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-4-half-peace-stack-ebef9b5243fc9d.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5330,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Four peace signs"
+        },
+        {
+          "timeMs": 1740,
+          "text": "Stack them high"
+        },
+        {
+          "timeMs": 2940,
+          "text": "Smile under them"
+        },
+        {
+          "timeMs": 4160,
+          "text": "Hold the stack"
+        }
+      ]
+    }
   }
 }

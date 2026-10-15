@@ -17,20 +17,20 @@
     "durationMs": 6490,
     "captions": [
       {
-        "text": "Stand side by side",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Stand side by side"
       },
       {
-        "text": "Wrap an arm around",
-        "timeMs": 1830
+        "timeMs": 1860,
+        "text": "Wrap an arm around"
       },
       {
-        "text": "Sway once",
-        "timeMs": 3660
+        "timeMs": 3340,
+        "text": "Sway once"
       },
       {
-        "text": "Cheek to cheek",
-        "timeMs": 5490
+        "timeMs": 4520,
+        "text": "Cheek to cheek"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/lovers-full-cheek-sway-ddcdefc9dcf2a8.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5490,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand side by side"
+        },
+        {
+          "timeMs": 1860,
+          "text": "Wrap an arm around"
+        },
+        {
+          "timeMs": 3340,
+          "text": "Sway once"
+        },
+        {
+          "timeMs": 4520,
+          "text": "Cheek to cheek"
+        }
+      ]
+    }
   }
 }

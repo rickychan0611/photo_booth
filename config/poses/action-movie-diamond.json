@@ -16,20 +16,20 @@
     "durationMs": 7270,
     "captions": [
       {
-        "text": "Build a diamond",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Build a diamond"
       },
       {
-        "text": "Turn four directions",
-        "timeMs": 2090
+        "timeMs": 1440,
+        "text": "Turn four directions"
       },
       {
-        "text": "Ready action hands",
-        "timeMs": 4180
+        "timeMs": 3180,
+        "text": "Ready action hands"
       },
       {
-        "text": "Movie-poster faces",
-        "timeMs": 6270
+        "timeMs": 4700,
+        "text": "Movie-poster faces"
       }
     ]
   },
@@ -73,6 +73,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/action-movie-diamond-7f46420d98ae5b.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6270,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Build a diamond"
+        },
+        {
+          "timeMs": 1440,
+          "text": "Turn four directions"
+        },
+        {
+          "timeMs": 3180,
+          "text": "Ready action hands"
+        },
+        {
+          "timeMs": 4700,
+          "text": "Movie-poster faces"
+        }
+      ]
+    }
   }
 }

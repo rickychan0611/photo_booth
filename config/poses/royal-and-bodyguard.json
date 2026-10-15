@@ -16,20 +16,20 @@
     "durationMs": 7690,
     "captions": [
       {
-        "text": "Royal steps forward",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Royal steps forward"
       },
       {
-        "text": "Guard stands behind",
-        "timeMs": 2230
+        "timeMs": 2100,
+        "text": "Guard stands behind"
       },
       {
-        "text": "Set your roles",
-        "timeMs": 4460
+        "timeMs": 3780,
+        "text": "Set your roles"
       },
       {
-        "text": "Regal and serious",
-        "timeMs": 6690
+        "timeMs": 5060,
+        "text": "Regal and serious"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/royal-and-bodyguard-639903e727b525.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6690,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Royal steps forward"
+        },
+        {
+          "timeMs": 2100,
+          "text": "Guard stands behind"
+        },
+        {
+          "timeMs": 3780,
+          "text": "Set your roles"
+        },
+        {
+          "timeMs": 5060,
+          "text": "Regal and serious"
+        }
+      ]
+    }
   }
 }

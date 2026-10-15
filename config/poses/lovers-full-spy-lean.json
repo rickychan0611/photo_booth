@@ -17,20 +17,20 @@
     "durationMs": 6880,
     "captions": [
       {
-        "text": "Stand back to back",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Stand back to back"
       },
       {
-        "text": "Look over one shoulder",
-        "timeMs": 1960
+        "timeMs": 1760,
+        "text": "Look over one shoulder"
       },
       {
-        "text": "Cross one ankle",
-        "timeMs": 3920
+        "timeMs": 3360,
+        "text": "Cross one ankle"
       },
       {
-        "text": "Smirk together",
-        "timeMs": 5880
+        "timeMs": 4800,
+        "text": "Smirk together"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/lovers-full-spy-lean-1916a7876fc68a.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5880,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Stand back to back"
+        },
+        {
+          "timeMs": 1760,
+          "text": "Look over one shoulder"
+        },
+        {
+          "timeMs": 3360,
+          "text": "Cross one ankle"
+        },
+        {
+          "timeMs": 4800,
+          "text": "Smirk together"
+        }
+      ]
+    }
   }
 }

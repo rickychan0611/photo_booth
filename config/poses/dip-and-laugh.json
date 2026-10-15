@@ -16,20 +16,20 @@
     "durationMs": 6560,
     "captions": [
       {
-        "text": "Connect hands",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Connect hands"
       },
       {
-        "text": "Support the waist",
-        "timeMs": 1853
+        "timeMs": 1340,
+        "text": "Support the waist"
       },
       {
-        "text": "Make a tiny dip",
-        "timeMs": 3707
+        "timeMs": 2680,
+        "text": "Make a tiny dip"
       },
       {
-        "text": "Laugh together",
-        "timeMs": 5560
+        "timeMs": 4340,
+        "text": "Laugh together"
       }
     ]
   },
@@ -63,6 +63,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/dip-and-laugh-54352f77448f43.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5560,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Connect hands"
+        },
+        {
+          "timeMs": 1340,
+          "text": "Support the waist"
+        },
+        {
+          "timeMs": 2680,
+          "text": "Make a tiny dip"
+        },
+        {
+          "timeMs": 4340,
+          "text": "Laugh together"
+        }
+      ]
+    }
   }
 }

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6530,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Make circles with your fingers"
+    },
+    {
+      "timeMs": 2100,
+      "text": "Hold them around your eyes"
+    },
+    {
+      "timeMs": 3720,
+      "text": "Look through your goggles"
+    },
+    {
+      "timeMs": 5160,
+      "text": "Freeze the silly face"
+    }
+  ]
+}

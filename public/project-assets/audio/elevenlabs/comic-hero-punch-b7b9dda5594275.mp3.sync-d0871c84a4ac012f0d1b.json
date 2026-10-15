@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5070,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Set your feet"
+    },
+    {
+      "timeMs": 1320,
+      "text": "Turn your shoulder"
+    },
+    {
+      "timeMs": 2580,
+      "text": "Punch toward camera"
+    },
+    {
+      "timeMs": 3960,
+      "text": "Hero face"
+    }
+  ]
+}

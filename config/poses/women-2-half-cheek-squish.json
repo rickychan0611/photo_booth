@@ -17,20 +17,20 @@
     "durationMs": 6960,
     "captions": [
       {
-        "text": "Squish your cheeks in",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Squish your cheeks in"
       },
       {
-        "text": "Touch noses",
-        "timeMs": 1987
+        "timeMs": 1700,
+        "text": "Touch noses"
       },
       {
-        "text": "Big sparkling eyes",
-        "timeMs": 3973
+        "timeMs": 3020,
+        "text": "Big sparkling eyes"
       },
       {
-        "text": "Hold the cute face",
-        "timeMs": 5960
+        "timeMs": 4720,
+        "text": "Hold the cute face"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-2-half-cheek-squish-912294b8b73ca1.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5960,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Squish your cheeks in"
+        },
+        {
+          "timeMs": 1700,
+          "text": "Touch noses"
+        },
+        {
+          "timeMs": 3020,
+          "text": "Big sparkling eyes"
+        },
+        {
+          "timeMs": 4720,
+          "text": "Hold the cute face"
+        }
+      ]
+    }
   }
 }

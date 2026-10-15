@@ -349,7 +349,7 @@ class Camera:
         self.ready = False
 
     def prepare_capture(self) -> None:
-        """Start autofocus early and hold the half-press through the countdown."""
+        """Autofocus at countdown 2 and hold the half-press until capture."""
         self.connect()
         if self.focus_prepared:
             return
@@ -382,8 +382,8 @@ class Camera:
                 pump(sdk, self.camera)
                 time.sleep(0.05)
         try:
-            shutter_mode = SHUTTER_COMPLETELY if self.focus_prepared else SHUTTER_COMPLETELY_NON_AF
-            send_command(sdk, self.camera, CMD_PRESS_SHUTTER, shutter_mode, "Take picture")
+            # Keep the focus prepared during the countdown; do not refocus at shutter time.
+            send_command(sdk, self.camera, CMD_PRESS_SHUTTER, SHUTTER_COMPLETELY_NON_AF, "Take picture")
         finally:
             send_command(sdk, self.camera, CMD_PRESS_SHUTTER, SHUTTER_OFF, "Release shutter")
             self.focus_prepared = False

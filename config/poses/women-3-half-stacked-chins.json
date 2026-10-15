@@ -17,20 +17,20 @@
     "durationMs": 6640,
     "captions": [
       {
-        "text": "Lean in a staircase",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Lean in a staircase"
       },
       {
-        "text": "Chins almost touching",
-        "timeMs": 1880
+        "timeMs": 1720,
+        "text": "Chins almost touching"
       },
       {
-        "text": "Bright eyes",
-        "timeMs": 3760
+        "timeMs": 3500,
+        "text": "Bright eyes"
       },
       {
-        "text": "Hold the stack",
-        "timeMs": 5640
+        "timeMs": 4540,
+        "text": "Hold the stack"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-3-half-stacked-chins-2ab6c547f9d285.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5640,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Lean in a staircase"
+        },
+        {
+          "timeMs": 1720,
+          "text": "Chins almost touching"
+        },
+        {
+          "timeMs": 3500,
+          "text": "Bright eyes"
+        },
+        {
+          "timeMs": 4540,
+          "text": "Hold the stack"
+        }
+      ]
+    }
   }
 }

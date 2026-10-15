@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6350,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Child whispers to one grownup"
+    },
+    {
+      "timeMs": 2260,
+      "text": "That face changes"
+    },
+    {
+      "timeMs": 3860,
+      "text": "The others lean in"
+    },
+    {
+      "timeMs": 5280,
+      "text": "Hold the secret"
+    }
+  ]
+}

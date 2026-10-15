@@ -17,20 +17,20 @@
     "durationMs": 6150,
     "captions": [
       {
-        "text": "Pack in close",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Pack in close"
       },
       {
-        "text": "Chins level",
-        "timeMs": 1717
+        "timeMs": 1360,
+        "text": "Chins level"
       },
       {
-        "text": "Bright matching eyes",
-        "timeMs": 3433
+        "timeMs": 2540,
+        "text": "Bright matching eyes"
       },
       {
-        "text": "Hold the bouquet",
-        "timeMs": 5150
+        "timeMs": 3940,
+        "text": "Hold the bouquet"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-4-half-four-faces-e91c1a8867123c.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5150,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Pack in close"
+        },
+        {
+          "timeMs": 1360,
+          "text": "Chins level"
+        },
+        {
+          "timeMs": 2540,
+          "text": "Bright matching eyes"
+        },
+        {
+          "timeMs": 3940,
+          "text": "Hold the bouquet"
+        }
+      ]
+    }
   }
 }

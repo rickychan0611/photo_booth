@@ -16,20 +16,20 @@
     "durationMs": 7350,
     "captions": [
       {
-        "text": "Center takes the mark",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Center takes the mark"
       },
       {
-        "text": "Sides lean inward",
-        "timeMs": 2117
+        "timeMs": 1820,
+        "text": "Sides lean inward"
       },
       {
-        "text": "Present the star",
-        "timeMs": 4233
+        "timeMs": 3460,
+        "text": "Present the star"
       },
       {
-        "text": "Star stays cool",
-        "timeMs": 6350
+        "timeMs": 4860,
+        "text": "Star stays cool"
       }
     ]
   },
@@ -69,6 +69,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/center-superstar-three-c27fc811805208.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6350,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Center takes the mark"
+        },
+        {
+          "timeMs": 1820,
+          "text": "Sides lean inward"
+        },
+        {
+          "timeMs": 3460,
+          "text": "Present the star"
+        },
+        {
+          "timeMs": 4860,
+          "text": "Star stays cool"
+        }
+      ]
+    }
   }
 }

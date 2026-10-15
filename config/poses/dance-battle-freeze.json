@@ -16,20 +16,20 @@
     "durationMs": 6490,
     "captions": [
       {
-        "text": "Split into dance teams",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Split into dance teams"
       },
       {
-        "text": "Start your moves",
-        "timeMs": 1830
+        "timeMs": 1820,
+        "text": "Start your moves"
       },
       {
-        "text": "Freeze mid-battle",
-        "timeMs": 3660
+        "timeMs": 3120,
+        "text": "Freeze mid-battle"
       },
       {
-        "text": "Dance faces",
-        "timeMs": 5490
+        "timeMs": 4440,
+        "text": "Dance faces"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/dance-battle-freeze-fe570f51ee520d.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5490,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Split into dance teams"
+        },
+        {
+          "timeMs": 1820,
+          "text": "Start your moves"
+        },
+        {
+          "timeMs": 3120,
+          "text": "Freeze mid-battle"
+        },
+        {
+          "timeMs": 4440,
+          "text": "Dance faces"
+        }
+      ]
+    }
   }
 }

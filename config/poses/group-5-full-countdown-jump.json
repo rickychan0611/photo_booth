@@ -17,20 +17,20 @@
     "durationMs": 7030,
     "captions": [
       {
-        "text": "Everyone shows a number on their fingers",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Everyone shows a number on their fingers"
       },
       {
-        "text": "Drop the hands",
-        "timeMs": 2010
+        "timeMs": 2440,
+        "text": "Drop the hands"
       },
       {
-        "text": "Jump together",
-        "timeMs": 4020
+        "timeMs": 3640,
+        "text": "Jump together"
       },
       {
-        "text": "Stick the landing",
-        "timeMs": 6030
+        "timeMs": 4880,
+        "text": "Stick the landing"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-full-countdown-jump-8d8fa978da9df0.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6030,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Everyone shows a number on their fingers"
+        },
+        {
+          "timeMs": 2440,
+          "text": "Drop the hands"
+        },
+        {
+          "timeMs": 3640,
+          "text": "Jump together"
+        },
+        {
+          "timeMs": 4880,
+          "text": "Stick the landing"
+        }
+      ]
+    }
   }
 }

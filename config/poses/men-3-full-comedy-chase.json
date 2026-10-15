@@ -17,20 +17,20 @@
     "durationMs": 6720,
     "captions": [
       {
-        "text": "One runs ahead",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "One runs ahead"
       },
       {
-        "text": "Two reach to grab him",
-        "timeMs": 1907
+        "timeMs": 1480,
+        "text": "Two reach to grab him"
       },
       {
-        "text": "Everyone looks back",
-        "timeMs": 3813
+        "timeMs": 3300,
+        "text": "Everyone looks back"
       },
       {
-        "text": "Freeze the chase",
-        "timeMs": 5720
+        "timeMs": 4600,
+        "text": "Freeze the chase"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/men-3-full-comedy-chase-cba5228321a77d.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5720,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "One runs ahead"
+        },
+        {
+          "timeMs": 1480,
+          "text": "Two reach to grab him"
+        },
+        {
+          "timeMs": 3300,
+          "text": "Everyone looks back"
+        },
+        {
+          "timeMs": 4600,
+          "text": "Freeze the chase"
+        }
+      ]
+    }
   }
 }

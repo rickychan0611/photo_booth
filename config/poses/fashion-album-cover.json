@@ -16,20 +16,20 @@
     "durationMs": 7110,
     "captions": [
       {
-        "text": "Make four levels",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Make four levels"
       },
       {
-        "text": "Overlap the group",
-        "timeMs": 2037
+        "timeMs": 1780,
+        "text": "Overlap the group"
       },
       {
-        "text": "Choose different angles",
-        "timeMs": 4073
+        "timeMs": 3020,
+        "text": "Choose different angles"
       },
       {
-        "text": "Album-cover faces",
-        "timeMs": 6110
+        "timeMs": 4600,
+        "text": "Album-cover faces"
       }
     ]
   },
@@ -73,6 +73,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/fashion-album-cover-d629e37f286e22.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6110,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Make four levels"
+        },
+        {
+          "timeMs": 1780,
+          "text": "Overlap the group"
+        },
+        {
+          "timeMs": 3020,
+          "text": "Choose different angles"
+        },
+        {
+          "timeMs": 4600,
+          "text": "Album-cover faces"
+        }
+      ]
+    }
   }
 }

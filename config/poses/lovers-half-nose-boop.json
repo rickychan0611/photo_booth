@@ -17,20 +17,20 @@
     "durationMs": 6250,
     "captions": [
       {
-        "text": "Lean in close",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Lean in close"
       },
       {
-        "text": "Wrinkle your noses",
-        "timeMs": 1750
+        "timeMs": 1480,
+        "text": "Wrinkle your noses"
       },
       {
-        "text": "Boop once",
-        "timeMs": 3500
+        "timeMs": 2920,
+        "text": "Boop once"
       },
       {
-        "text": "Giggle and hold",
-        "timeMs": 5250
+        "timeMs": 4040,
+        "text": "Giggle and hold"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/lovers-half-nose-boop-5095a303677f9f.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5250,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Lean in close"
+        },
+        {
+          "timeMs": 1480,
+          "text": "Wrinkle your noses"
+        },
+        {
+          "timeMs": 2920,
+          "text": "Boop once"
+        },
+        {
+          "timeMs": 4040,
+          "text": "Giggle and hold"
+        }
+      ]
+    }
   }
 }

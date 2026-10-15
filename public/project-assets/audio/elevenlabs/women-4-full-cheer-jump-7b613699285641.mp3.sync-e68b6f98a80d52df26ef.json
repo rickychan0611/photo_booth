@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 4750,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Arms up"
+    },
+    {
+      "timeMs": 1080,
+      "text": "Count to three"
+    },
+    {
+      "timeMs": 2280,
+      "text": "Jump at once"
+    },
+    {
+      "timeMs": 3480,
+      "text": "Land in a cheer"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6030,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Kids pick the faces"
+    },
+    {
+      "timeMs": 1660,
+      "text": "Grownup copies them"
+    },
+    {
+      "timeMs": 3180,
+      "text": "Worse is better"
+    },
+    {
+      "timeMs": 4620,
+      "text": "Freeze the silliest"
+    }
+  ]
+}

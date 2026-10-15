@@ -17,20 +17,20 @@
     "durationMs": 6640,
     "captions": [
       {
-        "text": "Take a dance hold",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Take a dance hold"
       },
       {
-        "text": "Step one foot wide",
-        "timeMs": 1880
+        "timeMs": 1460,
+        "text": "Step one foot wide"
       },
       {
-        "text": "Dip your partner",
-        "timeMs": 3760
+        "timeMs": 3160,
+        "text": "Dip your partner"
       },
       {
-        "text": "Smile up at them",
-        "timeMs": 5640
+        "timeMs": 4340,
+        "text": "Smile up at them"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/lovers-full-ballroom-dip-953782412c3e8b.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5640,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Take a dance hold"
+        },
+        {
+          "timeMs": 1460,
+          "text": "Step one foot wide"
+        },
+        {
+          "timeMs": 3160,
+          "text": "Dip your partner"
+        },
+        {
+          "timeMs": 4340,
+          "text": "Smile up at them"
+        }
+      ]
+    }
   }
 }

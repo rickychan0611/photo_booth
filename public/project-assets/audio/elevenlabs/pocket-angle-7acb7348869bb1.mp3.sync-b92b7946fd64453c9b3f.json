@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5150,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Turn your body"
+    },
+    {
+      "timeMs": 1480,
+      "text": "Bend one knee"
+    },
+    {
+      "timeMs": 2680,
+      "text": "Hand near pocket"
+    },
+    {
+      "timeMs": 3960,
+      "text": "Give a small smirk"
+    }
+  ]
+}

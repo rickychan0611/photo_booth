@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 7310,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Some stand, some kneel, some crouch"
+    },
+    {
+      "timeMs": 3220,
+      "text": "No two neighbors match"
+    },
+    {
+      "timeMs": 5000,
+      "text": "Eyes to the lens"
+    },
+    {
+      "timeMs": 6220,
+      "text": "Hold the levels"
+    }
+  ]
+}

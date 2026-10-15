@@ -17,20 +17,20 @@
     "durationMs": 6250,
     "captions": [
       {
-        "text": "Peace signs up",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Peace signs up"
       },
       {
-        "text": "Tilt opposite ways",
-        "timeMs": 1750
+        "timeMs": 1340,
+        "text": "Tilt opposite ways"
       },
       {
-        "text": "Same smile",
-        "timeMs": 3500
+        "timeMs": 3020,
+        "text": "Same smile"
       },
       {
-        "text": "Hold the pair",
-        "timeMs": 5250
+        "timeMs": 4140,
+        "text": "Hold the pair"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-2-half-matching-peace-e3b70e6660385c.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5250,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Peace signs up"
+        },
+        {
+          "timeMs": 1340,
+          "text": "Tilt opposite ways"
+        },
+        {
+          "timeMs": 3020,
+          "text": "Same smile"
+        },
+        {
+          "timeMs": 4140,
+          "text": "Hold the pair"
+        }
+      ]
+    }
   }
 }

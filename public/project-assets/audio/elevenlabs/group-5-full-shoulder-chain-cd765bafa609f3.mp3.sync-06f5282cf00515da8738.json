@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5800,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Arm on the next shoulder"
+    },
+    {
+      "timeMs": 1640,
+      "text": "Lean the same way"
+    },
+    {
+      "timeMs": 3080,
+      "text": "One cool face"
+    },
+    {
+      "timeMs": 4660,
+      "text": "Hold the chain"
+    }
+  ]
+}

@@ -17,20 +17,20 @@
     "durationMs": 6960,
     "captions": [
       {
-        "text": "Same smile first",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Same smile first"
       },
       {
-        "text": "Count silently",
-        "timeMs": 1987
+        "timeMs": 1880,
+        "text": "Count silently"
       },
       {
-        "text": "Wink the same eye",
-        "timeMs": 3973
+        "timeMs": 3340,
+        "text": "Wink the same eye"
       },
       {
-        "text": "Hold the wink",
-        "timeMs": 5960
+        "timeMs": 4900,
+        "text": "Hold the wink"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/lovers-half-sync-wink-c66d71bdac78a6.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5960,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Same smile first"
+        },
+        {
+          "timeMs": 1880,
+          "text": "Count silently"
+        },
+        {
+          "timeMs": 3340,
+          "text": "Wink the same eye"
+        },
+        {
+          "timeMs": 4900,
+          "text": "Hold the wink"
+        }
+      ]
+    }
   }
 }

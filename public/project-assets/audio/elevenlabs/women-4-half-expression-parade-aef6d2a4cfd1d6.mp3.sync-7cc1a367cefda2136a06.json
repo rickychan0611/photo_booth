@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 7890,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Cute, cool, shocked, unhinged"
+    },
+    {
+      "timeMs": 3640,
+      "text": "Switch on one count"
+    },
+    {
+      "timeMs": 5080,
+      "text": "New face each"
+    },
+    {
+      "timeMs": 6360,
+      "text": "Freeze the wildest"
+    }
+  ]
+}

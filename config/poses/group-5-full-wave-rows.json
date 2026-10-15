@@ -17,20 +17,20 @@
     "durationMs": 6640,
     "captions": [
       {
-        "text": "Back row starts the wave",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Back row starts the wave"
       },
       {
-        "text": "Front row follows",
-        "timeMs": 1880
+        "timeMs": 2040,
+        "text": "Front row follows"
       },
       {
-        "text": "Hands high",
-        "timeMs": 3760
+        "timeMs": 3400,
+        "text": "Hands high"
       },
       {
-        "text": "Hold the crest",
-        "timeMs": 5640
+        "timeMs": 4400,
+        "text": "Hold the crest"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-full-wave-rows-e406b466384bc1.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5640,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Back row starts the wave"
+        },
+        {
+          "timeMs": 2040,
+          "text": "Front row follows"
+        },
+        {
+          "timeMs": 3400,
+          "text": "Hands high"
+        },
+        {
+          "timeMs": 4400,
+          "text": "Hold the crest"
+        }
+      ]
+    }
   }
 }

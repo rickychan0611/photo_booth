@@ -42,20 +42,20 @@
     "durationMs": 7690,
     "captions": [
       {
-        "text": "Make two peace signs",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Make two peace signs"
       },
       {
-        "text": "Place them beside your eyes",
-        "timeMs": 2230
+        "timeMs": 1940,
+        "text": "Place them beside your eyes"
       },
       {
-        "text": "Give the camera a wink",
-        "timeMs": 4460
+        "timeMs": 3680,
+        "text": "Give the camera a wink"
       },
       {
-        "text": "Hold the happy pose",
-        "timeMs": 6690
+        "timeMs": 5280,
+        "text": "Hold the happy pose"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-peace-wink-708ef3723bbe36.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6690,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Make two peace signs"
+        },
+        {
+          "timeMs": 1940,
+          "text": "Place them beside your eyes"
+        },
+        {
+          "timeMs": 3680,
+          "text": "Give the camera a wink"
+        },
+        {
+          "timeMs": 5280,
+          "text": "Hold the happy pose"
+        }
+      ]
+    }
   }
 }

@@ -17,20 +17,20 @@
     "durationMs": 7270,
     "captions": [
       {
-        "text": "Wink from one side to the other",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Wink from one side to the other"
       },
       {
-        "text": "Keep it moving",
-        "timeMs": 2090
+        "timeMs": 2200,
+        "text": "Keep it moving"
       },
       {
-        "text": "End on the last wink",
-        "timeMs": 4180
+        "timeMs": 3380,
+        "text": "End on the last wink"
       },
       {
-        "text": "Hold that face",
-        "timeMs": 6270
+        "timeMs": 5040,
+        "text": "Hold that face"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-half-wink-wave-aecbd217fd0def.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6270,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Wink from one side to the other"
+        },
+        {
+          "timeMs": 2200,
+          "text": "Keep it moving"
+        },
+        {
+          "timeMs": 3380,
+          "text": "End on the last wink"
+        },
+        {
+          "timeMs": 5040,
+          "text": "Hold that face"
+        }
+      ]
+    }
   }
 }

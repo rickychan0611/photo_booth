@@ -16,20 +16,20 @@
     "durationMs": 6410,
     "captions": [
       {
-        "text": "Step forward",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Step forward"
       },
       {
-        "text": "Let your arms move",
-        "timeMs": 1803
+        "timeMs": 1380,
+        "text": "Let your arms move"
       },
       {
-        "text": "Lift your chin",
-        "timeMs": 3607
+        "timeMs": 2820,
+        "text": "Lift your chin"
       },
       {
-        "text": "Smile as you walk",
-        "timeMs": 5410
+        "timeMs": 4019,
+        "text": "Smile as you walk"
       }
     ]
   },
@@ -59,6 +59,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/walking-camera-3200960b9cde5f.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5410,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Step forward"
+        },
+        {
+          "timeMs": 1380,
+          "text": "Let your arms move"
+        },
+        {
+          "timeMs": 2820,
+          "text": "Lift your chin"
+        },
+        {
+          "timeMs": 4019,
+          "text": "Smile as you walk"
+        }
+      ]
+    }
   }
 }

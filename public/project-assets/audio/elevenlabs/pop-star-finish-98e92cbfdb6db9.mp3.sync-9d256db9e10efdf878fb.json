@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6430,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Step to the side"
+    },
+    {
+      "timeMs": 1500,
+      "text": "Reach one arm high"
+    },
+    {
+      "timeMs": 3000,
+      "text": "Grab the imaginary mic"
+    },
+    {
+      "timeMs": 4840,
+      "text": "Big stage smile"
+    }
+  ]
+}

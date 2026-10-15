@@ -17,20 +17,20 @@
     "durationMs": 6410,
     "captions": [
       {
-        "text": "Shoulder to shoulder",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Shoulder to shoulder"
       },
       {
-        "text": "Arms around waists",
-        "timeMs": 1803
+        "timeMs": 1680,
+        "text": "Arms around waists"
       },
       {
-        "text": "Kick in unison",
-        "timeMs": 3607
+        "timeMs": 3140,
+        "text": "Kick in unison"
       },
       {
-        "text": "Hold the kick",
-        "timeMs": 5410
+        "timeMs": 4420,
+        "text": "Hold the kick"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-3-full-kickline-3138158f99c587.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5410,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Shoulder to shoulder"
+        },
+        {
+          "timeMs": 1680,
+          "text": "Arms around waists"
+        },
+        {
+          "timeMs": 3140,
+          "text": "Kick in unison"
+        },
+        {
+          "timeMs": 4420,
+          "text": "Hold the kick"
+        }
+      ]
+    }
   }
 }

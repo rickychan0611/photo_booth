@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 4990,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Link arms"
+    },
+    {
+      "timeMs": 1300,
+      "text": "Same leg ready"
+    },
+    {
+      "timeMs": 2520,
+      "text": "Kick on one count"
+    },
+    {
+      "timeMs": 3860,
+      "text": "Hold the line"
+    }
+  ]
+}

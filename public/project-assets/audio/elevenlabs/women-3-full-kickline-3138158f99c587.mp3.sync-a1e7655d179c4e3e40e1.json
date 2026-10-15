@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5410,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Shoulder to shoulder"
+    },
+    {
+      "timeMs": 1680,
+      "text": "Arms around waists"
+    },
+    {
+      "timeMs": 3140,
+      "text": "Kick in unison"
+    },
+    {
+      "timeMs": 4420,
+      "text": "Hold the kick"
+    }
+  ]
+}

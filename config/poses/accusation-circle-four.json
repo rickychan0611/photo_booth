@@ -16,20 +16,20 @@
     "durationMs": 5990,
     "captions": [
       {
-        "text": "Turn toward center",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Turn toward center"
       },
       {
-        "text": "Point to someone else",
-        "timeMs": 1663
+        "timeMs": 1480,
+        "text": "Point to someone else"
       },
       {
-        "text": "Look at camera",
-        "timeMs": 3327
+        "timeMs": 2920,
+        "text": "Look at camera"
       },
       {
-        "text": "Who did it?",
-        "timeMs": 4990
+        "timeMs": 4040,
+        "text": "Who did it?"
       }
     ]
   },
@@ -73,6 +73,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/accusation-circle-four-58d40ca5cd41e5.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 4990,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Turn toward center"
+        },
+        {
+          "timeMs": 1480,
+          "text": "Point to someone else"
+        },
+        {
+          "timeMs": 2920,
+          "text": "Look at camera"
+        },
+        {
+          "timeMs": 4040,
+          "text": "Who did it?"
+        }
+      ]
+    }
   }
 }

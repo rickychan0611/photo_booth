@@ -16,20 +16,20 @@
     "durationMs": 6800,
     "captions": [
       {
-        "text": "Line up tightly",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Line up tightly"
       },
       {
-        "text": "Look down the line",
-        "timeMs": 1933
+        "timeMs": 1540,
+        "text": "Look down the line"
       },
       {
-        "text": "Pass the reaction",
-        "timeMs": 3867
+        "timeMs": 2820,
+        "text": "Pass the reaction"
       },
       {
-        "text": "Explode at the end",
-        "timeMs": 5800
+        "timeMs": 4120,
+        "text": "Explode at the end"
       }
     ]
   },
@@ -73,6 +73,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/emotion-explosion-four-f503b3b7ab942e.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5800,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Line up tightly"
+        },
+        {
+          "timeMs": 1540,
+          "text": "Look down the line"
+        },
+        {
+          "timeMs": 2820,
+          "text": "Pass the reaction"
+        },
+        {
+          "timeMs": 4120,
+          "text": "Explode at the end"
+        }
+      ]
+    }
   }
 }

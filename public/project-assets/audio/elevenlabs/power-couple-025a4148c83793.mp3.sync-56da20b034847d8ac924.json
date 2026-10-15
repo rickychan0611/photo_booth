@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5800,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Stand shoulder-to-shoulder"
+    },
+    {
+      "timeMs": 1940,
+      "text": "Angle outward"
+    },
+    {
+      "timeMs": 3240,
+      "text": "Set your hands"
+    },
+    {
+      "timeMs": 4440,
+      "text": "Power-couple eyes"
+    }
+  ]
+}

@@ -17,20 +17,20 @@
     "durationMs": 6490,
     "captions": [
       {
-        "text": "Eyes open",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Eyes open"
       },
       {
-        "text": "Count together",
-        "timeMs": 1830
+        "timeMs": 1160,
+        "text": "Count together"
       },
       {
-        "text": "Blink once",
-        "timeMs": 3660
+        "timeMs": 2340,
+        "text": "Blink once"
       },
       {
-        "text": "Reopen and smile",
-        "timeMs": 5490
+        "timeMs": 3540,
+        "text": "Reopen and smile"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-half-blink-on-three-0aa73555c077b7.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5490,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Eyes open"
+        },
+        {
+          "timeMs": 1160,
+          "text": "Count together"
+        },
+        {
+          "timeMs": 2340,
+          "text": "Blink once"
+        },
+        {
+          "timeMs": 3540,
+          "text": "Reopen and smile"
+        }
+      ]
+    }
   }
 }

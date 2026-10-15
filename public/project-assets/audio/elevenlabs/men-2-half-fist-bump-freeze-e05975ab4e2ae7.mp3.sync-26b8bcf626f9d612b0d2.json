@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5250,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Raise your fists"
+    },
+    {
+      "timeMs": 1520,
+      "text": "Meet in the middle"
+    },
+    {
+      "timeMs": 2840,
+      "text": "Stop on contact"
+    },
+    {
+      "timeMs": 4260,
+      "text": "Hold the bump"
+    }
+  ]
+}

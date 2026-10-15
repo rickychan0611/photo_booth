@@ -16,20 +16,20 @@
     "durationMs": 7110,
     "captions": [
       {
-        "text": "Choose the hero",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Choose the hero"
       },
       {
-        "text": "Build layers behind",
-        "timeMs": 2037
+        "timeMs": 1400,
+        "text": "Build layers behind"
       },
       {
-        "text": "Give everyone a role",
-        "timeMs": 4073
+        "timeMs": 3080,
+        "text": "Give everyone a role"
       },
       {
-        "text": "Movie-poster finish",
-        "timeMs": 6110
+        "timeMs": 4700,
+        "text": "Movie-poster finish"
       }
     ]
   },
@@ -77,6 +77,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/ensemble-movie-poster-a3cb049e53cf13.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6110,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Choose the hero"
+        },
+        {
+          "timeMs": 1400,
+          "text": "Build layers behind"
+        },
+        {
+          "timeMs": 3080,
+          "text": "Give everyone a role"
+        },
+        {
+          "timeMs": 4700,
+          "text": "Movie-poster finish"
+        }
+      ]
+    }
   }
 }

@@ -17,20 +17,20 @@
     "durationMs": 6800,
     "captions": [
       {
-        "text": "Back to back",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Back to back"
       },
       {
-        "text": "Look over opposite shoulders",
-        "timeMs": 1933
+        "timeMs": 1340,
+        "text": "Look over opposite shoulders"
       },
       {
-        "text": "Cross one leg",
-        "timeMs": 3867
+        "timeMs": 3140,
+        "text": "Cross one leg"
       },
       {
-        "text": "Cool half-smile",
-        "timeMs": 5800
+        "timeMs": 4340,
+        "text": "Cool half-smile"
       }
     ]
   },
@@ -64,6 +64,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-2-full-spy-sisters-3c79ed85887d69.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5800,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Back to back"
+        },
+        {
+          "timeMs": 1340,
+          "text": "Look over opposite shoulders"
+        },
+        {
+          "timeMs": 3140,
+          "text": "Cross one leg"
+        },
+        {
+          "timeMs": 4340,
+          "text": "Cool half-smile"
+        }
+      ]
+    }
   }
 }

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5800,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Heads together"
+    },
+    {
+      "timeMs": 1460,
+      "text": "Soft matching smiles"
+    },
+    {
+      "timeMs": 3320,
+      "text": "Eyes kind"
+    },
+    {
+      "timeMs": 4560,
+      "text": "Hold the warmth"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5640,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "One whispers"
+    },
+    {
+      "timeMs": 1680,
+      "text": "Second cracks"
+    },
+    {
+      "timeMs": 3060,
+      "text": "Third is already gone"
+    },
+    {
+      "timeMs": 4560,
+      "text": "Hold the mess"
+    }
+  ]
+}

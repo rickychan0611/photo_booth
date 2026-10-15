@@ -17,20 +17,20 @@
     "durationMs": 6800,
     "captions": [
       {
-        "text": "Lean from alternating sides",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Lean from alternating sides"
       },
       {
-        "text": "Shoulders overlap",
-        "timeMs": 1933
+        "timeMs": 2260,
+        "text": "Shoulders overlap"
       },
       {
-        "text": "Chins sharp",
-        "timeMs": 3867
+        "timeMs": 3580,
+        "text": "Chins sharp"
       },
       {
-        "text": "Hold the stack",
-        "timeMs": 5800
+        "timeMs": 4660,
+        "text": "Hold the stack"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-4-half-lean-in-row-6f923557f9b54e.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5800,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Lean from alternating sides"
+        },
+        {
+          "timeMs": 2260,
+          "text": "Shoulders overlap"
+        },
+        {
+          "timeMs": 3580,
+          "text": "Chins sharp"
+        },
+        {
+          "timeMs": 4660,
+          "text": "Hold the stack"
+        }
+      ]
+    }
   }
 }

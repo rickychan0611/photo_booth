@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 4910,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Hands down"
+    },
+    {
+      "timeMs": 1300,
+      "text": "Hit pose one"
+    },
+    {
+      "timeMs": 2500,
+      "text": "Hit pose two"
+    },
+    {
+      "timeMs": 3760,
+      "text": "Freeze together"
+    }
+  ]
+}

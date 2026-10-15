@@ -42,20 +42,20 @@
     "durationMs": 8240,
     "captions": [
       {
-        "text": "Choose one friend",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Choose one friend"
       },
       {
-        "text": "Everyone else points to them",
-        "timeMs": 2413
+        "timeMs": 1620,
+        "text": "Everyone else points to them"
       },
       {
-        "text": "They look completely confused",
-        "timeMs": 4827
+        "timeMs": 3300,
+        "text": "They look completely confused"
       },
       {
-        "text": "Hold the last brain cell",
-        "timeMs": 7240
+        "timeMs": 5520,
+        "text": "Hold the last brain cell"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-one-brain-cell-4970077a0dd968.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 7240,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Choose one friend"
+        },
+        {
+          "timeMs": 1620,
+          "text": "Everyone else points to them"
+        },
+        {
+          "timeMs": 3300,
+          "text": "They look completely confused"
+        },
+        {
+          "timeMs": 5520,
+          "text": "Hold the last brain cell"
+        }
+      ]
+    }
   }
 }

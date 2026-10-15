@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6430,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Leader steps forward"
+    },
+    {
+      "timeMs": 1900,
+      "text": "Team fans behind"
+    },
+    {
+      "timeMs": 3540,
+      "text": "Choose powers"
+    },
+    {
+      "timeMs": 4840,
+      "text": "Final battle faces"
+    }
+  ]
+}

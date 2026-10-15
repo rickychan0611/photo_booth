@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 5070,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Puff your cheeks"
+    },
+    {
+      "timeMs": 1340,
+      "text": "Lean in"
+    },
+    {
+      "timeMs": 2280,
+      "text": "Try not to laugh"
+    },
+    {
+      "timeMs": 3780,
+      "text": "Hold the bubbles"
+    }
+  ]
+}

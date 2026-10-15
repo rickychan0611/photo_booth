@@ -17,20 +17,20 @@
     "durationMs": 7610,
     "captions": [
       {
-        "text": "Middle friend steps in",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Middle friend steps in"
       },
       {
-        "text": "The others support her",
-        "timeMs": 2203
+        "timeMs": 2040,
+        "text": "The others support her"
       },
       {
-        "text": "One foot pops up",
-        "timeMs": 4407
+        "timeMs": 3660,
+        "text": "One foot pops up"
       },
       {
-        "text": "All three smile",
-        "timeMs": 6610
+        "timeMs": 5060,
+        "text": "All three smile"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-3-full-friendship-lift-691bf18ed8baa3.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6610,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Middle friend steps in"
+        },
+        {
+          "timeMs": 2040,
+          "text": "The others support her"
+        },
+        {
+          "timeMs": 3660,
+          "text": "One foot pops up"
+        },
+        {
+          "timeMs": 5060,
+          "text": "All three smile"
+        }
+      ]
+    }
   }
 }

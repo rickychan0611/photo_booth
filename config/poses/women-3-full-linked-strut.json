@@ -17,20 +17,20 @@
     "durationMs": 6070,
     "captions": [
       {
-        "text": "Link elbows",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Link elbows"
       },
       {
-        "text": "Walk three steps",
-        "timeMs": 1690
+        "timeMs": 1560,
+        "text": "Walk three steps"
       },
       {
-        "text": "Stop in a line",
-        "timeMs": 3380
+        "timeMs": 3020,
+        "text": "Stop in a line"
       },
       {
-        "text": "Chin up",
-        "timeMs": 5070
+        "timeMs": 4280,
+        "text": "Chin up"
       }
     ]
   },
@@ -68,6 +68,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-3-full-linked-strut-d6641649759469.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5070,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Link elbows"
+        },
+        {
+          "timeMs": 1560,
+          "text": "Walk three steps"
+        },
+        {
+          "timeMs": 3020,
+          "text": "Stop in a line"
+        },
+        {
+          "timeMs": 4280,
+          "text": "Chin up"
+        }
+      ]
+    }
   }
 }

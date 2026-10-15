@@ -17,20 +17,20 @@
     "durationMs": 7270,
     "captions": [
       {
-        "text": "Center person poses",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Center person poses"
       },
       {
-        "text": "Everyone else points at them",
-        "timeMs": 2090
+        "timeMs": 1920,
+        "text": "Everyone else points at them"
       },
       {
-        "text": "Center owns it",
-        "timeMs": 4180
+        "timeMs": 3800,
+        "text": "Center owns it"
       },
       {
-        "text": "Hold the spotlight",
-        "timeMs": 6270
+        "timeMs": 5060,
+        "text": "Hold the spotlight"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-half-point-at-center-8dd91f491a7a0d.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6270,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Center person poses"
+        },
+        {
+          "timeMs": 1920,
+          "text": "Everyone else points at them"
+        },
+        {
+          "timeMs": 3800,
+          "text": "Center owns it"
+        },
+        {
+          "timeMs": 5060,
+          "text": "Hold the spotlight"
+        }
+      ]
+    }
   }
 }

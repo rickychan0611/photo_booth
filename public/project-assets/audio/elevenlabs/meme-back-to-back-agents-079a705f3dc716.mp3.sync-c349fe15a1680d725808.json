@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6690,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Stand back to back"
+    },
+    {
+      "timeMs": 1760,
+      "text": "Fold your arms"
+    },
+    {
+      "timeMs": 3060,
+      "text": "Look in opposite directions"
+    },
+    {
+      "timeMs": 5000,
+      "text": "Hold your spy stare"
+    }
+  ]
+}

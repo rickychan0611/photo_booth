@@ -17,20 +17,20 @@
     "durationMs": 5680,
     "captions": [
       {
-        "text": "Copy the leader",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Copy the leader"
       },
       {
-        "text": "Same hands",
-        "timeMs": 1560
+        "timeMs": 1420,
+        "text": "Same hands"
       },
       {
-        "text": "Same foot",
-        "timeMs": 3120
+        "timeMs": 2520,
+        "text": "Same foot"
       },
       {
-        "text": "Hold the copy",
-        "timeMs": 4680
+        "timeMs": 3460,
+        "text": "Hold the copy"
       }
     ]
   },
@@ -72,6 +72,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/women-4-full-mirror-squad-c545e772bd8a64.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 4680,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Copy the leader"
+        },
+        {
+          "timeMs": 1420,
+          "text": "Same hands"
+        },
+        {
+          "timeMs": 2520,
+          "text": "Same foot"
+        },
+        {
+          "timeMs": 3460,
+          "text": "Hold the copy"
+        }
+      ]
+    }
   }
 }

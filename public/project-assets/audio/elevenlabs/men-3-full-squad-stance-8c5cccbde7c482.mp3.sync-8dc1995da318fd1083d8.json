@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 6110,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Wide feet"
+    },
+    {
+      "timeMs": 1480,
+      "text": "Arms crossed or in pockets"
+    },
+    {
+      "timeMs": 3580,
+      "text": "Stagger the line"
+    },
+    {
+      "timeMs": 4920,
+      "text": "Cool stare"
+    }
+  ]
+}

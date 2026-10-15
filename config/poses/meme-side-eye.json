@@ -39,20 +39,20 @@
     "durationMs": 7530,
     "captions": [
       {
-        "text": "Keep your head forward",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Keep your head forward"
       },
       {
-        "text": "Look sharply sideways",
-        "timeMs": 2177
+        "timeMs": 1560,
+        "text": "Look sharply sideways"
       },
       {
-        "text": "Add a suspicious face",
-        "timeMs": 4353
+        "timeMs": 3320,
+        "text": "Add a suspicious face"
       },
       {
-        "text": "Hold that side eye",
-        "timeMs": 6530
+        "timeMs": 5060,
+        "text": "Hold that side eye"
       }
     ]
   },
@@ -65,6 +65,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-side-eye-4536eace38606b.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6530,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Keep your head forward"
+        },
+        {
+          "timeMs": 1560,
+          "text": "Look sharply sideways"
+        },
+        {
+          "timeMs": 3320,
+          "text": "Add a suspicious face"
+        },
+        {
+          "timeMs": 5060,
+          "text": "Hold that side eye"
+        }
+      ]
+    }
   }
 }

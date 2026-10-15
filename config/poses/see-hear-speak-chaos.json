@@ -16,20 +16,20 @@
     "durationMs": 7030,
     "captions": [
       {
-        "text": "Line up close",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Line up close"
       },
       {
-        "text": "Cover eyes ears mouth",
-        "timeMs": 2010
+        "timeMs": 1360,
+        "text": "Cover eyes ears mouth"
       },
       {
-        "text": "Lean together",
-        "timeMs": 4020
+        "timeMs": 3600,
+        "text": "Lean together"
       },
       {
-        "text": "Make it chaotic",
-        "timeMs": 6030
+        "timeMs": 4760,
+        "text": "Make it chaotic"
       }
     ]
   },
@@ -69,6 +69,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/see-hear-speak-chaos-32d2dad4c4a194.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6030,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Line up close"
+        },
+        {
+          "timeMs": 1360,
+          "text": "Cover eyes ears mouth"
+        },
+        {
+          "timeMs": 3600,
+          "text": "Lean together"
+        },
+        {
+          "timeMs": 4760,
+          "text": "Make it chaotic"
+        }
+      ]
+    }
   }
 }

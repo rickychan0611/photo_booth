@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "audioDurationMs": 7550,
+  "captions": [
+    {
+      "timeMs": 0,
+      "text": "Spread into five spots"
+    },
+    {
+      "timeMs": 2100,
+      "text": "Choose different levels"
+    },
+    {
+      "timeMs": 3600,
+      "text": "Strike big superhero shapes"
+    },
+    {
+      "timeMs": 5900,
+      "text": "Hold the team formation"
+    }
+  ]
+}

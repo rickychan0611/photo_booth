@@ -18,20 +18,20 @@
     "durationMs": 7270,
     "captions": [
       {
-        "text": "Child steps in front",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Child steps in front"
       },
       {
-        "text": "Grownups kneel behind",
-        "timeMs": 2090
+        "timeMs": 1800,
+        "text": "Grownups kneel behind"
       },
       {
-        "text": "Follow the kid's pose",
-        "timeMs": 4180
+        "timeMs": 3520,
+        "text": "Follow the kid's pose"
       },
       {
-        "text": "Hold the little boss",
-        "timeMs": 6270
+        "timeMs": 4980,
+        "text": "Hold the little boss"
       }
     ]
   },
@@ -69,6 +69,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/family-3-full-little-leader-85b735d597dee5.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 6270,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Child steps in front"
+        },
+        {
+          "timeMs": 1800,
+          "text": "Grownups kneel behind"
+        },
+        {
+          "timeMs": 3520,
+          "text": "Follow the kid's pose"
+        },
+        {
+          "timeMs": 4980,
+          "text": "Hold the little boss"
+        }
+      ]
+    }
   }
 }

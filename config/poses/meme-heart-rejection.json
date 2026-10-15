@@ -39,20 +39,20 @@
     "durationMs": 8550,
     "captions": [
       {
-        "text": "One offers a hand heart",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "One offers a hand heart"
       },
       {
-        "text": "The other folds their arms",
-        "timeMs": 2517
+        "timeMs": 1920,
+        "text": "The other folds their arms"
       },
       {
-        "text": "Add a deadpan stare",
-        "timeMs": 5033
+        "timeMs": 3820,
+        "text": "Add a deadpan stare"
       },
       {
-        "text": "Hold the playful rejection",
-        "timeMs": 7550
+        "timeMs": 5540,
+        "text": "Hold the playful rejection"
       }
     ]
   },
@@ -65,6 +65,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/meme-heart-rejection-3c0dabd504a8af.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 7550,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "One offers a hand heart"
+        },
+        {
+          "timeMs": 1920,
+          "text": "The other folds their arms"
+        },
+        {
+          "timeMs": 3820,
+          "text": "Add a deadpan stare"
+        },
+        {
+          "timeMs": 5540,
+          "text": "Hold the playful rejection"
+        }
+      ]
+    }
   }
 }

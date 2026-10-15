@@ -17,20 +17,20 @@
     "durationMs": 6490,
     "captions": [
       {
-        "text": "Glasses on",
-        "timeMs": 0
+        "timeMs": 0,
+        "text": "Glasses on"
       },
       {
-        "text": "Lower them as a group",
-        "timeMs": 1830
+        "timeMs": 1420,
+        "text": "Lower them as a group"
       },
       {
-        "text": "One eyebrow each",
-        "timeMs": 3660
+        "timeMs": 2940,
+        "text": "One eyebrow each"
       },
       {
-        "text": "Hold the squad",
-        "timeMs": 5490
+        "timeMs": 4260,
+        "text": "Hold the squad"
       }
     ]
   },
@@ -78,6 +78,28 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/group-5-half-sunglasses-squad-9cf466e8b6e230.mp3",
     "startMs": 0,
-    "markers": []
+    "markers": [],
+    "speechTiming": {
+      "version": 1,
+      "audioDurationMs": 5490,
+      "captions": [
+        {
+          "timeMs": 0,
+          "text": "Glasses on"
+        },
+        {
+          "timeMs": 1420,
+          "text": "Lower them as a group"
+        },
+        {
+          "timeMs": 2940,
+          "text": "One eyebrow each"
+        },
+        {
+          "timeMs": 4260,
+          "text": "Hold the squad"
+        }
+      ]
+    }
   }
 }
