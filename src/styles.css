@@ -1340,6 +1340,11 @@ button:disabled {
   font-size: 10px;
 }
 
+.style-card .template-mini,
+.style-card .template-guest-preview {
+  width: min(192px, 100%);
+}
+
 .design-card {
   min-width: 0;
   border: 0;
@@ -1998,7 +2003,7 @@ button:disabled {
 
 .admin-shell .workflow-photo-body {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 1fr);
+  grid-template-columns: 1fr;
   gap: 16px;
   align-items: start;
 }
@@ -2014,7 +2019,7 @@ button:disabled {
 }
 
 @media (max-width: 1180px) {
-  .admin-shell .workflow-photo-body {
+  .admin-shell .workflow-photo-voice {
     grid-template-columns: 1fr;
   }
 }
@@ -5190,3 +5195,24 @@ button:disabled {
     height: calc(100vh - 160px);
   }
 }
+.mode-screen {
+  position: fixed;
+  inset: 0 0 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: clamp(14px, 1.6vh, 24px);
+  padding: max(96px, 8vh) 5vw 16px;
+  color: #fff;
+  font-weight: 300;
+}
+.mode-screen h1 { margin: 0; text-align: center; font-size: clamp(13px, 1.5vh, 16px); font-weight: 300; letter-spacing: 0.12em; line-height: 1.35; text-transform: uppercase; }
+.mode-card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(20px, 4vw, 56px); width: min(100%, 980px); flex: 1; min-height: 0; }
+.mode-card { display: flex; min-height: 0; flex-direction: column; align-items: center; gap: 10px; padding: 0; border: 0; background: transparent; color: #fff; font: inherit; }
+.mode-card img { display: block; width: 100%; height: 0; min-height: 0; flex: 1; object-fit: contain; }
+.mode-card span { font-size: clamp(13px, 1.5vh, 18px); font-weight: 300; letter-spacing: 0.12em; line-height: 1.35; text-align: center; text-transform: uppercase; }
+.mode-card small { font-size: clamp(11px, 1.3vh, 16px); font-weight: 300; letter-spacing: 0.06em; line-height: 1.4; text-align: center; color: rgba(255, 255, 255, 0.72); }
+.mode-card:focus-visible { outline: 3px solid #fff; outline-offset: 10px; border-radius: 24px; }
+.workflow-photo-voice { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: start; }
+.workflow-mode-voice { display: grid; gap: 12px; }

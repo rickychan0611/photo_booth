@@ -251,6 +251,7 @@ export type CameraControlSettings = {
 };
 
 export type WorkflowShotSettings = {
+  normalMessage?: string;
   poseId?: string;
   message: string;
   cameraBeforeMessageMs: number;

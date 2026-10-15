@@ -1,3 +1,5 @@
+import { needsGroupSelection, photoForMode, NORMAL_PHOTO_MESSAGE, type SessionMode } from '../electron/sessionMode';
+import { previewImages } from './previewImages';
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type InputHTMLAttributes } from 'react';
 import QRCode from 'qrcode';
 import { ArrowLeft, ArrowUp, Camera, Copy, Download, Expand, ExternalLink, FolderOpen, Globe, Image, Minimize2, Printer, RefreshCw, RotateCw, Settings, SlidersHorizontal, Sparkles, Trash2, X } from 'lucide-react';
@@ -23,7 +25,7 @@ import { normalizePoseGuide, type GuestComposition, type PoseFraming, type PoseN
 import { validateScene } from './pose/validation';
 const PoseEditor = lazy(() => import('./pose/editor/PoseEditor').then(module => ({ default: module.PoseEditor })));
 
-type GuestStep = 'queue' | 'welcome' | 'style' | 'design' | 'people' | 'intro' | 'capture' | 'select' | 'thanks';
+type GuestStep = 'queue' | 'welcome' | 'style' | 'design' | 'mode' | 'people' | 'intro' | 'capture' | 'select' | 'thanks';
 
 type PendingPrint = {
   captures: Capture[];
@@ -154,6 +156,8 @@ function GuestApp() {
   const [welcomeLogoSrc, setWelcomeLogoSrc] = useState('');
   const [step, setStep] = useState<GuestStep>('welcome');
   const [composition, setComposition] = useState<GuestComposition>({ ...EMPTY_COMPOSITION });
+  const [sessionMode, setSessionMode] = useState<SessionMode | null>(null);
+  const modeTransitionRef = useRef(false);
   const pendingDesignRef = useRef<TemplateDesign | null>(null);
   const [countdown, setCountdown] = useState<number | null>(null);
   const [captureMessage, setCaptureMessage] = useState('');
@@ -224,7 +228,18 @@ function GuestApp() {
   );
   const selectedTemplate = templateLayouts.find((layout) => layout.id === selectedTemplateId) ?? templateLayouts[0] ?? null;
   const selectedDesign = activeDesigns.find((design) => design.id === selectedDesignId) ?? null;
-  const selectedWorkflow = settings && selectedTemplate ? workflowForTemplate(settings, selectedTemplate) : null;
+  const selectedWorkflow = settings && selectedTemplate ? workflowForTemplate(settings, selectedTemplate, sessionMode ?? 'fun') : null;
+
+  useEffect(() => {
+    if (!settings) return;
+    const activeIds = new Set(settings.template.layouts.filter(layout => layout.active).map(layout => layout.id));
+    for (const layout of settings.template.layouts) {
+      if (layout.active) void previewImages.load(layout.guestPreviewPath, layout.updatedAt);
+    }
+    for (const design of settings.template.designs) {
+      if (design.active && activeIds.has(design.templateId)) void previewImages.load(templatePreviewPath(design), design.updatedAt);
+    }
+  }, [settings?.template]);
 
   useEffect(() => {
     let active = true;
@@ -354,9 +369,11 @@ function GuestApp() {
       welcome: 'welcome',
       style: 'style',
       design: 'design',
+      mode: 'mode',
       people: 'people'
     };
     if (step !== 'welcome') stopAudioCue('welcome');
+    if (step !== 'mode') stopAudioCue('mode');
     const cueId = cueByStep[step];
     if (cueId) void playAudioCue(settings, cueId);
 
@@ -371,6 +388,7 @@ function GuestApp() {
       thanksVoiceStartedRef.current = true;
       void playAudioCueObject(settings, workflow?.screenCues?.thanks, workflow?.thankYouMessage);
     }
+    return () => { if (step === 'mode') stopAudioCue('mode'); };
   }, [settings, settings?.audio, step, selectedTemplateId, selectedDesignId]);
 
   useEffect(() => {
@@ -389,6 +407,9 @@ function GuestApp() {
 
   useEffect(() => {
     if (step !== 'thanks' || thankYouCountdown !== 0) return;
+    setSessionMode(null);
+    setPoseSessionEnabled(false);
+    modeTransitionRef.current = false;
     setCaptures([]);
     setSelectedCaptureIndexes([]);
     setSelectContext(null);
@@ -425,6 +446,9 @@ function GuestApp() {
     poseAbortRef.current?.abort();
     poseAbortRef.current = null;
     poseGuideRef.current?.stop();
+    setSessionMode(null);
+    setPoseSessionEnabled(false);
+    modeTransitionRef.current = false;
     setCaptures([]);
     setSelectedCaptureIndexes([]);
     setSelectContext(null);
@@ -633,7 +657,7 @@ function GuestApp() {
   useEffect(() => {
     if (!settings) return undefined;
     const needsPreviewCamera = step === 'welcome';
-    const retainCamera = needsPreviewCamera || step === 'style' || step === 'design' || step === 'people' || step === 'intro' || step === 'capture';
+    const retainCamera = needsPreviewCamera || step === 'style' || step === 'design' || step === 'mode' || step === 'people' || step === 'intro' || step === 'capture';
     if (!retainCamera) {
       stopCamera();
       return undefined;
@@ -1007,11 +1031,22 @@ function GuestApp() {
     setSelectedTemplateId(design.templateId);
     setSelectedDesignId(design.id);
     setSelectedCaptureIndexes([]);
-    const guide = normalizePoseGuide(settings?.poseGuide);
-    if (guide.enabled && guide.selectionEnabled) {
-      pendingDesignRef.current = design;
-      setStep('people');
-    } else void startSession(design.templateId, design, guide.defaultComposition);
+    pendingDesignRef.current = design;
+    setSessionMode(null);
+    modeTransitionRef.current = false;
+    setStep('mode');
+  };
+
+  const chooseMode = (mode: SessionMode) => {
+    const design = pendingDesignRef.current;
+    if (!settings || !design || step !== 'mode' || modeTransitionRef.current || isBusy) return;
+    modeTransitionRef.current = true;
+    stopAudioCue('mode');
+    void playAudioCue(settings, 'button');
+    setSessionMode(mode);
+    const guide = normalizePoseGuide(settings.poseGuide);
+    if (needsGroupSelection(mode, guide.selectionEnabled !== false)) setStep('people');
+    else void startSession(design.templateId, design, guide.defaultComposition!, mode);
   };
 
   const stepBeforeSession = () => {
@@ -1089,12 +1124,13 @@ function GuestApp() {
     }
   };
 
-  const startSession = async (templateId = selectedTemplateId, design = selectedDesign, guests = normalizePoseGuide(settings?.poseGuide).defaultComposition!) => {
+  const startSession = async (templateId: string, design: TemplateDesign, guests: GuestComposition, mode: SessionMode) => {
     if (!settings || isBusy || poseAbortRef.current) return;
     const layout = templateLayouts.find((item) => item.id === templateId);
     if (!layout) return;
-    const workflow = workflowForTemplate(settings, layout);
-    const guideEnabled = settings.poseGuide?.enabled !== false;
+    const workflow = workflowForTemplate(settings, layout, mode);
+    const guideEnabled = mode === 'fun';
+    setSessionMode(mode);
     if (guideEnabled) {
       try { validateComposition(guests, normalizePoseGuide(settings.poseGuide).groupCapacity); }
       catch (error) { setError(String(error)); return; }
@@ -1161,7 +1197,7 @@ function GuestApp() {
         if (pose && poseGuideRef.current) {
           stopAudioChannel('voice');
           const opening = shot.message;
-          const openingCue = settings.audio.cues[`shot${Math.min(shotIndex, 11)}`] ?? shot.audioCue;
+          const openingCue = shot.audioCue;
           setCaptureMessage(opening);
           void playAudioCueObject(settings, openingCue ? { ...openingCue, text: opening } : undefined, opening);
           await delay(Math.max(700, shot.messageMs));
@@ -1244,6 +1280,10 @@ function GuestApp() {
       setError(message);
       setCaptureMessage('');
       setCountdown(null);
+      setSessionMode(null);
+      setPoseSessionEnabled(false);
+      pendingDesignRef.current = null;
+      modeTransitionRef.current = false;
       setStep(selectableTemplates.length > 1 ? 'style' : 'welcome');
     } finally {
       if (poseAbortRef.current === poseController) {
@@ -1533,6 +1573,9 @@ function GuestApp() {
   };
 
   const cancelRunningSession = () => {
+    setSessionMode(null);
+    setPoseSessionEnabled(false);
+    modeTransitionRef.current = false;
     sessionRunRef.current += 1;
     poseAbortRef.current?.abort();
     poseAbortRef.current = null;
@@ -1563,8 +1606,16 @@ function GuestApp() {
       setStep(selectableTemplates.length === 1 ? 'welcome' : 'style');
       return;
     }
-    if (step === 'people') {
+    if (step === 'mode') {
+      setSessionMode(null);
+      pendingDesignRef.current = null;
       setStep(stepBeforeSession());
+      return;
+    }
+    if (step === 'people') {
+      modeTransitionRef.current = false;
+      setSessionMode(null);
+      setStep('mode');
       return;
     }
     if (step === 'intro' || step === 'capture') {
@@ -1692,10 +1743,28 @@ function GuestApp() {
         </section>
       )}
 
+      {step === 'mode' && (
+        <section className="mode-screen" aria-labelledby="mode-heading">
+          <h1 id="mode-heading">Choose your photo experience</h1>
+          <div className="mode-card-grid">
+            <KioskButton className="mode-card" onPress={() => chooseMode('fun')} disabled={isBusy}>
+              <img src={`${import.meta.env.BASE_URL}mode-images/fun-pose.png`} alt="" draggable={false} />
+              <span>Fun Pose Challenge</span>
+              <small>Match the poses on screen!</small>
+            </KioskButton>
+            <KioskButton className="mode-card" onPress={() => chooseMode('normal')} disabled={isBusy}>
+              <img src={`${import.meta.env.BASE_URL}mode-images/freestyle.png`} alt="" draggable={false} />
+              <span>Freestyle</span>
+              <small>Pose your own way!</small>
+            </KioskButton>
+          </div>
+        </section>
+      )}
+
       {step === 'people' && (
         <GuestCompositionScreen value={composition} onChange={setComposition} capacity={normalizePoseGuide(settings.poseGuide).groupCapacity!} onContinue={() => {
           const design = pendingDesignRef.current;
-          if (design) void startSession(design.templateId, design, { ...composition });
+          if (design && sessionMode) void startSession(design.templateId, design, { ...composition }, sessionMode);
         }} />
       )}
 
@@ -2057,26 +2126,20 @@ function TemplateMini({ layout }: { layout: TemplateLayout }) {
   );
 }
 
-function TemplateGuestPreview({ layout }: { layout: TemplateLayout }) {
-  const [src, setSrc] = useState('');
+function usePreviewImage(path: string, version: string) {
+  const [loaded, setLoaded] = useState({ path: '', version: '', src: '' });
   useEffect(() => {
     let active = true;
-    if (!layout.guestPreviewPath) {
-      setSrc('');
-      return undefined;
-    }
-    void window.photoBooth
-      .getImageDataUrl(layout.guestPreviewPath)
-      .then((dataUrl) => {
-        if (active) setSrc(dataUrl);
-      })
-      .catch(() => {
-        if (active) setSrc('');
-      });
-    return () => {
-      active = false;
-    };
-  }, [layout.guestPreviewPath]);
+    void previewImages.load(path, version).then(src => {
+      if (active) setLoaded({ path, version, src });
+    });
+    return () => { active = false; };
+  }, [path, version]);
+  return previewImages.peek(path, version) || (loaded.path === path && loaded.version === version ? loaded.src : '');
+}
+
+function TemplateGuestPreview({ layout }: { layout: TemplateLayout }) {
+  const src = usePreviewImage(layout.guestPreviewPath, layout.updatedAt);
 
   if (src) {
     return (
@@ -2089,21 +2152,7 @@ function TemplateGuestPreview({ layout }: { layout: TemplateLayout }) {
 }
 
 function TemplateImagePreview({ design }: { design: TemplateDesign }) {
-  const [src, setSrc] = useState('');
-  useEffect(() => {
-    let active = true;
-    void window.photoBooth
-      .getImageDataUrl(templatePreviewPath(design))
-      .then((dataUrl) => {
-        if (active) setSrc(dataUrl);
-      })
-      .catch(() => {
-        if (active) setSrc('');
-      });
-    return () => {
-      active = false;
-    };
-  }, [design.previewPath, design.framePath, design.filePath]);
+  const src = usePreviewImage(templatePreviewPath(design), design.updatedAt);
 
   return <div className="design-preview">{src ? <img src={src} alt={design.name} /> : null}</div>;
 }
@@ -3516,11 +3565,8 @@ function AdminApp() {
         {tab === 'workflow' && (
           <AdminSection>
             <div className="admin-card">
-              <label className="admin-card-toggle-title">
-                <input type="checkbox" checked={settings.poseGuide?.enabled !== false} onChange={(event) => void saveMessage({ poseGuide: { enabled: event.target.checked } }, 'Pose guide saved.')} />
-                <span>Animated pose guide</span>
-              </label>
-              <p>Show the pose coach during photos. Random poses match the guest group and each photo slot. Edit demonstrations, captions and timing in Poses. Turn this off to use the photo messages below. Changes apply next session.</p>
+              <h2>Fun Pose Challenge</h2>
+              <p>Guests choose Fun Pose Challenge or Normal Mode before photos. Fun mode uses matching pose guides; Normal Mode takes classic photos without a guide.</p>
               <label className="check-row"><input type="checkbox" checked={settings.poseGuide.selectionEnabled !== false} onChange={event => void saveMessage({ poseGuide: { ...settings.poseGuide, selectionEnabled: event.target.checked } }, 'Guest selection saved.')} />Ask who's joining before photos</label>
               <label>Maximum guests<DraftInput type="number" min="1" max="30" step="1" value={settings.poseGuide.groupCapacity ?? 12} onSave={value => void saveMessage({ poseGuide: { ...settings.poseGuide, groupCapacity: Number(value) } }, 'Group capacity saved.')} /></label>
               {settings.poseGuide.selectionEnabled === false && <div className="fixed-composition"><h3>Event guest group</h3><CompositionControls value={normalizePoseGuide(settings.poseGuide).defaultComposition!} capacity={normalizePoseGuide(settings.poseGuide).groupCapacity} onChange={value => void saveMessage({ poseGuide: { ...settings.poseGuide, defaultComposition: value } }, 'Event group saved.')} /></div>}
@@ -3595,13 +3641,12 @@ function AdminApp() {
               const shotIndex = Math.min(Math.max(selectedWorkflowShotIndex, 0), Math.max(shots.length - 1, 0));
               const shot = shots[shotIndex];
               if (!shot) return null;
-              const shotCue = settings.audio.cues[`shot${shotIndex}`];
               return (
                 <div className="admin-card workflow-photo-card">
                   <div className="admin-card-header workflow-photo-header">
                     <div>
                       <h2>Photo messages and voices</h2>
-                      <p>Each photo has its own message, timing, and voice. Templates use the first settings in order for their photo count.</p>
+                      <p>Game Mode and Normal Mode have separate messages and voices. Photo timing is shared across both modes.</p>
                     </div>
                     <label className="workflow-photo-picker">
                       Editing
@@ -3617,14 +3662,6 @@ function AdminApp() {
                   </div>
                   <div className="workflow-photo-body">
                     <div className="workflow-photo-settings">
-                      <p>With the guide enabled, this message appears before the pose. With the guide disabled, it remains the regular photo instruction.</p>
-                      <label>
-                        Pose opening / photo message
-                        <DraftInput
-                          value={shot.message}
-                          onSave={(value) => saveWorkflowShot(shotIndex, { message: value })}
-                        />
-                      </label>
                       <div className="workflow-grid workflow-photo-timing-grid">
                         <label>
                           Camera before message
@@ -3659,15 +3696,27 @@ function AdminApp() {
                       </div>
                     </div>
                     <div className="workflow-photo-voice">
-                      <AudioCueCard
-                        cue={shotCue ? { ...shotCue, label: `Photo ${shotIndex + 1} voice` } : undefined}
-                        settings={settings}
-                        onSave={saveAudioCue}
-                        onUpload={uploadAudioCue}
-                        onRemove={removeAudioCue}
-                        onGenerate={generateHostVoiceCue}
-                        onTest={(cue) => cue.mode === 'host' && !cue.filePath ? generateHostVoiceCue(cue.id, true) : playAudioCue(settings, cue.id)}
-                      />
+                      {(['fun', 'normal'] as const).map(mode => {
+                        const cueId = mode === 'fun' ? `shot${shotIndex}` : `normalShot${shotIndex}`;
+                        const cue = settings.audio.cues[cueId];
+                        const label = mode === 'fun' ? 'Game Mode' : 'Normal Mode';
+                        return <div className="workflow-mode-voice" key={mode}>
+                          <h3>{label}</h3>
+                          <label>Photo message
+                            <DraftInput value={mode === 'fun' ? shot.message : shot.normalMessage ?? NORMAL_PHOTO_MESSAGE}
+                              onSave={value => saveWorkflowShot(shotIndex, mode === 'fun' ? { message: value } : { normalMessage: value })} />
+                          </label>
+                          <AudioCueCard
+                            cue={cue ? { ...cue, label: `${label} photo ${shotIndex + 1} voice` } : undefined}
+                            settings={settings}
+                            onSave={saveAudioCue}
+                            onUpload={uploadAudioCue}
+                            onRemove={removeAudioCue}
+                            onGenerate={generateHostVoiceCue}
+                            onTest={item => item.mode === 'host' && !item.filePath ? generateHostVoiceCue(item.id, true) : playAudioCue(settings, item.id)}
+                          />
+                        </div>;
+                      })}
                     </div>
                   </div>
                 </div>
@@ -3742,7 +3791,7 @@ function AdminApp() {
                 </div>
               </div>
               <div className="audio-cue-grid">
-                {['welcome', 'style', 'design', 'people', 'intro', 'select', 'thanks'].map((cueId) => (
+                {['welcome', 'style', 'design', 'mode', 'people', 'intro', 'select', 'thanks'].map((cueId) => (
                   <AudioCueCard
                     key={cueId}
                     cue={settings.audio.cues[cueId]}
@@ -4889,7 +4938,7 @@ const shortPath = (filePath: string) => filePath.split(/[\\/]/).slice(-2).join('
 const printerForTemplate = (settings: AppSettings, layout: TemplateLayout) =>
   layout.printerName || settings.defaultPrinter;
 
-const workflowForTemplate = (settings: AppSettings, layout: TemplateLayout): TemplateWorkflowSettings => {
+const workflowForTemplate = (settings: AppSettings, layout: TemplateLayout, mode: SessionMode = 'fun'): TemplateWorkflowSettings => {
   const shotCount = normalizePhotosToTake(layout.photosToTake, layout.photoWindows.length);
   return {
     introMessage: settings.workflow.introMessage,
@@ -4904,10 +4953,7 @@ const workflowForTemplate = (settings: AppSettings, layout: TemplateLayout): Tem
     },
     shots: Array.from({ length: shotCount }, (_item, index) => {
       const shot = settings.workflow.shots[index] ?? settings.workflow.shots[settings.workflow.shots.length - 1];
-      return {
-        ...shot,
-        audioCue: settings.audio.cues[`shot${index}`] ?? settings.audio.cues[`shot${settings.workflow.shots.length - 1}`]
-      };
+      return photoForMode(shot, settings.audio.cues, Math.min(index, settings.workflow.shots.length - 1), mode);
     })
   };
 };

@@ -76,6 +76,162 @@
     "volume": 1,
     "welcomeRepeatSeconds": 10,
     "cues": {
+      "mode": {
+        "id": "mode",
+        "label": "Choose mode screen",
+        "text": "Choose your photo experience!  You can match the fun poses on screen or freestyle and strike your own poses. You choose!",
+        "mode": "host",
+        "channel": "voice",
+        "filePath": "project-asset:audio/generated/elevenlabs/mode-a4b1373e293cd3.mp3",
+        "loop": false,
+        "volume": 1,
+        "enabled": true,
+        "updatedAt": "2026-10-15T05:11:10.720Z"
+      },
+      "normalShot0": {
+        "id": "normalShot0",
+        "label": "Normal Mode photo 1 voice",
+        "text": "Get into position and strike your best pose!",
+        "mode": "host",
+        "channel": "voice",
+        "filePath": "project-asset:audio/generated/elevenlabs/normalshot0-ac61a63c50c6c2.mp3",
+        "loop": false,
+        "volume": 1,
+        "enabled": true,
+        "updatedAt": "2026-10-15T04:23:35.422Z"
+      },
+      "normalShot1": {
+        "id": "normalShot1",
+        "label": "Normal Mode photo 2 voice",
+        "text": "Switch it up! Try something different!",
+        "mode": "host",
+        "channel": "voice",
+        "filePath": "project-asset:audio/generated/elevenlabs/normalshot1-1917dce632f9f9.mp3",
+        "loop": false,
+        "volume": 1,
+        "enabled": true,
+        "updatedAt": "2026-10-15T04:23:52.744Z"
+      },
+      "normalShot2": {
+        "id": "normalShot2",
+        "label": "Normal Mode photo 3 voice",
+        "text": "Looking great! Let's try something fun!",
+        "mode": "host",
+        "channel": "voice",
+        "filePath": "project-asset:audio/generated/elevenlabs/normalshot2-71aceb16500c44.mp3",
+        "loop": false,
+        "volume": 1,
+        "enabled": true,
+        "updatedAt": "2026-10-15T04:25:26.566Z"
+      },
+      "normalShot3": {
+        "id": "normalShot3",
+        "label": "Normal Mode photo 4 voice",
+        "text": "Final shot! Make this one unforgettable!",
+        "mode": "host",
+        "channel": "voice",
+        "filePath": "project-asset:audio/generated/elevenlabs/normalshot3-61fdd0b5c47221.mp3",
+        "loop": false,
+        "volume": 1,
+        "enabled": true,
+        "updatedAt": "2026-10-15T04:24:25.559Z"
+      },
+      "normalShot4": {
+        "id": "normalShot4",
+        "label": "Normal Mode photo 5 voice",
+        "text": "Look at the camera and smile!",
+        "mode": "host",
+        "channel": "voice",
+        "filePath": "",
+        "loop": false,
+        "volume": 1,
+        "enabled": true,
+        "updatedAt": ""
+      },
+      "normalShot5": {
+        "id": "normalShot5",
+        "label": "Normal Mode photo 6 voice",
+        "text": "Look at the camera and smile!",
+        "mode": "host",
+        "channel": "voice",
+        "filePath": "",
+        "loop": false,
+        "volume": 1,
+        "enabled": true,
+        "updatedAt": ""
+      },
+      "normalShot6": {
+        "id": "normalShot6",
+        "label": "Normal Mode photo 7 voice",
+        "text": "Look at the camera and smile!",
+        "mode": "host",
+        "channel": "voice",
+        "filePath": "",
+        "loop": false,
+        "volume": 1,
+        "enabled": true,
+        "updatedAt": ""
+      },
+      "normalShot7": {
+        "id": "normalShot7",
+        "label": "Normal Mode photo 8 voice",
+        "text": "Look at the camera and smile!",
+        "mode": "host",
+        "channel": "voice",
+        "filePath": "",
+        "loop": false,
+        "volume": 1,
+        "enabled": true,
+        "updatedAt": ""
+      },
+      "normalShot8": {
+        "id": "normalShot8",
+        "label": "Normal Mode photo 9 voice",
+        "text": "Look at the camera and smile!",
+        "mode": "host",
+        "channel": "voice",
+        "filePath": "",
+        "loop": false,
+        "volume": 1,
+        "enabled": true,
+        "updatedAt": ""
+      },
+      "normalShot9": {
+        "id": "normalShot9",
+        "label": "Normal Mode photo 10 voice",
+        "text": "Look at the camera and smile!",
+        "mode": "host",
+        "channel": "voice",
+        "filePath": "",
+        "loop": false,
+        "volume": 1,
+        "enabled": true,
+        "updatedAt": ""
+      },
+      "normalShot10": {
+        "id": "normalShot10",
+        "label": "Normal Mode photo 11 voice",
+        "text": "Look at the camera and smile!",
+        "mode": "host",
+        "channel": "voice",
+        "filePath": "",
+        "loop": false,
+        "volume": 1,
+        "enabled": true,
+        "updatedAt": ""
+      },
+      "normalShot11": {
+        "id": "normalShot11",
+        "label": "Normal Mode photo 12 voice",
+        "text": "Look at the camera and smile!",
+        "mode": "host",
+        "channel": "voice",
+        "filePath": "",
+        "loop": false,
+        "volume": 1,
+        "enabled": true,
+        "updatedAt": ""
+      },
       "welcome": {
         "id": "welcome",
         "label": "Welcome idle loop",
@@ -383,9 +539,9 @@
     "logoPath": "project-asset:branding/idle-logo-1791018077624.png",
     "framePath": "",
     "styleVersion": 3,
-    "selectedTemplateId": "template-1791068582205",
+    "selectedTemplateId": "template-1792040220910",
     "selectedStyleId": "style1",
-    "selectedDesignId": "design-1791068612217",
+    "selectedDesignId": "",
     "layouts": [
       {
         "id": "template-1782967801040",
@@ -1907,7 +2063,7 @@
           }
         ],
         "photosToTake": 3,
-        "active": true,
+        "active": false,
         "guestPreviewPath": "",
         "workflowDefaults": {
           "introMessage": "Let's take 1 picture!",
@@ -2012,7 +2168,7 @@
         },
         "printerName": "",
         "createdAt": "2026-09-26T04:00:04.465Z",
-        "updatedAt": "2026-09-26T04:29:45.449Z"
+        "updatedAt": "2026-10-15T04:52:19.970Z"
       },
       {
         "id": "template-1790395365786",
@@ -2041,7 +2197,7 @@
           }
         ],
         "photosToTake": 2,
-        "active": true,
+        "active": false,
         "guestPreviewPath": "",
         "workflowDefaults": {
           "introMessage": "Let's take 1 picture!",
@@ -2128,7 +2284,7 @@
         },
         "printerName": "",
         "createdAt": "2026-09-26T04:02:45.786Z",
-        "updatedAt": "2026-09-26T04:03:26.488Z"
+        "updatedAt": "2026-10-15T04:52:22.145Z"
       },
       {
         "id": "template-1790395411663",
@@ -2148,7 +2304,7 @@
           }
         ],
         "photosToTake": 2,
-        "active": true,
+        "active": false,
         "guestPreviewPath": "",
         "workflowDefaults": {
           "introMessage": "Let's take 1 picture!",
@@ -2235,7 +2391,7 @@
         },
         "printerName": "",
         "createdAt": "2026-09-26T04:03:31.663Z",
-        "updatedAt": "2026-09-26T04:04:27.246Z"
+        "updatedAt": "2026-10-15T04:52:25.844Z"
       },
       {
         "id": "template-1790395470444",
@@ -2282,7 +2438,7 @@
           }
         ],
         "photosToTake": 4,
-        "active": true,
+        "active": false,
         "guestPreviewPath": "",
         "workflowDefaults": {
           "introMessage": "Let's take 1 picture!",
@@ -2405,55 +2561,28 @@
         },
         "printerName": "",
         "createdAt": "2026-09-26T04:04:30.444Z",
-        "updatedAt": "2026-09-26T04:40:10.944Z"
+        "updatedAt": "2026-10-15T04:52:27.684Z"
       },
       {
-        "id": "template-1791068582205",
-        "name": "Untitled-11",
+        "id": "template-1792040220910",
+        "name": "1 Photo",
         "orientation": "landscape",
         "paperWidth": 1800,
         "paperHeight": 1200,
         "photoWindows": [
           {
-            "x": 489,
-            "y": 81,
-            "width": 591,
-            "height": 579,
+            "x": 715,
+            "y": 250,
+            "width": 1012,
+            "height": 725,
             "sourceIndex": 0,
-            "cropY": "center",
-            "rotation": 0
-          },
-          {
-            "x": 159,
-            "y": 246,
-            "width": 285,
-            "height": 504,
-            "sourceIndex": 1,
-            "cropY": "center",
-            "rotation": 0
-          },
-          {
-            "x": 1284,
-            "y": 888,
-            "width": 417,
-            "height": 255,
-            "sourceIndex": 2,
-            "cropY": "center",
-            "rotation": 0
-          },
-          {
-            "x": 705,
-            "y": 1020,
-            "width": 75,
-            "height": 66,
-            "sourceIndex": 3,
             "cropY": "center",
             "rotation": 0
           }
         ],
-        "photosToTake": 4,
+        "photosToTake": 2,
         "active": true,
-        "guestPreviewPath": "project-asset:templates/custom/template-1791068582205/guest-preview.png",
+        "guestPreviewPath": "project-asset:templates/custom/template-1792040220910/guest-preview.png",
         "workflowDefaults": {
           "introMessage": "Let's take 1 picture!",
           "introMs": 2000,
@@ -2509,7 +2638,7 @@
                 "label": "Picture 1 voice",
                 "mode": "host",
                 "channel": "voice",
-                "text": "Get Ready!",
+                "text": "Pose challenge!",
                 "filePath": "",
                 "loop": false,
                 "volume": 1,
@@ -2527,43 +2656,7 @@
                 "label": "Picture 2 voice",
                 "mode": "host",
                 "channel": "voice",
-                "text": "Smile!",
-                "filePath": "",
-                "loop": false,
-                "volume": 1,
-                "enabled": true,
-                "updatedAt": ""
-              }
-            },
-            {
-              "message": "Looking good, now do this!",
-              "cameraBeforeMessageMs": 0,
-              "messageMs": 1000,
-              "cameraBeforeCountdownMs": 2000,
-              "audioCue": {
-                "id": "template-shot-2",
-                "label": "Picture 3 voice",
-                "mode": "host",
-                "channel": "voice",
-                "text": "Switch It Up!",
-                "filePath": "",
-                "loop": false,
-                "volume": 1,
-                "enabled": true,
-                "updatedAt": ""
-              }
-            },
-            {
-              "message": "Last one! Now...",
-              "cameraBeforeMessageMs": 0,
-              "messageMs": 1000,
-              "cameraBeforeCountdownMs": 2000,
-              "audioCue": {
-                "id": "template-shot-3",
-                "label": "Picture 4 voice",
-                "mode": "host",
-                "channel": "voice",
-                "text": "Final Pose!",
+                "text": "Next one!",
                 "filePath": "",
                 "loop": false,
                 "volume": 1,
@@ -2574,8 +2667,437 @@
           ]
         },
         "printerName": "",
-        "createdAt": "2026-10-03T23:03:02.204Z",
-        "updatedAt": "2026-10-03T23:04:13.320Z"
+        "createdAt": "2026-10-15T04:57:00.910Z",
+        "updatedAt": "2026-10-15T05:06:14.437Z"
+      },
+      {
+        "id": "template-1792040374035",
+        "name": "2 Photos",
+        "orientation": "landscape",
+        "paperWidth": 1800,
+        "paperHeight": 1200,
+        "photoWindows": [
+          {
+            "x": 715,
+            "y": 250,
+            "width": 484,
+            "height": 725,
+            "sourceIndex": 0,
+            "cropY": "center",
+            "rotation": 0
+          },
+          {
+            "x": 1238,
+            "y": 251,
+            "width": 489,
+            "height": 723,
+            "sourceIndex": 1,
+            "cropY": "center",
+            "rotation": 0
+          }
+        ],
+        "photosToTake": 2,
+        "active": true,
+        "guestPreviewPath": "project-asset:templates/custom/template-1792040374035/guest-preview.png",
+        "workflowDefaults": {
+          "introMessage": "Let's take 1 picture!",
+          "introMs": 2000,
+          "printAutoSelectMs": 20000,
+          "thankYouMessage": "THANK YOU!",
+          "thankYouMs": 3000,
+          "screenCues": {
+            "intro": {
+              "id": "template-intro",
+              "label": "Intro screen voice",
+              "mode": "host",
+              "channel": "voice",
+              "text": "Let's take pictures.",
+              "filePath": "",
+              "loop": false,
+              "volume": 1,
+              "enabled": true,
+              "updatedAt": ""
+            },
+            "select": {
+              "id": "template-select",
+              "label": "Photo selection voice",
+              "mode": "host",
+              "channel": "voice",
+              "text": "Please choose your favorite pictures to print.",
+              "filePath": "",
+              "loop": false,
+              "volume": 1,
+              "enabled": true,
+              "updatedAt": ""
+            },
+            "thanks": {
+              "id": "template-thanks",
+              "label": "Finish screen voice",
+              "mode": "host",
+              "channel": "voice",
+              "text": "Thank you. Please pick up your print.",
+              "filePath": "",
+              "loop": false,
+              "volume": 1,
+              "enabled": true,
+              "updatedAt": ""
+            }
+          },
+          "shots": [
+            {
+              "message": "Pose challenge!",
+              "cameraBeforeMessageMs": 0,
+              "messageMs": 1000,
+              "cameraBeforeCountdownMs": 2000,
+              "audioCue": {
+                "id": "template-shot-0",
+                "label": "Picture 1 voice",
+                "mode": "host",
+                "channel": "voice",
+                "text": "Pose challenge!",
+                "filePath": "",
+                "loop": false,
+                "volume": 1,
+                "enabled": true,
+                "updatedAt": ""
+              }
+            },
+            {
+              "message": "Next one!",
+              "cameraBeforeMessageMs": 0,
+              "messageMs": 1000,
+              "cameraBeforeCountdownMs": 2000,
+              "audioCue": {
+                "id": "template-shot-1",
+                "label": "Picture 2 voice",
+                "mode": "host",
+                "channel": "voice",
+                "text": "Next one!",
+                "filePath": "",
+                "loop": false,
+                "volume": 1,
+                "enabled": true,
+                "updatedAt": ""
+              }
+            }
+          ]
+        },
+        "printerName": "",
+        "createdAt": "2026-10-15T04:59:34.035Z",
+        "updatedAt": "2026-10-15T04:59:54.810Z"
+      },
+      {
+        "id": "template-1792040533770",
+        "name": "3 Photos",
+        "orientation": "landscape",
+        "paperWidth": 1800,
+        "paperHeight": 1200,
+        "photoWindows": [
+          {
+            "x": 825,
+            "y": 204,
+            "width": 785,
+            "height": 518,
+            "sourceIndex": 0,
+            "cropY": "center",
+            "rotation": 0
+          },
+          {
+            "x": 769,
+            "y": 764,
+            "width": 423,
+            "height": 302,
+            "sourceIndex": 1,
+            "cropY": "center",
+            "rotation": 0
+          },
+          {
+            "x": 1236,
+            "y": 764,
+            "width": 423,
+            "height": 302,
+            "sourceIndex": 2,
+            "cropY": "center",
+            "rotation": 0
+          }
+        ],
+        "photosToTake": 3,
+        "active": true,
+        "guestPreviewPath": "project-asset:templates/custom/template-1792040533770/guest-preview.png",
+        "workflowDefaults": {
+          "introMessage": "Let's take 1 picture!",
+          "introMs": 2000,
+          "printAutoSelectMs": 20000,
+          "thankYouMessage": "THANK YOU!",
+          "thankYouMs": 3000,
+          "screenCues": {
+            "intro": {
+              "id": "template-intro",
+              "label": "Intro screen voice",
+              "mode": "host",
+              "channel": "voice",
+              "text": "Let's take pictures.",
+              "filePath": "",
+              "loop": false,
+              "volume": 1,
+              "enabled": true,
+              "updatedAt": ""
+            },
+            "select": {
+              "id": "template-select",
+              "label": "Photo selection voice",
+              "mode": "host",
+              "channel": "voice",
+              "text": "Please choose your favorite pictures to print.",
+              "filePath": "",
+              "loop": false,
+              "volume": 1,
+              "enabled": true,
+              "updatedAt": ""
+            },
+            "thanks": {
+              "id": "template-thanks",
+              "label": "Finish screen voice",
+              "mode": "host",
+              "channel": "voice",
+              "text": "Thank you. Please pick up your print.",
+              "filePath": "",
+              "loop": false,
+              "volume": 1,
+              "enabled": true,
+              "updatedAt": ""
+            }
+          },
+          "shots": [
+            {
+              "message": "Pose challenge!",
+              "cameraBeforeMessageMs": 0,
+              "messageMs": 1000,
+              "cameraBeforeCountdownMs": 2000,
+              "audioCue": {
+                "id": "template-shot-0",
+                "label": "Picture 1 voice",
+                "mode": "host",
+                "channel": "voice",
+                "text": "Pose challenge!",
+                "filePath": "",
+                "loop": false,
+                "volume": 1,
+                "enabled": true,
+                "updatedAt": ""
+              }
+            },
+            {
+              "message": "Next one!",
+              "cameraBeforeMessageMs": 0,
+              "messageMs": 1000,
+              "cameraBeforeCountdownMs": 2000,
+              "audioCue": {
+                "id": "template-shot-1",
+                "label": "Picture 2 voice",
+                "mode": "host",
+                "channel": "voice",
+                "text": "Next one!",
+                "filePath": "",
+                "loop": false,
+                "volume": 1,
+                "enabled": true,
+                "updatedAt": ""
+              }
+            },
+            {
+              "message": "Looking good, now do this!",
+              "cameraBeforeMessageMs": 0,
+              "messageMs": 1400,
+              "cameraBeforeCountdownMs": 2000,
+              "audioCue": {
+                "id": "template-shot-2",
+                "label": "Picture 3 voice",
+                "mode": "host",
+                "channel": "voice",
+                "text": "Looking good, now do this!",
+                "filePath": "",
+                "loop": false,
+                "volume": 1,
+                "enabled": true,
+                "updatedAt": ""
+              }
+            }
+          ]
+        },
+        "printerName": "",
+        "createdAt": "2026-10-15T05:02:13.770Z",
+        "updatedAt": "2026-10-15T05:03:01.674Z"
+      },
+      {
+        "id": "template-1792040591570",
+        "name": "4 Photos",
+        "orientation": "landscape",
+        "paperWidth": 1800,
+        "paperHeight": 1200,
+        "photoWindows": [
+          {
+            "x": 718,
+            "y": 226,
+            "width": 481,
+            "height": 344,
+            "sourceIndex": 0,
+            "cropY": "center",
+            "rotation": 0
+          },
+          {
+            "x": 1250,
+            "y": 226,
+            "width": 480,
+            "height": 344,
+            "sourceIndex": 1,
+            "cropY": "center",
+            "rotation": 0
+          },
+          {
+            "x": 718,
+            "y": 630,
+            "width": 481,
+            "height": 344,
+            "sourceIndex": 2,
+            "cropY": "center",
+            "rotation": 0
+          },
+          {
+            "x": 1250,
+            "y": 630,
+            "width": 480,
+            "height": 344,
+            "sourceIndex": 3,
+            "cropY": "center",
+            "rotation": 0
+          }
+        ],
+        "photosToTake": 4,
+        "active": true,
+        "guestPreviewPath": "project-asset:templates/custom/template-1792040591570/guest-preview.png",
+        "workflowDefaults": {
+          "introMessage": "Let's take 1 picture!",
+          "introMs": 2000,
+          "printAutoSelectMs": 20000,
+          "thankYouMessage": "THANK YOU!",
+          "thankYouMs": 3000,
+          "screenCues": {
+            "intro": {
+              "id": "template-intro",
+              "label": "Intro screen voice",
+              "mode": "host",
+              "channel": "voice",
+              "text": "Let's take pictures.",
+              "filePath": "",
+              "loop": false,
+              "volume": 1,
+              "enabled": true,
+              "updatedAt": ""
+            },
+            "select": {
+              "id": "template-select",
+              "label": "Photo selection voice",
+              "mode": "host",
+              "channel": "voice",
+              "text": "Please choose your favorite pictures to print.",
+              "filePath": "",
+              "loop": false,
+              "volume": 1,
+              "enabled": true,
+              "updatedAt": ""
+            },
+            "thanks": {
+              "id": "template-thanks",
+              "label": "Finish screen voice",
+              "mode": "host",
+              "channel": "voice",
+              "text": "Thank you. Please pick up your print.",
+              "filePath": "",
+              "loop": false,
+              "volume": 1,
+              "enabled": true,
+              "updatedAt": ""
+            }
+          },
+          "shots": [
+            {
+              "message": "Pose challenge!",
+              "cameraBeforeMessageMs": 0,
+              "messageMs": 1000,
+              "cameraBeforeCountdownMs": 2000,
+              "audioCue": {
+                "id": "template-shot-0",
+                "label": "Picture 1 voice",
+                "mode": "host",
+                "channel": "voice",
+                "text": "Pose challenge!",
+                "filePath": "",
+                "loop": false,
+                "volume": 1,
+                "enabled": true,
+                "updatedAt": ""
+              }
+            },
+            {
+              "message": "Next one!",
+              "cameraBeforeMessageMs": 0,
+              "messageMs": 1000,
+              "cameraBeforeCountdownMs": 2000,
+              "audioCue": {
+                "id": "template-shot-1",
+                "label": "Picture 2 voice",
+                "mode": "host",
+                "channel": "voice",
+                "text": "Next one!",
+                "filePath": "",
+                "loop": false,
+                "volume": 1,
+                "enabled": true,
+                "updatedAt": ""
+              }
+            },
+            {
+              "message": "Looking good, now do this!",
+              "cameraBeforeMessageMs": 0,
+              "messageMs": 1400,
+              "cameraBeforeCountdownMs": 2000,
+              "audioCue": {
+                "id": "template-shot-2",
+                "label": "Picture 3 voice",
+                "mode": "host",
+                "channel": "voice",
+                "text": "Looking good, now do this!",
+                "filePath": "",
+                "loop": false,
+                "volume": 1,
+                "enabled": true,
+                "updatedAt": ""
+              }
+            },
+            {
+              "message": "Last one! Now...",
+              "cameraBeforeMessageMs": 0,
+              "messageMs": 1200,
+              "cameraBeforeCountdownMs": 2000,
+              "audioCue": {
+                "id": "template-shot-3",
+                "label": "Picture 4 voice",
+                "mode": "host",
+                "channel": "voice",
+                "text": "Last one! Now...",
+                "filePath": "",
+                "loop": false,
+                "volume": 1,
+                "enabled": true,
+                "updatedAt": ""
+              }
+            }
+          ]
+        },
+        "printerName": "",
+        "createdAt": "2026-10-15T05:03:11.570Z",
+        "updatedAt": "2026-10-15T05:04:46.224Z"
       }
     ],
     "aiPresets": [
@@ -3438,17 +3960,62 @@
         "workflowOverrideEnabled": false
       },
       {
-        "id": "design-1791068612217",
-        "templateId": "template-1791068582205",
-        "name": "Untitled-11",
-        "previewPath": "project-asset:templates/custom/template-1791068582205/design-1791068612217-untitled-11/frame.png",
-        "framePath": "project-asset:templates/custom/template-1791068582205/design-1791068612217-untitled-11/frame.png",
+        "id": "design-1792040245951",
+        "templateId": "template-1792040220910",
+        "name": "1b",
+        "previewPath": "project-asset:templates/custom/template-1792040220910/design-1792040245951-1b/frame.png",
+        "framePath": "project-asset:templates/custom/template-1792040220910/design-1792040245951-1b/frame.png",
         "active": true,
         "usesAi": false,
         "aiPresetId": "",
-        "videoRecordingEnabled": false,
-        "createdAt": "2026-10-03T23:03:32.217Z",
-        "updatedAt": "2026-10-03T23:03:32.217Z",
+        "videoRecordingEnabled": true,
+        "createdAt": "2026-10-15T04:57:25.951Z",
+        "updatedAt": "2026-10-15T04:57:30.923Z",
+        "styleId": "style1",
+        "workflowOverrideEnabled": false
+      },
+      {
+        "id": "design-1792040401696",
+        "templateId": "template-1792040374035",
+        "name": "2b",
+        "previewPath": "project-asset:templates/custom/template-1792040374035/design-1792040401696-2b/frame.png",
+        "framePath": "project-asset:templates/custom/template-1792040374035/design-1792040401696-2b/frame.png",
+        "active": true,
+        "usesAi": false,
+        "aiPresetId": "",
+        "videoRecordingEnabled": true,
+        "createdAt": "2026-10-15T05:00:01.696Z",
+        "updatedAt": "2026-10-15T05:00:06.156Z",
+        "styleId": "style1",
+        "workflowOverrideEnabled": false
+      },
+      {
+        "id": "design-1792040551438",
+        "templateId": "template-1792040533770",
+        "name": "3b",
+        "previewPath": "project-asset:templates/custom/template-1792040533770/design-1792040551438-3b/preview.png",
+        "framePath": "project-asset:templates/custom/template-1792040533770/design-1792040551438-3b/frame.png",
+        "active": true,
+        "usesAi": false,
+        "aiPresetId": "",
+        "videoRecordingEnabled": true,
+        "createdAt": "2026-10-15T05:02:31.438Z",
+        "updatedAt": "2026-10-15T05:02:41.380Z",
+        "styleId": "style1",
+        "workflowOverrideEnabled": false
+      },
+      {
+        "id": "design-1792040608323",
+        "templateId": "template-1792040591570",
+        "name": "4b",
+        "previewPath": "project-asset:templates/custom/template-1792040591570/design-1792040608323-4b/frame.png",
+        "framePath": "project-asset:templates/custom/template-1792040591570/design-1792040608323-4b/frame.png",
+        "active": true,
+        "usesAi": false,
+        "aiPresetId": "",
+        "videoRecordingEnabled": true,
+        "createdAt": "2026-10-15T05:03:28.323Z",
+        "updatedAt": "2026-10-15T05:03:52.549Z",
         "styleId": "style1",
         "workflowOverrideEnabled": false
       }
@@ -3465,73 +4032,85 @@
         "message": "Pose Challenge! Follow the moves!",
         "cameraBeforeMessageMs": 0,
         "messageMs": 3000,
-        "cameraBeforeCountdownMs": 0
+        "cameraBeforeCountdownMs": 4000,
+        "normalMessage": "Get into position and strike your best pose!"
       },
       {
         "message": "Nice! Next one!",
         "cameraBeforeMessageMs": 0,
         "messageMs": 3000,
-        "cameraBeforeCountdownMs": 0
+        "cameraBeforeCountdownMs": 4000,
+        "normalMessage": "Switch it up! Try something different!"
       },
       {
         "message": "Looking good, now do this!",
         "cameraBeforeMessageMs": 0,
         "messageMs": 3000,
-        "cameraBeforeCountdownMs": 0
+        "cameraBeforeCountdownMs": 4000,
+        "normalMessage": "Looking great! Let's try something fun!"
       },
       {
         "message": "Last shot! make it count!",
         "cameraBeforeMessageMs": 0,
         "messageMs": 3000,
-        "cameraBeforeCountdownMs": 0
+        "cameraBeforeCountdownMs": 4000,
+        "normalMessage": "Final shot! Make this one unforgettable!"
       },
       {
         "message": "New Pose!",
         "cameraBeforeMessageMs": 0,
         "messageMs": 1000,
-        "cameraBeforeCountdownMs": 2000
+        "cameraBeforeCountdownMs": 2000,
+        "normalMessage": "Look at the camera and smile!"
       },
       {
         "message": "Big Smile!",
         "cameraBeforeMessageMs": 0,
         "messageMs": 1000,
-        "cameraBeforeCountdownMs": 2000
+        "cameraBeforeCountdownMs": 2000,
+        "normalMessage": "Look at the camera and smile!"
       },
       {
         "message": "Something Silly!",
         "cameraBeforeMessageMs": 0,
         "messageMs": 1000,
-        "cameraBeforeCountdownMs": 2000
+        "cameraBeforeCountdownMs": 2000,
+        "normalMessage": "Look at the camera and smile!"
       },
       {
         "message": "Strike A Pose!",
         "cameraBeforeMessageMs": 0,
         "messageMs": 1000,
-        "cameraBeforeCountdownMs": 2000
+        "cameraBeforeCountdownMs": 2000,
+        "normalMessage": "Look at the camera and smile!"
       },
       {
         "message": "One More!",
         "cameraBeforeMessageMs": 0,
         "messageMs": 1000,
-        "cameraBeforeCountdownMs": 2000
+        "cameraBeforeCountdownMs": 2000,
+        "normalMessage": "Look at the camera and smile!"
       },
       {
         "message": "Change It Up!",
         "cameraBeforeMessageMs": 0,
         "messageMs": 1000,
-        "cameraBeforeCountdownMs": 2000
+        "cameraBeforeCountdownMs": 2000,
+        "normalMessage": "Look at the camera and smile!"
       },
       {
         "message": "Almost There!",
         "cameraBeforeMessageMs": 0,
         "messageMs": 1000,
-        "cameraBeforeCountdownMs": 2000
+        "cameraBeforeCountdownMs": 2000,
+        "normalMessage": "Look at the camera and smile!"
       },
       {
         "message": "Final Pose!",
         "cameraBeforeMessageMs": 0,
         "messageMs": 1000,
-        "cameraBeforeCountdownMs": 2000
+        "cameraBeforeCountdownMs": 2000,
+        "normalMessage": "Look at the camera and smile!"
       }
     ]
   },
@@ -3556,6 +4135,9 @@
     "template-1790395365786": "",
     "template-1790395411663": "",
     "template-1790395470444": "",
-    "template-1791068582205": ""
+    "template-1792040220910": "",
+    "template-1792040374035": "",
+    "template-1792040533770": "",
+    "template-1792040591570": ""
   }
 }

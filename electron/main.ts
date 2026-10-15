@@ -1,3 +1,4 @@
+import { modeAudioDefaults, NORMAL_PHOTO_MESSAGE } from './sessionMode';
 import { normalizePoseGuide } from './poseTypes';
 import { app, BrowserWindow, desktopCapturer, dialog, ipcMain, nativeImage, session, shell } from 'electron';
 import fs from 'node:fs/promises';
@@ -168,6 +169,7 @@ const defaultAudioSettings = (): AppSettings['audio'] => ({
   volume: 1,
   welcomeRepeatSeconds: 10,
   cues: {
+    ...modeAudioDefaults(),
     welcome: defaultAudioCue('welcome', 'Welcome idle loop', 'Welcome. Touch start to begin.', 'voice', 'host', true),
     style: defaultAudioCue('style', 'Choose style screen', 'Please choose a style.'),
     design: defaultAudioCue('design', 'Choose design screen', 'Please choose a design.'),
@@ -237,7 +239,7 @@ const normalizeWorkflowSettings = (
     ...current,
     shots: fallback.shots.map((shot, index) => {
       const source = sourceShots[index] ?? {};
-      return { ...shot, ...source, message: migratePoseChallengeMessage(index, source.message ?? shot.message) };
+      return { ...shot, normalMessage: NORMAL_PHOTO_MESSAGE, ...source, message: migratePoseChallengeMessage(index, source.message ?? shot.message) };
     })
   };
 };

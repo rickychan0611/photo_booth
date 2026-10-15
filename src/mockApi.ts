@@ -1,3 +1,4 @@
+import { modeAudioDefaults, NORMAL_PHOTO_MESSAGE } from '../electron/sessionMode';
 import { normalizePoseGuide } from './pose/types';
 import { createBlankTemplateLayout, normalizeTemplateLayoutForClient } from './template';
 import { validateScene } from './pose/validation';
@@ -85,6 +86,7 @@ const fallbackSettings: AppSettings = {
     volume: 1,
     welcomeRepeatSeconds: 10,
     cues: {
+      ...modeAudioDefaults(),
       welcome: { id: 'welcome', label: 'Welcome idle loop', mode: 'host', channel: 'voice', text: 'Welcome. Touch start to begin.', filePath: '', loop: true, volume: 1, enabled: true, updatedAt: '' },
       style: { id: 'style', label: 'Choose style screen', mode: 'host', channel: 'voice', text: 'Please choose a style.', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       design: { id: 'design', label: 'Choose design screen', mode: 'host', channel: 'voice', text: 'Please choose a design.', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
@@ -172,6 +174,7 @@ const normalizeWorkflowSettings = (
     ...current,
     shots: fallbackSettings.workflow.shots.map((shot, index) => ({
       ...shot,
+      normalMessage: NORMAL_PHOTO_MESSAGE,
       ...(sourceShots[index] ?? {})
     }))
   };
