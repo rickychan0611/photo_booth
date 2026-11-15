@@ -30,7 +30,7 @@ app.whenReady().then(async () => {
       const name = jobs[cursor++], file = path.join(folder, name);
       try {
         const original = fs.readFileSync(file, 'utf8'), scene = JSON.parse(original);
-        if (hasMatchingSpeechTiming(scene)) { report.skipped.push(scene.id); continue; }
+        if (scene?.deleted === true || hasMatchingSpeechTiming(scene)) { report.skipped.push(scene.id); continue; }
         let synced;
         for (let attempt = 0; attempt < 3; attempt++) {
           try { synced = await syncPoseNarration(scene); break; }

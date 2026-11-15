@@ -54,7 +54,13 @@ app.whenReady().then(async () => {
   const jobs = require('../src/pose/poses/scenes.json').map(scene => ({ scene, bundled: true }));
   for (const name of fs.readdirSync(library).filter(n => n.endsWith('.json') && n !== 'elevenlabs.json')) {
     const file = path.join(library, name);
-    const scene = validateScene(JSON.parse(fs.readFileSync(file, 'utf8')));
+    const value = JSON.parse(fs.readFileSync(file, 'utf8'));
+    if (value?.deleted === true) {
+      const index = jobs.findIndex(job => job.scene.id === value.id);
+      if (index >= 0) jobs.splice(index, 1);
+      continue;
+    }
+    const scene = validateScene(value);
     const index = jobs.findIndex(job => job.scene.id === scene.id);
     if (index < 0) jobs.push({ scene, file });
     else jobs[index] = { scene, file };

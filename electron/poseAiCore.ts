@@ -63,7 +63,7 @@ export const POSE_AI_PLAN_SCHEMA = object({
 
 const SYSTEM_PROMPT = `You design safe, fun photo-booth pose challenges shown as still photo cutouts with timed captions. Return only the requested structured pose plan.
 
-Do not describe a skeleton, joints, or character animation. Write 2-4 short captions with strictly increasing progress; the final progress is exactly 1 and is displayed from 2.0 seconds through 7.0 seconds. Match roles to the people in the pose. Use child or any when the pose is child-safe, and adult when it is not. Do not include audio or an image path.`;
+Design a pose for at least two people. Assign one or more categories: Friends (friends), Family (family), or Lovers (couple). Use the codes in the styles array. Do not describe a skeleton, joints, or character animation. Write 2-4 short captions with strictly increasing progress; the final progress is exactly 1 and is displayed from 2.0 seconds through 7.0 seconds. Match roles to the people in the pose. Use child or any when the pose is child-safe, and adult when it is not. Do not include audio or an image path.`;
 
 const isRecord = (value: unknown): value is Record<string, unknown> => Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 const finite = (value: unknown, minimum: number, maximum: number): value is number => typeof value === 'number' && Number.isFinite(value) && value >= minimum && value <= maximum;

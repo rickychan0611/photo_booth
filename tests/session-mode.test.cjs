@@ -8,13 +8,13 @@ require.extensions['.ts'] = (module, filename) => {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 }
   }).outputText, filename);
 };
-const { needsGroupSelection, photoForMode, modeAudioDefaults, NORMAL_PHOTO_MESSAGE } = require('../electron/sessionMode.ts');
+const { needsPoseCategorySelection, photoForMode, modeAudioDefaults, NORMAL_PHOTO_MESSAGE } = require('../electron/sessionMode.ts');
 
-test('only Fun mode asks for a group, respecting the event group setting', () => {
-  assert.equal(needsGroupSelection('fun', true), true);
-  assert.equal(needsGroupSelection('fun', false), false);
-  assert.equal(needsGroupSelection('normal', true), false);
-  assert.equal(needsGroupSelection('normal', false), false);
+test('only Pose Ideas asks for a category, respecting the admin setting', () => {
+  assert.equal(needsPoseCategorySelection('fun', true), true);
+  assert.equal(needsPoseCategorySelection('fun', false), false);
+  assert.equal(needsPoseCategorySelection('normal', true), false);
+  assert.equal(needsPoseCategorySelection('normal', false), false);
 });
 
 test('legacy game messages and voice files survive while normal mode gets independent defaults', () => {
@@ -49,7 +49,7 @@ test('switching modes and editing a normal script cannot reuse a game voice', ()
 test('new voice defaults include the mode screen and all twelve normal photo slots', () => {
   const cues = modeAudioDefaults();
   assert.equal(Object.keys(cues).length, 13);
-  assert.match(cues.mode.text, /Tap Fun Pose Challenge/);
+  assert.match(cues.mode.text, /Tap Pose Ideas/);
   for (let i = 0; i < 12; i++) {
     assert.equal(cues[`normalShot${i}`].text, NORMAL_PHOTO_MESSAGE);
     assert.equal(cues[`normalShot${i}`].channel, 'voice');

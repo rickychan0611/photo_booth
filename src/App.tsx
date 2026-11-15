@@ -1,4 +1,4 @@
-import { needsGroupSelection, photoForMode, NORMAL_PHOTO_MESSAGE, type SessionMode } from '../electron/sessionMode';
+import { needsPoseCategorySelection, photoForMode, NORMAL_PHOTO_MESSAGE, type SessionMode } from '../electron/sessionMode';
 import { previewImages } from './previewImages';
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type InputHTMLAttributes } from 'react';
 import QRCode from 'qrcode';
@@ -18,10 +18,11 @@ import { GuestScreenLockProvider, KioskButton } from './KioskButton';
 import { playAudioCue, playAudioCueObject, preloadAudioCue, stopAllAudio, stopAudioChannel, stopAudioCue } from './audio';
 import { createBoothGallerySession, createQueueRealtimeClient, fetchQueueSnapshot, isRealtimeConfigured, isWebQueueConfigured, publicWebUrl, validateBoothCode } from './webBackend';
 import { PoseGuideOverlay, type PoseGuideHandle } from './pose/PoseGuideOverlay';
-import { GuestCompositionScreen, CompositionControls } from './pose/GuestCompositionScreen';
-import { EMPTY_COMPOSITION, RandomSceneSelector, slotFraming, slotGeometry, validateComposition } from './pose/scenes';
+import { GuestPoseCategoryScreen } from './pose/GuestPoseCategoryScreen';
+import { PoseRotation } from './pose/rotation';
+import { slotGeometry } from './pose/scenes';
 import { loadPhotoGuideCatalog } from './pose/repository';
-import { normalizePoseGuide, type GuestComposition, type PoseFraming, type PoseNarrationSettings, type PoseScene } from './pose/types';
+import { normalizePoseGuide, POSE_CATEGORIES, POSE_CATEGORY_LABELS, type PoseCategory, type PoseNarrationSettings, type PoseScene } from './pose/types';
 import { validateScene } from './pose/validation';
 const PoseEditor = lazy(() => import('./pose/editor/PoseEditor').then(module => ({ default: module.PoseEditor })));
 
@@ -155,7 +156,6 @@ function GuestApp() {
   const { settings } = useSettings();
   const [welcomeLogoSrc, setWelcomeLogoSrc] = useState('');
   const [step, setStep] = useState<GuestStep>('welcome');
-  const [composition, setComposition] = useState<GuestComposition>({ ...EMPTY_COMPOSITION });
   const [sessionMode, setSessionMode] = useState<SessionMode | null>(null);
   const modeTransitionRef = useRef(false);
   const pendingDesignRef = useRef<TemplateDesign | null>(null);
@@ -217,7 +217,7 @@ function GuestApp() {
   const [poseShot, setPoseShot] = useState({ number: 1, total: 1 });
   const [poseSessionEnabled, setPoseSessionEnabled] = useState(false);
   const [cameraPausedByAdmin, setCameraPausedByAdmin] = useState(false);
-  const [poseGuestPreview, setPoseGuestPreview] = useState<{ scene: PoseScene; framing: PoseFraming } | null>(null);
+  const [poseGuestPreview, setPoseGuestPreview] = useState<PoseScene | null>(null);
   const queueModeEnabled = Boolean(settings?.staffControlQueueMode);
   const templateLayouts = settings?.template.layouts.map(normalizeTemplateLayoutForClient) ?? [];
   const activeTemplateLayouts = templateLayouts.filter((layout) => layout.active);
@@ -441,7 +441,6 @@ function GuestApp() {
   }, [queueModeEnabled, step, thankYouCountdown]);
 
   const resetGuestSession = () => {
-    setComposition({ ...EMPTY_COMPOSITION });
     pendingDesignRef.current = null;
     poseAbortRef.current?.abort();
     poseAbortRef.current = null;
@@ -494,10 +493,9 @@ function GuestApp() {
 
   const showPoseOnGuest = (preview: unknown) => {
     if (!preview || typeof preview !== 'object') return;
-    const payload = preview as { scene?: unknown; framing?: unknown };
+    const payload = preview as { scene?: unknown };
     const scene = validateScene(payload.scene);
-    const framing: PoseFraming = payload.framing === 'half' ? 'half' : 'full';
-    setPoseGuestPreview({ scene, framing });
+    setPoseGuestPreview(scene);
     setPoseSessionEnabled(true);
     setPoseShot({ number: 1, total: 1 });
     setCountdown(null);
@@ -526,7 +524,7 @@ function GuestApp() {
       while (!stopped && !controller.signal.aborted) {
         const guide = poseGuideRef.current;
         if (!guide) { await delay(50); continue; }
-        const result = await guide.play(poseGuestPreview.scene, controller.signal, poseGuestPreview.framing);
+        const result = await guide.play(poseGuestPreview, controller.signal);
         if (stopped || controller.signal.aborted || result === 'cancelled') return;
         if (result !== 'completed') { setError('This pose could not be shown on the guest screen.'); return; }
         await guide.dismiss();
@@ -1050,8 +1048,8 @@ function GuestApp() {
     void playAudioCue(settings, 'button');
     setSessionMode(mode);
     const guide = normalizePoseGuide(settings.poseGuide);
-    if (needsGroupSelection(mode, guide.selectionEnabled !== false)) setStep('people');
-    else void startSession(design.templateId, design, guide.defaultComposition!, mode);
+    if (needsPoseCategorySelection(mode, guide.selectionEnabled)) setStep('people');
+    else void startSession(design.templateId, design, guide.defaultCategory, mode);
   };
 
   const stepBeforeSession = () => {
@@ -1129,17 +1127,13 @@ function GuestApp() {
     }
   };
 
-  const startSession = async (templateId: string, design: TemplateDesign, guests: GuestComposition, mode: SessionMode) => {
+  const startSession = async (templateId: string, design: TemplateDesign, category: PoseCategory, mode: SessionMode) => {
     if (!settings || isBusy || poseAbortRef.current) return;
     const layout = templateLayouts.find((item) => item.id === templateId);
     if (!layout) return;
     const workflow = workflowForTemplate(settings, layout, mode);
     const guideEnabled = mode === 'fun';
     setSessionMode(mode);
-    if (guideEnabled) {
-      try { validateComposition(guests, normalizePoseGuide(settings.poseGuide).groupCapacity); }
-      catch (error) { setError(String(error)); return; }
-    }
     setPoseGuestPreview(null);
     setPoseSessionEnabled(guideEnabled);
     const runId = sessionRunRef.current + 1;
@@ -1161,11 +1155,8 @@ function GuestApp() {
     confirmPrintLockRef.current = false;
 
     try {
-      const catalog = guideEnabled ? await loadPhotoGuideCatalog() : { poses: [], errors: [] };
+      const rotation = guideEnabled ? new PoseRotation((await loadPhotoGuideCatalog()).poses, category) : null;
       if (sessionRunRef.current !== runId) return;
-      const selector = new RandomSceneSelector(structuredClone(catalog.poses));
-      const sessionGuests = { ...guests };
-      setComposition({ ...EMPTY_COMPOSITION });
       pendingDesignRef.current = null;
       setStep('intro');
       await delay(workflow.introMs);
@@ -1196,10 +1187,9 @@ function GuestApp() {
         setCaptureMessage('');
         setPoseShot({ number: shotIndex + 1, total: takeCount });
         const guideSlot = pickMode ? getPrimarySlot(layout, 0) : getPrimarySlot(layout, nextCaptures.length);
-        const framing = slotFraming(guideSlot);
-        const pose = guideEnabled ? selector.next(sessionGuests, framing) : null;
+        const pose = rotation?.current();
         let guided = false;
-        if (pose && poseGuideRef.current) {
+        if (rotation && pose && poseGuideRef.current) {
           stopAudioChannel('voice');
           const opening = shot.message;
           const openingCue = shot.audioCue;
@@ -1208,8 +1198,9 @@ function GuestApp() {
           await delay(Math.max(700, shot.messageMs));
           if (sessionRunRef.current !== runId) return;
           setCaptureMessage('');
-          const result = await poseGuideRef.current.play(pose, poseController.signal, framing);
+          const result = await poseGuideRef.current.play(pose, poseController.signal);
           if (sessionRunRef.current !== runId || result === 'cancelled') return;
+          rotation.finish(result);
           guided = result === 'completed';
         }
         if (!guided) {
@@ -1618,7 +1609,6 @@ function GuestApp() {
     }
     if (step === 'intro' || step === 'capture') {
       cancelRunningSession();
-      setComposition({ ...EMPTY_COMPOSITION });
       pendingDesignRef.current = null;
       setStep(stepBeforeSession());
       return;
@@ -1747,8 +1737,8 @@ function GuestApp() {
           <div className="mode-card-grid">
             <KioskButton className="mode-card" onPress={() => chooseMode('fun')} disabled={isBusy}>
               <img src={`${import.meta.env.BASE_URL}mode-images/fun-pose.png`} alt="" draggable={false} />
-              <span>Fun Pose Challenge</span>
-              <small>Match the poses on screen!</small>
+              <span>Pose Ideas</span>
+              <small>Follow a fun pose idea or make it your own</small>
             </KioskButton>
             <KioskButton className="mode-card" onPress={() => chooseMode('normal')} disabled={isBusy}>
               <img src={`${import.meta.env.BASE_URL}mode-images/freestyle.png`} alt="" draggable={false} />
@@ -1760,9 +1750,9 @@ function GuestApp() {
       )}
 
       {step === 'people' && (
-        <GuestCompositionScreen value={composition} onChange={setComposition} capacity={normalizePoseGuide(settings.poseGuide).groupCapacity!} onContinue={() => {
+        <GuestPoseCategoryScreen onChoose={category => {
           const design = pendingDesignRef.current;
-          if (design && sessionMode) void startSession(design.templateId, design, { ...composition }, sessionMode);
+          if (design && sessionMode) void startSession(design.templateId, design, category, sessionMode);
         }} />
       )}
 
@@ -3564,11 +3554,14 @@ function AdminApp() {
         {tab === 'workflow' && (
           <AdminSection>
             <div className="admin-card">
-              <h2>Fun Pose Challenge</h2>
-              <p>Guests choose Fun Pose Challenge or Normal Mode before photos. Fun mode uses matching pose guides; Normal Mode takes classic photos without a guide.</p>
-              <label className="check-row"><input type="checkbox" checked={settings.poseGuide.selectionEnabled !== false} onChange={event => void saveMessage({ poseGuide: { ...settings.poseGuide, selectionEnabled: event.target.checked } }, 'Guest selection saved.')} />Ask who's joining before photos</label>
-              <label>Maximum guests<DraftInput type="number" min="1" max="30" step="1" value={settings.poseGuide.groupCapacity ?? 12} onSave={value => void saveMessage({ poseGuide: { ...settings.poseGuide, groupCapacity: Number(value) } }, 'Group capacity saved.')} /></label>
-              {settings.poseGuide.selectionEnabled === false && <div className="fixed-composition"><h3>Event guest group</h3><CompositionControls value={normalizePoseGuide(settings.poseGuide).defaultComposition!} capacity={normalizePoseGuide(settings.poseGuide).groupCapacity} onChange={value => void saveMessage({ poseGuide: { ...settings.poseGuide, defaultComposition: value } }, 'Event group saved.')} /></div>}
+              <h2>Pose Ideas</h2>
+              <p>Guests choose Pose Ideas for guided photos or Freestyle to pose their own way.</p>
+              <label className="check-row"><input type="checkbox" checked={settings.poseGuide.selectionEnabled} onChange={event => void saveMessage({ poseGuide: { ...settings.poseGuide, selectionEnabled: event.target.checked } }, 'Guest selection saved.')} />Ask for a pose category before photos</label>
+              {settings.poseGuide.selectionEnabled === false && <label>Default pose category
+                <select value={settings.poseGuide.defaultCategory} onChange={event => void saveMessage({ poseGuide: { ...settings.poseGuide, defaultCategory: event.target.value as PoseCategory } }, 'Default pose category saved.')}>
+                  {POSE_CATEGORIES.map(category => <option key={category} value={category}>{POSE_CATEGORY_LABELS[category]}</option>)}
+                </select>
+              </label>}
             </div>
             <div className="admin-card workflow-session-card">
               <div className="admin-card-header">

@@ -37,8 +37,8 @@
     "minPeople": 2,
     "maxPeople": 2,
     "styles": [
-      "couple",
-      "friends"
+      "friends",
+      "family"
     ],
     "framing": [
       "full",

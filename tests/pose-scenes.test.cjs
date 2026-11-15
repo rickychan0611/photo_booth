@@ -3,12 +3,15 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const ts = require('typescript');
 require.extensions['.ts'] = (module, filename) => module._compile(ts.transpileModule(fs.readFileSync(filename, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true } }).outputText, filename);
-const { BUNDLED_SCENES, PHOTO_GUIDE_SCENES, RandomSceneSelector, sceneMatches, captionAt, slotFraming, slotGeometry, validateComposition } = require('../src/pose/scenes.ts');
+const { BUNDLED_SCENES, PHOTO_GUIDE_SCENES, sceneMatches, captionAt, slotFraming, slotGeometry, validateComposition } = require('../src/pose/scenes.ts');
 const { validateScene } = require('../src/pose/validation.ts');
 const photoPromptManifest = require('../src/pose/poses/photo-prompts-rest.json');
 const photoAssets = require('../src/pose/poses/photo-assets.json');
 const { addStep, moveStep, deleteStep, resizeScene, alignStep, moveMarker } = require('../src/pose/editor/operations.ts');
-const { normalizePoseGuide } = require('../electron/poseTypes.ts');
+const { POSE_CATEGORIES, normalizePoseGuide, poseCategories } = require('../electron/poseTypes.ts');
+const { BUNDLED_POSE_LIBRARY, loadPhotoGuideCatalog } = require('../src/pose/repository.ts');
+const libraryOrder = require('../src/pose/poses/library-order.json');
+const { PoseRotation } = require('../src/pose/rotation.ts');
 const solo = () => structuredClone(BUNDLED_SCENES[0]);
 const group = (men, women, boys, girls, style = 'group') => ({ men, women, boys, girls, style });
 
@@ -87,19 +90,8 @@ test('role matching supports same-gender couples, families, children and flexibl
   assert.ok(!sceneMatches(couple, group(1, 1, 0, 0, 'friends'), 'full'));
   assert.ok(!sceneMatches(couple, group(0, 0, 1, 1, 'couple'), 'full'));
   for (const count of [2, 3, 4, 5, 12, 20]) {
-    const selection = new RandomSceneSelector(BUNDLED_SCENES, () => .2).next(group(count - 1, 0, 1, 0, 'family'), 'half');
-    assert.ok(selection);
-    assert.equal(sceneMatches(selection, group(count - 1, 0, 1, 0, 'family'), 'half', true), true);
+    assert.ok(BUNDLED_SCENES.some(scene => sceneMatches(scene, group(count - 1, 0, 1, 0, 'family'), 'half', true)));
   }
-});
-test('random bags exhaust compatible scenes, avoid immediate repeats and allow one-candidate reuse', () => {
-  const candidates = BUNDLED_SCENES.filter(scene => scene.compatibility.styles.includes('solo'));
-  const selector = new RandomSceneSelector(candidates, () => .37);
-  const choices = Array.from({ length: 4 }, () => selector.next(group(0, 0, 1, 0, 'solo'), 'full').id);
-  assert.equal(new Set(choices).size, 4);
-  const one = new RandomSceneSelector([solo()], () => 0);
-  assert.equal(one.next(group(1, 0, 0, 0, 'solo'), 'full').id, one.next(group(1, 0, 0, 0, 'solo'), 'half').id);
-  assert.equal(new RandomSceneSelector([], () => 0).next(group(1, 0, 0, 0, 'solo'), 'full'), null);
 });
 test('multi-person scenes keep one shared caption clock and separate roles', () => {
   const scene = BUNDLED_SCENES.find(scene => scene.id === 'friends-peace');
@@ -153,32 +145,6 @@ test('photo catalog preserves authored compatibility and holds the final caption
     assert.equal(captionAt(scene, 4000).caption, captionAt(scene, 2000).caption);
   }
 });
-test('selection keeps count and style, then relaxes gender and age', () => {
-  const menOnly = structuredClone(PHOTO_GUIDE_SCENES.find(scene => scene.id === 'peace-and-wink'));
-  menOnly.roles[0].role = 'men';
-  assert.equal(sceneMatches(menOnly, group(0, 1, 0, 0, 'solo'), 'half'), false);
-  assert.equal(sceneMatches(menOnly, group(0, 1, 0, 0, 'solo'), 'half', true), true);
-  assert.equal(sceneMatches(menOnly, group(0, 1, 0, 0, 'friends'), 'half', true), false);
-  assert.equal(new RandomSceneSelector([menOnly], () => 0).next(group(0, 1, 0, 0, 'solo'), 'half').id, 'peace-and-wink');
-  const runway = PHOTO_GUIDE_SCENES.find(scene => scene.id === 'runway-cross-step');
-  assert.equal(sceneMatches(runway, group(0, 0, 1, 0, 'solo'), 'full'), false);
-  assert.equal(new RandomSceneSelector([runway], () => 0).next(group(0, 0, 1, 0, 'solo'), 'full').id, 'runway-cross-step');
-  const familyPair = new RandomSceneSelector(PHOTO_GUIDE_SCENES, () => 0).next(group(2, 0, 0, 0, 'family'), 'full');
-  assert.ok(familyPair);
-  assert.equal(sceneMatches(familyPair, group(2, 0, 0, 0, 'family'), 'full', true), true);
-  const selector = new RandomSceneSelector(PHOTO_GUIDE_SCENES, () => .2);
-  const first = selector.next(group(1, 0, 0, 0, 'solo'), 'full').id;
-  const second = selector.next(group(1, 0, 0, 0, 'solo'), 'full').id;
-  assert.notEqual(first, second);
-  assert.equal(new Set([first, second]).size, 2);
-  assert.notEqual(selector.next(group(1, 0, 0, 0, 'solo'), 'full').id, second);
-  const custom = structuredClone(poseGuide());
-  custom.visual.scale = 1.2; custom.visual.offsetX = -20; custom.visual.offsetY = 10; custom.visual.assetPath = 'C:/event/poses/custom.webp';
-  assert.doesNotThrow(() => validateScene(custom));
-  custom.visual.assetPath = 'https://example.com/pose.webp'; assert.throws(() => validateScene(custom));
-  custom.visual.assetPath = 'pose-guides/peace-power.webp'; custom.visual.scale = 3; assert.throws(() => validateScene(custom));
-});
-function poseGuide() { return structuredClone(PHOTO_GUIDE_SCENES.find(scene => scene.id === 'peace-and-wink')); }
 test('creative pack covers lovers, friends, families, and large groups by framing', () => {
   const pack = BUNDLED_SCENES.filter(scene => scene.tags.includes('creative-pack'));
   const count = (audience, framing) => pack.filter(scene => scene.tags.includes(`audience-${audience}`) && scene.compatibility.framing[0] === framing).length;
@@ -209,8 +175,108 @@ test('creative pack covers lovers, friends, families, and large groups by framin
   assert.equal(sceneMatches(crowd, group(2, 2, 1, 1, 'group'), 'half'), true);
   assert.equal(sceneMatches(crowd, group(2, 2, 0, 0, 'group'), 'half'), false);
 });
-test('older settings normalize to guest selection and a valid fixed-event default', () => {
-  const settings = normalizePoseGuide({ enabled: true }); assert.equal(settings.selectionEnabled, true); assert.equal(settings.defaultComposition.style, 'solo');
-  assert.equal(normalizePoseGuide({ groupCapacity: 999 }).groupCapacity, 30);
-  assert.equal(normalizePoseGuide({ defaultComposition: group(1, 0, 1, 0, 'couple') }).defaultComposition.style, 'group');
+test('legacy fixed-event settings migrate to pose categories', () => {
+  assert.deepEqual(normalizePoseGuide({ enabled: true }), { enabled: true, selectionEnabled: true, defaultCategory: 'friends' });
+  assert.equal(normalizePoseGuide({ defaultComposition: group(1, 1, 0, 0, 'couple') }).defaultCategory, 'lovers');
+  assert.equal(normalizePoseGuide({ defaultComposition: group(1, 0, 1, 0, 'family') }).defaultCategory, 'family');
+  assert.equal(normalizePoseGuide({ defaultComposition: group(1, 0, 0, 0, 'solo') }).defaultCategory, 'friends');
+  assert.deepEqual(
+    normalizePoseGuide({ selectionEnabled: false, defaultCategory: 'friends', defaultComposition: group(0, 2, 0, 0, 'couple') }),
+    { enabled: true, selectionEnabled: false, defaultCategory: 'friends' }
+  );
+});
+
+const cursorStorage = () => {
+  const values = new Map();
+  return { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value) };
+};
+
+test('each category rotates through every matching pose in catalog order and wraps', () => {
+  const storage = cursorStorage();
+  for (const category of POSE_CATEGORIES) {
+    const expected = BUNDLED_POSE_LIBRARY.filter(pose => poseCategories(pose).includes(category)).map(pose => pose.id);
+    assert.ok(expected.length > 1);
+    const seen = expected.map(() => {
+      const rotation = new PoseRotation(BUNDLED_POSE_LIBRARY, category, storage);
+      const id = rotation.current().id;
+      rotation.finish('completed');
+      return id;
+    });
+    assert.equal(new Set(seen).size, seen.length);
+    assert.deepEqual(seen, expected);
+    assert.equal(new PoseRotation(BUNDLED_POSE_LIBRARY, category, storage).current().id, expected[0]);
+  }
+});
+
+test('the library order covers every bundled guide and separates similar poses in each rotation', () => {
+  const expected = PHOTO_GUIDE_SCENES.filter(pose => poseCategories(pose).length).map(pose => pose.id).sort();
+  assert.deepEqual([...libraryOrder].sort(), expected);
+  assert.deepEqual(BUNDLED_POSE_LIBRARY.map(pose => pose.id), libraryOrder);
+  for (const [category, first, second] of [
+    ['friends', 'back-to-back-agents', 'meme-back-to-back-agents'],
+    ['friends', 'women-2-half-matching-peace', 'women-3-half-peace-crown'],
+    ['family', 'family-3-full-family-jump', 'family-4-full-reunion-jump'],
+    ['lovers', 'lovers-full-proposal-gasp', 'lovers-half-proposal-face']
+  ]) {
+    const order = BUNDLED_POSE_LIBRARY.filter(pose => poseCategories(pose).includes(category)).map(pose => pose.id);
+    assert.ok(order.includes(first) && order.includes(second));
+    const gap = Math.abs(order.indexOf(first) - order.indexOf(second));
+    assert.ok(Math.min(gap, order.length - gap) >= 4, `${first} and ${second} are too close in ${category}`);
+  }
+});
+
+test('rotation has separate cursors, retries interruptions, and advances past failures', () => {
+  const storage = cursorStorage();
+  const crossCategory = structuredClone(BUNDLED_POSE_LIBRARY[0]);
+  crossCategory.compatibility.styles = ['friends', 'group', 'family', 'couple'];
+  crossCategory.compatibility.framing = ['half'];
+  const next = { ...crossCategory, id: 'next', compatibility: { ...crossCategory.compatibility, framing: ['full'] } };
+  const catalog = [crossCategory, next];
+  assert.deepEqual(poseCategories(crossCategory), ['friends', 'family', 'lovers']);
+
+  const friends = new PoseRotation(catalog, 'friends', storage);
+  friends.finish('cancelled');
+  assert.equal(new PoseRotation(catalog, 'friends', storage).current().id, crossCategory.id);
+  friends.finish('failed');
+  assert.equal(friends.current().id, next.id);
+  assert.equal(new PoseRotation(catalog, 'friends', storage).current().id, next.id);
+  assert.equal(new PoseRotation(catalog, 'family', storage).current().id, crossCategory.id);
+  assert.equal(new PoseRotation(catalog, 'lovers', storage).current().id, crossCategory.id);
+
+  assert.equal(new PoseRotation([{ ...next, id: 'new-first' }, next], 'friends', storage).current().id, 'new-first');
+  const empty = new PoseRotation([], 'friends', storage);
+  empty.finish('failed');
+  assert.equal(empty.current(), undefined);
+});
+
+test('active catalog excludes legacy solo guides and keeps override and custom order', async () => {
+  const original = BUNDLED_POSE_LIBRARY[0];
+  const deleted = BUNDLED_POSE_LIBRARY[1];
+  const legacySolo = PHOTO_GUIDE_SCENES.find(pose => pose.id === 'meme-six-seven');
+  const soloOverride = { ...legacySolo, id: 'custom-solo' };
+  const mockWindow = global.window;
+  global.window = {
+    photoBooth: {
+      listPoses: async () => ({
+        poses: [{ ...original, id: 'custom-z' }, soloOverride, { ...original, name: 'Override' }, { ...original, id: 'custom-a' }],
+        deletedPoseIds: [deleted.id],
+        errors: []
+      })
+    }
+  };
+  try {
+    const { poses, errors } = await loadPhotoGuideCatalog();
+    assert.deepEqual(errors, []);
+    assert.equal(BUNDLED_POSE_LIBRARY.length, 260);
+    assert.equal(poses.length, 261);
+    assert.equal(poses[0].id, original.id);
+    assert.equal(poses[0].name, 'Override');
+    assert.deepEqual(poses.slice(-2).map(pose => pose.id), ['custom-a', 'custom-z']);
+    assert.ok(legacySolo.compatibility.styles.includes('group'));
+    assert.ok(!poses.some(pose => [legacySolo.id, soloOverride.id, 'peace-and-wink', deleted.id].includes(pose.id)));
+    assert.ok(poses.every(pose => poseCategories(pose).length));
+  } finally {
+    if (mockWindow === undefined) delete global.window;
+    else global.window = mockWindow;
+  }
 });

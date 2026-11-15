@@ -5,7 +5,7 @@ import { app, dialog, ipcMain, safeStorage, type IpcMainInvokeEvent } from 'elec
 import { validateScene } from './poseValidation';
 import { applySpeechTiming, hasMatchingSpeechTiming, timingFromCharacters } from './poseAlignment';
 import { alignSpeechFile, narrationDuration, saveSpeechTiming } from './speechAlignmentApi';
-import type { PoseCatalog, PoseNarrationGenerateRequest, PoseNarrationGenerateResult, PoseNarrationModel, PoseNarrationSettings, PoseNarrationSettingsUpdate, PoseScene } from './poseTypes';
+import { poseCategories, type PoseCatalog, type PoseNarrationGenerateRequest, type PoseNarrationGenerateResult, type PoseNarrationModel, type PoseNarrationSettings, type PoseNarrationSettingsUpdate, type PoseScene } from './poseTypes';
 
 const directory = () => app.isPackaged
   ? path.join(app.getPath('userData'), 'pose-library')
@@ -14,7 +14,7 @@ const bundledDirectory = () => app.isPackaged
   ? path.join(process.resourcesPath, 'project-poses')
   : directory();
 const privateDirectory = () => path.join(app.getPath('userData'), 'pose-library');
-const safeId = (id: string) => { if (!/^[a-z0-9][a-z0-9-]{0,79}$/.test(id)) throw new Error('Invalid pose ID.'); return id; };
+const safeId = (id: string) => { if (typeof id !== 'string' || !/^[a-z0-9][a-z0-9-]{0,79}$/.test(id)) throw new Error('Invalid pose ID.'); return id; };
 const posePath = (id: string) => path.join(directory(), `${safeId(id)}.json`);
 const MAX_JSON = 2 * 1024 * 1024;
 const narrationConfigPath = () => path.join(privateDirectory(), 'elevenlabs.json');
@@ -40,10 +40,21 @@ type StoredNarrationSettings = Omit<PoseNarrationSettings, 'configured'> & { enc
 const narrationDefaults: StoredNarrationSettings = { voiceId: '0S5oIfi8zOZixuSj8K6n', modelId: 'eleven_v4_turbo', stability: .5, similarityBoost: .75, style: .2, speed: 1, direction: '[energetic] [happy] [Make it upbeat, fun]' };
 let writes: Promise<unknown> = Promise.resolve();
 function serialized<T>(work: () => Promise<T>): Promise<T> { const result = writes.then(work); writes = result.catch(() => undefined); return result; }
+function encodePoseEntry(value: PoseScene | { id: string; deleted: true }) {
+  const text = `${JSON.stringify(value, null, 2)}\n`;
+  if (Buffer.byteLength(text) > MAX_JSON) throw new Error(`Pose ${value.id} is too large.`);
+  return text;
+}
+async function writePoseEntry(id: string, text: string) {
+  const target = posePath(id), temporary = `${target}.${crypto.randomUUID()}.tmp`;
+  try { await fs.writeFile(temporary, text, { flag: 'wx' }); await fs.rename(temporary, target); }
+  finally { await fs.rm(temporary, { force: true }); }
+}
 export async function listStoredPoses(): Promise<PoseCatalog> {
   await writes;
   await fs.mkdir(directory(), { recursive: true });
   const byId = new Map<string, PoseScene>(), errors: string[] = [];
+  const deleted = new Set<string>();
   const folders = [...new Set([bundledDirectory(), directory()])];
   for (const folder of folders) {
     let names: string[] = [];
@@ -52,30 +63,35 @@ export async function listStoredPoses(): Promise<PoseCatalog> {
       try {
         const file = path.join(folder, name); const stat = await fs.lstat(file);
         if (!stat.isFile() || stat.size > MAX_JSON) throw new Error('Not a bounded JSON file.');
-        const pose = validateScene(JSON.parse(await fs.readFile(file, 'utf8')));
+        const value = JSON.parse(await fs.readFile(file, 'utf8'));
+        if (value?.deleted === true) {
+          const id = safeId(value.id);
+          if (name !== `${id}.json`) throw new Error('Pose ID does not match filename.');
+          byId.delete(id);
+          deleted.add(id);
+          continue;
+        }
+        const pose = validateScene(value);
         if (name !== `${pose.id}.json`) throw new Error('Pose ID does not match filename.');
+        deleted.delete(pose.id);
         byId.set(pose.id, pose);
       } catch (error) { errors.push(`${name}: ${String(error)}`); }
     }
   }
-  return { poses: [...byId.values()], errors };
+  return { poses: [...byId.values()].sort((a, b) => a.id.localeCompare(b.id)), deletedPoseIds: [...deleted].sort(), errors };
 }
-export function replaceStoredPoses(values: unknown[]) {
+export function replaceStoredPoses(values: unknown[], deletedPoseIds: string[] = []) {
   const poses = values.map(portablePose);
-  const ids = new Set(poses.map(pose => pose.id));
-  if (ids.size !== poses.length) throw new Error('The synced pose library contains duplicate IDs.');
-  const serializedPoses = poses.map(pose => {
-    const text = `${JSON.stringify(pose, null, 2)}\n`;
-    if (Buffer.byteLength(text) > MAX_JSON) throw new Error(`Pose ${pose.id} is too large.`);
-    return { pose, text };
-  });
+  const deleted = deletedPoseIds.map(safeId);
+  const ids = new Set([...poses.map(pose => pose.id), ...deleted]);
+  if (ids.size !== poses.length + deleted.length) throw new Error('The synced pose library contains duplicate IDs.');
+  const entries = [
+    ...poses.map(pose => ({ id: pose.id, text: encodePoseEntry(pose) })),
+    ...deleted.map(id => ({ id, text: encodePoseEntry({ id, deleted: true }) }))
+  ];
   return serialized(async () => {
     await fs.mkdir(directory(), { recursive: true });
-    for (const { pose, text } of serializedPoses) {
-      const target = posePath(pose.id), temporary = `${target}.${crypto.randomUUID()}.tmp`;
-      try { await fs.writeFile(temporary, text, { flag: 'wx' }); await fs.rename(temporary, target); }
-      finally { await fs.rm(temporary, { force: true }); }
-    }
+    for (const { id, text } of entries) await writePoseEntry(id, text);
     for (const name of await fs.readdir(directory())) {
       if (!name.endsWith('.json') || name === path.basename(narrationConfigPath())) continue;
       const id = name.slice(0, -'.json'.length);
@@ -85,17 +101,23 @@ export function replaceStoredPoses(values: unknown[]) {
   });
 }
 export function saveStoredPose(value: unknown) {
-  const pose = portablePose(value), text = `${JSON.stringify(pose, null, 2)}\n`;
-  if (Buffer.byteLength(text) > MAX_JSON) throw new Error('Pose JSON is too large.');
+  const pose = portablePose(value);
+  if (!poseCategories(pose).length) throw new Error('Choose a category and use a pose for at least two people.');
+  const text = encodePoseEntry(pose);
   return serialized(async () => {
     await fs.mkdir(directory(), { recursive: true });
-    const target = posePath(pose.id), temporary = `${target}.${crypto.randomUUID()}.tmp`;
-    try { await fs.writeFile(temporary, text, { flag: 'wx' }); await fs.rename(temporary, target); }
-    finally { await fs.rm(temporary, { force: true }); }
+    await writePoseEntry(pose.id, text);
     return pose;
   });
 }
-export function deleteStoredPose(id: string) { const target = posePath(id); return serialized(async () => { await fs.rm(target, { force: true }); return true; }); }
+export function deleteStoredPose(id: string) {
+  safeId(id);
+  return serialized(async () => {
+    await fs.mkdir(directory(), { recursive: true });
+    await writePoseEntry(id, encodePoseEntry({ id, deleted: true }));
+    return true;
+  });
+}
 function adminOnly(event: IpcMainInvokeEvent) {
   if (new URL(event.sender.getURL()).searchParams.get('window') !== 'admin') throw new Error('Open the admin window to edit poses.');
 }

@@ -6,14 +6,7 @@
   "poseGuide": {
     "enabled": true,
     "selectionEnabled": true,
-    "groupCapacity": 30,
-    "defaultComposition": {
-      "men": 1,
-      "women": 0,
-      "boys": 0,
-      "girls": 0,
-      "style": "solo"
-    }
+    "defaultCategory": "friends"
   },
   "beautyFilter": {
     "enabledMode": "print",
@@ -79,14 +72,14 @@
       "mode": {
         "id": "mode",
         "label": "Choose mode screen",
-        "text": "Choose your photo experience!  You can match the fun poses on screen or freestyle and strike your own poses. You choose!",
+        "text": "Choose your photo experience. Tap Pose Ideas to follow a fun pose idea or make it your own, or tap Freestyle to pose without a guide.",
         "mode": "host",
         "channel": "voice",
-        "filePath": "project-asset:audio/generated/elevenlabs/mode-a4b1373e293cd3.mp3",
+        "filePath": "",
         "loop": false,
         "volume": 1,
         "enabled": true,
-        "updatedAt": "2026-10-15T05:11:10.720Z"
+        "updatedAt": ""
       },
       "normalShot0": {
         "id": "normalShot0",
@@ -270,15 +263,15 @@
       },
       "people": {
         "id": "people",
-        "label": "Who's joining screen",
+        "label": "Choose pose category screen",
         "mode": "host",
         "channel": "voice",
-        "text": "How many people are in the shot?  Pick your group size to unlock fun Pose Challenges!",
-        "filePath": "project-asset:audio/generated/elevenlabs/people-5274c953201e79.mp3",
+        "text": "Who’s joining the photo? Choose Friends, Family, or Lovers.",
+        "filePath": "",
         "loop": false,
         "volume": 1,
         "enabled": true,
-        "updatedAt": "2026-10-15T05:53:01.255Z"
+        "updatedAt": ""
       },
       "intro": {
         "id": "intro",

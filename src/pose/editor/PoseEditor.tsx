@@ -4,20 +4,18 @@ import { Mic } from 'lucide-react';
 import type { AppSettings } from '../../types';
 import { getAudioCueElement, pauseAudioCue, playAudioCueObject, resumeAudioCue, seekAudioCue, stopAudioCue } from '../../audio';
 import { isBundledPoseAsset, resolvePoseAsset } from '../assets';
-import { loadPhotoGuideCatalog } from '../repository';
-import { BUNDLED_SCENES, PHOTO_GUIDE_SCENES, captionAt, sceneMatches } from '../scenes';
+import { BUNDLED_POSE_LIBRARY, loadPhotoGuideCatalog } from '../repository';
+import { captionAt } from '../scenes';
 import { validateScene } from '../validation';
-import { type GuestComposition, type ParticipantRole, type PoseScene, type PoseStyle } from '../types';
+import { POSE_CATEGORIES, POSE_CATEGORY_LABELS, POSE_CATEGORY_STYLES, poseCategories, type PoseCategory, type PoseScene } from '../types';
 import { ScenePlayer } from '../ScenePlayer';
 import { createPoseAudioHooks } from '../audio';
-import { CompositionControls } from '../GuestCompositionScreen';
 import { NumberField, TextField } from './Fields';
 import { cloneScene, fitSceneToNarration } from './operations';
 import { readNarration } from './narration';
 
 const CUE = 'pose-editor-narration';
 const newId = () => `custom-${crypto.randomUUID()}`;
-const peopleLabel = (scene: PoseScene) => `${scene.compatibility.minPeople}${scene.compatibility.maxPeople === null ? '+' : scene.compatibility.maxPeople > scene.compatibility.minPeople ? `–${scene.compatibility.maxPeople}` : ''}`;
 const spokenCue = (value: string) => value
   .trim()
   .replace(/^(find your mark|get ready|start|begin)\b[.!]?$/i, '')
@@ -46,29 +44,25 @@ function PoseGalleryCard({ scene, onOpen }: { scene: PoseScene; onOpen: () => vo
     void resolvePoseAsset(assetPath).then(url => { if (!cancelled) setSrc(url); });
     return () => { cancelled = true; };
   }, [assetPath]);
-  const framing = scene.compatibility.framing.map(mode => mode === 'full' ? 'Full' : 'Half').join(' · ');
   return <button type="button" className="pose-gallery-card" onClick={onOpen}>
     <span className="pose-gallery-thumb" style={{ background: scene.visual?.accent ? `color-mix(in srgb, ${scene.visual.accent} 24%, #121212)` : '#171717' }}>
       {src && !failed ? <img src={src} alt="" onError={() => setFailed(true)} /> : <span className="pose-gallery-missing">No photo</span>}
-      <span className="pose-gallery-badge">{framing}</span>
       {scene.audio?.filePath ? <span className="pose-gallery-voice" role="img" aria-label="Voice narration assigned" title="Voice narration assigned"><Mic size={16} aria-hidden="true" /></span> : null}
     </span>
     <strong>{scene.name}</strong>
-    <small>{scene.category} · {peopleLabel(scene)}</small>
+    <small>{poseCategories(scene).map(category => POSE_CATEGORY_LABELS[category]).join(' · ')}</small>
   </button>;
 }
 export function PoseEditor({ settings }: { settings: AppSettings }) {
-  const [catalog, setCatalog] = useState<PoseScene[]>(PHOTO_GUIDE_SCENES);
-  const [draft, setDraft] = useState<PoseScene>(() => cloneScene(PHOTO_GUIDE_SCENES[0]));
-  const [saved, setSaved] = useState<PoseScene>(() => cloneScene(PHOTO_GUIDE_SCENES[0]));
+  const [catalog, setCatalog] = useState<PoseScene[] | null>(null);
+  const [draft, setDraft] = useState<PoseScene>(() => cloneScene(BUNDLED_POSE_LIBRARY[0]));
+  const [saved, setSaved] = useState<PoseScene>(() => cloneScene(BUNDLED_POSE_LIBRARY[0]));
   const [past, setPast] = useState<PoseScene[]>([]), [future, setFuture] = useState<PoseScene[]>([]);
   const [time, setTime] = useState(0), [playing, setPlaying] = useState(false);
-  const [framing, setFraming] = useState<'full' | 'half'>('full');
   const [message, setMessage] = useState(''), [busy, setBusy] = useState(false);
-  const [librarySearch, setLibrarySearch] = useState(''), [libraryCategory, setLibraryCategory] = useState('all');
+  const [librarySearch, setLibrarySearch] = useState(''), [libraryCategory, setLibraryCategory] = useState<PoseCategory | 'all'>('all');
   const [narration, setNarration] = useState({ dataUrl: '', durationMs: 0 });
   const [narrationMessage, setNarrationMessage] = useState('');
-  const [previewGroup, setPreviewGroup] = useState<GuestComposition>({ men: 1, women: 0, boys: 0, girls: 0, style: 'solo' });
   const [countdownPreview, setCountdownPreview] = useState<number | null>(null);
   const [cutoutSrc, setCutoutSrc] = useState('');
   const [page, setPage] = useState<'gallery' | 'detail'>('gallery');
@@ -77,13 +71,19 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
   const player = useRef<ScenePlayer | null>(null), countdownTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const galleryScrollTop = useRef(0);
   const dirty = JSON.stringify(draft) !== JSON.stringify(saved);
-  const bundled = BUNDLED_SCENES.some(scene => scene.id === draft.id);
+  const canDelete = catalog?.some(scene => scene.id === draft.id) ?? false;
   const photo = draft.visual?.kind === 'photo-cutout';
-  const libraryCategories = useMemo(() => [...new Set(catalog.map(scene => scene.category))].sort(), [catalog]);
+  const draftCategories = poseCategories(draft);
   const visibleCatalog = useMemo(() => {
     const query = librarySearch.trim().toLowerCase();
-    return catalog.filter(scene => (libraryCategory === 'all' || scene.category === libraryCategory) && (!query || `${scene.name} ${scene.category} ${scene.tags.join(' ')} ${scene.instruction}`.toLowerCase().includes(query)));
+    return (catalog ?? []).filter(scene => {
+      const categories = poseCategories(scene);
+      return (libraryCategory === 'all' || categories.includes(libraryCategory)) &&
+        (!query || `${scene.name} ${categories.join(' ')} ${scene.tags.join(' ')} ${scene.instruction}`.toLowerCase().includes(query));
+    });
   }, [catalog, libraryCategory, librarySearch]);
+  const visibleIndex = visibleCatalog.findIndex(scene => scene.id === saved.id);
+  const nextPose = visibleCatalog[visibleIndex + 1];
   const caption = captionAt(draft, time).caption;
   const [narrationScript, setNarrationScript] = useState('');
   const [syncingAll, setSyncingAll] = useState(false);
@@ -120,13 +120,12 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
       setPast(history => [...history.slice(-49), cloneScene(draft)]); setFuture([]); setDraft(next); setMessage('');
     } catch (error) { setMessage(String(error)); }
   }
-  const select = (scene: PoseScene) => {
-    if (dirty && !window.confirm('Discard unsaved pose changes?')) return false;
+  const loadScene = (scene: PoseScene) => {
     stopPreview(); stopAudioCue(CUE); setDraft(cloneScene(scene)); setSaved(cloneScene(scene)); setPast([]); setFuture([]); setTime(0); setMessage('');
-    return true;
   };
   const openScene = (scene: PoseScene) => {
-    if (!select(scene)) return;
+    if (dirty && !window.confirm('Discard unsaved pose changes?')) return;
+    loadScene(scene);
     if (page === 'gallery') galleryScrollTop.current = document.querySelector<HTMLElement>('.admin-panel')?.scrollTop ?? 0;
     setPage('detail');
   };
@@ -135,8 +134,18 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
     stopPreview(); stopAudioCue(CUE); setDraft(cloneScene(saved)); setPast([]); setFuture([]); setTime(0); setPage('gallery');
   };
   const blankPose = (): PoseScene => {
-    const base = cloneScene(PHOTO_GUIDE_SCENES[0]);
-    return { ...base, id: newId(), name: 'New pose', instruction: 'Hold the pose', roles: [{ role: 'any', repeatable: false }], compatibility: { minPeople: 1, maxPeople: 1, styles: ['solo'], framing: ['half'], childSafe: true }, animation: { durationMs: 7000, captions: [{ timeMs: 0, text: 'Hold the final pose' }] } };
+    const base = cloneScene(BUNDLED_POSE_LIBRARY[0]);
+    return {
+      ...base,
+      id: newId(),
+      name: 'New pose',
+      category: 'friends',
+      tags: [],
+      instruction: 'Hold the pose',
+      roles: [{ role: 'any', repeatable: false }, { role: 'any', repeatable: false }],
+      compatibility: { minPeople: 2, maxPeople: 2, styles: ['friends'], framing: ['full', 'half'], childSafe: true },
+      animation: { durationMs: 7000, captions: [{ timeMs: 0, text: 'Hold the final pose' }] }
+    };
   };
   const setClock = (next: number) => { stopPreview(); setTime(next); seekAudioCue(CUE, Math.max(0, next - (draft.audio?.startMs ?? 0)) / 1000); };
   useEffect(() => {
@@ -182,11 +191,28 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
     finally { setBusy(false); }
   }
   const write = async (action: () => Promise<unknown>, success: string) => { setBusy(true); try { await action(); setMessage(success); } catch (error) { setMessage(String(error)); } finally { setBusy(false); } };
+  const deletePose = () => {
+    if (!canDelete || busy || !window.confirm(`Delete ${draft.name}?`)) return;
+    const id = draft.id;
+    const neighbor = visibleIndex >= 0 ? nextPose ?? visibleCatalog[visibleIndex - 1] : undefined;
+    stopPreview();
+    stopAudioCue(CUE);
+    void write(async () => {
+      if (!await window.photoBooth.deletePose(id)) throw new Error('Could not delete the pose.');
+      setCatalog(current => current?.filter(scene => scene.id !== id) ?? []);
+      if (neighbor) loadScene(neighbor);
+      else {
+        loadScene(BUNDLED_POSE_LIBRARY[0]);
+        setPage('gallery');
+      }
+    }, 'Pose deleted.');
+  };
   const save = () => write(async () => {
     let scene = validateScene(cloneScene(draft));
+    if (!poseCategories(scene).length) throw new Error('Choose a category and use a pose for at least two people.');
     scene = fitSceneToNarration(scene, narration.durationMs);
     const stored = await window.photoBooth.savePose(scene); setDraft(stored); setSaved(cloneScene(stored)); await refresh();
-  }, 'Pose saved. It will be available next session.');
+  }, 'Pose saved.');
   const updatePoseGenerator = async (provider: typeof aiProvider, patch: Partial<{ apiUrl: string; model: string }> = {}) => {
     const current = settings.ai.poseGenerator;
     await window.photoBooth.updateSettings({ ai: { ...settings.ai, poseGenerator: { provider, providers: { ...current.providers, [provider]: { ...current.providers[provider], ...patch } } } } });
@@ -197,6 +223,7 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
     try {
       const result = await window.photoBooth.generatePose({ description: aiDescription.trim(), provider: aiProvider });
       const next = validateScene(result.scene);
+      if (!poseCategories(next).length) throw new Error('Describe a pose for at least two people in Friends, Family, or Lovers.');
       setPast(history => [...history.slice(-49), cloneScene(draft)]); setFuture([]); setDraft(next); setTime(next.animation.durationMs);
       setMessage(`AI draft ready from ${result.provider} (${result.model}). Preview, adjust, then save it.`);
     } catch (error) { setMessage(String(error)); }
@@ -261,38 +288,41 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
         <h2>Pose library</h2>
         <p>Pick a photo to edit its captions, timing, and who it is for.</p>
       </div>
-      <span>{visibleCatalog.length}/{catalog.length}</span>
+      {catalog && <span>{visibleCatalog.length}/{catalog.length}</span>}
     </header>
     <div className="pose-library-filters">
       <input aria-label="Search poses" value={librarySearch} onChange={event => setLibrarySearch(event.target.value)} placeholder="Search poses" />
-      <select aria-label="Pose category" value={libraryCategory} onChange={event => setLibraryCategory(event.target.value)}><option value="all">All categories</option>{libraryCategories.map(category => <option key={category} value={category}>{category}</option>)}</select>
+      <select aria-label="Pose category" value={libraryCategory} onChange={event => setLibraryCategory(event.target.value as PoseCategory | 'all')}><option value="all">All categories</option>{POSE_CATEGORIES.map(category => <option key={category} value={category}>{POSE_CATEGORY_LABELS[category]}</option>)}</select>
       <button disabled={busy} onClick={() => openScene(blankPose())}>New</button>
       <button disabled={busy} onClick={() => void syncAllCaptions()}>Sync all captions</button>
       {syncingAll && <button onClick={() => { cancelSync.current = true; }}>Stop after current pose</button>}
     </div>
     {message ? <p className="pose-editor-message" role="status">{message}</p> : null}
-    {visibleCatalog.length ? <div className="pose-library-list">{visibleCatalog.map(scene => <PoseGalleryCard key={scene.id} scene={scene} onOpen={() => { if (!busy) openScene(scene); }} />)}</div> : <p className="pose-gallery-empty">No poses match this filter.</p>}
+    {visibleCatalog.length ? <div className="pose-library-list">{visibleCatalog.map(scene => <PoseGalleryCard key={scene.id} scene={scene} onOpen={() => { if (!busy) openScene(scene); }} />)}</div> : <p className="pose-gallery-empty">{catalog ? 'No poses match this filter.' : 'Loading poses…'}</p>}
   </div>;
 
   return <>
     {gallery}
     {page === 'detail' ? <div className="pose-editor">
-    <button type="button" className="pose-back" onClick={backToGallery}>Back</button>
+    <nav className="pose-detail-nav" aria-label="Pose navigation">
+      <button type="button" className="pose-back" disabled={busy} onClick={backToGallery}>Back</button>
+      <button type="button" className="pose-next" disabled={busy || !nextPose} onClick={() => { if (nextPose) openScene(nextPose); }}>Next</button>
+    </nav>
     <header className="admin-card pose-editor-header">
       <div className="pose-editor-heading">
         <div><h2>{draft.name}</h2><p>Edit this guide, then save it. Guests see the photo, captions, and narration.</p></div>
         <span className={`pose-editor-status${dirty ? ' unsaved' : ''}`}>{dirty ? 'Unsaved changes' : 'Saved'}</span>
       </div>
       <div className="pose-editor-actions pose-editor-toolbar">
-        <button onClick={() => openScene(blankPose())}>New</button>
-        <button onClick={() => apply(scene => ({ ...scene, id: newId(), name: `${scene.name} (copy)` }))}>Duplicate</button>
+        <button disabled={busy} onClick={() => openScene(blankPose())}>New</button>
+        <button disabled={busy} onClick={() => apply(scene => ({ ...scene, id: newId(), name: `${scene.name} (copy)` }))}>Duplicate</button>
         <button className="primary" disabled={busy} onClick={save}>Save pose</button>
         <span className="pose-toolbar-divider" />
-        <button disabled={!past.length} onClick={() => { stopPreview(); setFuture(history => [cloneScene(draft), ...history]); setDraft(past.at(-1)!); setPast(past.slice(0, -1)); }}>Undo</button>
-        <button disabled={!future.length} onClick={() => { stopPreview(); setPast([...past, cloneScene(draft)]); setDraft(future[0]); setFuture(future.slice(1)); }}>Redo</button>
-        <button onClick={() => { stopPreview(); setDraft(cloneScene(saved)); setTime(0); setPast([]); setFuture([]); }}>Reset</button>
-        <button aria-label="Export JSON" onClick={() => void write(() => window.photoBooth.exportPose(draft), 'JSON exported.')}>Export</button>
-        <button className="danger" disabled={busy || bundled} onClick={() => { if (window.confirm(`Delete ${draft.name}?`)) void write(async () => { await window.photoBooth.deletePose(draft.id); const home = cloneScene(PHOTO_GUIDE_SCENES[0]); setDraft(home); setSaved(home); setTime(0); setPast([]); setFuture([]); setPage('gallery'); await refresh(); }, 'Pose deleted.'); }}>Delete</button>
+        <button disabled={busy || !past.length} onClick={() => { stopPreview(); setFuture(history => [cloneScene(draft), ...history]); setDraft(past.at(-1)!); setPast(past.slice(0, -1)); }}>Undo</button>
+        <button disabled={busy || !future.length} onClick={() => { stopPreview(); setPast([...past, cloneScene(draft)]); setDraft(future[0]); setFuture(future.slice(1)); }}>Redo</button>
+        <button disabled={busy} onClick={() => { stopPreview(); setDraft(cloneScene(saved)); setTime(0); setPast([]); setFuture([]); }}>Reset</button>
+        <button aria-label="Export JSON" disabled={busy} onClick={() => void write(() => window.photoBooth.exportPose(draft), 'JSON exported.')}>Export</button>
+        <button className="danger" disabled={busy || !canDelete} onClick={deletePose}>Delete</button>
       </div>
       {message ? <p className="pose-editor-message" role="status">{message}</p> : null}
     </header>
@@ -302,7 +332,7 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
         <details className="admin-card pose-settings-card pose-ai-generator">
           <summary><span>AI Pose Generator</span><small>{aiProvider}</small></summary>
           <div className="pose-section-content">
-            <label>Describe the pose<textarea aria-label="Pose description" className="pose-ai-description" rows={4} value={aiDescription} onChange={event => setAiDescription(event.target.value)} placeholder="Girl leaning slightly left, right hand making a peace sign beside her face, left hand on hip, right knee bent, head tilted right, big smile and left-eye wink." /></label>
+            <label>Describe the pose<textarea aria-label="Pose description" className="pose-ai-description" rows={4} value={aiDescription} onChange={event => setAiDescription(event.target.value)} placeholder="Two friends lean toward each other, raise matching peace signs, and wink." /></label>
             <div className="pose-ai-actions">
               <label>Provider<select aria-label="Pose AI provider" value={aiProvider} onChange={event => { const provider = event.target.value as typeof aiProvider; setAiProvider(provider); void updatePoseGenerator(provider); }}><option value="openai">OpenAI</option><option value="gemini">Gemini</option><option value="xai">xAI</option></select></label>
               <button className="primary" disabled={busy || aiDescription.trim().length < 12} onClick={() => void generatePose()}>{busy ? 'Generating…' : 'Generate preview'}</button>
@@ -316,44 +346,47 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
           <div className="pose-section-title"><div><h3>Pose details</h3><p>Basic library information.</p></div></div>
           <div className="pose-compact-grid two-columns">
             <TextField label="Name" value={draft.name} onSave={value => { if (value !== draft.name) apply(scene => ({ ...scene, name: value })); }} />
-            <TextField label="Category" value={draft.category} onSave={value => { if (value !== draft.category) apply(scene => ({ ...scene, category: value })); }} />
+            <fieldset className="pose-category-field">
+              <legend>Categories</legend>
+              <div className="pose-option-row">
+                {POSE_CATEGORIES.map(category => {
+                  const checked = draftCategories.includes(category);
+                  return <label key={category}><input type="checkbox" checked={checked} disabled={checked && draftCategories.length === 1} onChange={event => {
+                    const selected = event.target.checked;
+                    apply(scene => {
+                      const categories = POSE_CATEGORIES.filter(item => item === category ? selected : draftCategories.includes(item));
+                      scene.compatibility.styles = categories.map(item => POSE_CATEGORY_STYLES[item]);
+                      return scene;
+                    });
+                  }} />{POSE_CATEGORY_LABELS[category]}</label>;
+                })}
+              </div>
+            </fieldset>
             <div className="span-all"><TextField label="Instruction" value={draft.instruction} onSave={value => { if (value !== draft.instruction) apply(scene => ({ ...scene, instruction: value })); }} /></div>
             <div className="span-all"><TextField label="Tags" value={draft.tags.join(', ')} onSave={value => { if (value !== draft.tags.join(', ')) apply(scene => ({ ...scene, tags: value.split(',').map(tag => tag.trim()).filter(Boolean) })); }} /></div>
           </div>
         </section>
 
         <details className="admin-card pose-settings-card">
-          <summary><span>Group compatibility</span><small>{draft.compatibility.minPeople}–{draft.compatibility.maxPeople ?? '30'} people</small></summary>
-          <div className="pose-section-content">
-            <div className="pose-compact-grid two-columns"><NumberField label="Minimum people" value={draft.compatibility.minPeople} min={1} max={30} step={1} onSave={value => apply(scene => { scene.compatibility.minPeople = value; return scene; })} /><NumberField label="Maximum people (0 = flexible)" value={draft.compatibility.maxPeople ?? 0} min={0} max={30} step={1} onSave={value => apply(scene => { scene.compatibility.maxPeople = value === 0 ? null : value; return scene; })} /></div>
-            <div className="pose-option-row">{(['solo', 'couple', 'friends', 'family', 'group'] as PoseStyle[]).map(style => <label key={style}><input type="checkbox" checked={draft.compatibility.styles.includes(style)} onChange={event => apply(scene => { scene.compatibility.styles = event.target.checked ? [...scene.compatibility.styles, style] : scene.compatibility.styles.filter(item => item !== style); return scene; })} />{style}</label>)}</div>
-            <div className="pose-option-row">{(['full', 'half'] as const).map(mode => <label key={mode}><input type="checkbox" checked={draft.compatibility.framing.includes(mode)} onChange={event => apply(scene => { scene.compatibility.framing = event.target.checked ? [...scene.compatibility.framing, mode] : scene.compatibility.framing.filter(item => item !== mode); return scene; })} />{mode === 'full' ? 'Full body' : 'Half body'}</label>)}<label><input type="checkbox" checked={draft.compatibility.childSafe} onChange={event => apply(scene => { scene.compatibility.childSafe = event.target.checked; return scene; })} />Children</label></div>
-          </div>
-        </details>
-
-        {photo && draft.visual ? <details className="admin-card pose-settings-card">
           <summary><span>Cutout</span><small>Artwork</small></summary>
           <div className="pose-section-content">
             <p>Replace the artwork and place it in the safe overlay.</p>
-            <p className="pose-audio-path">{draft.visual.assetPath}</p>
-            <div className="pose-editor-actions"><button aria-label="Replace cutout image" onClick={() => void write(async () => { const file = await window.photoBooth.importPoseImage(); if (file) apply(scene => scene.visual ? { ...scene, visual: { ...scene.visual, assetPath: file.filePath } } : scene); }, 'Cutout selected.')}>Replace image</button></div>
-            <div className="pose-compact-grid two-columns">
+            {draft.visual && <p className="pose-audio-path">{draft.visual.assetPath}</p>}
+            <div className="pose-editor-actions"><button onClick={() => void write(async () => {
+              const file = await window.photoBooth.importPoseImage();
+              if (file) apply(scene => ({
+                ...scene,
+                visual: { kind: 'photo-cutout', alt: scene.name, accent: '#ffffff', ...scene.visual, assetPath: file.filePath }
+              }));
+            }, 'Cutout selected.')}>{photo ? 'Replace cutout image' : 'Add cutout image'}</button></div>
+            {draft.visual && <div className="pose-compact-grid two-columns">
               <TextField label="Description" value={draft.visual.alt} onSave={value => { if (draft.visual && value !== draft.visual.alt) apply(scene => scene.visual ? { ...scene, visual: { ...scene.visual, alt: value } } : scene); }} />
               <TextField label="Accent" value={draft.visual.accent} onSave={value => { if (draft.visual && value !== draft.visual.accent) apply(scene => scene.visual ? { ...scene, visual: { ...scene.visual, accent: value } } : scene); }} />
               <NumberField label="Scale" value={draft.visual.scale ?? 1} min={0.6} max={1.4} step={0.05} onSave={value => apply(scene => scene.visual ? { ...scene, visual: { ...scene.visual, scale: value } } : scene)} />
               <NumberField label="Offset X" value={draft.visual.offsetX ?? 0} min={-120} max={120} step={1} onSave={value => apply(scene => scene.visual ? { ...scene, visual: { ...scene.visual, offsetX: value } } : scene)} />
               <NumberField label="Offset Y" value={draft.visual.offsetY ?? 0} min={-80} max={80} step={1} onSave={value => apply(scene => scene.visual ? { ...scene, visual: { ...scene.visual, offsetY: value } } : scene)} />
-            </div>
+            </div>}
           </div>
-        </details> : null}
-
-        <details className="admin-card pose-settings-card">
-          <summary><span>Guest roles</span><small>{draft.roles.length}</small></summary>
-          <div className="pose-section-content">{draft.roles.map((role, index) => <div className="pose-caption-row" key={`${role.role}-${index}`}>
-            <label>Role<select aria-label={`Guest role ${index + 1}`} value={role.role} onChange={event => apply(scene => { scene.roles[index].role = event.target.value as ParticipantRole; return scene; })}>{['any', 'adult', 'child', 'men', 'women', 'boys', 'girls'].map(option => <option key={option}>{option}</option>)}</select></label>
-            <label><input type="checkbox" checked={role.repeatable} onChange={event => apply(scene => { scene.roles[index].repeatable = event.target.checked; return scene; })} />Repeat for larger groups</label>
-            <button disabled={draft.roles.length === 1} onClick={() => apply(scene => { scene.roles.splice(index, 1); return scene; })}>Remove</button>
-          </div>)}<button disabled={draft.roles.length >= 12} onClick={() => apply(scene => { scene.roles.push({ role: 'any', repeatable: false }); return scene; })}>Add role</button></div>
         </details>
 
         <details className="admin-card pose-settings-card">
@@ -372,10 +405,6 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
           </div>
         </details>
 
-        <details className="admin-card pose-settings-card">
-          <summary><span>Test guest group</span><small>{sceneMatches(draft, previewGroup, framing) ? 'Compatible' : 'Needs changes'}</small></summary>
-          <div className="pose-section-content pose-composition-compact"><CompositionControls value={previewGroup} onChange={setPreviewGroup} capacity={30} /></div>
-        </details>
       </main>
 
       <aside className="admin-card pose-editor-preview">
@@ -383,8 +412,7 @@ export function PoseEditor({ settings }: { settings: AppSettings }) {
         <div className="pose-editor-preview-visual" style={{ '--pose-scale': draft.visual?.scale ?? 1, '--pose-offset-x': `${draft.visual?.offsetX ?? 0}px`, '--pose-offset-y': `${draft.visual?.offsetY ?? 0}px` } as CSSProperties}>{photo && cutoutSrc ? <img className="pose-editor-cutout" src={cutoutSrc} alt={draft.visual?.alt ?? draft.name} /> : <p>Add a cutout image to preview this pose.</p>}{countdownPreview ? <strong className="pose-editor-countdown">{countdownPreview}</strong> : null}</div>
         <p className="pose-preview-caption">{caption}</p>
         <input aria-label="Animation position" type="range" min="0" max={draft.animation.durationMs} step="10" value={time} onInput={event => setClock(Number(event.currentTarget.value))} />
-        <div className="pose-preview-buttons"><button className="primary" onClick={() => { player.current?.stop(); setPlaying(value => !value); }}>{playing ? 'Pause' : 'Play'}</button><button onClick={() => setClock(0)}>Restart</button><button disabled={busy} onClick={() => void completePreview()}>Play + countdown</button><button onClick={stopPreview}>Stop</button><button onClick={() => void window.photoBooth.previewPoseOnGuest({ scene: cloneScene(draft), framing }).then(() => setMessage('Opened on the guest screen.')).catch(error => setMessage(String(error)))}>Guest screen</button></div>
-        <div className="pose-preview-options"><select aria-label="Preview framing" value={framing} onChange={event => setFraming(event.target.value as 'full' | 'half')}><option value="full">Full body</option><option value="half">Half body</option></select></div>
+        <div className="pose-preview-buttons"><button className="primary" onClick={() => { player.current?.stop(); setPlaying(value => !value); }}>{playing ? 'Pause' : 'Play'}</button><button onClick={() => setClock(0)}>Restart</button><button disabled={busy} onClick={() => void completePreview()}>Play + countdown</button><button onClick={stopPreview}>Stop</button><button disabled={!photo} onClick={() => void window.photoBooth.previewPoseOnGuest({ scene: cloneScene(draft) }).then(() => setMessage('Opened on the guest screen.')).catch(error => setMessage(String(error)))}>Guest screen</button></div>
         <p className="pose-preview-hint">This is the offline guide guests will see. Captions and narration follow the timeline.</p>
       </aside>
     </div>

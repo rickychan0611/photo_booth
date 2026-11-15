@@ -13,23 +13,23 @@
   ],
   "instruction": "Wedding spies",
   "animation": {
-    "durationMs": 6800,
+    "durationMs": 6760,
     "captions": [
       {
-        "timeMs": 0,
-        "text": "Stand back-to-back"
+        "text": "Stand back-to-back",
+        "timeMs": 0
       },
       {
-        "timeMs": 1700,
-        "text": "Cross your arms"
+        "text": "Cross your arms",
+        "timeMs": 1920
       },
       {
-        "timeMs": 3000,
-        "text": "Turn opposite ways"
+        "text": "Turn opposite ways",
+        "timeMs": 3840
       },
       {
-        "timeMs": 4640,
-        "text": "Wedding spies"
+        "text": "Wedding spies",
+        "timeMs": 5760
       }
     ]
   },
@@ -37,7 +37,8 @@
     "minPeople": 2,
     "maxPeople": 2,
     "styles": [
-      "couple"
+      "friends",
+      "family"
     ],
     "framing": [
       "full",
@@ -64,28 +65,6 @@
   "audio": {
     "filePath": "project-asset:audio/elevenlabs/spy-newlyweds-a94bc74ae6ccd1.mp3",
     "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5800,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Stand back-to-back"
-        },
-        {
-          "timeMs": 1700,
-          "text": "Cross your arms"
-        },
-        {
-          "timeMs": 3000,
-          "text": "Turn opposite ways"
-        },
-        {
-          "timeMs": 4640,
-          "text": "Wedding spies"
-        }
-      ]
-    }
+    "markers": []
   }
 }

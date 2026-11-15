@@ -4,10 +4,10 @@ import { resolvePoseAsset } from './assets';
 import { createPoseAudioHooks } from './audio';
 import { ScenePlayer } from './ScenePlayer';
 import type { PlaybackResult } from './PosePlayer';
-import type { PoseFraming, PoseScene, SceneFrame } from './types';
+import type { PoseScene, SceneFrame } from './types';
 
 export type PoseGuideHandle = {
-  play(pose: PoseScene, signal: AbortSignal, framing: PoseFraming): Promise<PlaybackResult>;
+  play(pose: PoseScene, signal: AbortSignal): Promise<PlaybackResult>;
   dismiss(): Promise<void>;
   stop(): void;
   hide(): void;
@@ -44,20 +44,18 @@ export const PoseGuideOverlay = forwardRef<PoseGuideHandle, {
   const [visible, setVisible] = useState(false);
   const [exiting, setExiting] = useState(false);
   const [pulse, setPulse] = useState(false);
-  const [framing, setFraming] = useState<PoseFraming>('full');
   const hideImmediately = () => { setVisible(false); setExiting(false); setPulse(false); };
 
   useImperativeHandle(ref, () => ({
-    async play(pose, signal, nextFraming) {
+    async play(pose, signal) {
       if (!playerRef.current || signal.aborted || !pose.visual) return 'failed';
-      const src = await resolvePoseAsset(pose.visual.assetPath);
+      const src = await resolvePoseAsset(pose.visual.assetPath).catch(() => '');
       if (!src || signal.aborted) return signal.aborted ? 'cancelled' : 'failed';
       const loaded = await preload(src, signal);
       if (!loaded || signal.aborted) return signal.aborted ? 'cancelled' : 'failed';
       const nextImage = { src, alt: pose.visual.alt, accent: pose.visual.accent, scale: pose.visual.scale ?? 1, offsetX: pose.visual.offsetX ?? 0, offsetY: pose.visual.offsetY ?? 0 };
       setImage(nextImage);
       setCaption(pose.animation.captions[0]?.text ?? pose.instruction);
-      setFraming(nextFraming);
       setExiting(false);
       setVisible(true);
       return playerRef.current.play(pose, { signal });
@@ -88,7 +86,6 @@ export const PoseGuideOverlay = forwardRef<PoseGuideHandle, {
     <div
       className={`pose-guide pose-guide--photo${hidden ? ' pose-guide--hidden' : ''}${exiting ? ' pose-guide--exiting' : ''}${pulse ? ' pose-guide--pulse' : ''}`}
       aria-hidden={hidden}
-      data-framing={framing}
       style={{ '--pose-accent': image?.accent ?? '#fff', '--pose-scale': image?.scale ?? 1, '--pose-offset-x': `${image?.offsetX ?? 0}px`, '--pose-offset-y': `${image?.offsetY ?? 0}px` } as CSSProperties}
     >
       <div className="pose-guide-progress">Photo {photoNumber} of {photoCount}</div>

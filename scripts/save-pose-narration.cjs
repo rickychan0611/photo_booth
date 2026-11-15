@@ -20,7 +20,9 @@ if (!selected.length) throw new Error(`No poses found for pack ${packFilter}`);
 for (const bundled of selected) {
   const target = path.join(library, `${bundled.id}.json`);
   const original = fs.existsSync(target) ? fs.readFileSync(target, 'utf8') : null;
-  const scene = validateScene(withNarration(original ? validateScene(JSON.parse(original)) : bundled));
+  const value = original === null ? bundled : JSON.parse(original);
+  if (value?.deleted === true) continue;
+  const scene = withNarration(validateScene(value));
   if (!scene.audio?.filePath || !fs.existsSync(resolveAsset(scene.audio.filePath))) throw new Error(`Missing narration for ${scene.id}`);
   if (original !== null) fs.writeFileSync(path.join(backup, path.basename(target)), original);
   const temporary = `${target}.${process.pid}.tmp`;
@@ -30,9 +32,13 @@ for (const bundled of selected) {
   saved++;
 }
 const entries = fs.readdirSync(library).filter(name => name.endsWith('.json') && name !== 'elevenlabs.json');
+let totalSaved = 0;
 for (const name of entries) {
-  const scene = validateScene(JSON.parse(fs.readFileSync(path.join(library, name), 'utf8')));
+  const value = JSON.parse(fs.readFileSync(path.join(library, name), 'utf8'));
+  if (value?.deleted === true) continue;
+  const scene = validateScene(value);
+  totalSaved++;
   if (packFilter && !scene.tags.includes(packFilter)) continue;
   if (!scene.audio?.filePath || !fs.existsSync(resolveAsset(scene.audio.filePath))) throw new Error(`Missing saved narration: ${scene.id}`);
 }
-console.log(JSON.stringify({ savedBundled: saved, totalSaved: entries.length, backup }));
+console.log(JSON.stringify({ savedBundled: saved, totalSaved, backup }));

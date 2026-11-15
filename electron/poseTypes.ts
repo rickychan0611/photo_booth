@@ -16,6 +16,14 @@ export interface PlaybackClock {
 }
 
 export type PoseStyle = 'solo' | 'couple' | 'friends' | 'family' | 'group';
+export const POSE_CATEGORIES = ['friends', 'family', 'lovers'] as const;
+export type PoseCategory = typeof POSE_CATEGORIES[number];
+export const POSE_CATEGORY_LABELS: Record<PoseCategory, string> = {
+  friends: 'Friends',
+  family: 'Family',
+  lovers: 'Lovers'
+};
+export const POSE_CATEGORY_STYLES = { friends: 'friends', family: 'family', lovers: 'couple' } as const;
 export type PoseFraming = 'full' | 'half';
 export type GuestComposition = { men: number; women: number; boys: number; girls: number; style: PoseStyle | '' };
 export type ParticipantRole = 'men' | 'women' | 'boys' | 'girls' | 'adult' | 'child' | 'any';
@@ -44,8 +52,19 @@ export type PoseScene = {
     offsetY?: number;
   };
 };
+
+export function poseCategories(scene: PoseScene): PoseCategory[] {
+  const { styles, maxPeople } = scene.compatibility;
+  if (maxPeople === 1 || scene.category.trim().toLowerCase() === 'solo' ||
+      scene.tags.some(tag => tag.trim().toLowerCase() === 'solo') ||
+      (scene.roles.length === 1 && !scene.roles[0].repeatable)) return [];
+  return POSE_CATEGORIES.filter(category =>
+    styles.includes(POSE_CATEGORY_STYLES[category]) || (category === 'friends' && styles.includes('group'))
+  );
+}
 export type SceneFrame = { caption: string; elapsedMs: number };
-export type PoseCatalog = { poses: PoseScene[]; errors: string[] };
+export type StoredPoseLibrary = { poses: PoseScene[]; deletedPoseIds?: string[] };
+export type PoseCatalog = StoredPoseLibrary & { errors: string[] };
 export type PoseAiProvider = 'openai' | 'gemini' | 'xai';
 export type PoseAiGenerateRequest = { description: string; provider?: PoseAiProvider };
 export type PoseAiGenerateResult = { scene: PoseScene; provider: PoseAiProvider; model: string };
@@ -63,14 +82,11 @@ export type PoseNarrationSettings = {
 export type PoseNarrationSettingsUpdate = Omit<PoseNarrationSettings, 'configured'> & { apiKey?: string };
 export type PoseNarrationGenerateRequest = { poseId: string; text: string; captions?: string[] };
 export type PoseNarrationGenerateResult = { filePath: string; name: string; cached: boolean; speechTiming?: PoseSpeechTiming };
-export type PoseGuideSettings = { enabled: boolean; selectionEnabled?: boolean; groupCapacity?: number; defaultComposition?: GuestComposition };
-export function normalizePoseGuide(value: Partial<PoseGuideSettings> | undefined): PoseGuideSettings {
-  const capacity = Math.max(1, Math.min(30, Math.round(Number(value?.groupCapacity) || 12)));
-  const group = value?.defaultComposition;
-  const total = group ? group.men + group.women + group.boys + group.girls : 0;
-  const valid = group && ['men', 'women', 'boys', 'girls'].every(key => Number.isInteger(group[key as 'men']) && group[key as 'men'] >= 0) && total >= 1 && total <= capacity;
-  let composition: GuestComposition = valid ? { ...group } : { men: 1, women: 0, boys: 0, girls: 0, style: 'solo' };
-  if (composition.men + composition.women + composition.boys + composition.girls === 1) composition.style = 'solo';
-  else if (composition.style === 'solo' || !['solo', 'couple', 'friends', 'family', 'group'].includes(composition.style) || (composition.style === 'couple' && (composition.men + composition.women !== 2 || composition.boys + composition.girls > 0))) composition.style = 'group';
-  return { enabled: value?.enabled !== false, selectionEnabled: value?.selectionEnabled !== false, groupCapacity: capacity, defaultComposition: composition };
+export type PoseGuideSettings = { enabled: boolean; selectionEnabled: boolean; defaultCategory: PoseCategory };
+type LegacyPoseGuideSettings = { defaultComposition?: GuestComposition };
+export function normalizePoseGuide(value: (Partial<PoseGuideSettings> & LegacyPoseGuideSettings) | undefined): PoseGuideSettings {
+  const legacyStyle = value?.defaultComposition?.style;
+  const defaultCategory = POSE_CATEGORIES.find(category => category === value?.defaultCategory)
+    ?? (legacyStyle === 'family' ? 'family' : legacyStyle === 'couple' ? 'lovers' : 'friends');
+  return { enabled: value?.enabled !== false, selectionEnabled: value?.selectionEnabled !== false, defaultCategory };
 }

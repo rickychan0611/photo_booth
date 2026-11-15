@@ -14,10 +14,7 @@
     "minPeople": 2,
     "maxPeople": 2,
     "styles": [
-      "couple",
-      "friends",
-      "family",
-      "group"
+      "couple"
     ],
     "framing": [
       "full",

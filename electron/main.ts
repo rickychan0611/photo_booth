@@ -1,4 +1,4 @@
-import { modeAudioDefaults, NORMAL_PHOTO_MESSAGE } from './sessionMode';
+import { modeAudioDefaults, NORMAL_PHOTO_MESSAGE, POSE_CATEGORY_NARRATION } from './sessionMode';
 import { normalizePoseGuide } from './poseTypes';
 import { app, BrowserWindow, desktopCapturer, dialog, ipcMain, nativeImage, session, shell } from 'electron';
 import fs from 'node:fs/promises';
@@ -173,7 +173,7 @@ const defaultAudioSettings = (): AppSettings['audio'] => ({
     welcome: defaultAudioCue('welcome', 'Welcome idle loop', 'Welcome. Touch start to begin.', 'voice', 'host', true),
     style: defaultAudioCue('style', 'Choose style screen', 'Please choose a style.'),
     design: defaultAudioCue('design', 'Choose design screen', 'Please choose a design.'),
-    people: defaultAudioCue('people', "Who's joining screen", "Who's joining the photo? Tell me who's here, then choose your pose style."),
+    people: defaultAudioCue('people', 'Choose pose category screen', POSE_CATEGORY_NARRATION),
     intro: defaultAudioCue('intro', 'Intro screen', "Let's take pictures."),
     select: defaultAudioCue('select', 'Photo selection screen', 'Please choose your favorite pictures to print.'),
     thanks: defaultAudioCue('thanks', 'Finish screen', 'Thank you. Please pick up your print.'),
@@ -1168,6 +1168,23 @@ const normalizeAudioSettings = (settings?: Partial<AppSettings['audio']>): AppSe
     if (id === 'facePack' || cues[id]) return;
     cues[id] = normalizeAudioCue(cue, defaultAudioCue(id, cue.label || id, cue.text || ''));
   });
+  const legacyScreenCopy = {
+    mode: [
+      'Choose your photo experience. Tap Fun Pose Challenge for playful guided poses, or Normal Mode for classic photos.',
+      'Choose your photo experience!  You can match the fun poses on screen or freestyle and strike your own poses. You choose!'
+    ],
+    people: [
+      "Who's joining the photo? Tell me who's here, then choose your pose style.",
+      'How many people are in the shot?  Pick your group size to unlock fun Pose Challenges!'
+    ]
+  };
+  for (const [id, oldTexts] of Object.entries(legacyScreenCopy)) {
+    const cue = cues[id];
+    if (cue.mode === 'host' && oldTexts.includes(cue.text.trim())) {
+      const replacement = fallback.cues[id];
+      cues[id] = { ...cue, label: replacement.label, text: replacement.text, filePath: '', updatedAt: '' };
+    }
+  }
   const legacyPoseOpenings: Record<string, { old: string; next: string }> = {
     shot0: { old: 'Get ready!', next: 'Pose challenge!' },
     shot1: { old: 'Smile!', next: 'Next one!' },
@@ -2790,15 +2807,15 @@ async function performCloudSync(): Promise<CloudSyncStatus> {
 
   publishCloudSyncStatus({ state: 'syncing', message: 'Syncing event settings, templates, and poses…' });
   try {
-    const localPoses = (await listStoredPoses()).poses;
+    const localLibrary = await listStoredPoses();
     const profileId = cloudProfileId(local);
     const stored = await readCloudSyncState();
     const state = stored?.profileId === profileId ? stored : null;
     const remote = await fetchCloudSnapshot(local);
-    const localFingerprint = cloudFingerprint(local, localPoses);
+    const localFingerprint = cloudFingerprint(local, localLibrary);
 
     if (!remote) {
-      const pushed = await pushCloudSnapshot(local, localPoses);
+      const pushed = await pushCloudSnapshot(local, localLibrary);
       const lastSyncedAt = pushed.updated_at || new Date().toISOString();
       await writeCloudSyncState({ profileId, cloudRevision: pushed.revision, localFingerprint, lastSyncedAt });
       return publishCloudSyncStatus({ state: 'synced', message: 'Cloud profile created from this computer.', lastSyncedAt });
@@ -2806,13 +2823,13 @@ async function performCloudSync(): Promise<CloudSyncStatus> {
 
     if (!state) {
       const materialized = await applyCloudSnapshot(local, remote.payload);
-      const cloudPoses = await applyCloudPoseLibrary(local, remote.payload);
-      if (cloudPoses) await replaceStoredPoses(cloudPoses);
+      const cloudLibrary = await applyCloudPoseLibrary(local, remote.payload);
+      if (cloudLibrary) await replaceStoredPoses(cloudLibrary.poses, cloudLibrary.deletedPoseIds);
       applyingCloudSettings = true;
       const saved = await writeSettings(normalizeLoadedSettings(materialized, local));
       applyingCloudSettings = false;
       const lastSyncedAt = remote.updated_at || new Date().toISOString();
-      await writeCloudSyncState({ profileId, cloudRevision: remote.revision, localFingerprint: cloudFingerprint(saved, cloudPoses ?? localPoses), lastSyncedAt });
+      await writeCloudSyncState({ profileId, cloudRevision: remote.revision, localFingerprint: cloudFingerprint(saved, cloudLibrary ? await listStoredPoses() : localLibrary), lastSyncedAt });
       return publishCloudSyncStatus({ state: 'synced', message: 'Downloaded the shared event profile.', lastSyncedAt });
     }
 
@@ -2820,18 +2837,18 @@ async function performCloudSync(): Promise<CloudSyncStatus> {
     const cloudChanged = remote.revision !== state.cloudRevision;
     if (cloudChanged) {
       const materialized = await applyCloudSnapshot(local, remote.payload);
-      const cloudPoses = await applyCloudPoseLibrary(local, remote.payload);
-      if (cloudPoses) await replaceStoredPoses(cloudPoses);
+      const cloudLibrary = await applyCloudPoseLibrary(local, remote.payload);
+      if (cloudLibrary) await replaceStoredPoses(cloudLibrary.poses, cloudLibrary.deletedPoseIds);
       applyingCloudSettings = true;
       const saved = await writeSettings(normalizeLoadedSettings(materialized, local));
       applyingCloudSettings = false;
       const lastSyncedAt = remote.updated_at || new Date().toISOString();
-      await writeCloudSyncState({ profileId, cloudRevision: remote.revision, localFingerprint: cloudFingerprint(saved, cloudPoses ?? localPoses), lastSyncedAt });
+      await writeCloudSyncState({ profileId, cloudRevision: remote.revision, localFingerprint: cloudFingerprint(saved, cloudLibrary ? await listStoredPoses() : localLibrary), lastSyncedAt });
       return publishCloudSyncStatus({ state: 'synced', message: 'Downloaded changes from another computer.', lastSyncedAt });
     }
 
     if (localChanged) {
-      const pushed = await pushCloudSnapshot(local, localPoses);
+      const pushed = await pushCloudSnapshot(local, localLibrary);
       const lastSyncedAt = pushed.updated_at || new Date().toISOString();
       await writeCloudSyncState({ profileId, cloudRevision: pushed.revision, localFingerprint, lastSyncedAt });
       return publishCloudSyncStatus({ state: 'synced', message: cloudChanged ? 'Synced this computer’s newer changes.' : 'Uploaded local changes.', lastSyncedAt });
@@ -2853,12 +2870,12 @@ async function performCloudSave(): Promise<CloudSyncStatus> {
 
   publishCloudSyncStatus({ state: 'syncing', message: 'Saving changes to the cloud…' });
   try {
-    const localPoses = (await listStoredPoses()).poses;
+    const localLibrary = await listStoredPoses();
     const profileId = cloudProfileId(local);
     const stored = await readCloudSyncState();
     const state = stored?.profileId === profileId ? stored : null;
     const remote = await fetchCloudSnapshot(local);
-    const localFingerprint = cloudFingerprint(local, localPoses);
+    const localFingerprint = cloudFingerprint(local, localLibrary);
 
     if (remote && (!state || remote.revision !== state.cloudRevision)) {
       return publishCloudSyncStatus({
@@ -2870,7 +2887,7 @@ async function performCloudSave(): Promise<CloudSyncStatus> {
       return publishCloudSyncStatus({ state: 'synced', message: 'Everything is saved to the cloud.', lastSyncedAt: state.lastSyncedAt });
     }
 
-    const pushed = await pushCloudSnapshot(local, localPoses);
+    const pushed = await pushCloudSnapshot(local, localLibrary);
     const lastSyncedAt = pushed.updated_at || new Date().toISOString();
     await writeCloudSyncState({ profileId, cloudRevision: pushed.revision, localFingerprint, lastSyncedAt });
     return publishCloudSyncStatus({ state: 'synced', message: 'Changes saved to the cloud.', lastSyncedAt });

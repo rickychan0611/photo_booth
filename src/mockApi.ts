@@ -1,5 +1,5 @@
-import { modeAudioDefaults, NORMAL_PHOTO_MESSAGE } from '../electron/sessionMode';
-import { normalizePoseGuide } from './pose/types';
+import { modeAudioDefaults, NORMAL_PHOTO_MESSAGE, POSE_CATEGORY_NARRATION } from '../electron/sessionMode';
+import { normalizePoseGuide, poseCategories } from './pose/types';
 import { createBlankTemplateLayout, normalizeTemplateLayoutForClient } from './template';
 import { validateScene } from './pose/validation';
 import { BUNDLED_SCENES } from './pose/scenes';
@@ -90,7 +90,7 @@ const fallbackSettings: AppSettings = {
       welcome: { id: 'welcome', label: 'Welcome idle loop', mode: 'host', channel: 'voice', text: 'Welcome. Touch start to begin.', filePath: '', loop: true, volume: 1, enabled: true, updatedAt: '' },
       style: { id: 'style', label: 'Choose style screen', mode: 'host', channel: 'voice', text: 'Please choose a style.', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       design: { id: 'design', label: 'Choose design screen', mode: 'host', channel: 'voice', text: 'Please choose a design.', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
-      people: { id: 'people', label: "Who's joining screen", mode: 'host', channel: 'voice', text: "Who's joining the photo? Tell me who's here, then choose your pose style.", filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
+      people: { id: 'people', label: 'Choose pose category screen', mode: 'host', channel: 'voice', text: POSE_CATEGORY_NARRATION, filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       intro: { id: 'intro', label: 'Intro screen', mode: 'host', channel: 'voice', text: "Let's take pictures.", filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       select: { id: 'select', label: 'Photo selection screen', mode: 'host', channel: 'voice', text: 'Please choose your favorite pictures to print.', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
       thanks: { id: 'thanks', label: 'Finish screen', mode: 'host', channel: 'voice', text: 'Thank you. Please pick up your print.', filePath: '', loop: false, volume: 1, enabled: true, updatedAt: '' },
@@ -305,15 +305,26 @@ export function installMockApi() {
   window.photoBooth = {
     listPoses: async () => {
       const poses: PoseScene[] = [], errors: string[] = [];
+      const deletedPoseIds: string[] = [];
+      const prefix = 'pose-library:pose:';
       for (let index = 0; index < localStorage.length; index++) {
         const key = localStorage.key(index)!;
-        if (!key.startsWith('pose-library:pose:')) continue;
-        try { poses.push(validateScene(JSON.parse(localStorage.getItem(key)!))); } catch (error) { errors.push(`${key}: ${String(error)}`); }
+        if (!key.startsWith(prefix)) continue;
+        try {
+          const value = JSON.parse(localStorage.getItem(key)!);
+          if (value?.deleted === true) deletedPoseIds.push(key.slice(prefix.length));
+          else poses.push(validateScene(value));
+        } catch (error) { errors.push(`${key}: ${String(error)}`); }
       }
-      return { poses, errors };
+      return { poses, deletedPoseIds, errors };
     },
-    savePose: async pose => { const valid = validateScene(pose); localStorage.setItem(`pose-library:pose:${valid.id}`, JSON.stringify(valid)); return valid; },
-    deletePose: async id => { localStorage.removeItem(`pose-library:pose:${id}`); return true; },
+    savePose: async pose => {
+      const valid = validateScene(pose);
+      if (!poseCategories(valid).length) throw new Error('Choose a category and use a pose for at least two people.');
+      localStorage.setItem(`pose-library:pose:${valid.id}`, JSON.stringify(valid));
+      return valid;
+    },
+    deletePose: async id => { localStorage.setItem(`pose-library:pose:${id}`, JSON.stringify({ id, deleted: true })); return true; },
     exportPose: async pose => { validateScene(pose); const blob = new Blob([JSON.stringify(pose, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = `${pose.id}.json`; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); return true; },
     importPoseImage: async () => new Promise(resolve => {
       const input = document.createElement('input'); input.type = 'file'; input.accept = '.webp,image/webp';

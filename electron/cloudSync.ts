@@ -3,7 +3,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import type { AppSettings } from './types';
 import { validateScene } from './poseValidation';
-import type { PoseScene } from './poseTypes';
+import type { PoseScene, StoredPoseLibrary } from './poseTypes';
 
 const SYNC_TABLE = 'booth_sync_profiles';
 const SYNC_BUCKET = 'booth-sync';
@@ -13,6 +13,7 @@ export type CloudSnapshot = {
   version: 1 | 2;
   settings: Partial<AppSettings>;
   poses?: PoseScene[];
+  deletedPoseIds?: string[];
 };
 
 export type CloudSnapshotRow = {
@@ -68,8 +69,9 @@ function sharedSettings(settings: AppSettings): Partial<AppSettings> {
   return shared;
 }
 
-export function cloudFingerprint(settings: AppSettings, poses: PoseScene[] = []) {
-  return sha256(JSON.stringify({ settings: sharedSettings(settings), poses }));
+export function cloudFingerprint(settings: AppSettings, library: StoredPoseLibrary) {
+  const { poses, deletedPoseIds } = library;
+  return sha256(JSON.stringify({ settings: sharedSettings(settings), poses, deletedPoseIds: deletedPoseIds?.length ? deletedPoseIds : undefined }));
 }
 
 function isAssetPath(key: string | undefined, value: string) {
@@ -158,11 +160,11 @@ export async function fetchCloudSnapshot(settings: AppSettings): Promise<CloudSn
   return rows[0] ?? null;
 }
 
-export async function pushCloudSnapshot(settings: AppSettings, poses: PoseScene[] = []): Promise<CloudSnapshotRow> {
+export async function pushCloudSnapshot(settings: AppSettings, library: StoredPoseLibrary): Promise<CloudSnapshotRow> {
   const prepared = await replaceLocalAssetsWithCloud(sharedSettings(settings), settings) as Partial<AppSettings>;
-  const preparedPoses = await replaceLocalAssetsWithCloud(poses, settings) as PoseScene[];
+  const preparedPoses = await replaceLocalAssetsWithCloud(library.poses, settings) as PoseScene[];
   const revision = Date.now();
-  const payload: CloudSnapshot = { version: 2, settings: prepared, poses: preparedPoses };
+  const payload: CloudSnapshot = { version: 2, settings: prepared, poses: preparedPoses, deletedPoseIds: library.deletedPoseIds };
   const response = await fetch(`${trimSlash(settings.supabaseUrl)}/rest/v1/${SYNC_TABLE}?on_conflict=id`, {
     method: 'POST',
     headers: headers(settings, {
@@ -228,8 +230,8 @@ export async function applyCloudSnapshot(local: AppSettings, snapshot: CloudSnap
   return merged;
 }
 
-export async function applyCloudPoseLibrary(local: AppSettings, snapshot: CloudSnapshot): Promise<PoseScene[] | null> {
+export async function applyCloudPoseLibrary(local: AppSettings, snapshot: CloudSnapshot): Promise<StoredPoseLibrary | null> {
   if (snapshot.version < 2 || !snapshot.poses) return null;
   const poses = await replaceCloudAssetsWithLocal(snapshot.poses, local) as PoseScene[];
-  return poses.map(validateScene);
+  return { poses: poses.map(validateScene), deletedPoseIds: snapshot.deletedPoseIds };
 }
