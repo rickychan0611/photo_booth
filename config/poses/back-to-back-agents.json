@@ -10,9 +10,9 @@
     "cooperative"
   ],
   "audio": {
-    "markers": [],
+    "filePath": "project-asset:audio/elevenlabs/back-to-back-agents-a6938e882df347.mp3",
     "startMs": 0,
-    "filePath": ""
+    "markers": []
   },
   "roles": [
     {
@@ -32,6 +32,7 @@
   },
   "category": "friends",
   "animation": {
+    "durationMs": 6920,
     "captions": [
       {
         "text": "Stand back-to-back",
@@ -39,24 +40,23 @@
       },
       {
         "text": "Cross your arms",
-        "timeMs": 1987
+        "timeMs": 1973
       },
       {
         "text": "Look opposite ways",
-        "timeMs": 3973
+        "timeMs": 3947
       },
       {
         "text": "Secret-agent faces",
-        "timeMs": 5960
+        "timeMs": 5920
       }
-    ],
-    "durationMs": 6960
+    ]
   },
   "instruction": "Secret-agent faces",
   "compatibility": {
     "styles": [
-      "couple",
-      "friends"
+      "friends",
+      "family"
     ],
     "framing": [
       "full",

@@ -11,9 +11,9 @@
     "cooperative"
   ],
   "audio": {
-    "markers": [],
+    "filePath": "project-asset:audio/elevenlabs/women-2-half-cheek-squish-912294b8b73ca1.mp3",
     "startMs": 0,
-    "filePath": ""
+    "markers": []
   },
   "roles": [
     {
@@ -33,6 +33,7 @@
   },
   "category": "friends",
   "animation": {
+    "durationMs": 6920,
     "captions": [
       {
         "text": "Squish your cheeks in",
@@ -40,23 +41,23 @@
       },
       {
         "text": "Touch noses",
-        "timeMs": 1987
+        "timeMs": 1973
       },
       {
         "text": "Big sparkling eyes",
-        "timeMs": 3973
+        "timeMs": 3947
       },
       {
         "text": "Hold the cute face",
-        "timeMs": 5960
+        "timeMs": 5920
       }
-    ],
-    "durationMs": 6960
+    ]
   },
   "instruction": "Hold the cute face",
   "compatibility": {
     "styles": [
-      "friends"
+      "family",
+      "couple"
     ],
     "framing": [
       "half"

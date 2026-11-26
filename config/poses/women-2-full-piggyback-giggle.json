@@ -11,9 +11,9 @@
     "cooperative"
   ],
   "audio": {
-    "markers": [],
+    "filePath": "project-asset:audio/elevenlabs/women-2-full-piggyback-giggle-9cf51584d3e35e.mp3",
     "startMs": 0,
-    "filePath": ""
+    "markers": []
   },
   "roles": [
     {
@@ -33,6 +33,7 @@
   },
   "category": "friends",
   "animation": {
+    "durationMs": 6040,
     "captions": [
       {
         "text": "One hops on",
@@ -40,23 +41,22 @@
       },
       {
         "text": "Hold on tight",
-        "timeMs": 1690
+        "timeMs": 1680
       },
       {
         "text": "Kick your feet",
-        "timeMs": 3380
+        "timeMs": 3360
       },
       {
         "text": "Laugh at the lens",
-        "timeMs": 5070
+        "timeMs": 5040
       }
-    ],
-    "durationMs": 6070
+    ]
   },
   "instruction": "Laugh at the lens",
   "compatibility": {
     "styles": [
-      "friends"
+      "couple"
     ],
     "framing": [
       "full"

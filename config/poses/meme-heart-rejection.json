@@ -8,9 +8,9 @@
     "cooperative"
   ],
   "audio": {
-    "markers": [],
+    "filePath": "project-asset:audio/elevenlabs/meme-heart-rejection-3c0dabd504a8af.mp3",
     "startMs": 0,
-    "filePath": ""
+    "markers": []
   },
   "roles": [
     {
@@ -30,6 +30,7 @@
   },
   "category": "friends",
   "animation": {
+    "durationMs": 8520,
     "captions": [
       {
         "text": "One offers a hand heart",
@@ -37,26 +38,22 @@
       },
       {
         "text": "The other folds their arms",
-        "timeMs": 2517
+        "timeMs": 2507
       },
       {
         "text": "Add a deadpan stare",
-        "timeMs": 5033
+        "timeMs": 5013
       },
       {
         "text": "Hold the playful rejection",
-        "timeMs": 7550
+        "timeMs": 7520
       }
-    ],
-    "durationMs": 8550
+    ]
   },
   "instruction": "Hold the playful rejection",
   "compatibility": {
     "styles": [
-      "couple",
-      "friends",
-      "family",
-      "group"
+      "couple"
     ],
     "framing": [
       "full",

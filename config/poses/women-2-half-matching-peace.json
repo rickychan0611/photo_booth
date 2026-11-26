@@ -11,9 +11,9 @@
     "cooperative"
   ],
   "audio": {
-    "markers": [],
+    "filePath": "project-asset:audio/elevenlabs/women-2-half-matching-peace-e3b70e6660385c.mp3",
     "startMs": 0,
-    "filePath": ""
+    "markers": []
   },
   "roles": [
     {
@@ -33,6 +33,7 @@
   },
   "category": "friends",
   "animation": {
+    "durationMs": 6200,
     "captions": [
       {
         "text": "Peace signs up",
@@ -40,23 +41,23 @@
       },
       {
         "text": "Tilt opposite ways",
-        "timeMs": 1750
+        "timeMs": 1733
       },
       {
         "text": "Same smile",
-        "timeMs": 3500
+        "timeMs": 3467
       },
       {
         "text": "Hold the pair",
-        "timeMs": 5250
+        "timeMs": 5200
       }
-    ],
-    "durationMs": 6250
+    ]
   },
   "instruction": "Hold the pair",
   "compatibility": {
     "styles": [
-      "friends"
+      "friends",
+      "family"
     ],
     "framing": [
       "half"

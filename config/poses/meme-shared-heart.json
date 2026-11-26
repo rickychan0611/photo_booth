@@ -8,9 +8,9 @@
     "cooperative"
   ],
   "audio": {
-    "markers": [],
+    "filePath": "project-asset:audio/elevenlabs/meme-shared-heart-ce6b2c6a61d6da.mp3",
     "startMs": 0,
-    "filePath": ""
+    "markers": []
   },
   "roles": [
     {
@@ -30,6 +30,7 @@
   },
   "category": "friends",
   "animation": {
+    "durationMs": 7400,
     "captions": [
       {
         "text": "Stand close together",
@@ -37,26 +38,23 @@
       },
       {
         "text": "Make half a heart each",
-        "timeMs": 2143
+        "timeMs": 2133
       },
       {
         "text": "Join hands in the middle",
-        "timeMs": 4287
+        "timeMs": 4267
       },
       {
         "text": "Smile through your heart",
-        "timeMs": 6430
+        "timeMs": 6400
       }
-    ],
-    "durationMs": 7430
+    ]
   },
   "instruction": "Smile through your heart",
   "compatibility": {
     "styles": [
-      "couple",
       "friends",
-      "family",
-      "group"
+      "family"
     ],
     "framing": [
       "full",

@@ -3225,7 +3225,7 @@ function AdminApp() {
               <div className="panel-title-row">
                 <div>
                   <h2>Cloud sync</h2>
-                  <p>Saving an edit backs it up to the cloud. On another computer, press Sync now to download those changes. Camera, printer, folders, passwords, and API keys stay on each computer.</p>
+                  <p>Edits are saved on this computer only. Upload to cloud replaces the shared profile with this computer’s settings, templates, poses, and pose deletions. On another computer, Sync from cloud replaces its shared setup with that profile. Camera, printer, folders, passwords, and API keys stay on each computer.</p>
                 </div>
                 <strong>{cloudSyncStatus.state === 'syncing' ? 'SYNCING' : cloudSyncStatus.state.toUpperCase()}</strong>
               </div>
@@ -3237,12 +3237,22 @@ function AdminApp() {
                 <button
                   disabled={cloudSyncStatus.state === 'syncing'}
                   onClick={async () => {
-                    const status = await window.photoBooth.syncCloudNow();
+                    const status = await window.photoBooth.syncFromCloud();
                     setCloudSyncStatus(status);
                     setMessage(status.message);
                   }}
                 >
-                  <RefreshCw size={16} />Sync now
+                  <RefreshCw size={16} />Sync from cloud
+                </button>
+                <button
+                  disabled={cloudSyncStatus.state === 'syncing'}
+                  onClick={async () => {
+                    const status = await window.photoBooth.uploadToCloud();
+                    setCloudSyncStatus(status);
+                    setMessage(status.message);
+                  }}
+                >
+                  <ArrowUp size={16} />Upload to cloud
                 </button>
               </div>
             </div>

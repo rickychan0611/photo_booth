@@ -49,7 +49,8 @@ const api = {
     };
   },
   getCloudSyncStatus: () => ipcRenderer.invoke('cloud-sync:status') as Promise<CloudSyncStatus>,
-  syncCloudNow: () => ipcRenderer.invoke('cloud-sync:now') as Promise<CloudSyncStatus>,
+  syncFromCloud: () => ipcRenderer.invoke('cloud-sync:download') as Promise<CloudSyncStatus>,
+  uploadToCloud: () => ipcRenderer.invoke('cloud-sync:upload') as Promise<CloudSyncStatus>,
   onCloudSyncStatus: (callback: (status: CloudSyncStatus) => void) => {
     const listener = (_event: Electron.IpcRendererEvent, status: CloudSyncStatus) => callback(status);
     ipcRenderer.on('cloud-sync:status', listener);
