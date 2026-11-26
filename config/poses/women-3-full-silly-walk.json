@@ -1,4 +1,73 @@
 {
   "id": "women-3-full-silly-walk",
-  "deleted": true
+  "name": "Silly Walk",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-3",
+    "framing-full",
+    "mood-funny",
+    "child-safe",
+    "cooperative"
+  ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "alt": "Hold the nonsense",
+    "kind": "photo-cutout",
+    "accent": "#7d22c9",
+    "assetPath": "pose-guides/women-3-full-silly-walk.webp"
+  },
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Each pick a silly step",
+        "timeMs": 0
+      },
+      {
+        "text": "March toward the camera",
+        "timeMs": 2257
+      },
+      {
+        "text": "Stop at the same time",
+        "timeMs": 4513
+      },
+      {
+        "text": "Hold the nonsense",
+        "timeMs": 6770
+      }
+    ],
+    "durationMs": 7770
+  },
+  "instruction": "Hold the nonsense",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 3,
+    "minPeople": 3
+  },
+  "schemaVersion": 2
 }

@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "lovers-full-forehead-promise",
   "name": "Forehead Promise",
-  "category": "couple",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Touch foreheads",
-  "animation": {
-    "durationMs": 6640,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Stand toe to toe"
-      },
-      {
-        "timeMs": 1700,
-        "text": "Hold both hands"
-      },
-      {
-        "timeMs": 3200,
-        "text": "Lean in gently"
-      },
-      {
-        "timeMs": 4580,
-        "text": "Touch foreheads"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "couple"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -56,36 +26,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/lovers-full-forehead-promise.webp",
     "alt": "Touch foreheads",
-    "accent": "#1769ff"
+    "kind": "photo-cutout",
+    "accent": "#1769ff",
+    "assetPath": "pose-guides/lovers-full-forehead-promise.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/lovers-full-forehead-promise-b501ad7745381e.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5640,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Stand toe to toe"
-        },
-        {
-          "timeMs": 1700,
-          "text": "Hold both hands"
-        },
-        {
-          "timeMs": 3200,
-          "text": "Lean in gently"
-        },
-        {
-          "timeMs": 4580,
-          "text": "Touch foreheads"
-        }
-      ]
-    }
-  }
+  "category": "couple",
+  "animation": {
+    "captions": [
+      {
+        "text": "Stand toe to toe",
+        "timeMs": 0
+      },
+      {
+        "text": "Hold both hands",
+        "timeMs": 1880
+      },
+      {
+        "text": "Lean in gently",
+        "timeMs": 3760
+      },
+      {
+        "text": "Touch foreheads",
+        "timeMs": 5640
+      }
+    ],
+    "durationMs": 6640
+  },
+  "instruction": "Touch foreheads",
+  "compatibility": {
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

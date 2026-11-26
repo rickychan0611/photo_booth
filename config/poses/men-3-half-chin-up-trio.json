@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "men-3-half-chin-up-trio",
   "name": "Chin-Up Trio",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold, then one smile",
-  "animation": {
-    "durationMs": 7350,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Same chin height"
-      },
-      {
-        "timeMs": 1560,
-        "text": "Same stare"
-      },
-      {
-        "timeMs": 2780,
-        "text": "No smiling yet"
-      },
-      {
-        "timeMs": 4120,
-        "text": "Hold, then one smile"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 3,
-    "maxPeople": 3,
-    "styles": [
-      "friends"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -60,36 +30,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/men-3-half-chin-up-trio.webp",
     "alt": "Hold, then one smile",
-    "accent": "#ffd21a"
+    "kind": "photo-cutout",
+    "accent": "#ffd21a",
+    "assetPath": "pose-guides/men-3-half-chin-up-trio.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/men-3-half-chin-up-trio-9b26526a18a716.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6350,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Same chin height"
-        },
-        {
-          "timeMs": 1560,
-          "text": "Same stare"
-        },
-        {
-          "timeMs": 2780,
-          "text": "No smiling yet"
-        },
-        {
-          "timeMs": 4120,
-          "text": "Hold, then one smile"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Same chin height",
+        "timeMs": 0
+      },
+      {
+        "text": "Same stare",
+        "timeMs": 2117
+      },
+      {
+        "text": "No smiling yet",
+        "timeMs": 4233
+      },
+      {
+        "text": "Hold, then one smile",
+        "timeMs": 6350
+      }
+    ],
+    "durationMs": 7350
+  },
+  "instruction": "Hold, then one smile",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 3,
+    "minPeople": 3
+  },
+  "schemaVersion": 2
 }

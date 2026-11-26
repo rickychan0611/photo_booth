@@ -1,28 +1,16 @@
 {
-  "schemaVersion": 2,
   "id": "meme-dab",
   "name": "Dab Throwback",
-  "category": "group",
   "tags": [
     "meme-pack-2026",
     "gender-inclusive",
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Freeze your dab",
-  "compatibility": {
-    "minPeople": 3,
-    "maxPeople": 8,
-    "styles": [
-      "friends",
-      "family",
-      "group"
-    ],
-    "framing": [
-      "full",
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -38,58 +26,48 @@
       "repeatable": true
     }
   ],
+  "visual": {
+    "alt": "Each person hides face in a bent elbow while extending the opposite arm diagonally; recognizable dab.",
+    "kind": "photo-cutout",
+    "accent": "#1769ff",
+    "assetPath": "pose-guides/meme-dab.webp"
+  },
+  "category": "group",
   "animation": {
-    "durationMs": 7190,
     "captions": [
       {
-        "timeMs": 0,
-        "text": "Bend one elbow"
+        "text": "Bend one elbow",
+        "timeMs": 0
       },
       {
-        "timeMs": 1460,
-        "text": "Hide your face in it"
+        "text": "Hide your face in it",
+        "timeMs": 2063
       },
       {
-        "timeMs": 2900,
-        "text": "Reach the other arm diagonally"
+        "text": "Reach the other arm diagonally",
+        "timeMs": 4127
       },
       {
-        "timeMs": 4940,
-        "text": "Freeze your dab"
+        "text": "Freeze your dab",
+        "timeMs": 6190
       }
-    ]
+    ],
+    "durationMs": 7190
   },
-  "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/meme-dab.webp",
-    "alt": "Each person hides face in a bent elbow while extending the opposite arm diagonally; recognizable dab.",
-    "accent": "#1769ff"
+  "instruction": "Freeze your dab",
+  "compatibility": {
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 8,
+    "minPeople": 3
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/meme-dab-97e06b5bd74188.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6190,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Bend one elbow"
-        },
-        {
-          "timeMs": 1460,
-          "text": "Hide your face in it"
-        },
-        {
-          "timeMs": 2900,
-          "text": "Reach the other arm diagonally"
-        },
-        {
-          "timeMs": 4940,
-          "text": "Freeze your dab"
-        }
-      ]
-    }
-  }
+  "schemaVersion": 2
 }

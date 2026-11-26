@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "lovers-full-proposal-gasp",
   "name": "Proposal Gasp",
-  "category": "couple",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Freeze the big yes",
-  "animation": {
-    "durationMs": 7270,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "One of you kneels"
-      },
-      {
-        "timeMs": 1360,
-        "text": "The other covers their mouth"
-      },
-      {
-        "timeMs": 3220,
-        "text": "Hands to your cheeks"
-      },
-      {
-        "timeMs": 4580,
-        "text": "Freeze the big yes"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "couple"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -56,36 +26,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/lovers-full-proposal-gasp.webp",
     "alt": "Freeze the big yes",
-    "accent": "#ef2929"
+    "kind": "photo-cutout",
+    "accent": "#ef2929",
+    "assetPath": "pose-guides/lovers-full-proposal-gasp.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/lovers-full-proposal-gasp-71bda85f3b5140.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6270,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "One of you kneels"
-        },
-        {
-          "timeMs": 1360,
-          "text": "The other covers their mouth"
-        },
-        {
-          "timeMs": 3220,
-          "text": "Hands to your cheeks"
-        },
-        {
-          "timeMs": 4580,
-          "text": "Freeze the big yes"
-        }
-      ]
-    }
-  }
+  "category": "couple",
+  "animation": {
+    "captions": [
+      {
+        "text": "One of you kneels",
+        "timeMs": 0
+      },
+      {
+        "text": "The other covers their mouth",
+        "timeMs": 2090
+      },
+      {
+        "text": "Hands to your cheeks",
+        "timeMs": 4180
+      },
+      {
+        "text": "Freeze the big yes",
+        "timeMs": 6270
+      }
+    ],
+    "durationMs": 7270
+  },
+  "instruction": "Freeze the big yes",
+  "compatibility": {
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

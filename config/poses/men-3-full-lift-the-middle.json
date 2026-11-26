@@ -1,4 +1,73 @@
 {
   "id": "men-3-full-lift-the-middle",
-  "deleted": true
+  "name": "Lift the Middle",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-men-3",
+    "framing-full",
+    "mood-crazy",
+    "child-safe",
+    "cooperative"
+  ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "men",
+      "repeatable": false
+    },
+    {
+      "role": "men",
+      "repeatable": false
+    },
+    {
+      "role": "men",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "alt": "Hold the lift",
+    "kind": "photo-cutout",
+    "accent": "#ef2929",
+    "assetPath": "pose-guides/men-3-full-lift-the-middle.webp"
+  },
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Middle friend hops",
+        "timeMs": 0
+      },
+      {
+        "text": "Two friends support him",
+        "timeMs": 1880
+      },
+      {
+        "text": "One fist up",
+        "timeMs": 3760
+      },
+      {
+        "text": "Hold the lift",
+        "timeMs": 5640
+      }
+    ],
+    "durationMs": 6640
+  },
+  "instruction": "Hold the lift",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 3,
+    "minPeople": 3
+  },
+  "schemaVersion": 2
 }

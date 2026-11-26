@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "women-4-half-heart-frame",
   "name": "Heart Frame",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold the heart",
-  "animation": {
-    "durationMs": 7690,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Outside hands make a heart"
-      },
-      {
-        "timeMs": 2120,
-        "text": "Inside friends pose inside it"
-      },
-      {
-        "timeMs": 4340,
-        "text": "Everyone looks through"
-      },
-      {
-        "timeMs": 5700,
-        "text": "Hold the heart"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 4,
-    "maxPeople": 4,
-    "styles": [
-      "friends"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -64,36 +34,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/women-4-half-heart-frame.webp",
     "alt": "Hold the heart",
-    "accent": "#0a9f9f"
+    "kind": "photo-cutout",
+    "accent": "#0a9f9f",
+    "assetPath": "pose-guides/women-4-half-heart-frame.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/women-4-half-heart-frame-bf9b56d6b76ecd.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6690,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Outside hands make a heart"
-        },
-        {
-          "timeMs": 2120,
-          "text": "Inside friends pose inside it"
-        },
-        {
-          "timeMs": 4340,
-          "text": "Everyone looks through"
-        },
-        {
-          "timeMs": 5700,
-          "text": "Hold the heart"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Outside hands make a heart",
+        "timeMs": 0
+      },
+      {
+        "text": "Inside friends pose inside it",
+        "timeMs": 2230
+      },
+      {
+        "text": "Everyone looks through",
+        "timeMs": 4460
+      },
+      {
+        "text": "Hold the heart",
+        "timeMs": 6690
+      }
+    ],
+    "durationMs": 7690
+  },
+  "instruction": "Hold the heart",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 4,
+    "minPeople": 4
+  },
+  "schemaVersion": 2
 }

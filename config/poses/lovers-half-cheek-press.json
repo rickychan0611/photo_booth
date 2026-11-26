@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "lovers-half-cheek-press",
   "name": "Cheek Press",
-  "category": "couple",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Stay right there",
-  "animation": {
-    "durationMs": 6490,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Press cheeks together"
-      },
-      {
-        "timeMs": 1540,
-        "text": "Close your eyes"
-      },
-      {
-        "timeMs": 2840,
-        "text": "Soft little smiles"
-      },
-      {
-        "timeMs": 4380,
-        "text": "Stay right there"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "couple"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -56,36 +26,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/lovers-half-cheek-press.webp",
     "alt": "Stay right there",
-    "accent": "#ff168f"
+    "kind": "photo-cutout",
+    "accent": "#ff168f",
+    "assetPath": "pose-guides/lovers-half-cheek-press.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/lovers-half-cheek-press-7a1b72ebc2620f.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5490,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Press cheeks together"
-        },
-        {
-          "timeMs": 1540,
-          "text": "Close your eyes"
-        },
-        {
-          "timeMs": 2840,
-          "text": "Soft little smiles"
-        },
-        {
-          "timeMs": 4380,
-          "text": "Stay right there"
-        }
-      ]
-    }
-  }
+  "category": "couple",
+  "animation": {
+    "captions": [
+      {
+        "text": "Press cheeks together",
+        "timeMs": 0
+      },
+      {
+        "text": "Close your eyes",
+        "timeMs": 1830
+      },
+      {
+        "text": "Soft little smiles",
+        "timeMs": 3660
+      },
+      {
+        "text": "Stay right there",
+        "timeMs": 5490
+      }
+    ],
+    "durationMs": 6490
+  },
+  "instruction": "Stay right there",
+  "compatibility": {
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": false,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

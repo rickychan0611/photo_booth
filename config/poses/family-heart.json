@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "family-heart",
   "name": "Family Hearts",
-  "category": "family",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,39 +9,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Family smiles",
-  "animation": {
-    "durationMs": 7030,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Build a family cluster"
-      },
-      {
-        "timeMs": 1880,
-        "text": "Raise your hands"
-      },
-      {
-        "timeMs": 3040,
-        "text": "Make matching hearts"
-      },
-      {
-        "timeMs": 4520,
-        "text": "Family smiles"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 3,
-    "maxPeople": null,
-    "styles": [
-      "friends",
-      "family"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -60,36 +29,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/family-heart.webp",
     "alt": "Family smiles",
-    "accent": "#ef2929"
+    "kind": "photo-cutout",
+    "accent": "#ef2929",
+    "assetPath": "pose-guides/family-heart.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/family-heart-1b56d5731ea65e.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6030,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Build a family cluster"
-        },
-        {
-          "timeMs": 1880,
-          "text": "Raise your hands"
-        },
-        {
-          "timeMs": 3040,
-          "text": "Make matching hearts"
-        },
-        {
-          "timeMs": 4520,
-          "text": "Family smiles"
-        }
-      ]
-    }
-  }
+  "category": "family",
+  "animation": {
+    "captions": [
+      {
+        "text": "Build a family cluster",
+        "timeMs": 0
+      },
+      {
+        "text": "Raise your hands",
+        "timeMs": 2010
+      },
+      {
+        "text": "Make matching hearts",
+        "timeMs": 4020
+      },
+      {
+        "text": "Family smiles",
+        "timeMs": 6030
+      }
+    ],
+    "durationMs": 7030
+  },
+  "instruction": "Family smiles",
+  "compatibility": {
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": null,
+    "minPeople": 3
+  },
+  "schemaVersion": 2
 }

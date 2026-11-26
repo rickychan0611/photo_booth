@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "accusation-circle-four",
   "name": "Accusation Circle",
-  "category": "funny",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,40 +9,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Who did it?",
-  "animation": {
-    "durationMs": 5990,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Turn toward center"
-      },
-      {
-        "timeMs": 1480,
-        "text": "Point to someone else"
-      },
-      {
-        "timeMs": 2920,
-        "text": "Look at camera"
-      },
-      {
-        "timeMs": 4040,
-        "text": "Who did it?"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 4,
-    "maxPeople": 4,
-    "styles": [
-      "friends",
-      "family",
-      "group"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -65,36 +33,46 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/accusation-circle-four.webp",
     "alt": "Who did it?",
-    "accent": "#ff168f"
+    "kind": "photo-cutout",
+    "accent": "#ff168f",
+    "assetPath": "pose-guides/accusation-circle-four.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/accusation-circle-four-58d40ca5cd41e5.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 4990,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Turn toward center"
-        },
-        {
-          "timeMs": 1480,
-          "text": "Point to someone else"
-        },
-        {
-          "timeMs": 2920,
-          "text": "Look at camera"
-        },
-        {
-          "timeMs": 4040,
-          "text": "Who did it?"
-        }
-      ]
-    }
-  }
+  "category": "funny",
+  "animation": {
+    "captions": [
+      {
+        "text": "Turn toward center",
+        "timeMs": 0
+      },
+      {
+        "text": "Point to someone else",
+        "timeMs": 1663
+      },
+      {
+        "text": "Look at camera",
+        "timeMs": 3327
+      },
+      {
+        "text": "Who did it?",
+        "timeMs": 4990
+      }
+    ],
+    "durationMs": 5990
+  },
+  "instruction": "Who did it?",
+  "compatibility": {
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 4,
+    "minPeople": 4
+  },
+  "schemaVersion": 2
 }

@@ -1,29 +1,16 @@
 {
-  "schemaVersion": 2,
   "id": "meme-shared-heart",
   "name": "Shared Heart",
-  "category": "friends",
   "tags": [
     "meme-pack-2026",
     "gender-inclusive",
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Smile through your heart",
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "couple",
-      "friends",
-      "family",
-      "group"
-    ],
-    "framing": [
-      "full",
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -35,58 +22,49 @@
       "repeatable": false
     }
   ],
+  "visual": {
+    "alt": "Each partner forms one half of the same hand heart, hands joined between them, happy smiles.",
+    "kind": "photo-cutout",
+    "accent": "#ffd21a",
+    "assetPath": "pose-guides/meme-shared-heart.webp"
+  },
+  "category": "friends",
   "animation": {
-    "durationMs": 7430,
     "captions": [
       {
-        "timeMs": 0,
-        "text": "Stand close together"
+        "text": "Stand close together",
+        "timeMs": 0
       },
       {
-        "timeMs": 1700,
-        "text": "Make half a heart each"
+        "text": "Make half a heart each",
+        "timeMs": 2143
       },
       {
-        "timeMs": 3460,
-        "text": "Join hands in the middle"
+        "text": "Join hands in the middle",
+        "timeMs": 4287
       },
       {
-        "timeMs": 5060,
-        "text": "Smile through your heart"
+        "text": "Smile through your heart",
+        "timeMs": 6430
       }
-    ]
+    ],
+    "durationMs": 7430
   },
-  "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/meme-shared-heart.webp",
-    "alt": "Each partner forms one half of the same hand heart, hands joined between them, happy smiles.",
-    "accent": "#ffd21a"
+  "instruction": "Smile through your heart",
+  "compatibility": {
+    "styles": [
+      "couple",
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 2,
+    "minPeople": 2
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/meme-shared-heart-ce6b2c6a61d6da.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6430,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Stand close together"
-        },
-        {
-          "timeMs": 1700,
-          "text": "Make half a heart each"
-        },
-        {
-          "timeMs": 3460,
-          "text": "Join hands in the middle"
-        },
-        {
-          "timeMs": 5060,
-          "text": "Smile through your heart"
-        }
-      ]
-    }
-  }
+  "schemaVersion": 2
 }

@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "group-5-full-wave-rows",
   "name": "Wave Rows",
-  "category": "group",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,40 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold the crest",
-  "animation": {
-    "durationMs": 6640,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Back row starts the wave"
-      },
-      {
-        "timeMs": 2040,
-        "text": "Front row follows"
-      },
-      {
-        "timeMs": 3400,
-        "text": "Hands high"
-      },
-      {
-        "timeMs": 4400,
-        "text": "Hold the crest"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 5,
-    "maxPeople": null,
-    "styles": [
-      "group",
-      "friends",
-      "family"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -70,36 +38,46 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/group-5-full-wave-rows.webp",
     "alt": "Hold the crest",
-    "accent": "#7d22c9"
+    "kind": "photo-cutout",
+    "accent": "#7d22c9",
+    "assetPath": "pose-guides/group-5-full-wave-rows.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/group-5-full-wave-rows-e406b466384bc1.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5640,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Back row starts the wave"
-        },
-        {
-          "timeMs": 2040,
-          "text": "Front row follows"
-        },
-        {
-          "timeMs": 3400,
-          "text": "Hands high"
-        },
-        {
-          "timeMs": 4400,
-          "text": "Hold the crest"
-        }
-      ]
-    }
-  }
+  "category": "group",
+  "animation": {
+    "captions": [
+      {
+        "text": "Back row starts the wave",
+        "timeMs": 0
+      },
+      {
+        "text": "Front row follows",
+        "timeMs": 1880
+      },
+      {
+        "text": "Hands high",
+        "timeMs": 3760
+      },
+      {
+        "text": "Hold the crest",
+        "timeMs": 5640
+      }
+    ],
+    "durationMs": 6640
+  },
+  "instruction": "Hold the crest",
+  "compatibility": {
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": null,
+    "minPeople": 5
+  },
+  "schemaVersion": 2
 }

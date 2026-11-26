@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "women-2-half-matching-peace",
   "name": "Matching Peace",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold the pair",
-  "animation": {
-    "durationMs": 6250,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Peace signs up"
-      },
-      {
-        "timeMs": 1340,
-        "text": "Tilt opposite ways"
-      },
-      {
-        "timeMs": 3020,
-        "text": "Same smile"
-      },
-      {
-        "timeMs": 4140,
-        "text": "Hold the pair"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "friends"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -56,36 +26,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/women-2-half-matching-peace.webp",
     "alt": "Hold the pair",
-    "accent": "#08cbe8"
+    "kind": "photo-cutout",
+    "accent": "#08cbe8",
+    "assetPath": "pose-guides/women-2-half-matching-peace.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/women-2-half-matching-peace-e3b70e6660385c.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5250,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Peace signs up"
-        },
-        {
-          "timeMs": 1340,
-          "text": "Tilt opposite ways"
-        },
-        {
-          "timeMs": 3020,
-          "text": "Same smile"
-        },
-        {
-          "timeMs": 4140,
-          "text": "Hold the pair"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Peace signs up",
+        "timeMs": 0
+      },
+      {
+        "text": "Tilt opposite ways",
+        "timeMs": 1750
+      },
+      {
+        "text": "Same smile",
+        "timeMs": 3500
+      },
+      {
+        "text": "Hold the pair",
+        "timeMs": 5250
+      }
+    ],
+    "durationMs": 6250
+  },
+  "instruction": "Hold the pair",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

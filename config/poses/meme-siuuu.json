@@ -1,18 +1,53 @@
 {
-  "schemaVersion": 2,
   "id": "meme-siuuu",
   "name": "Siuuu Freeze",
-  "category": "solo",
   "tags": [
     "meme-pack-2026",
     "gender-inclusive",
     "child-safe",
     "solo"
   ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "alt": "Feet planted wide, arms straight down and outward, chest lifted and chin raised in a triumphant celebration.",
+    "kind": "photo-cutout",
+    "accent": "#ff168f",
+    "assetPath": "pose-guides/meme-siuuu.webp"
+  },
+  "category": "solo",
+  "animation": {
+    "captions": [
+      {
+        "text": "Plant your feet wide",
+        "timeMs": 0
+      },
+      {
+        "text": "Arms down and outward",
+        "timeMs": 2117
+      },
+      {
+        "text": "Lift your chin",
+        "timeMs": 4233
+      },
+      {
+        "text": "Hold your victory pose",
+        "timeMs": 6350
+      }
+    ],
+    "durationMs": 7350
+  },
   "instruction": "Hold your victory pose",
   "compatibility": {
-    "minPeople": 1,
-    "maxPeople": 8,
     "styles": [
       "solo",
       "couple",
@@ -23,66 +58,9 @@
     "framing": [
       "full"
     ],
-    "childSafe": true
+    "childSafe": true,
+    "maxPeople": 8,
+    "minPeople": 1
   },
-  "roles": [
-    {
-      "role": "any",
-      "repeatable": true
-    }
-  ],
-  "animation": {
-    "durationMs": 7350,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Plant your feet wide"
-      },
-      {
-        "timeMs": 1680,
-        "text": "Arms down and outward"
-      },
-      {
-        "timeMs": 3380,
-        "text": "Lift your chin"
-      },
-      {
-        "timeMs": 4480,
-        "text": "Hold your victory pose"
-      }
-    ]
-  },
-  "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/meme-siuuu.webp",
-    "alt": "Feet planted wide, arms straight down and outward, chest lifted and chin raised in a triumphant celebration.",
-    "accent": "#ff168f"
-  },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/meme-siuuu-62ebb05704a0ea.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6350,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Plant your feet wide"
-        },
-        {
-          "timeMs": 1680,
-          "text": "Arms down and outward"
-        },
-        {
-          "timeMs": 3380,
-          "text": "Lift your chin"
-        },
-        {
-          "timeMs": 4480,
-          "text": "Hold your victory pose"
-        }
-      ]
-    }
-  }
+  "schemaVersion": 2
 }

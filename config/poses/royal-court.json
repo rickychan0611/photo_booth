@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "royal-court",
   "name": "Royal Court",
-  "category": "funny",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,41 +9,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Royal drama",
-  "animation": {
-    "durationMs": 7350,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Royal takes the center"
-      },
-      {
-        "timeMs": 1920,
-        "text": "Court forms around"
-      },
-      {
-        "timeMs": 3460,
-        "text": "Choose your court role"
-      },
-      {
-        "timeMs": 4960,
-        "text": "Royal drama"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 5,
-    "maxPeople": null,
-    "styles": [
-      "group",
-      "friends",
-      "family"
-    ],
-    "framing": [
-      "full",
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -70,36 +37,47 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/royal-court.webp",
     "alt": "Royal drama",
-    "accent": "#ffd21a"
+    "kind": "photo-cutout",
+    "accent": "#ffd21a",
+    "assetPath": "pose-guides/royal-court.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/royal-court-23bd54bb0cd885.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6350,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Royal takes the center"
-        },
-        {
-          "timeMs": 1920,
-          "text": "Court forms around"
-        },
-        {
-          "timeMs": 3460,
-          "text": "Choose your court role"
-        },
-        {
-          "timeMs": 4960,
-          "text": "Royal drama"
-        }
-      ]
-    }
-  }
+  "category": "funny",
+  "animation": {
+    "captions": [
+      {
+        "text": "Royal takes the center",
+        "timeMs": 0
+      },
+      {
+        "text": "Court forms around",
+        "timeMs": 2117
+      },
+      {
+        "text": "Choose your court role",
+        "timeMs": 4233
+      },
+      {
+        "text": "Royal drama",
+        "timeMs": 6350
+      }
+    ],
+    "durationMs": 7350
+  },
+  "instruction": "Royal drama",
+  "compatibility": {
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": null,
+    "minPeople": 5
+  },
+  "schemaVersion": 2
 }

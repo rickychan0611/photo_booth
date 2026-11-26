@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "women-2-full-lean-on-me",
   "name": "Lean on Me",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Soft smiles",
-  "animation": {
-    "durationMs": 7110,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Stand shoulder to shoulder"
-      },
-      {
-        "timeMs": 2120,
-        "text": "One leans her head"
-      },
-      {
-        "timeMs": 3400,
-        "text": "The other steadies her"
-      },
-      {
-        "timeMs": 5000,
-        "text": "Soft smiles"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "couple"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -56,36 +26,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/women-2-full-lean-on-me.webp",
     "alt": "Soft smiles",
-    "accent": "#08cbe8"
+    "kind": "photo-cutout",
+    "accent": "#08cbe8",
+    "assetPath": "pose-guides/women-2-full-lean-on-me.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/women-2-full-lean-on-me-02f69ccd0df5cd.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6110,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Stand shoulder to shoulder"
-        },
-        {
-          "timeMs": 2120,
-          "text": "One leans her head"
-        },
-        {
-          "timeMs": 3400,
-          "text": "The other steadies her"
-        },
-        {
-          "timeMs": 5000,
-          "text": "Soft smiles"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Stand shoulder to shoulder",
+        "timeMs": 0
+      },
+      {
+        "text": "One leans her head",
+        "timeMs": 2037
+      },
+      {
+        "text": "The other steadies her",
+        "timeMs": 4073
+      },
+      {
+        "text": "Soft smiles",
+        "timeMs": 6110
+      }
+    ],
+    "durationMs": 7110
+  },
+  "instruction": "Soft smiles",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "women-3-half-stacked-chins",
   "name": "Stacked Chins",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold the stack",
-  "animation": {
-    "durationMs": 6640,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Lean in a staircase"
-      },
-      {
-        "timeMs": 1720,
-        "text": "Chins almost touching"
-      },
-      {
-        "timeMs": 3500,
-        "text": "Bright eyes"
-      },
-      {
-        "timeMs": 4540,
-        "text": "Hold the stack"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 3,
-    "maxPeople": 3,
-    "styles": [
-      "friends"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -60,36 +30,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/women-3-half-stacked-chins.webp",
     "alt": "Hold the stack",
-    "accent": "#ff168f"
+    "kind": "photo-cutout",
+    "accent": "#ff168f",
+    "assetPath": "pose-guides/women-3-half-stacked-chins.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/women-3-half-stacked-chins-2ab6c547f9d285.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5640,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Lean in a staircase"
-        },
-        {
-          "timeMs": 1720,
-          "text": "Chins almost touching"
-        },
-        {
-          "timeMs": 3500,
-          "text": "Bright eyes"
-        },
-        {
-          "timeMs": 4540,
-          "text": "Hold the stack"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Lean in a staircase",
+        "timeMs": 0
+      },
+      {
+        "text": "Chins almost touching",
+        "timeMs": 1880
+      },
+      {
+        "text": "Bright eyes",
+        "timeMs": 3760
+      },
+      {
+        "text": "Hold the stack",
+        "timeMs": 5640
+      }
+    ],
+    "durationMs": 6640
+  },
+  "instruction": "Hold the stack",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 3,
+    "minPeople": 3
+  },
+  "schemaVersion": 2
 }

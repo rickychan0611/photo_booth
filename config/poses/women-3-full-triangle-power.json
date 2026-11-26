@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "women-3-full-triangle-power",
   "name": "Triangle Power",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Power stare",
-  "animation": {
-    "durationMs": 6720,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "One steps forward"
-      },
-      {
-        "timeMs": 1700,
-        "text": "Two angle behind"
-      },
-      {
-        "timeMs": 3320,
-        "text": "Hands on hips"
-      },
-      {
-        "timeMs": 4500,
-        "text": "Power stare"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 3,
-    "maxPeople": 3,
-    "styles": [
-      "friends"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -60,36 +30,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/women-3-full-triangle-power.webp",
     "alt": "Power stare",
-    "accent": "#ff168f"
+    "kind": "photo-cutout",
+    "accent": "#ff168f",
+    "assetPath": "pose-guides/women-3-full-triangle-power.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/women-3-full-triangle-power-f8627aa999ceee.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5720,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "One steps forward"
-        },
-        {
-          "timeMs": 1700,
-          "text": "Two angle behind"
-        },
-        {
-          "timeMs": 3320,
-          "text": "Hands on hips"
-        },
-        {
-          "timeMs": 4500,
-          "text": "Power stare"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "One steps forward",
+        "timeMs": 0
+      },
+      {
+        "text": "Two angle behind",
+        "timeMs": 1907
+      },
+      {
+        "text": "Hands on hips",
+        "timeMs": 3813
+      },
+      {
+        "text": "Power stare",
+        "timeMs": 5720
+      }
+    ],
+    "durationMs": 6720
+  },
+  "instruction": "Power stare",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 3,
+    "minPeople": 3
+  },
+  "schemaVersion": 2
 }

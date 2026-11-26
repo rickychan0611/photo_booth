@@ -1,4 +1,72 @@
 {
   "id": "meme-distracted-trio",
-  "deleted": true
+  "name": "Distracted Trio",
+  "tags": [
+    "meme-pack-2026",
+    "gender-inclusive",
+    "child-safe",
+    "cooperative"
+  ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "alt": "Three-person scene: two companions together, one turns to admire third friend while their companion looks shocked; playful, all faces visible.",
+    "kind": "photo-cutout",
+    "accent": "#ff168f",
+    "assetPath": "pose-guides/meme-distracted-trio.webp"
+  },
+  "category": "group",
+  "animation": {
+    "captions": [
+      {
+        "text": "Two stand together",
+        "timeMs": 0
+      },
+      {
+        "text": "One looks at the third friend",
+        "timeMs": 2230
+      },
+      {
+        "text": "Their partner looks shocked",
+        "timeMs": 4460
+      },
+      {
+        "text": "Freeze the distraction",
+        "timeMs": 6690
+      }
+    ],
+    "durationMs": 7690
+  },
+  "instruction": "Freeze the distraction",
+  "compatibility": {
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 3,
+    "minPeople": 3
+  },
+  "schemaVersion": 2
 }

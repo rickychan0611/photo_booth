@@ -1,4 +1,83 @@
 {
   "id": "group-5-full-circle-hands",
-  "deleted": true
+  "name": "Circle of Hands",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-full",
+    "mood-sweet",
+    "child-safe",
+    "cooperative"
+  ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "alt": "Smile across the circle",
+    "kind": "photo-cutout",
+    "accent": "#ef2929",
+    "assetPath": "pose-guides/group-5-full-circle-hands.webp"
+  },
+  "category": "group",
+  "animation": {
+    "captions": [
+      {
+        "text": "Make a loose circle",
+        "timeMs": 0
+      },
+      {
+        "text": "Hold your neighbors' hands",
+        "timeMs": 2037
+      },
+      {
+        "text": "Lean in",
+        "timeMs": 4073
+      },
+      {
+        "text": "Smile across the circle",
+        "timeMs": 6110
+      }
+    ],
+    "durationMs": 7110
+  },
+  "instruction": "Smile across the circle",
+  "compatibility": {
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": null,
+    "minPeople": 5
+  },
+  "schemaVersion": 2
 }

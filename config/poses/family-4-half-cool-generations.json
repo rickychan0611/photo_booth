@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "family-4-half-cool-generations",
   "name": "Cool Generations",
-  "category": "family",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Hold the cool",
-  "animation": {
-    "durationMs": 6960,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Same lean"
-      },
-      {
-        "timeMs": 1260,
-        "text": "Mix smiles and smirks"
-      },
-      {
-        "timeMs": 3040,
-        "text": "Look just past the lens"
-      },
-      {
-        "timeMs": 4820,
-        "text": "Hold the cool"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 4,
-    "maxPeople": 4,
-    "styles": [
-      "family"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -64,36 +34,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/family-4-half-cool-generations.webp",
     "alt": "Hold the cool",
-    "accent": "#ff8214"
+    "kind": "photo-cutout",
+    "accent": "#ff8214",
+    "assetPath": "pose-guides/family-4-half-cool-generations.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/family-4-half-cool-generations-72c0e7c24a2d79.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5960,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Same lean"
-        },
-        {
-          "timeMs": 1260,
-          "text": "Mix smiles and smirks"
-        },
-        {
-          "timeMs": 3040,
-          "text": "Look just past the lens"
-        },
-        {
-          "timeMs": 4820,
-          "text": "Hold the cool"
-        }
-      ]
-    }
-  }
+  "category": "family",
+  "animation": {
+    "captions": [
+      {
+        "text": "Same lean",
+        "timeMs": 0
+      },
+      {
+        "text": "Mix smiles and smirks",
+        "timeMs": 1987
+      },
+      {
+        "text": "Look just past the lens",
+        "timeMs": 3973
+      },
+      {
+        "text": "Hold the cool",
+        "timeMs": 5960
+      }
+    ],
+    "durationMs": 6960
+  },
+  "instruction": "Hold the cool",
+  "compatibility": {
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": false,
+    "maxPeople": 4,
+    "minPeople": 4
+  },
+  "schemaVersion": 2
 }

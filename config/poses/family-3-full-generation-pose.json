@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "family-3-full-generation-pose",
   "name": "Generation Pose",
-  "category": "family",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Hold the portrait",
-  "animation": {
-    "durationMs": 7530,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Stagger your height"
-      },
-      {
-        "timeMs": 1560,
-        "text": "Hands in pockets or on hips"
-      },
-      {
-        "timeMs": 3660,
-        "text": "Look just off camera"
-      },
-      {
-        "timeMs": 5420,
-        "text": "Hold the portrait"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 3,
-    "maxPeople": 3,
-    "styles": [
-      "family"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -60,36 +30,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/family-3-full-generation-pose.webp",
     "alt": "Hold the portrait",
-    "accent": "#1769ff"
+    "kind": "photo-cutout",
+    "accent": "#1769ff",
+    "assetPath": "pose-guides/family-3-full-generation-pose.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/family-3-full-generation-pose-434e168938a84f.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6530,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Stagger your height"
-        },
-        {
-          "timeMs": 1560,
-          "text": "Hands in pockets or on hips"
-        },
-        {
-          "timeMs": 3660,
-          "text": "Look just off camera"
-        },
-        {
-          "timeMs": 5420,
-          "text": "Hold the portrait"
-        }
-      ]
-    }
-  }
+  "category": "family",
+  "animation": {
+    "captions": [
+      {
+        "text": "Stagger your height",
+        "timeMs": 0
+      },
+      {
+        "text": "Hands in pockets or on hips",
+        "timeMs": 2177
+      },
+      {
+        "text": "Look just off camera",
+        "timeMs": 4353
+      },
+      {
+        "text": "Hold the portrait",
+        "timeMs": 6530
+      }
+    ],
+    "durationMs": 7530
+  },
+  "instruction": "Hold the portrait",
+  "compatibility": {
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false,
+    "maxPeople": 3,
+    "minPeople": 3
+  },
+  "schemaVersion": 2
 }

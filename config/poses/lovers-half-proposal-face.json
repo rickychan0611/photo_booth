@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "lovers-half-proposal-face",
   "name": "Proposal Face",
-  "category": "couple",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Burst into a grin",
-  "animation": {
-    "durationMs": 7270,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "One looks hopeful"
-      },
-      {
-        "timeMs": 1600,
-        "text": "The other looks shocked"
-      },
-      {
-        "timeMs": 3400,
-        "text": "Hands on cheeks"
-      },
-      {
-        "timeMs": 4680,
-        "text": "Burst into a grin"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "couple"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -56,36 +26,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/lovers-half-proposal-face.webp",
     "alt": "Burst into a grin",
-    "accent": "#0a9f9f"
+    "kind": "photo-cutout",
+    "accent": "#0a9f9f",
+    "assetPath": "pose-guides/lovers-half-proposal-face.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/lovers-half-proposal-face-f6fbb630ec0524.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6270,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "One looks hopeful"
-        },
-        {
-          "timeMs": 1600,
-          "text": "The other looks shocked"
-        },
-        {
-          "timeMs": 3400,
-          "text": "Hands on cheeks"
-        },
-        {
-          "timeMs": 4680,
-          "text": "Burst into a grin"
-        }
-      ]
-    }
-  }
+  "category": "couple",
+  "animation": {
+    "captions": [
+      {
+        "text": "One looks hopeful",
+        "timeMs": 0
+      },
+      {
+        "text": "The other looks shocked",
+        "timeMs": 2090
+      },
+      {
+        "text": "Hands on cheeks",
+        "timeMs": 4180
+      },
+      {
+        "text": "Burst into a grin",
+        "timeMs": 6270
+      }
+    ],
+    "durationMs": 7270
+  },
+  "instruction": "Burst into a grin",
+  "compatibility": {
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": false,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

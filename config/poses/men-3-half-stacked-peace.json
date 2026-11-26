@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "men-3-half-stacked-peace",
   "name": "Stacked Peace",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold the stack",
-  "animation": {
-    "durationMs": 6490,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Three peace signs"
-      },
-      {
-        "timeMs": 1700,
-        "text": "Stack them in front"
-      },
-      {
-        "timeMs": 3120,
-        "text": "Cheesy grins"
-      },
-      {
-        "timeMs": 4320,
-        "text": "Hold the stack"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 3,
-    "maxPeople": 3,
-    "styles": [
-      "friends"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -60,36 +30,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/men-3-half-stacked-peace.webp",
     "alt": "Hold the stack",
-    "accent": "#0a9f9f"
+    "kind": "photo-cutout",
+    "accent": "#0a9f9f",
+    "assetPath": "pose-guides/men-3-half-stacked-peace.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/men-3-half-stacked-peace-7de2a5b43894e3.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5490,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Three peace signs"
-        },
-        {
-          "timeMs": 1700,
-          "text": "Stack them in front"
-        },
-        {
-          "timeMs": 3120,
-          "text": "Cheesy grins"
-        },
-        {
-          "timeMs": 4320,
-          "text": "Hold the stack"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Three peace signs",
+        "timeMs": 0
+      },
+      {
+        "text": "Stack them in front",
+        "timeMs": 1830
+      },
+      {
+        "text": "Cheesy grins",
+        "timeMs": 3660
+      },
+      {
+        "text": "Hold the stack",
+        "timeMs": 5490
+      }
+    ],
+    "durationMs": 6490
+  },
+  "instruction": "Hold the stack",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 3,
+    "minPeople": 3
+  },
+  "schemaVersion": 2
 }

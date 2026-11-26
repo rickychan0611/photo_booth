@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "family-3-full-family-stroll",
   "name": "Family Stroll",
-  "category": "family",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Easy smiles",
-  "animation": {
-    "durationMs": 6560,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Walk arm in arm"
-      },
-      {
-        "timeMs": 1600,
-        "text": "Match your steps"
-      },
-      {
-        "timeMs": 3000,
-        "text": "Stop in a line"
-      },
-      {
-        "timeMs": 4300,
-        "text": "Easy smiles"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 3,
-    "maxPeople": 3,
-    "styles": [
-      "family"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -60,36 +30,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/family-3-full-family-stroll.webp",
     "alt": "Easy smiles",
-    "accent": "#0a9f9f"
+    "kind": "photo-cutout",
+    "accent": "#0a9f9f",
+    "assetPath": "pose-guides/family-3-full-family-stroll.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/family-3-full-family-stroll-8ac9f99c72ae69.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5560,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Walk arm in arm"
-        },
-        {
-          "timeMs": 1600,
-          "text": "Match your steps"
-        },
-        {
-          "timeMs": 3000,
-          "text": "Stop in a line"
-        },
-        {
-          "timeMs": 4300,
-          "text": "Easy smiles"
-        }
-      ]
-    }
-  }
+  "category": "family",
+  "animation": {
+    "captions": [
+      {
+        "text": "Walk arm in arm",
+        "timeMs": 0
+      },
+      {
+        "text": "Match your steps",
+        "timeMs": 1853
+      },
+      {
+        "text": "Stop in a line",
+        "timeMs": 3707
+      },
+      {
+        "text": "Easy smiles",
+        "timeMs": 5560
+      }
+    ],
+    "durationMs": 6560
+  },
+  "instruction": "Easy smiles",
+  "compatibility": {
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false,
+    "maxPeople": 3,
+    "minPeople": 3
+  },
+  "schemaVersion": 2
 }

@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "anime-power-up",
   "name": "Anime Power-Up",
-  "category": "party",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,38 +9,10 @@
     "child-safe",
     "solo"
   ],
-  "instruction": "Power up!",
-  "animation": {
-    "durationMs": 5830,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Step wide"
-      },
-      {
-        "timeMs": 1420,
-        "text": "Bend your knees"
-      },
-      {
-        "timeMs": 2540,
-        "text": "Clench your fists"
-      },
-      {
-        "timeMs": 3920,
-        "text": "Power up!"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 1,
-    "maxPeople": 1,
-    "styles": [
-      "solo"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -51,36 +21,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/anime-power-up.webp",
     "alt": "Power up!",
-    "accent": "#08cbe8"
+    "kind": "photo-cutout",
+    "accent": "#08cbe8",
+    "assetPath": "pose-guides/anime-power-up.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/anime-power-up-6cb55e0e3039d0.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 4830,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Step wide"
-        },
-        {
-          "timeMs": 1420,
-          "text": "Bend your knees"
-        },
-        {
-          "timeMs": 2540,
-          "text": "Clench your fists"
-        },
-        {
-          "timeMs": 3920,
-          "text": "Power up!"
-        }
-      ]
-    }
-  }
+  "category": "party",
+  "animation": {
+    "captions": [
+      {
+        "text": "Step wide",
+        "timeMs": 0
+      },
+      {
+        "text": "Bend your knees",
+        "timeMs": 1610
+      },
+      {
+        "text": "Clench your fists",
+        "timeMs": 3220
+      },
+      {
+        "text": "Power up!",
+        "timeMs": 4830
+      }
+    ],
+    "durationMs": 5830
+  },
+  "instruction": "Power up!",
+  "compatibility": {
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 1,
+    "minPeople": 1
+  },
+  "schemaVersion": 2
 }

@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "friends-cheeks",
   "name": "Cheeky Smiles",
-  "category": "friends",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,39 +9,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Cheeky faces",
-  "animation": {
-    "durationMs": 6720,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Move close together"
-      },
-      {
-        "timeMs": 1740,
-        "text": "Lift both hands"
-      },
-      {
-        "timeMs": 3240,
-        "text": "Touch your cheeks"
-      },
-      {
-        "timeMs": 4440,
-        "text": "Cheeky faces"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "friends",
-      "group"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -56,36 +25,45 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/friends-cheeks.webp",
     "alt": "Cheeky faces",
-    "accent": "#7d22c9"
+    "kind": "photo-cutout",
+    "accent": "#7d22c9",
+    "assetPath": "pose-guides/friends-cheeks.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/friends-cheeks-5f741038f5392f.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5720,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Move close together"
-        },
-        {
-          "timeMs": 1740,
-          "text": "Lift both hands"
-        },
-        {
-          "timeMs": 3240,
-          "text": "Touch your cheeks"
-        },
-        {
-          "timeMs": 4440,
-          "text": "Cheeky faces"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Move close together",
+        "timeMs": 0
+      },
+      {
+        "text": "Lift both hands",
+        "timeMs": 1907
+      },
+      {
+        "text": "Touch your cheeks",
+        "timeMs": 3813
+      },
+      {
+        "text": "Cheeky faces",
+        "timeMs": 5720
+      }
+    ],
+    "durationMs": 6720
+  },
+  "instruction": "Cheeky faces",
+  "compatibility": {
+    "styles": [
+      "friends",
+      "group"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

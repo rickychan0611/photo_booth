@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "group-5-half-whisper-row",
   "name": "Whisper Row",
-  "category": "group",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,40 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold the row",
-  "animation": {
-    "durationMs": 7030,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Pass a whisper across"
-      },
-      {
-        "timeMs": 1760,
-        "text": "Each face reacts"
-      },
-      {
-        "timeMs": 3320,
-        "text": "Last person gasps"
-      },
-      {
-        "timeMs": 4960,
-        "text": "Hold the row"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 5,
-    "maxPeople": null,
-    "styles": [
-      "group",
-      "friends",
-      "family"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -70,36 +38,46 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/group-5-half-whisper-row.webp",
     "alt": "Hold the row",
-    "accent": "#ffd21a"
+    "kind": "photo-cutout",
+    "accent": "#ffd21a",
+    "assetPath": "pose-guides/group-5-half-whisper-row.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/group-5-half-whisper-row-bb9ef8753abd25.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6030,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Pass a whisper across"
-        },
-        {
-          "timeMs": 1760,
-          "text": "Each face reacts"
-        },
-        {
-          "timeMs": 3320,
-          "text": "Last person gasps"
-        },
-        {
-          "timeMs": 4960,
-          "text": "Hold the row"
-        }
-      ]
-    }
-  }
+  "category": "group",
+  "animation": {
+    "captions": [
+      {
+        "text": "Pass a whisper across",
+        "timeMs": 0
+      },
+      {
+        "text": "Each face reacts",
+        "timeMs": 2010
+      },
+      {
+        "text": "Last person gasps",
+        "timeMs": 4020
+      },
+      {
+        "text": "Hold the row",
+        "timeMs": 6030
+      }
+    ],
+    "durationMs": 7030
+  },
+  "instruction": "Hold the row",
+  "compatibility": {
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": null,
+    "minPeople": 5
+  },
+  "schemaVersion": 2
 }

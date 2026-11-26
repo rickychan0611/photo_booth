@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "lovers-full-slow-dance",
   "name": "Slow Dance",
-  "category": "couple",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Rest your heads",
-  "animation": {
-    "durationMs": 6560,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Offer one hand"
-      },
-      {
-        "timeMs": 1660,
-        "text": "Step in together"
-      },
-      {
-        "timeMs": 3060,
-        "text": "Sway on the spot"
-      },
-      {
-        "timeMs": 4500,
-        "text": "Rest your heads"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "couple"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -56,36 +26,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/lovers-full-slow-dance.webp",
     "alt": "Rest your heads",
-    "accent": "#0a9f9f"
+    "kind": "photo-cutout",
+    "accent": "#0a9f9f",
+    "assetPath": "pose-guides/lovers-full-slow-dance.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/lovers-full-slow-dance-488f0e376b051e.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5560,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Offer one hand"
-        },
-        {
-          "timeMs": 1660,
-          "text": "Step in together"
-        },
-        {
-          "timeMs": 3060,
-          "text": "Sway on the spot"
-        },
-        {
-          "timeMs": 4500,
-          "text": "Rest your heads"
-        }
-      ]
-    }
-  }
+  "category": "couple",
+  "animation": {
+    "captions": [
+      {
+        "text": "Offer one hand",
+        "timeMs": 0
+      },
+      {
+        "text": "Step in together",
+        "timeMs": 1853
+      },
+      {
+        "text": "Sway on the spot",
+        "timeMs": 3707
+      },
+      {
+        "text": "Rest your heads",
+        "timeMs": 5560
+      }
+    ],
+    "durationMs": 6560
+  },
+  "instruction": "Rest your heads",
+  "compatibility": {
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "copy-the-child-duo",
   "name": "Copy the Child Duo",
-  "category": "kids",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,39 +9,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Child wins!",
-  "animation": {
-    "durationMs": 7110,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Child takes the lead"
-      },
-      {
-        "timeMs": 1560,
-        "text": "Adult copies the body"
-      },
-      {
-        "timeMs": 3460,
-        "text": "Match both hands"
-      },
-      {
-        "timeMs": 4900,
-        "text": "Child wins!"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "family"
-    ],
-    "framing": [
-      "full",
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -56,36 +25,45 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/copy-the-child-duo.webp",
     "alt": "Child wins!",
-    "accent": "#0a9f9f"
+    "kind": "photo-cutout",
+    "accent": "#0a9f9f",
+    "assetPath": "pose-guides/copy-the-child-duo.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/copy-the-child-duo-4b5be0fd2fbeea.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6110,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Child takes the lead"
-        },
-        {
-          "timeMs": 1560,
-          "text": "Adult copies the body"
-        },
-        {
-          "timeMs": 3460,
-          "text": "Match both hands"
-        },
-        {
-          "timeMs": 4900,
-          "text": "Child wins!"
-        }
-      ]
-    }
-  }
+  "category": "kids",
+  "animation": {
+    "captions": [
+      {
+        "text": "Child takes the lead",
+        "timeMs": 0
+      },
+      {
+        "text": "Adult copies the body",
+        "timeMs": 2037
+      },
+      {
+        "text": "Match both hands",
+        "timeMs": 4073
+      },
+      {
+        "text": "Child wins!",
+        "timeMs": 6110
+      }
+    ],
+    "durationMs": 7110
+  },
+  "instruction": "Child wins!",
+  "compatibility": {
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

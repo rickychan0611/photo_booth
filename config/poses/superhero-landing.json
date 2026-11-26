@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "superhero-landing",
   "name": "Superhero Landing",
-  "category": "funny",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,38 +9,10 @@
     "child-safe",
     "solo"
   ],
-  "instruction": "Hero eyes up",
-  "animation": {
-    "durationMs": 5990,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Step wide"
-      },
-      {
-        "timeMs": 1360,
-        "text": "Drop one knee"
-      },
-      {
-        "timeMs": 2580,
-        "text": "Plant your fist"
-      },
-      {
-        "timeMs": 3840,
-        "text": "Hero eyes up"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 1,
-    "maxPeople": 1,
-    "styles": [
-      "solo"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -51,36 +21,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/superhero-landing.webp",
     "alt": "Hero eyes up",
-    "accent": "#ef2929"
+    "kind": "photo-cutout",
+    "accent": "#ef2929",
+    "assetPath": "pose-guides/superhero-landing.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/superhero-landing-ea86544290c02d.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 4990,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Step wide"
-        },
-        {
-          "timeMs": 1360,
-          "text": "Drop one knee"
-        },
-        {
-          "timeMs": 2580,
-          "text": "Plant your fist"
-        },
-        {
-          "timeMs": 3840,
-          "text": "Hero eyes up"
-        }
-      ]
-    }
-  }
+  "category": "funny",
+  "animation": {
+    "captions": [
+      {
+        "text": "Step wide",
+        "timeMs": 0
+      },
+      {
+        "text": "Drop one knee",
+        "timeMs": 1663
+      },
+      {
+        "text": "Plant your fist",
+        "timeMs": 3327
+      },
+      {
+        "text": "Hero eyes up",
+        "timeMs": 4990
+      }
+    ],
+    "durationMs": 5990
+  },
+  "instruction": "Hero eyes up",
+  "compatibility": {
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 1,
+    "minPeople": 1
+  },
+  "schemaVersion": 2
 }

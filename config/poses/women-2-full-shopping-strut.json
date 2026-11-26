@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "women-2-full-shopping-strut",
   "name": "Shopping Strut",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hit a cover pose",
-  "animation": {
-    "durationMs": 6490,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "One foot in front"
-      },
-      {
-        "timeMs": 1560,
-        "text": "Hands on hips"
-      },
-      {
-        "timeMs": 2780,
-        "text": "Strut two steps"
-      },
-      {
-        "timeMs": 4100,
-        "text": "Hit a cover pose"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "friends"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -56,36 +26,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/women-2-full-shopping-strut.webp",
     "alt": "Hit a cover pose",
-    "accent": "#ff8214"
+    "kind": "photo-cutout",
+    "accent": "#ff8214",
+    "assetPath": "pose-guides/women-2-full-shopping-strut.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/women-2-full-shopping-strut-29075189c2175c.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5490,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "One foot in front"
-        },
-        {
-          "timeMs": 1560,
-          "text": "Hands on hips"
-        },
-        {
-          "timeMs": 2780,
-          "text": "Strut two steps"
-        },
-        {
-          "timeMs": 4100,
-          "text": "Hit a cover pose"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "One foot in front",
+        "timeMs": 0
+      },
+      {
+        "text": "Hands on hips",
+        "timeMs": 1830
+      },
+      {
+        "text": "Strut two steps",
+        "timeMs": 3660
+      },
+      {
+        "text": "Hit a cover pose",
+        "timeMs": 5490
+      }
+    ],
+    "durationMs": 6490
+  },
+  "instruction": "Hit a cover pose",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

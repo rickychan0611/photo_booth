@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "women-4-full-diamond-strut",
   "name": "Diamond Strut",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hit the diamond",
-  "animation": {
-    "durationMs": 5990,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "One leads"
-      },
-      {
-        "timeMs": 1160,
-        "text": "Two flank her"
-      },
-      {
-        "timeMs": 2440,
-        "text": "One closes the back"
-      },
-      {
-        "timeMs": 3780,
-        "text": "Hit the diamond"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 4,
-    "maxPeople": 4,
-    "styles": [
-      "friends"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -64,36 +34,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/women-4-full-diamond-strut.webp",
     "alt": "Hit the diamond",
-    "accent": "#08cbe8"
+    "kind": "photo-cutout",
+    "accent": "#08cbe8",
+    "assetPath": "pose-guides/women-4-full-diamond-strut.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/women-4-full-diamond-strut-1d13129f7cffb2.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 4990,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "One leads"
-        },
-        {
-          "timeMs": 1160,
-          "text": "Two flank her"
-        },
-        {
-          "timeMs": 2440,
-          "text": "One closes the back"
-        },
-        {
-          "timeMs": 3780,
-          "text": "Hit the diamond"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "One leads",
+        "timeMs": 0
+      },
+      {
+        "text": "Two flank her",
+        "timeMs": 1663
+      },
+      {
+        "text": "One closes the back",
+        "timeMs": 3327
+      },
+      {
+        "text": "Hit the diamond",
+        "timeMs": 4990
+      }
+    ],
+    "durationMs": 5990
+  },
+  "instruction": "Hit the diamond",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 4,
+    "minPeople": 4
+  },
+  "schemaVersion": 2
 }

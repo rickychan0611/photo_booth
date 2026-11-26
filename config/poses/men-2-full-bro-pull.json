@@ -1,4 +1,69 @@
 {
   "id": "men-2-full-bro-pull",
-  "deleted": true
+  "name": "Bro Pull",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-men-2",
+    "framing-full",
+    "mood-funny",
+    "child-safe",
+    "cooperative"
+  ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "men",
+      "repeatable": false
+    },
+    {
+      "role": "men",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "alt": "Freeze the stumble",
+    "kind": "photo-cutout",
+    "accent": "#0a9f9f",
+    "assetPath": "pose-guides/men-2-full-bro-pull.webp"
+  },
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Clasp hands",
+        "timeMs": 0
+      },
+      {
+        "text": "Yank into a lean",
+        "timeMs": 1803
+      },
+      {
+        "text": "One foot up",
+        "timeMs": 3607
+      },
+      {
+        "text": "Freeze the stumble",
+        "timeMs": 5410
+      }
+    ],
+    "durationMs": 6410
+  },
+  "instruction": "Freeze the stumble",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

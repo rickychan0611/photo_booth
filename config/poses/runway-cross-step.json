@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "runway-cross-step",
   "name": "Runway Cross-Step",
-  "category": "glamour",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,38 +9,10 @@
     "adult-only",
     "solo"
   ],
-  "instruction": "Runway eyes",
-  "animation": {
-    "durationMs": 6640,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Cross one step"
-      },
-      {
-        "timeMs": 1580,
-        "text": "Lengthen your body"
-      },
-      {
-        "timeMs": 2980,
-        "text": "Relax your arms"
-      },
-      {
-        "timeMs": 4580,
-        "text": "Runway eyes"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 1,
-    "maxPeople": 1,
-    "styles": [
-      "solo"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -51,36 +21,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/runway-cross-step.webp",
     "alt": "Runway eyes",
-    "accent": "#7d22c9"
+    "kind": "photo-cutout",
+    "accent": "#7d22c9",
+    "assetPath": "pose-guides/runway-cross-step.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/runway-cross-step-3652d864427ef5.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5640,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Cross one step"
-        },
-        {
-          "timeMs": 1580,
-          "text": "Lengthen your body"
-        },
-        {
-          "timeMs": 2980,
-          "text": "Relax your arms"
-        },
-        {
-          "timeMs": 4580,
-          "text": "Runway eyes"
-        }
-      ]
-    }
-  }
+  "category": "glamour",
+  "animation": {
+    "captions": [
+      {
+        "text": "Cross one step",
+        "timeMs": 0
+      },
+      {
+        "text": "Lengthen your body",
+        "timeMs": 1880
+      },
+      {
+        "text": "Relax your arms",
+        "timeMs": 3760
+      },
+      {
+        "text": "Runway eyes",
+        "timeMs": 5640
+      }
+    ],
+    "durationMs": 6640
+  },
+  "instruction": "Runway eyes",
+  "compatibility": {
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false,
+    "maxPeople": 1,
+    "minPeople": 1
+  },
+  "schemaVersion": 2
 }

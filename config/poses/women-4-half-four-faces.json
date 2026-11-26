@@ -1,4 +1,77 @@
 {
   "id": "women-4-half-four-faces",
-  "deleted": true
+  "name": "Four Faces",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-4",
+    "framing-half",
+    "mood-cute",
+    "child-safe",
+    "cooperative"
+  ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "alt": "Hold the bouquet",
+    "kind": "photo-cutout",
+    "accent": "#08cbe8",
+    "assetPath": "pose-guides/women-4-half-four-faces.webp"
+  },
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Pack in close",
+        "timeMs": 0
+      },
+      {
+        "text": "Chins level",
+        "timeMs": 1717
+      },
+      {
+        "text": "Bright matching eyes",
+        "timeMs": 3433
+      },
+      {
+        "text": "Hold the bouquet",
+        "timeMs": 5150
+      }
+    ],
+    "durationMs": 6150
+  },
+  "instruction": "Hold the bouquet",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 4,
+    "minPeople": 4
+  },
+  "schemaVersion": 2
 }

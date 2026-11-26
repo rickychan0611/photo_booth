@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "lovers-half-almost-kiss",
   "name": "Almost Kiss",
-  "category": "couple",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Smile without moving",
-  "animation": {
-    "durationMs": 7430,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Tilt toward each other"
-      },
-      {
-        "timeMs": 1640,
-        "text": "Close your eyes"
-      },
-      {
-        "timeMs": 2860,
-        "text": "Stop just before a kiss"
-      },
-      {
-        "timeMs": 4900,
-        "text": "Smile without moving"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "couple"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -56,36 +26,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/lovers-half-almost-kiss.webp",
     "alt": "Smile without moving",
-    "accent": "#ffd21a"
+    "kind": "photo-cutout",
+    "accent": "#ffd21a",
+    "assetPath": "pose-guides/lovers-half-almost-kiss.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/lovers-half-almost-kiss-5bbca063020b81.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6430,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Tilt toward each other"
-        },
-        {
-          "timeMs": 1640,
-          "text": "Close your eyes"
-        },
-        {
-          "timeMs": 2860,
-          "text": "Stop just before a kiss"
-        },
-        {
-          "timeMs": 4900,
-          "text": "Smile without moving"
-        }
-      ]
-    }
-  }
+  "category": "couple",
+  "animation": {
+    "captions": [
+      {
+        "text": "Tilt toward each other",
+        "timeMs": 0
+      },
+      {
+        "text": "Close your eyes",
+        "timeMs": 2143
+      },
+      {
+        "text": "Stop just before a kiss",
+        "timeMs": 4287
+      },
+      {
+        "text": "Smile without moving",
+        "timeMs": 6430
+      }
+    ],
+    "durationMs": 7430
+  },
+  "instruction": "Smile without moving",
+  "compatibility": {
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": false,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

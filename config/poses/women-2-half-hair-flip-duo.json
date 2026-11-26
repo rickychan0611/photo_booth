@@ -1,4 +1,69 @@
 {
   "id": "women-2-half-hair-flip-duo",
-  "deleted": true
+  "name": "Hair Flip Duo",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-2",
+    "framing-half",
+    "mood-cool",
+    "child-safe",
+    "cooperative"
+  ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "alt": "Cool stare",
+    "kind": "photo-cutout",
+    "accent": "#ff168f",
+    "assetPath": "pose-guides/women-2-half-hair-flip-duo.webp"
+  },
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Look down",
+        "timeMs": 0
+      },
+      {
+        "text": "Flip your hair",
+        "timeMs": 1690
+      },
+      {
+        "text": "Snap up to the lens",
+        "timeMs": 3380
+      },
+      {
+        "text": "Cool stare",
+        "timeMs": 5070
+      }
+    ],
+    "durationMs": 6070
+  },
+  "instruction": "Cool stare",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

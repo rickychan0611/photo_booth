@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "family-3-half-matching-lean",
   "name": "Matching Lean",
-  "category": "family",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Hold the lean",
-  "animation": {
-    "durationMs": 6800,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Same shoulder angle"
-      },
-      {
-        "timeMs": 1820,
-        "text": "Same calm face"
-      },
-      {
-        "timeMs": 3240,
-        "text": "Look into the lens"
-      },
-      {
-        "timeMs": 4560,
-        "text": "Hold the lean"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 3,
-    "maxPeople": 3,
-    "styles": [
-      "family"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -60,36 +30,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/family-3-half-matching-lean.webp",
     "alt": "Hold the lean",
-    "accent": "#1769ff"
+    "kind": "photo-cutout",
+    "accent": "#1769ff",
+    "assetPath": "pose-guides/family-3-half-matching-lean.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/family-3-half-matching-lean-087838d99277b1.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5800,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Same shoulder angle"
-        },
-        {
-          "timeMs": 1820,
-          "text": "Same calm face"
-        },
-        {
-          "timeMs": 3240,
-          "text": "Look into the lens"
-        },
-        {
-          "timeMs": 4560,
-          "text": "Hold the lean"
-        }
-      ]
-    }
-  }
+  "category": "family",
+  "animation": {
+    "captions": [
+      {
+        "text": "Same shoulder angle",
+        "timeMs": 0
+      },
+      {
+        "text": "Same calm face",
+        "timeMs": 1933
+      },
+      {
+        "text": "Look into the lens",
+        "timeMs": 3867
+      },
+      {
+        "text": "Hold the lean",
+        "timeMs": 5800
+      }
+    ],
+    "durationMs": 6800
+  },
+  "instruction": "Hold the lean",
+  "compatibility": {
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": false,
+    "maxPeople": 3,
+    "minPeople": 3
+  },
+  "schemaVersion": 2
 }

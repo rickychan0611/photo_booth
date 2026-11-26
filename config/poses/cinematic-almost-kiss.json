@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "cinematic-almost-kiss",
   "name": "Cinematic Almost Kiss",
-  "category": "couple",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,38 +9,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Almost kiss",
-  "animation": {
-    "durationMs": 6330,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Turn toward each other"
-      },
-      {
-        "timeMs": 1540,
-        "text": "Move close"
-      },
-      {
-        "timeMs": 2760,
-        "text": "Hold at the waist"
-      },
-      {
-        "timeMs": 4140,
-        "text": "Almost kiss"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "couple"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -55,36 +25,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/cinematic-almost-kiss.webp",
     "alt": "Almost kiss",
-    "accent": "#ef2929"
+    "kind": "photo-cutout",
+    "accent": "#ef2929",
+    "assetPath": "pose-guides/cinematic-almost-kiss.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/cinematic-almost-kiss-6c6267ccc68fca.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5330,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Turn toward each other"
-        },
-        {
-          "timeMs": 1540,
-          "text": "Move close"
-        },
-        {
-          "timeMs": 2760,
-          "text": "Hold at the waist"
-        },
-        {
-          "timeMs": 4140,
-          "text": "Almost kiss"
-        }
-      ]
-    }
-  }
+  "category": "couple",
+  "animation": {
+    "captions": [
+      {
+        "text": "Turn toward each other",
+        "timeMs": 0
+      },
+      {
+        "text": "Move close",
+        "timeMs": 1777
+      },
+      {
+        "text": "Hold at the waist",
+        "timeMs": 3553
+      },
+      {
+        "text": "Almost kiss",
+        "timeMs": 5330
+      }
+    ],
+    "durationMs": 6330
+  },
+  "instruction": "Almost kiss",
+  "compatibility": {
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": false,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "group-5-full-level-change",
   "name": "Level Change",
-  "category": "group",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,40 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold the levels",
-  "animation": {
-    "durationMs": 8310,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Some stand, some kneel, some crouch"
-      },
-      {
-        "timeMs": 3220,
-        "text": "No two neighbors match"
-      },
-      {
-        "timeMs": 5000,
-        "text": "Eyes to the lens"
-      },
-      {
-        "timeMs": 6220,
-        "text": "Hold the levels"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 5,
-    "maxPeople": null,
-    "styles": [
-      "group",
-      "friends",
-      "family"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -70,36 +38,46 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/group-5-full-level-change.webp",
     "alt": "Hold the levels",
-    "accent": "#1769ff"
+    "kind": "photo-cutout",
+    "accent": "#1769ff",
+    "assetPath": "pose-guides/group-5-full-level-change.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/group-5-full-level-change-7218496de0e9f3.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 7310,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Some stand, some kneel, some crouch"
-        },
-        {
-          "timeMs": 3220,
-          "text": "No two neighbors match"
-        },
-        {
-          "timeMs": 5000,
-          "text": "Eyes to the lens"
-        },
-        {
-          "timeMs": 6220,
-          "text": "Hold the levels"
-        }
-      ]
-    }
-  }
+  "category": "group",
+  "animation": {
+    "captions": [
+      {
+        "text": "Some stand, some kneel, some crouch",
+        "timeMs": 0
+      },
+      {
+        "text": "No two neighbors match",
+        "timeMs": 2437
+      },
+      {
+        "text": "Eyes to the lens",
+        "timeMs": 4873
+      },
+      {
+        "text": "Hold the levels",
+        "timeMs": 7310
+      }
+    ],
+    "durationMs": 8310
+  },
+  "instruction": "Hold the levels",
+  "compatibility": {
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": null,
+    "minPeople": 5
+  },
+  "schemaVersion": 2
 }

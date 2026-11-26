@@ -1,4 +1,78 @@
 {
   "id": "alien-abduction",
-  "deleted": true
+  "name": "Alien Abduction",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-diamond",
+    "expression-panic",
+    "child-safe",
+    "cooperative"
+  ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "alt": "Alien panic!",
+    "kind": "photo-cutout",
+    "accent": "#0a9f9f",
+    "assetPath": "pose-guides/alien-abduction.webp"
+  },
+  "category": "funny",
+  "animation": {
+    "captions": [
+      {
+        "text": "Target reaches upward",
+        "timeMs": 0
+      },
+      {
+        "text": "Others grab on",
+        "timeMs": 2063
+      },
+      {
+        "text": "Fight the tractor beam",
+        "timeMs": 4127
+      },
+      {
+        "text": "Alien panic!",
+        "timeMs": 6190
+      }
+    ],
+    "durationMs": 7190
+  },
+  "instruction": "Alien panic!",
+  "compatibility": {
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 4,
+    "minPeople": 4
+  },
+  "schemaVersion": 2
 }

@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "group-5-full-buddy-clusters",
   "name": "Buddy Clusters",
-  "category": "group",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,40 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold your cluster",
-  "animation": {
-    "durationMs": 7840,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Split into little pairs"
-      },
-      {
-        "timeMs": 1840,
-        "text": "Each pair picks a tiny pose"
-      },
-      {
-        "timeMs": 4140,
-        "text": "Look back at the camera"
-      },
-      {
-        "timeMs": 5520,
-        "text": "Hold your cluster"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 5,
-    "maxPeople": null,
-    "styles": [
-      "group",
-      "friends",
-      "family"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -70,36 +38,46 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/group-5-full-buddy-clusters.webp",
     "alt": "Hold your cluster",
-    "accent": "#ffd21a"
+    "kind": "photo-cutout",
+    "accent": "#ffd21a",
+    "assetPath": "pose-guides/group-5-full-buddy-clusters.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/group-5-full-buddy-clusters-16ab0704ee9711.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6840,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Split into little pairs"
-        },
-        {
-          "timeMs": 1840,
-          "text": "Each pair picks a tiny pose"
-        },
-        {
-          "timeMs": 4140,
-          "text": "Look back at the camera"
-        },
-        {
-          "timeMs": 5520,
-          "text": "Hold your cluster"
-        }
-      ]
-    }
-  }
+  "category": "group",
+  "animation": {
+    "captions": [
+      {
+        "text": "Split into little pairs",
+        "timeMs": 0
+      },
+      {
+        "text": "Each pair picks a tiny pose",
+        "timeMs": 2280
+      },
+      {
+        "text": "Look back at the camera",
+        "timeMs": 4560
+      },
+      {
+        "text": "Hold your cluster",
+        "timeMs": 6840
+      }
+    ],
+    "durationMs": 7840
+  },
+  "instruction": "Hold your cluster",
+  "compatibility": {
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": null,
+    "minPeople": 5
+  },
+  "schemaVersion": 2
 }

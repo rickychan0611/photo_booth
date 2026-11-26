@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "family-3-half-three-smiles",
   "name": "Three Smiles",
-  "category": "family",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Hold the warmth",
-  "animation": {
-    "durationMs": 6800,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Heads together"
-      },
-      {
-        "timeMs": 1460,
-        "text": "Soft matching smiles"
-      },
-      {
-        "timeMs": 3320,
-        "text": "Eyes kind"
-      },
-      {
-        "timeMs": 4560,
-        "text": "Hold the warmth"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 3,
-    "maxPeople": 3,
-    "styles": [
-      "family"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -60,36 +30,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/family-3-half-three-smiles.webp",
     "alt": "Hold the warmth",
-    "accent": "#ff8214"
+    "kind": "photo-cutout",
+    "accent": "#ff8214",
+    "assetPath": "pose-guides/family-3-half-three-smiles.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/family-3-half-three-smiles-5b571b83909c1f.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5800,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Heads together"
-        },
-        {
-          "timeMs": 1460,
-          "text": "Soft matching smiles"
-        },
-        {
-          "timeMs": 3320,
-          "text": "Eyes kind"
-        },
-        {
-          "timeMs": 4560,
-          "text": "Hold the warmth"
-        }
-      ]
-    }
-  }
+  "category": "family",
+  "animation": {
+    "captions": [
+      {
+        "text": "Heads together",
+        "timeMs": 0
+      },
+      {
+        "text": "Soft matching smiles",
+        "timeMs": 1933
+      },
+      {
+        "text": "Eyes kind",
+        "timeMs": 3867
+      },
+      {
+        "text": "Hold the warmth",
+        "timeMs": 5800
+      }
+    ],
+    "durationMs": 6800
+  },
+  "instruction": "Hold the warmth",
+  "compatibility": {
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": false,
+    "maxPeople": 3,
+    "minPeople": 3
+  },
+  "schemaVersion": 2
 }

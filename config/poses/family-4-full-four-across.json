@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "family-4-full-four-across",
   "name": "Four Across",
-  "category": "family",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Hold the line",
-  "animation": {
-    "durationMs": 8000,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Stand shoulder to shoulder"
-      },
-      {
-        "timeMs": 2120,
-        "text": "Mix pockets and folded arms"
-      },
-      {
-        "timeMs": 4440,
-        "text": "Stagger one foot"
-      },
-      {
-        "timeMs": 5780,
-        "text": "Hold the line"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 4,
-    "maxPeople": 4,
-    "styles": [
-      "family"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -64,36 +34,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/family-4-full-four-across.webp",
     "alt": "Hold the line",
-    "accent": "#08cbe8"
+    "kind": "photo-cutout",
+    "accent": "#08cbe8",
+    "assetPath": "pose-guides/family-4-full-four-across.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/family-4-full-four-across-102cebef7b726c.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 7000,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Stand shoulder to shoulder"
-        },
-        {
-          "timeMs": 2120,
-          "text": "Mix pockets and folded arms"
-        },
-        {
-          "timeMs": 4440,
-          "text": "Stagger one foot"
-        },
-        {
-          "timeMs": 5780,
-          "text": "Hold the line"
-        }
-      ]
-    }
-  }
+  "category": "family",
+  "animation": {
+    "captions": [
+      {
+        "text": "Stand shoulder to shoulder",
+        "timeMs": 0
+      },
+      {
+        "text": "Mix pockets and folded arms",
+        "timeMs": 2333
+      },
+      {
+        "text": "Stagger one foot",
+        "timeMs": 4667
+      },
+      {
+        "text": "Hold the line",
+        "timeMs": 7000
+      }
+    ],
+    "durationMs": 8000
+  },
+  "instruction": "Hold the line",
+  "compatibility": {
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false,
+    "maxPeople": 4,
+    "minPeople": 4
+  },
+  "schemaVersion": 2
 }

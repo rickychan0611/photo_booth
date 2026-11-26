@@ -1,4 +1,70 @@
 {
   "id": "meme-buffering",
-  "deleted": true
+  "name": "Loading / Buffering",
+  "tags": [
+    "meme-pack-2026",
+    "gender-inclusive",
+    "child-safe",
+    "cooperative"
+  ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": true
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "alt": "Freeze with one hand halfway through a small gesture, vacant eyes and blank expression as if buffering.",
+    "kind": "photo-cutout",
+    "accent": "#14bda8",
+    "assetPath": "pose-guides/meme-buffering.webp"
+  },
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Start a small gesture",
+        "timeMs": 0
+      },
+      {
+        "text": "Stop halfway through",
+        "timeMs": 2333
+      },
+      {
+        "text": "Stare completely blankly",
+        "timeMs": 4667
+      },
+      {
+        "text": "Hold while you buffer",
+        "timeMs": 7000
+      }
+    ],
+    "durationMs": 8000
+  },
+  "instruction": "Hold while you buffer",
+  "compatibility": {
+    "styles": [
+      "couple",
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 8,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

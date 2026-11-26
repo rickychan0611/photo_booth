@@ -1,18 +1,53 @@
 {
-  "schemaVersion": 2,
   "id": "meme-rock-eyebrow",
   "name": "The Rock Eyebrow",
-  "category": "solo",
   "tags": [
     "meme-pack-2026",
     "gender-inclusive",
     "child-safe",
     "solo"
   ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "alt": "One eyebrow visibly raised with an exaggerated suspicious facial expression.",
+    "kind": "photo-cutout",
+    "accent": "#ffd21a",
+    "assetPath": "pose-guides/meme-rock-eyebrow.webp"
+  },
+  "category": "solo",
+  "animation": {
+    "captions": [
+      {
+        "text": "Face the camera",
+        "timeMs": 0
+      },
+      {
+        "text": "Raise one eyebrow",
+        "timeMs": 2090
+      },
+      {
+        "text": "Look very suspicious",
+        "timeMs": 4180
+      },
+      {
+        "text": "Hold that eyebrow",
+        "timeMs": 6270
+      }
+    ],
+    "durationMs": 7270
+  },
   "instruction": "Hold that eyebrow",
   "compatibility": {
-    "minPeople": 1,
-    "maxPeople": 2,
     "styles": [
       "solo",
       "couple",
@@ -24,66 +59,9 @@
       "full",
       "half"
     ],
-    "childSafe": true
+    "childSafe": true,
+    "maxPeople": 2,
+    "minPeople": 1
   },
-  "roles": [
-    {
-      "role": "any",
-      "repeatable": true
-    }
-  ],
-  "animation": {
-    "durationMs": 7270,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Face the camera"
-      },
-      {
-        "timeMs": 1400,
-        "text": "Raise one eyebrow"
-      },
-      {
-        "timeMs": 2920,
-        "text": "Look very suspicious"
-      },
-      {
-        "timeMs": 4980,
-        "text": "Hold that eyebrow"
-      }
-    ]
-  },
-  "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/meme-rock-eyebrow.webp",
-    "alt": "One eyebrow visibly raised with an exaggerated suspicious facial expression.",
-    "accent": "#ffd21a"
-  },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/meme-rock-eyebrow-06e3c92a2afc3b.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6270,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Face the camera"
-        },
-        {
-          "timeMs": 1400,
-          "text": "Raise one eyebrow"
-        },
-        {
-          "timeMs": 2920,
-          "text": "Look very suspicious"
-        },
-        {
-          "timeMs": 4980,
-          "text": "Hold that eyebrow"
-        }
-      ]
-    }
-  }
+  "schemaVersion": 2
 }

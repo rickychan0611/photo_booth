@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "women-4-full-mirror-squad",
   "name": "Mirror Squad",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold the copy",
-  "animation": {
-    "durationMs": 5680,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Copy the leader"
-      },
-      {
-        "timeMs": 1420,
-        "text": "Same hands"
-      },
-      {
-        "timeMs": 2520,
-        "text": "Same foot"
-      },
-      {
-        "timeMs": 3460,
-        "text": "Hold the copy"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 4,
-    "maxPeople": 4,
-    "styles": [
-      "friends"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -64,36 +34,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/women-4-full-mirror-squad.webp",
     "alt": "Hold the copy",
-    "accent": "#ef2929"
+    "kind": "photo-cutout",
+    "accent": "#ef2929",
+    "assetPath": "pose-guides/women-4-full-mirror-squad.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/women-4-full-mirror-squad-c545e772bd8a64.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 4680,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Copy the leader"
-        },
-        {
-          "timeMs": 1420,
-          "text": "Same hands"
-        },
-        {
-          "timeMs": 2520,
-          "text": "Same foot"
-        },
-        {
-          "timeMs": 3460,
-          "text": "Hold the copy"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Copy the leader",
+        "timeMs": 0
+      },
+      {
+        "text": "Same hands",
+        "timeMs": 1560
+      },
+      {
+        "text": "Same foot",
+        "timeMs": 3120
+      },
+      {
+        "text": "Hold the copy",
+        "timeMs": 4680
+      }
+    ],
+    "durationMs": 5680
+  },
+  "instruction": "Hold the copy",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 4,
+    "minPeople": 4
+  },
+  "schemaVersion": 2
 }

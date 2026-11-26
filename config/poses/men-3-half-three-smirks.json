@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "men-3-half-three-smirks",
   "name": "Three Smirks",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold it",
-  "animation": {
-    "durationMs": 5830,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Lean in a triangle"
-      },
-      {
-        "timeMs": 1800,
-        "text": "Same smirk"
-      },
-      {
-        "timeMs": 2940,
-        "text": "Eyes on the lens"
-      },
-      {
-        "timeMs": 4160,
-        "text": "Hold it"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 3,
-    "maxPeople": 3,
-    "styles": [
-      "friends"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -60,36 +30,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/men-3-half-three-smirks.webp",
     "alt": "Hold it",
-    "accent": "#1769ff"
+    "kind": "photo-cutout",
+    "accent": "#1769ff",
+    "assetPath": "pose-guides/men-3-half-three-smirks.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/men-3-half-three-smirks-e0662ffcb587b7.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 4830,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Lean in a triangle"
-        },
-        {
-          "timeMs": 1800,
-          "text": "Same smirk"
-        },
-        {
-          "timeMs": 2940,
-          "text": "Eyes on the lens"
-        },
-        {
-          "timeMs": 4160,
-          "text": "Hold it"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Lean in a triangle",
+        "timeMs": 0
+      },
+      {
+        "text": "Same smirk",
+        "timeMs": 1610
+      },
+      {
+        "text": "Eyes on the lens",
+        "timeMs": 3220
+      },
+      {
+        "text": "Hold it",
+        "timeMs": 4830
+      }
+    ],
+    "durationMs": 5830
+  },
+  "instruction": "Hold it",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 3,
+    "minPeople": 3
+  },
+  "schemaVersion": 2
 }

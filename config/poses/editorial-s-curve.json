@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "editorial-s-curve",
   "name": "Editorial S-Curve",
-  "category": "glamour",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,38 +9,10 @@
     "adult-only",
     "solo"
   ],
-  "instruction": "Soft model eyes",
-  "animation": {
-    "durationMs": 6880,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Shift one hip"
-      },
-      {
-        "timeMs": 1620,
-        "text": "Angle your shoulders"
-      },
-      {
-        "timeMs": 3000,
-        "text": "Place one hand"
-      },
-      {
-        "timeMs": 4500,
-        "text": "Soft model eyes"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 1,
-    "maxPeople": 1,
-    "styles": [
-      "solo"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -51,36 +21,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/editorial-s-curve.webp",
     "alt": "Soft model eyes",
-    "accent": "#ffd21a"
+    "kind": "photo-cutout",
+    "accent": "#ffd21a",
+    "assetPath": "pose-guides/editorial-s-curve.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/editorial-s-curve-7aa8ba8fbbf9bf.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5880,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Shift one hip"
-        },
-        {
-          "timeMs": 1620,
-          "text": "Angle your shoulders"
-        },
-        {
-          "timeMs": 3000,
-          "text": "Place one hand"
-        },
-        {
-          "timeMs": 4500,
-          "text": "Soft model eyes"
-        }
-      ]
-    }
-  }
+  "category": "glamour",
+  "animation": {
+    "captions": [
+      {
+        "text": "Shift one hip",
+        "timeMs": 0
+      },
+      {
+        "text": "Angle your shoulders",
+        "timeMs": 1960
+      },
+      {
+        "text": "Place one hand",
+        "timeMs": 3920
+      },
+      {
+        "text": "Soft model eyes",
+        "timeMs": 5880
+      }
+    ],
+    "durationMs": 6880
+  },
+  "instruction": "Soft model eyes",
+  "compatibility": {
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false,
+    "maxPeople": 1,
+    "minPeople": 1
+  },
+  "schemaVersion": 2
 }

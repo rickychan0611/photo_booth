@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "family-3-full-parent-swing",
   "name": "Parent Swing",
-  "category": "family",
   "tags": [
     "creative-pack",
     "four-second",
@@ -13,38 +11,10 @@
     "cooperative",
     "with-kids"
   ],
-  "instruction": "Smile at the child",
-  "animation": {
-    "durationMs": 7430,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Child holds both hands"
-      },
-      {
-        "timeMs": 2140,
-        "text": "Grownups lift gently"
-      },
-      {
-        "timeMs": 3960,
-        "text": "Swing once"
-      },
-      {
-        "timeMs": 5140,
-        "text": "Smile at the child"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 3,
-    "maxPeople": 3,
-    "styles": [
-      "family"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -61,36 +31,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/family-3-full-parent-swing.webp",
     "alt": "Smile at the child",
-    "accent": "#7d22c9"
+    "kind": "photo-cutout",
+    "accent": "#7d22c9",
+    "assetPath": "pose-guides/family-3-full-parent-swing.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/family-3-full-parent-swing-89b4b749fe8c03.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6430,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Child holds both hands"
-        },
-        {
-          "timeMs": 2140,
-          "text": "Grownups lift gently"
-        },
-        {
-          "timeMs": 3960,
-          "text": "Swing once"
-        },
-        {
-          "timeMs": 5140,
-          "text": "Smile at the child"
-        }
-      ]
-    }
-  }
+  "category": "family",
+  "animation": {
+    "captions": [
+      {
+        "text": "Child holds both hands",
+        "timeMs": 0
+      },
+      {
+        "text": "Grownups lift gently",
+        "timeMs": 2143
+      },
+      {
+        "text": "Swing once",
+        "timeMs": 4287
+      },
+      {
+        "text": "Smile at the child",
+        "timeMs": 6430
+      }
+    ],
+    "durationMs": 7430
+  },
+  "instruction": "Smile at the child",
+  "compatibility": {
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 3,
+    "minPeople": 3
+  },
+  "schemaVersion": 2
 }

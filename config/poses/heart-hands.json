@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "heart-hands",
   "name": "Heart Hands",
-  "category": "cute",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,38 +9,10 @@
     "child-safe",
     "solo"
   ],
-  "instruction": "Smile through it",
-  "animation": {
-    "durationMs": 6150,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Raise your hands"
-      },
-      {
-        "timeMs": 1380,
-        "text": "Bring them together"
-      },
-      {
-        "timeMs": 2700,
-        "text": "Make a heart"
-      },
-      {
-        "timeMs": 3880,
-        "text": "Smile through it"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 1,
-    "maxPeople": 1,
-    "styles": [
-      "solo"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -51,36 +21,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/heart-hands.webp",
     "alt": "Smile through it",
-    "accent": "#ffd21a"
+    "kind": "photo-cutout",
+    "accent": "#ffd21a",
+    "assetPath": "pose-guides/heart-hands.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/heart-hands-68a968b3efca39.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5150,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Raise your hands"
-        },
-        {
-          "timeMs": 1380,
-          "text": "Bring them together"
-        },
-        {
-          "timeMs": 2700,
-          "text": "Make a heart"
-        },
-        {
-          "timeMs": 3880,
-          "text": "Smile through it"
-        }
-      ]
-    }
-  }
+  "category": "cute",
+  "animation": {
+    "captions": [
+      {
+        "text": "Raise your hands",
+        "timeMs": 0
+      },
+      {
+        "text": "Bring them together",
+        "timeMs": 1717
+      },
+      {
+        "text": "Make a heart",
+        "timeMs": 3433
+      },
+      {
+        "text": "Smile through it",
+        "timeMs": 5150
+      }
+    ],
+    "durationMs": 6150
+  },
+  "instruction": "Smile through it",
+  "compatibility": {
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 1,
+    "minPeople": 1
+  },
+  "schemaVersion": 2
 }

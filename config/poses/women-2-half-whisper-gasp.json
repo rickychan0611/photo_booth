@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "women-2-half-whisper-gasp",
   "name": "Whisper Gasp",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,39 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Freeze the shock",
-  "animation": {
-    "durationMs": 6720,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "One cups a hand"
-      },
-      {
-        "timeMs": 1720,
-        "text": "Whisper one word"
-      },
-      {
-        "timeMs": 3060,
-        "text": "The other gasps"
-      },
-      {
-        "timeMs": 4560,
-        "text": "Freeze the shock"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "friends",
-      "couple"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -57,36 +26,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/women-2-half-whisper-gasp.webp",
     "alt": "Freeze the shock",
-    "accent": "#ffd21a"
+    "kind": "photo-cutout",
+    "accent": "#ffd21a",
+    "assetPath": "pose-guides/women-2-half-whisper-gasp.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/women-2-half-whisper-gasp-e7691b8994a468.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5720,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "One cups a hand"
-        },
-        {
-          "timeMs": 1720,
-          "text": "Whisper one word"
-        },
-        {
-          "timeMs": 3060,
-          "text": "The other gasps"
-        },
-        {
-          "timeMs": 4560,
-          "text": "Freeze the shock"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "One cups a hand",
+        "timeMs": 0
+      },
+      {
+        "text": "Whisper one word",
+        "timeMs": 1907
+      },
+      {
+        "text": "The other gasps",
+        "timeMs": 3813
+      },
+      {
+        "text": "Freeze the shock",
+        "timeMs": 5720
+      }
+    ],
+    "durationMs": 6720
+  },
+  "instruction": "Freeze the shock",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

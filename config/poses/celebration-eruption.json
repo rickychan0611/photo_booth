@@ -1,4 +1,83 @@
 {
   "id": "celebration-eruption",
-  "deleted": true
+  "name": "Celebration Eruption",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-layers",
+    "expression-smile",
+    "child-safe",
+    "cooperative"
+  ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "alt": "Celebration erupts!",
+    "kind": "photo-cutout",
+    "accent": "#ff8214",
+    "assetPath": "pose-guides/celebration-eruption.webp"
+  },
+  "category": "party",
+  "animation": {
+    "captions": [
+      {
+        "text": "Center starts calm",
+        "timeMs": 0
+      },
+      {
+        "text": "Raise hands outward",
+        "timeMs": 2203
+      },
+      {
+        "text": "Grow the energy",
+        "timeMs": 4407
+      },
+      {
+        "text": "Celebration erupts!",
+        "timeMs": 6610
+      }
+    ],
+    "durationMs": 7610
+  },
+  "instruction": "Celebration erupts!",
+  "compatibility": {
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": null,
+    "minPeople": 5
+  },
+  "schemaVersion": 2
 }

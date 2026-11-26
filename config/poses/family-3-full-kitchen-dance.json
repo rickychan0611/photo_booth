@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "family-3-full-kitchen-dance",
   "name": "Kitchen Dance",
-  "category": "family",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Freeze the chaos",
-  "animation": {
-    "durationMs": 7770,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Someone starts dancing"
-      },
-      {
-        "timeMs": 1880,
-        "text": "The others join badly"
-      },
-      {
-        "timeMs": 3860,
-        "text": "One big spin"
-      },
-      {
-        "timeMs": 5380,
-        "text": "Freeze the chaos"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 3,
-    "maxPeople": 3,
-    "styles": [
-      "family"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -60,36 +30,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/family-3-full-kitchen-dance.webp",
     "alt": "Freeze the chaos",
-    "accent": "#ff168f"
+    "kind": "photo-cutout",
+    "accent": "#ff168f",
+    "assetPath": "pose-guides/family-3-full-kitchen-dance.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/family-3-full-kitchen-dance-b3d45eaaa7831c.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6770,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Someone starts dancing"
-        },
-        {
-          "timeMs": 1880,
-          "text": "The others join badly"
-        },
-        {
-          "timeMs": 3860,
-          "text": "One big spin"
-        },
-        {
-          "timeMs": 5380,
-          "text": "Freeze the chaos"
-        }
-      ]
-    }
-  }
+  "category": "family",
+  "animation": {
+    "captions": [
+      {
+        "text": "Someone starts dancing",
+        "timeMs": 0
+      },
+      {
+        "text": "The others join badly",
+        "timeMs": 2257
+      },
+      {
+        "text": "One big spin",
+        "timeMs": 4513
+      },
+      {
+        "text": "Freeze the chaos",
+        "timeMs": 6770
+      }
+    ],
+    "durationMs": 7770
+  },
+  "instruction": "Freeze the chaos",
+  "compatibility": {
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false,
+    "maxPeople": 3,
+    "minPeople": 3
+  },
+  "schemaVersion": 2
 }

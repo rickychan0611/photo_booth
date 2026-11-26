@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "kiss-with-reaction",
   "name": "Kiss with Group Reaction",
-  "category": "wedding",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,38 +9,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Everyone reacts!",
-  "animation": {
-    "durationMs": 7030,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Couple takes the center"
-      },
-      {
-        "timeMs": 1680,
-        "text": "Friends crowd around"
-      },
-      {
-        "timeMs": 3400,
-        "text": "Couple leans in"
-      },
-      {
-        "timeMs": 4740,
-        "text": "Everyone reacts!"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 5,
-    "maxPeople": null,
-    "styles": [
-      "group"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -67,36 +37,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/kiss-with-reaction.webp",
     "alt": "Everyone reacts!",
-    "accent": "#7d22c9"
+    "kind": "photo-cutout",
+    "accent": "#7d22c9",
+    "assetPath": "pose-guides/kiss-with-reaction.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/kiss-with-reaction-e37442be635156.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6030,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Couple takes the center"
-        },
-        {
-          "timeMs": 1680,
-          "text": "Friends crowd around"
-        },
-        {
-          "timeMs": 3400,
-          "text": "Couple leans in"
-        },
-        {
-          "timeMs": 4740,
-          "text": "Everyone reacts!"
-        }
-      ]
-    }
-  }
+  "category": "wedding",
+  "animation": {
+    "captions": [
+      {
+        "text": "Couple takes the center",
+        "timeMs": 0
+      },
+      {
+        "text": "Friends crowd around",
+        "timeMs": 2010
+      },
+      {
+        "text": "Couple leans in",
+        "timeMs": 4020
+      },
+      {
+        "text": "Everyone reacts!",
+        "timeMs": 6030
+      }
+    ],
+    "durationMs": 7030
+  },
+  "instruction": "Everyone reacts!",
+  "compatibility": {
+    "styles": [
+      "group"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": false,
+    "maxPeople": null,
+    "minPeople": 5
+  },
+  "schemaVersion": 2
 }

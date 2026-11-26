@@ -1,4 +1,69 @@
 {
   "id": "lovers-full-trust-lean",
-  "deleted": true
+  "name": "Trust Lean",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-lovers",
+    "framing-full",
+    "mood-challenge",
+    "adult-only",
+    "cooperative"
+  ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "alt": "Balance and smile",
+    "kind": "photo-cutout",
+    "accent": "#1769ff",
+    "assetPath": "pose-guides/lovers-full-trust-lean.webp"
+  },
+  "category": "couple",
+  "animation": {
+    "captions": [
+      {
+        "text": "Face each other",
+        "timeMs": 0
+      },
+      {
+        "text": "Hold both hands tight",
+        "timeMs": 2010
+      },
+      {
+        "text": "Lean back together",
+        "timeMs": 4020
+      },
+      {
+        "text": "Balance and smile",
+        "timeMs": 6030
+      }
+    ],
+    "durationMs": 7030
+  },
+  "instruction": "Balance and smile",
+  "compatibility": {
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

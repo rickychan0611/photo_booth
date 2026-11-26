@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "friends-peace",
   "name": "Peace Party",
-  "category": "friends",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,40 +9,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Party smiles",
-  "animation": {
-    "durationMs": 6960,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Move close together"
-      },
-      {
-        "timeMs": 1640,
-        "text": "Raise your hands"
-      },
-      {
-        "timeMs": 2960,
-        "text": "Fill the frame with peace"
-      },
-      {
-        "timeMs": 4760,
-        "text": "Party smiles"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "friends",
-      "group"
-    ],
-    "framing": [
-      "full",
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -57,36 +25,46 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/friends-peace.webp",
     "alt": "Party smiles",
-    "accent": "#ffd21a"
+    "kind": "photo-cutout",
+    "accent": "#ffd21a",
+    "assetPath": "pose-guides/friends-peace.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/friends-peace-44bcb1a2133b7d.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5960,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Move close together"
-        },
-        {
-          "timeMs": 1640,
-          "text": "Raise your hands"
-        },
-        {
-          "timeMs": 2960,
-          "text": "Fill the frame with peace"
-        },
-        {
-          "timeMs": 4760,
-          "text": "Party smiles"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Move close together",
+        "timeMs": 0
+      },
+      {
+        "text": "Raise your hands",
+        "timeMs": 1987
+      },
+      {
+        "text": "Fill the frame with peace",
+        "timeMs": 3973
+      },
+      {
+        "text": "Party smiles",
+        "timeMs": 5960
+      }
+    ],
+    "durationMs": 6960
+  },
+  "instruction": "Party smiles",
+  "compatibility": {
+    "styles": [
+      "friends",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

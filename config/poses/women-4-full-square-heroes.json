@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "women-4-full-square-heroes",
   "name": "Square Heroes",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Freeze the team",
-  "animation": {
-    "durationMs": 7110,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Four low stances"
-      },
-      {
-        "timeMs": 1860,
-        "text": "Different arm shapes"
-      },
-      {
-        "timeMs": 3280,
-        "text": "Pop tall together"
-      },
-      {
-        "timeMs": 4900,
-        "text": "Freeze the team"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 4,
-    "maxPeople": 4,
-    "styles": [
-      "friends"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -64,36 +34,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/women-4-full-square-heroes.webp",
     "alt": "Freeze the team",
-    "accent": "#ffd21a"
+    "kind": "photo-cutout",
+    "accent": "#ffd21a",
+    "assetPath": "pose-guides/women-4-full-square-heroes.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/women-4-full-square-heroes-2264fd9b87a87a.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6110,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Four low stances"
-        },
-        {
-          "timeMs": 1860,
-          "text": "Different arm shapes"
-        },
-        {
-          "timeMs": 3280,
-          "text": "Pop tall together"
-        },
-        {
-          "timeMs": 4900,
-          "text": "Freeze the team"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Four low stances",
+        "timeMs": 0
+      },
+      {
+        "text": "Different arm shapes",
+        "timeMs": 2037
+      },
+      {
+        "text": "Pop tall together",
+        "timeMs": 4073
+      },
+      {
+        "text": "Freeze the team",
+        "timeMs": 6110
+      }
+    ],
+    "durationMs": 7110
+  },
+  "instruction": "Freeze the team",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 4,
+    "minPeople": 4
+  },
+  "schemaVersion": 2
 }

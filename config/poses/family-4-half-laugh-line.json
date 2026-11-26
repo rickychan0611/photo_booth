@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "family-4-half-laugh-line",
   "name": "Laugh Line",
-  "category": "family",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Hold the line",
-  "animation": {
-    "durationMs": 6560,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "One starts laughing"
-      },
-      {
-        "timeMs": 1640,
-        "text": "Pass it down the row"
-      },
-      {
-        "timeMs": 3000,
-        "text": "Last person breaks"
-      },
-      {
-        "timeMs": 4420,
-        "text": "Hold the line"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 4,
-    "maxPeople": 4,
-    "styles": [
-      "family"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -64,36 +34,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/family-4-half-laugh-line.webp",
     "alt": "Hold the line",
-    "accent": "#08cbe8"
+    "kind": "photo-cutout",
+    "accent": "#08cbe8",
+    "assetPath": "pose-guides/family-4-half-laugh-line.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/family-4-half-laugh-line-cc61fb4632d76a.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5560,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "One starts laughing"
-        },
-        {
-          "timeMs": 1640,
-          "text": "Pass it down the row"
-        },
-        {
-          "timeMs": 3000,
-          "text": "Last person breaks"
-        },
-        {
-          "timeMs": 4420,
-          "text": "Hold the line"
-        }
-      ]
-    }
-  }
+  "category": "family",
+  "animation": {
+    "captions": [
+      {
+        "text": "One starts laughing",
+        "timeMs": 0
+      },
+      {
+        "text": "Pass it down the row",
+        "timeMs": 1853
+      },
+      {
+        "text": "Last person breaks",
+        "timeMs": 3707
+      },
+      {
+        "text": "Hold the line",
+        "timeMs": 5560
+      }
+    ],
+    "durationMs": 6560
+  },
+  "instruction": "Hold the line",
+  "compatibility": {
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": false,
+    "maxPeople": 4,
+    "minPeople": 4
+  },
+  "schemaVersion": 2
 }

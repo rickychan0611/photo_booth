@@ -1,4 +1,72 @@
 {
   "id": "meme-npc-lineup",
-  "deleted": true
+  "name": "NPC Lineup",
+  "tags": [
+    "meme-pack-2026",
+    "gender-inclusive",
+    "child-safe",
+    "cooperative"
+  ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": true
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "alt": "Four people in an evenly spaced row with identical blank faces, straight stiff arms at sides.",
+    "kind": "photo-cutout",
+    "accent": "#ff8214",
+    "assetPath": "pose-guides/meme-npc-lineup.webp"
+  },
+  "category": "group",
+  "animation": {
+    "captions": [
+      {
+        "text": "Stand evenly spaced",
+        "timeMs": 0
+      },
+      {
+        "text": "Keep your arms stiff",
+        "timeMs": 2307
+      },
+      {
+        "text": "Give a blank expression",
+        "timeMs": 4613
+      },
+      {
+        "text": "Hold the robot lineup",
+        "timeMs": 6920
+      }
+    ],
+    "durationMs": 7920
+  },
+  "instruction": "Hold the robot lineup",
+  "compatibility": {
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 8,
+    "minPeople": 3
+  },
+  "schemaVersion": 2
 }

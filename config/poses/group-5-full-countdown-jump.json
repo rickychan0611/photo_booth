@@ -1,4 +1,83 @@
 {
   "id": "group-5-full-countdown-jump",
-  "deleted": true
+  "name": "Countdown Jump",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-group-5",
+    "framing-full",
+    "mood-challenge",
+    "child-safe",
+    "cooperative"
+  ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": false
+    },
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "alt": "Stick the landing",
+    "kind": "photo-cutout",
+    "accent": "#08cbe8",
+    "assetPath": "pose-guides/group-5-full-countdown-jump.webp"
+  },
+  "category": "group",
+  "animation": {
+    "captions": [
+      {
+        "text": "Everyone shows a number on their fingers",
+        "timeMs": 0
+      },
+      {
+        "text": "Drop the hands",
+        "timeMs": 2010
+      },
+      {
+        "text": "Jump together",
+        "timeMs": 4020
+      },
+      {
+        "text": "Stick the landing",
+        "timeMs": 6030
+      }
+    ],
+    "durationMs": 7030
+  },
+  "instruction": "Stick the landing",
+  "compatibility": {
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": null,
+    "minPeople": 5
+  },
+  "schemaVersion": 2
 }

@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "women-4-full-promenade",
   "name": "Promenade",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold the stroll",
-  "animation": {
-    "durationMs": 6560,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Walk in pairs"
-      },
-      {
-        "timeMs": 1420,
-        "text": "Swing your arms"
-      },
-      {
-        "timeMs": 2840,
-        "text": "Arrive in a line"
-      },
-      {
-        "timeMs": 4320,
-        "text": "Hold the stroll"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 4,
-    "maxPeople": 4,
-    "styles": [
-      "friends"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -64,36 +34,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/women-4-full-promenade.webp",
     "alt": "Hold the stroll",
-    "accent": "#ef2929"
+    "kind": "photo-cutout",
+    "accent": "#ef2929",
+    "assetPath": "pose-guides/women-4-full-promenade.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/women-4-full-promenade-4b7de521881229.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5560,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Walk in pairs"
-        },
-        {
-          "timeMs": 1420,
-          "text": "Swing your arms"
-        },
-        {
-          "timeMs": 2840,
-          "text": "Arrive in a line"
-        },
-        {
-          "timeMs": 4320,
-          "text": "Hold the stroll"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Walk in pairs",
+        "timeMs": 0
+      },
+      {
+        "text": "Swing your arms",
+        "timeMs": 1853
+      },
+      {
+        "text": "Arrive in a line",
+        "timeMs": 3707
+      },
+      {
+        "text": "Hold the stroll",
+        "timeMs": 5560
+      }
+    ],
+    "durationMs": 6560
+  },
+  "instruction": "Hold the stroll",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 4,
+    "minPeople": 4
+  },
+  "schemaVersion": 2
 }

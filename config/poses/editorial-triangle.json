@@ -1,4 +1,74 @@
 {
   "id": "editorial-triangle",
-  "deleted": true
+  "name": "Editorial Triangle",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-triangle",
+    "expression-deadpan",
+    "adult-only",
+    "cooperative"
+  ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "alt": "Fashion stillness",
+    "kind": "photo-cutout",
+    "accent": "#08cbe8",
+    "assetPath": "pose-guides/editorial-triangle.webp"
+  },
+  "category": "glamour",
+  "animation": {
+    "captions": [
+      {
+        "text": "Build three levels",
+        "timeMs": 0
+      },
+      {
+        "text": "Angle toward center",
+        "timeMs": 2090
+      },
+      {
+        "text": "Shape your arms",
+        "timeMs": 4180
+      },
+      {
+        "text": "Fashion stillness",
+        "timeMs": 6270
+      }
+    ],
+    "durationMs": 7270
+  },
+  "instruction": "Fashion stillness",
+  "compatibility": {
+    "styles": [
+      "friends",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": false,
+    "maxPeople": 3,
+    "minPeople": 3
+  },
+  "schemaVersion": 2
 }

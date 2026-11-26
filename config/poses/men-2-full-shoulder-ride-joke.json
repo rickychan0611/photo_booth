@@ -1,4 +1,69 @@
 {
   "id": "men-2-full-shoulder-ride-joke",
-  "deleted": true
+  "name": "Shoulder Ride Joke",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-men-2",
+    "framing-full",
+    "mood-funny",
+    "child-safe",
+    "cooperative"
+  ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "men",
+      "repeatable": false
+    },
+    {
+      "role": "men",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "alt": "Hold the joke",
+    "kind": "photo-cutout",
+    "accent": "#1769ff",
+    "assetPath": "pose-guides/men-2-full-shoulder-ride-joke.webp"
+  },
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "One crouches",
+        "timeMs": 0
+      },
+      {
+        "text": "The other sits tall",
+        "timeMs": 1933
+      },
+      {
+        "text": "Both point forward",
+        "timeMs": 3867
+      },
+      {
+        "text": "Hold the joke",
+        "timeMs": 5800
+      }
+    ],
+    "durationMs": 6800
+  },
+  "instruction": "Hold the joke",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

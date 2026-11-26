@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "lovers-half-heart-hands",
   "name": "Heart Hands",
-  "category": "couple",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Peek through and smile",
-  "animation": {
-    "durationMs": 7270,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Lift your hands"
-      },
-      {
-        "timeMs": 1420,
-        "text": "Make half a heart each"
-      },
-      {
-        "timeMs": 3140,
-        "text": "Join them in the middle"
-      },
-      {
-        "timeMs": 4420,
-        "text": "Peek through and smile"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "couple"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -56,36 +26,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/lovers-half-heart-hands.webp",
     "alt": "Peek through and smile",
-    "accent": "#ef2929"
+    "kind": "photo-cutout",
+    "accent": "#ef2929",
+    "assetPath": "pose-guides/lovers-half-heart-hands.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/lovers-half-heart-hands-006432423ffdf0.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6270,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Lift your hands"
-        },
-        {
-          "timeMs": 1420,
-          "text": "Make half a heart each"
-        },
-        {
-          "timeMs": 3140,
-          "text": "Join them in the middle"
-        },
-        {
-          "timeMs": 4420,
-          "text": "Peek through and smile"
-        }
-      ]
-    }
-  }
+  "category": "couple",
+  "animation": {
+    "captions": [
+      {
+        "text": "Lift your hands",
+        "timeMs": 0
+      },
+      {
+        "text": "Make half a heart each",
+        "timeMs": 2090
+      },
+      {
+        "text": "Join them in the middle",
+        "timeMs": 4180
+      },
+      {
+        "text": "Peek through and smile",
+        "timeMs": 6270
+      }
+    ],
+    "durationMs": 7270
+  },
+  "instruction": "Peek through and smile",
+  "compatibility": {
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": false,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

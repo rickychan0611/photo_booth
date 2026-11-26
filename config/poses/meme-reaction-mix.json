@@ -1,28 +1,16 @@
 {
-  "schemaVersion": 2,
   "id": "meme-reaction-mix",
   "name": "Everyone Has a Different Reaction",
-  "category": "group",
   "tags": [
     "meme-pack-2026",
     "gender-inclusive",
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Freeze every funny face",
-  "compatibility": {
-    "minPeople": 4,
-    "maxPeople": 8,
-    "styles": [
-      "friends",
-      "family",
-      "group"
-    ],
-    "framing": [
-      "full",
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -42,58 +30,48 @@
       "repeatable": true
     }
   ],
+  "visual": {
+    "alt": "Six friends tightly grouped, each with a distinct shocked, suspicious, smug, mock-crying, confused or delighted facial expression.",
+    "kind": "photo-cutout",
+    "accent": "#8c40ff",
+    "assetPath": "pose-guides/meme-reaction-mix.webp"
+  },
+  "category": "group",
   "animation": {
-    "durationMs": 9990,
     "captions": [
       {
-        "timeMs": 0,
-        "text": "Gather close together"
+        "text": "Gather close together",
+        "timeMs": 0
       },
       {
-        "timeMs": 1760,
-        "text": "Each choose a different reaction"
+        "text": "Each choose a different reaction",
+        "timeMs": 2997
       },
       {
-        "timeMs": 3760,
-        "text": "Shock, suspicion, joy or confusion"
+        "text": "Shock, suspicion, joy or confusion",
+        "timeMs": 5993
       },
       {
-        "timeMs": 7140,
-        "text": "Freeze every funny face"
+        "text": "Freeze every funny face",
+        "timeMs": 8990
       }
-    ]
+    ],
+    "durationMs": 9990
   },
-  "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/meme-reaction-mix.webp",
-    "alt": "Six friends tightly grouped, each with a distinct shocked, suspicious, smug, mock-crying, confused or delighted facial expression.",
-    "accent": "#8c40ff"
+  "instruction": "Freeze every funny face",
+  "compatibility": {
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 8,
+    "minPeople": 4
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/meme-reaction-mix-a203498b1b6caf.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 8990,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Gather close together"
-        },
-        {
-          "timeMs": 1760,
-          "text": "Each choose a different reaction"
-        },
-        {
-          "timeMs": 3760,
-          "text": "Shock, suspicion, joy or confusion"
-        },
-        {
-          "timeMs": 7140,
-          "text": "Freeze every funny face"
-        }
-      ]
-    }
-  }
+  "schemaVersion": 2
 }

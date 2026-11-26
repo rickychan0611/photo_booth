@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "parents-as-bodyguards",
   "name": "Parents as Bodyguards",
-  "category": "family",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,39 +9,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Cool family faces",
-  "animation": {
-    "durationMs": 8000,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Star stands in front"
-      },
-      {
-        "timeMs": 1980,
-        "text": "Guards close behind"
-      },
-      {
-        "timeMs": 3700,
-        "text": "Set protective hands"
-      },
-      {
-        "timeMs": 5360,
-        "text": "Cool family faces"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 3,
-    "maxPeople": null,
-    "styles": [
-      "family"
-    ],
-    "framing": [
-      "full",
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -60,36 +29,45 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/parents-as-bodyguards.webp",
     "alt": "Cool family faces",
-    "accent": "#08cbe8"
+    "kind": "photo-cutout",
+    "accent": "#08cbe8",
+    "assetPath": "pose-guides/parents-as-bodyguards.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/parents-as-bodyguards-41cb9036b3ec6d.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 7000,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Star stands in front"
-        },
-        {
-          "timeMs": 1980,
-          "text": "Guards close behind"
-        },
-        {
-          "timeMs": 3700,
-          "text": "Set protective hands"
-        },
-        {
-          "timeMs": 5360,
-          "text": "Cool family faces"
-        }
-      ]
-    }
-  }
+  "category": "family",
+  "animation": {
+    "captions": [
+      {
+        "text": "Star stands in front",
+        "timeMs": 0
+      },
+      {
+        "text": "Guards close behind",
+        "timeMs": 2333
+      },
+      {
+        "text": "Set protective hands",
+        "timeMs": 4667
+      },
+      {
+        "text": "Cool family faces",
+        "timeMs": 7000
+      }
+    ],
+    "durationMs": 8000
+  },
+  "instruction": "Cool family faces",
+  "compatibility": {
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": null,
+    "minPeople": 3
+  },
+  "schemaVersion": 2
 }

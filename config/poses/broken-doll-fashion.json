@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "broken-doll-fashion",
   "name": "Broken-Doll Fashion",
-  "category": "glamour",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,38 +9,10 @@
     "adult-only",
     "solo"
   ],
-  "instruction": "Blank fashion face",
-  "animation": {
-    "durationMs": 6720,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Break your hip line"
-      },
-      {
-        "timeMs": 1520,
-        "text": "Tilt your shoulders"
-      },
-      {
-        "timeMs": 2860,
-        "text": "Bend your wrists"
-      },
-      {
-        "timeMs": 4120,
-        "text": "Blank fashion face"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 1,
-    "maxPeople": 1,
-    "styles": [
-      "solo"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -51,36 +21,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/broken-doll-fashion.webp",
     "alt": "Blank fashion face",
-    "accent": "#ffd21a"
+    "kind": "photo-cutout",
+    "accent": "#ffd21a",
+    "assetPath": "pose-guides/broken-doll-fashion.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/broken-doll-fashion-333dac1624097a.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5720,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Break your hip line"
-        },
-        {
-          "timeMs": 1520,
-          "text": "Tilt your shoulders"
-        },
-        {
-          "timeMs": 2860,
-          "text": "Bend your wrists"
-        },
-        {
-          "timeMs": 4120,
-          "text": "Blank fashion face"
-        }
-      ]
-    }
-  }
+  "category": "glamour",
+  "animation": {
+    "captions": [
+      {
+        "text": "Break your hip line",
+        "timeMs": 0
+      },
+      {
+        "text": "Tilt your shoulders",
+        "timeMs": 1907
+      },
+      {
+        "text": "Bend your wrists",
+        "timeMs": 3813
+      },
+      {
+        "text": "Blank fashion face",
+        "timeMs": 5720
+      }
+    ],
+    "durationMs": 6720
+  },
+  "instruction": "Blank fashion face",
+  "compatibility": {
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false,
+    "maxPeople": 1,
+    "minPeople": 1
+  },
+  "schemaVersion": 2
 }

@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "family-3-half-piggy-chin",
   "name": "Piggy Chin",
-  "category": "family",
   "tags": [
     "creative-pack",
     "four-second",
@@ -13,38 +11,10 @@
     "cooperative",
     "with-kids"
   ],
-  "instruction": "Hold the pile",
-  "animation": {
-    "durationMs": 7610,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Child in the middle"
-      },
-      {
-        "timeMs": 1560,
-        "text": "Grownups rest chins close"
-      },
-      {
-        "timeMs": 3720,
-        "text": "All scrunch noses"
-      },
-      {
-        "timeMs": 5460,
-        "text": "Hold the pile"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 3,
-    "maxPeople": 3,
-    "styles": [
-      "family"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -61,36 +31,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/family-3-half-piggy-chin.webp",
     "alt": "Hold the pile",
-    "accent": "#7d22c9"
+    "kind": "photo-cutout",
+    "accent": "#7d22c9",
+    "assetPath": "pose-guides/family-3-half-piggy-chin.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/family-3-half-piggy-chin-dec150598f658d.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6610,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Child in the middle"
-        },
-        {
-          "timeMs": 1560,
-          "text": "Grownups rest chins close"
-        },
-        {
-          "timeMs": 3720,
-          "text": "All scrunch noses"
-        },
-        {
-          "timeMs": 5460,
-          "text": "Hold the pile"
-        }
-      ]
-    }
-  }
+  "category": "family",
+  "animation": {
+    "captions": [
+      {
+        "text": "Child in the middle",
+        "timeMs": 0
+      },
+      {
+        "text": "Grownups rest chins close",
+        "timeMs": 2203
+      },
+      {
+        "text": "All scrunch noses",
+        "timeMs": 4407
+      },
+      {
+        "text": "Hold the pile",
+        "timeMs": 6610
+      }
+    ],
+    "durationMs": 7610
+  },
+  "instruction": "Hold the pile",
+  "compatibility": {
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 3,
+    "minPeople": 3
+  },
+  "schemaVersion": 2
 }

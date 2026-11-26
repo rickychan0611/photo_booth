@@ -1,18 +1,53 @@
 {
-  "schemaVersion": 2,
   "id": "meme-six-seven",
   "name": "6–7 Hands",
-  "category": "solo",
   "tags": [
     "meme-pack-2026",
     "gender-inclusive",
     "child-safe",
     "solo"
   ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "alt": "Both open palms face up at chest height, one hand visibly higher than the other, as if weighing choices; playful confused face.",
+    "kind": "photo-cutout",
+    "accent": "#ff168f",
+    "assetPath": "pose-guides/meme-six-seven.webp"
+  },
+  "category": "solo",
+  "animation": {
+    "captions": [
+      {
+        "text": "Raise both hands",
+        "timeMs": 0
+      },
+      {
+        "text": "Turn your palms up",
+        "timeMs": 2063
+      },
+      {
+        "text": "One high, one low",
+        "timeMs": 4127
+      },
+      {
+        "text": "Hold your six seven",
+        "timeMs": 6190
+      }
+    ],
+    "durationMs": 7190
+  },
   "instruction": "Hold your six seven",
   "compatibility": {
-    "minPeople": 1,
-    "maxPeople": 8,
     "styles": [
       "solo",
       "couple",
@@ -24,66 +59,9 @@
       "full",
       "half"
     ],
-    "childSafe": true
+    "childSafe": true,
+    "maxPeople": 8,
+    "minPeople": 1
   },
-  "roles": [
-    {
-      "role": "any",
-      "repeatable": true
-    }
-  ],
-  "animation": {
-    "durationMs": 7190,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Raise both hands"
-      },
-      {
-        "timeMs": 1700,
-        "text": "Turn your palms up"
-      },
-      {
-        "timeMs": 3060,
-        "text": "One high, one low"
-      },
-      {
-        "timeMs": 4820,
-        "text": "Hold your six seven"
-      }
-    ]
-  },
-  "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/meme-six-seven.webp",
-    "alt": "Both open palms face up at chest height, one hand visibly higher than the other, as if weighing choices; playful confused face.",
-    "accent": "#ff168f"
-  },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/meme-six-seven-18034894f5aca9.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6190,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Raise both hands"
-        },
-        {
-          "timeMs": 1700,
-          "text": "Turn your palms up"
-        },
-        {
-          "timeMs": 3060,
-          "text": "One high, one low"
-        },
-        {
-          "timeMs": 4820,
-          "text": "Hold your six seven"
-        }
-      ]
-    }
-  }
+  "schemaVersion": 2
 }

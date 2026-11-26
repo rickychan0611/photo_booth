@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "men-3-full-comedy-chase",
   "name": "Comedy Chase",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Freeze the chase",
-  "animation": {
-    "durationMs": 6720,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "One runs ahead"
-      },
-      {
-        "timeMs": 1480,
-        "text": "Two reach to grab him"
-      },
-      {
-        "timeMs": 3300,
-        "text": "Everyone looks back"
-      },
-      {
-        "timeMs": 4600,
-        "text": "Freeze the chase"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 3,
-    "maxPeople": 3,
-    "styles": [
-      "friends"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -60,36 +30,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/men-3-full-comedy-chase.webp",
     "alt": "Freeze the chase",
-    "accent": "#ff168f"
+    "kind": "photo-cutout",
+    "accent": "#ff168f",
+    "assetPath": "pose-guides/men-3-full-comedy-chase.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/men-3-full-comedy-chase-cba5228321a77d.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5720,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "One runs ahead"
-        },
-        {
-          "timeMs": 1480,
-          "text": "Two reach to grab him"
-        },
-        {
-          "timeMs": 3300,
-          "text": "Everyone looks back"
-        },
-        {
-          "timeMs": 4600,
-          "text": "Freeze the chase"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "One runs ahead",
+        "timeMs": 0
+      },
+      {
+        "text": "Two reach to grab him",
+        "timeMs": 1907
+      },
+      {
+        "text": "Everyone looks back",
+        "timeMs": 3813
+      },
+      {
+        "text": "Freeze the chase",
+        "timeMs": 5720
+      }
+    ],
+    "durationMs": 6720
+  },
+  "instruction": "Freeze the chase",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 3,
+    "minPeople": 3
+  },
+  "schemaVersion": 2
 }

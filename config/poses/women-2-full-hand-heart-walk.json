@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "women-2-full-hand-heart-walk",
   "name": "Hand Heart Walk",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Stop cheek to cheek",
-  "animation": {
-    "durationMs": 6960,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Walk toward the camera"
-      },
-      {
-        "timeMs": 1700,
-        "text": "Swing your joined hands"
-      },
-      {
-        "timeMs": 3420,
-        "text": "Make a heart"
-      },
-      {
-        "timeMs": 4620,
-        "text": "Stop cheek to cheek"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "friends"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -56,36 +26,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/women-2-full-hand-heart-walk.webp",
     "alt": "Stop cheek to cheek",
-    "accent": "#ef2929"
+    "kind": "photo-cutout",
+    "accent": "#ef2929",
+    "assetPath": "pose-guides/women-2-full-hand-heart-walk.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/women-2-full-hand-heart-walk-96b1effbda0cbd.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5960,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Walk toward the camera"
-        },
-        {
-          "timeMs": 1700,
-          "text": "Swing your joined hands"
-        },
-        {
-          "timeMs": 3420,
-          "text": "Make a heart"
-        },
-        {
-          "timeMs": 4620,
-          "text": "Stop cheek to cheek"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Walk toward the camera",
+        "timeMs": 0
+      },
+      {
+        "text": "Swing your joined hands",
+        "timeMs": 1987
+      },
+      {
+        "text": "Make a heart",
+        "timeMs": 3973
+      },
+      {
+        "text": "Stop cheek to cheek",
+        "timeMs": 5960
+      }
+    ],
+    "durationMs": 6960
+  },
+  "instruction": "Stop cheek to cheek",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

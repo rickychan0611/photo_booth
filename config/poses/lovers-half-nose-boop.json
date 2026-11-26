@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "lovers-half-nose-boop",
   "name": "Nose Boop",
-  "category": "couple",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Giggle and hold",
-  "animation": {
-    "durationMs": 6250,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Lean in close"
-      },
-      {
-        "timeMs": 1480,
-        "text": "Wrinkle your noses"
-      },
-      {
-        "timeMs": 2920,
-        "text": "Boop once"
-      },
-      {
-        "timeMs": 4040,
-        "text": "Giggle and hold"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "couple"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -56,36 +26,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/lovers-half-nose-boop.webp",
     "alt": "Giggle and hold",
-    "accent": "#ff168f"
+    "kind": "photo-cutout",
+    "accent": "#ff168f",
+    "assetPath": "pose-guides/lovers-half-nose-boop.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/lovers-half-nose-boop-5095a303677f9f.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5250,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Lean in close"
-        },
-        {
-          "timeMs": 1480,
-          "text": "Wrinkle your noses"
-        },
-        {
-          "timeMs": 2920,
-          "text": "Boop once"
-        },
-        {
-          "timeMs": 4040,
-          "text": "Giggle and hold"
-        }
-      ]
-    }
-  }
+  "category": "couple",
+  "animation": {
+    "captions": [
+      {
+        "text": "Lean in close",
+        "timeMs": 0
+      },
+      {
+        "text": "Wrinkle your noses",
+        "timeMs": 1750
+      },
+      {
+        "text": "Boop once",
+        "timeMs": 3500
+      },
+      {
+        "text": "Giggle and hold",
+        "timeMs": 5250
+      }
+    ],
+    "durationMs": 6250
+  },
+  "instruction": "Giggle and hold",
+  "compatibility": {
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": false,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

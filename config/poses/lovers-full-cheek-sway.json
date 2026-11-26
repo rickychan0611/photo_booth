@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "lovers-full-cheek-sway",
   "name": "Cheek Sway",
-  "category": "couple",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Cheek to cheek",
-  "animation": {
-    "durationMs": 6490,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Stand side by side"
-      },
-      {
-        "timeMs": 1860,
-        "text": "Wrap an arm around"
-      },
-      {
-        "timeMs": 3340,
-        "text": "Sway once"
-      },
-      {
-        "timeMs": 4520,
-        "text": "Cheek to cheek"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "couple"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -56,36 +26,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/lovers-full-cheek-sway.webp",
     "alt": "Cheek to cheek",
-    "accent": "#ff168f"
+    "kind": "photo-cutout",
+    "accent": "#ff168f",
+    "assetPath": "pose-guides/lovers-full-cheek-sway.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/lovers-full-cheek-sway-ddcdefc9dcf2a8.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5490,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Stand side by side"
-        },
-        {
-          "timeMs": 1860,
-          "text": "Wrap an arm around"
-        },
-        {
-          "timeMs": 3340,
-          "text": "Sway once"
-        },
-        {
-          "timeMs": 4520,
-          "text": "Cheek to cheek"
-        }
-      ]
-    }
-  }
+  "category": "couple",
+  "animation": {
+    "captions": [
+      {
+        "text": "Stand side by side",
+        "timeMs": 0
+      },
+      {
+        "text": "Wrap an arm around",
+        "timeMs": 1830
+      },
+      {
+        "text": "Sway once",
+        "timeMs": 3660
+      },
+      {
+        "text": "Cheek to cheek",
+        "timeMs": 5490
+      }
+    ],
+    "durationMs": 6490
+  },
+  "instruction": "Cheek to cheek",
+  "compatibility": {
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

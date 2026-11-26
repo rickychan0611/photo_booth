@@ -1,4 +1,82 @@
 {
   "id": "fashion-dynasty",
-  "deleted": true
+  "name": "Fashion Dynasty",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-layers",
+    "expression-confident",
+    "adult-only",
+    "cooperative"
+  ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "alt": "Dynasty faces",
+    "kind": "photo-cutout",
+    "accent": "#08cbe8",
+    "assetPath": "pose-guides/fashion-dynasty.webp"
+  },
+  "category": "glamour",
+  "animation": {
+    "captions": [
+      {
+        "text": "Build a fashion pyramid",
+        "timeMs": 0
+      },
+      {
+        "text": "Overlap shoulders",
+        "timeMs": 2143
+      },
+      {
+        "text": "Vary every angle",
+        "timeMs": 4287
+      },
+      {
+        "text": "Dynasty faces",
+        "timeMs": 6430
+      }
+    ],
+    "durationMs": 7430
+  },
+  "instruction": "Dynasty faces",
+  "compatibility": {
+    "styles": [
+      "group",
+      "friends"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": false,
+    "maxPeople": null,
+    "minPeople": 5
+  },
+  "schemaVersion": 2
 }

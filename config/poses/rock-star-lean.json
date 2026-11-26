@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "rock-star-lean",
   "name": "Rock-Star Lean",
-  "category": "party",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,38 +9,10 @@
     "child-safe",
     "solo"
   ],
-  "instruction": "Rock-star face",
-  "animation": {
-    "durationMs": 6410,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Step wide"
-      },
-      {
-        "timeMs": 1380,
-        "text": "Lean backward"
-      },
-      {
-        "timeMs": 2580,
-        "text": "Play air guitar"
-      },
-      {
-        "timeMs": 4120,
-        "text": "Rock-star face"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 1,
-    "maxPeople": 1,
-    "styles": [
-      "solo"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -51,36 +21,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/rock-star-lean.webp",
     "alt": "Rock-star face",
-    "accent": "#0a9f9f"
+    "kind": "photo-cutout",
+    "accent": "#0a9f9f",
+    "assetPath": "pose-guides/rock-star-lean.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/rock-star-lean-5a066140afa0c6.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5410,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Step wide"
-        },
-        {
-          "timeMs": 1380,
-          "text": "Lean backward"
-        },
-        {
-          "timeMs": 2580,
-          "text": "Play air guitar"
-        },
-        {
-          "timeMs": 4120,
-          "text": "Rock-star face"
-        }
-      ]
-    }
-  }
+  "category": "party",
+  "animation": {
+    "captions": [
+      {
+        "text": "Step wide",
+        "timeMs": 0
+      },
+      {
+        "text": "Lean backward",
+        "timeMs": 1803
+      },
+      {
+        "text": "Play air guitar",
+        "timeMs": 3607
+      },
+      {
+        "text": "Rock-star face",
+        "timeMs": 5410
+      }
+    ],
+    "durationMs": 6410
+  },
+  "instruction": "Rock-star face",
+  "compatibility": {
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 1,
+    "minPeople": 1
+  },
+  "schemaVersion": 2
 }

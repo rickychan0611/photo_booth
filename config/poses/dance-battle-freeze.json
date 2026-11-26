@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "dance-battle-freeze",
   "name": "Dance Battle Freeze",
-  "category": "party",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,39 +9,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Dance faces",
-  "animation": {
-    "durationMs": 6490,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Split into dance teams"
-      },
-      {
-        "timeMs": 1820,
-        "text": "Start your moves"
-      },
-      {
-        "timeMs": 3120,
-        "text": "Freeze mid-battle"
-      },
-      {
-        "timeMs": 4440,
-        "text": "Dance faces"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 4,
-    "maxPeople": 4,
-    "styles": [
-      "friends",
-      "group"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -64,36 +33,45 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/dance-battle-freeze.webp",
     "alt": "Dance faces",
-    "accent": "#ef2929"
+    "kind": "photo-cutout",
+    "accent": "#ef2929",
+    "assetPath": "pose-guides/dance-battle-freeze.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/dance-battle-freeze-fe570f51ee520d.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5490,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Split into dance teams"
-        },
-        {
-          "timeMs": 1820,
-          "text": "Start your moves"
-        },
-        {
-          "timeMs": 3120,
-          "text": "Freeze mid-battle"
-        },
-        {
-          "timeMs": 4440,
-          "text": "Dance faces"
-        }
-      ]
-    }
-  }
+  "category": "party",
+  "animation": {
+    "captions": [
+      {
+        "text": "Split into dance teams",
+        "timeMs": 0
+      },
+      {
+        "text": "Start your moves",
+        "timeMs": 1830
+      },
+      {
+        "text": "Freeze mid-battle",
+        "timeMs": 3660
+      },
+      {
+        "text": "Dance faces",
+        "timeMs": 5490
+      }
+    ],
+    "durationMs": 6490
+  },
+  "instruction": "Dance faces",
+  "compatibility": {
+    "styles": [
+      "friends",
+      "group"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 4,
+    "minPeople": 4
+  },
+  "schemaVersion": 2
 }

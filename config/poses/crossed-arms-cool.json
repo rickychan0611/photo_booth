@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "crossed-arms-cool",
   "name": "Crossed Arms Cool",
-  "category": "professional",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,38 +9,10 @@
     "child-safe",
     "solo"
   ],
-  "instruction": "Cool confident face",
-  "animation": {
-    "durationMs": 6720,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Turn slightly"
-      },
-      {
-        "timeMs": 1420,
-        "text": "Lower your shoulders"
-      },
-      {
-        "timeMs": 2820,
-        "text": "Cross your arms"
-      },
-      {
-        "timeMs": 4140,
-        "text": "Cool confident face"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 1,
-    "maxPeople": 1,
-    "styles": [
-      "solo"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -51,36 +21,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/crossed-arms-cool.webp",
     "alt": "Cool confident face",
-    "accent": "#08cbe8"
+    "kind": "photo-cutout",
+    "accent": "#08cbe8",
+    "assetPath": "pose-guides/crossed-arms-cool.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/crossed-arms-cool-f8e8230b0f126a.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5720,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Turn slightly"
-        },
-        {
-          "timeMs": 1420,
-          "text": "Lower your shoulders"
-        },
-        {
-          "timeMs": 2820,
-          "text": "Cross your arms"
-        },
-        {
-          "timeMs": 4140,
-          "text": "Cool confident face"
-        }
-      ]
-    }
-  }
+  "category": "professional",
+  "animation": {
+    "captions": [
+      {
+        "text": "Turn slightly",
+        "timeMs": 0
+      },
+      {
+        "text": "Lower your shoulders",
+        "timeMs": 1907
+      },
+      {
+        "text": "Cross your arms",
+        "timeMs": 3813
+      },
+      {
+        "text": "Cool confident face",
+        "timeMs": 5720
+      }
+    ],
+    "durationMs": 6720
+  },
+  "instruction": "Cool confident face",
+  "compatibility": {
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 1,
+    "minPeople": 1
+  },
+  "schemaVersion": 2
 }

@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "forehead-touch",
   "name": "Forehead Touch",
-  "category": "couple",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,38 +9,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Close your eyes",
-  "animation": {
-    "durationMs": 5830,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Face each other"
-      },
-      {
-        "timeMs": 1380,
-        "text": "Step close"
-      },
-      {
-        "timeMs": 2500,
-        "text": "Touch foreheads"
-      },
-      {
-        "timeMs": 3780,
-        "text": "Close your eyes"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "friends"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -55,36 +25,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/forehead-touch.webp",
     "alt": "Close your eyes",
-    "accent": "#08cbe8"
+    "kind": "photo-cutout",
+    "accent": "#08cbe8",
+    "assetPath": "pose-guides/forehead-touch.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/forehead-touch-f1c9949316e664.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 4830,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Face each other"
-        },
-        {
-          "timeMs": 1380,
-          "text": "Step close"
-        },
-        {
-          "timeMs": 2500,
-          "text": "Touch foreheads"
-        },
-        {
-          "timeMs": 3780,
-          "text": "Close your eyes"
-        }
-      ]
-    }
-  }
+  "category": "couple",
+  "animation": {
+    "captions": [
+      {
+        "text": "Face each other",
+        "timeMs": 0
+      },
+      {
+        "text": "Step close",
+        "timeMs": 1610
+      },
+      {
+        "text": "Touch foreheads",
+        "timeMs": 3220
+      },
+      {
+        "text": "Close your eyes",
+        "timeMs": 4830
+      }
+    ],
+    "durationMs": 5830
+  },
+  "instruction": "Close your eyes",
+  "compatibility": {
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": false,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

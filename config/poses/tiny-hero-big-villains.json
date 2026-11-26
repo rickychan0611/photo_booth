@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "tiny-hero-big-villains",
   "name": "Tiny Hero Big Villains",
-  "category": "kids",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,39 +9,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Villains are defeated",
-  "animation": {
-    "durationMs": 8390,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Tiny hero steps forward"
-      },
-      {
-        "timeMs": 2360,
-        "text": "Villains loom behind"
-      },
-      {
-        "timeMs": 4180,
-        "text": "Hero powers up"
-      },
-      {
-        "timeMs": 5800,
-        "text": "Villains are defeated"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 3,
-    "maxPeople": 3,
-    "styles": [
-      "family"
-    ],
-    "framing": [
-      "full",
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -60,36 +29,45 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/tiny-hero-big-villains.webp",
     "alt": "Villains are defeated",
-    "accent": "#1769ff"
+    "kind": "photo-cutout",
+    "accent": "#1769ff",
+    "assetPath": "pose-guides/tiny-hero-big-villains.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/tiny-hero-big-villains-a1643c52bb87dc.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 7390,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Tiny hero steps forward"
-        },
-        {
-          "timeMs": 2360,
-          "text": "Villains loom behind"
-        },
-        {
-          "timeMs": 4180,
-          "text": "Hero powers up"
-        },
-        {
-          "timeMs": 5800,
-          "text": "Villains are defeated"
-        }
-      ]
-    }
-  }
+  "category": "kids",
+  "animation": {
+    "captions": [
+      {
+        "text": "Tiny hero steps forward",
+        "timeMs": 0
+      },
+      {
+        "text": "Villains loom behind",
+        "timeMs": 2463
+      },
+      {
+        "text": "Hero powers up",
+        "timeMs": 4927
+      },
+      {
+        "text": "Villains are defeated",
+        "timeMs": 7390
+      }
+    ],
+    "durationMs": 8390
+  },
+  "instruction": "Villains are defeated",
+  "compatibility": {
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 3,
+    "minPeople": 3
+  },
+  "schemaVersion": 2
 }

@@ -1,4 +1,69 @@
 {
   "id": "women-2-full-bestie-dip",
-  "deleted": true
+  "name": "Bestie Dip",
+  "tags": [
+    "creative-pack",
+    "four-second",
+    "audience-women-2",
+    "framing-full",
+    "mood-crazy",
+    "child-safe",
+    "cooperative"
+  ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "women",
+      "repeatable": false
+    },
+    {
+      "role": "women",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "alt": "Freeze the laugh",
+    "kind": "photo-cutout",
+    "accent": "#ffd21a",
+    "assetPath": "pose-guides/women-2-full-bestie-dip.webp"
+  },
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Take a dance hold",
+        "timeMs": 0
+      },
+      {
+        "text": "Dip dramatically",
+        "timeMs": 1987
+      },
+      {
+        "text": "Free arm in the air",
+        "timeMs": 3973
+      },
+      {
+        "text": "Freeze the laugh",
+        "timeMs": 5960
+      }
+    ],
+    "durationMs": 6960
+  },
+  "instruction": "Freeze the laugh",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

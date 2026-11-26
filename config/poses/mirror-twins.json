@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "mirror-twins",
   "name": "Mirror Twins",
-  "category": "friends",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,40 +9,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Twin fashion faces",
-  "animation": {
-    "durationMs": 7350,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Stand shoulder-to-shoulder"
-      },
-      {
-        "timeMs": 2100,
-        "text": "Mirror your bodies"
-      },
-      {
-        "timeMs": 3560,
-        "text": "Match your hands"
-      },
-      {
-        "timeMs": 4760,
-        "text": "Twin fashion faces"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "friends",
-      "couple"
-    ],
-    "framing": [
-      "full",
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -57,36 +25,46 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/mirror-twins.webp",
     "alt": "Twin fashion faces",
-    "accent": "#ff168f"
+    "kind": "photo-cutout",
+    "accent": "#ff168f",
+    "assetPath": "pose-guides/mirror-twins.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/mirror-twins-7c9ce0f65edd3c.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6350,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Stand shoulder-to-shoulder"
-        },
-        {
-          "timeMs": 2100,
-          "text": "Mirror your bodies"
-        },
-        {
-          "timeMs": 3560,
-          "text": "Match your hands"
-        },
-        {
-          "timeMs": 4760,
-          "text": "Twin fashion faces"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Stand shoulder-to-shoulder",
+        "timeMs": 0
+      },
+      {
+        "text": "Mirror your bodies",
+        "timeMs": 2117
+      },
+      {
+        "text": "Match your hands",
+        "timeMs": 4233
+      },
+      {
+        "text": "Twin fashion faces",
+        "timeMs": 6350
+      }
+    ],
+    "durationMs": 7350
+  },
+  "instruction": "Twin fashion faces",
+  "compatibility": {
+    "styles": [
+      "friends",
+      "couple"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

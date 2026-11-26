@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "men-2-full-trust-catch",
   "name": "Trust Catch",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold the trust",
-  "animation": {
-    "durationMs": 6330,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "One leans back"
-      },
-      {
-        "timeMs": 1300,
-        "text": "The other catches"
-      },
-      {
-        "timeMs": 2700,
-        "text": "Stop before the fall"
-      },
-      {
-        "timeMs": 4080,
-        "text": "Hold the trust"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "couple"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -56,36 +26,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/men-2-full-trust-catch.webp",
     "alt": "Hold the trust",
-    "accent": "#7d22c9"
+    "kind": "photo-cutout",
+    "accent": "#7d22c9",
+    "assetPath": "pose-guides/men-2-full-trust-catch.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/men-2-full-trust-catch-29d68117da7925.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5330,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "One leans back"
-        },
-        {
-          "timeMs": 1300,
-          "text": "The other catches"
-        },
-        {
-          "timeMs": 2700,
-          "text": "Stop before the fall"
-        },
-        {
-          "timeMs": 4080,
-          "text": "Hold the trust"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "One leans back",
+        "timeMs": 0
+      },
+      {
+        "text": "The other catches",
+        "timeMs": 1777
+      },
+      {
+        "text": "Stop before the fall",
+        "timeMs": 3553
+      },
+      {
+        "text": "Hold the trust",
+        "timeMs": 5330
+      }
+    ],
+    "durationMs": 6330
+  },
+  "instruction": "Hold the trust",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

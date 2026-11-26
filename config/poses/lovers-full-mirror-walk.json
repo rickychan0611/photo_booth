@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "lovers-full-mirror-walk",
   "name": "Mirror Walk",
-  "category": "couple",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Hold the mirror",
-  "animation": {
-    "durationMs": 6960,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Walk in the same step"
-      },
-      {
-        "timeMs": 1860,
-        "text": "Match your arm swing"
-      },
-      {
-        "timeMs": 3300,
-        "text": "Hit the same pose"
-      },
-      {
-        "timeMs": 4880,
-        "text": "Hold the mirror"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "couple"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -56,36 +26,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/lovers-full-mirror-walk.webp",
     "alt": "Hold the mirror",
-    "accent": "#0a9f9f"
+    "kind": "photo-cutout",
+    "accent": "#0a9f9f",
+    "assetPath": "pose-guides/lovers-full-mirror-walk.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/lovers-full-mirror-walk-fd8ed8be07e14c.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5960,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Walk in the same step"
-        },
-        {
-          "timeMs": 1860,
-          "text": "Match your arm swing"
-        },
-        {
-          "timeMs": 3300,
-          "text": "Hit the same pose"
-        },
-        {
-          "timeMs": 4880,
-          "text": "Hold the mirror"
-        }
-      ]
-    }
-  }
+  "category": "couple",
+  "animation": {
+    "captions": [
+      {
+        "text": "Walk in the same step",
+        "timeMs": 0
+      },
+      {
+        "text": "Match your arm swing",
+        "timeMs": 1987
+      },
+      {
+        "text": "Hit the same pose",
+        "timeMs": 3973
+      },
+      {
+        "text": "Hold the mirror",
+        "timeMs": 5960
+      }
+    ],
+    "durationMs": 6960
+  },
+  "instruction": "Hold the mirror",
+  "compatibility": {
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

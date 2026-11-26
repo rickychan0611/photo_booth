@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "women-4-full-flower-hug",
   "name": "Flower Hug",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Smile in the bloom",
-  "animation": {
-    "durationMs": 7610,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Step into one hug"
-      },
-      {
-        "timeMs": 2060,
-        "text": "Outside friends wrap in"
-      },
-      {
-        "timeMs": 4100,
-        "text": "Squeeze once"
-      },
-      {
-        "timeMs": 5340,
-        "text": "Smile in the bloom"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 4,
-    "maxPeople": 4,
-    "styles": [
-      "friends"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -64,36 +34,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/women-4-full-flower-hug.webp",
     "alt": "Smile in the bloom",
-    "accent": "#7d22c9"
+    "kind": "photo-cutout",
+    "accent": "#7d22c9",
+    "assetPath": "pose-guides/women-4-full-flower-hug.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/women-4-full-flower-hug-57baec607887fc.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6610,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Step into one hug"
-        },
-        {
-          "timeMs": 2060,
-          "text": "Outside friends wrap in"
-        },
-        {
-          "timeMs": 4100,
-          "text": "Squeeze once"
-        },
-        {
-          "timeMs": 5340,
-          "text": "Smile in the bloom"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Step into one hug",
+        "timeMs": 0
+      },
+      {
+        "text": "Outside friends wrap in",
+        "timeMs": 2203
+      },
+      {
+        "text": "Squeeze once",
+        "timeMs": 4407
+      },
+      {
+        "text": "Smile in the bloom",
+        "timeMs": 6610
+      }
+    ],
+    "durationMs": 7610
+  },
+  "instruction": "Smile in the bloom",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 4,
+    "minPeople": 4
+  },
+  "schemaVersion": 2
 }

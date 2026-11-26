@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "women-2-half-sunglasses-drop",
   "name": "Sunglasses Drop",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold the reveal",
-  "animation": {
-    "durationMs": 6800,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Start with glasses on"
-      },
-      {
-        "timeMs": 1800,
-        "text": "Drop them together"
-      },
-      {
-        "timeMs": 3300,
-        "text": "One eyebrow up"
-      },
-      {
-        "timeMs": 4560,
-        "text": "Hold the reveal"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "friends"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -56,36 +26,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/women-2-half-sunglasses-drop.webp",
     "alt": "Hold the reveal",
-    "accent": "#1769ff"
+    "kind": "photo-cutout",
+    "accent": "#1769ff",
+    "assetPath": "pose-guides/women-2-half-sunglasses-drop.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/women-2-half-sunglasses-drop-dfc5deed8a6b26.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5800,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Start with glasses on"
-        },
-        {
-          "timeMs": 1800,
-          "text": "Drop them together"
-        },
-        {
-          "timeMs": 3300,
-          "text": "One eyebrow up"
-        },
-        {
-          "timeMs": 4560,
-          "text": "Hold the reveal"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Start with glasses on",
+        "timeMs": 0
+      },
+      {
+        "text": "Drop them together",
+        "timeMs": 1933
+      },
+      {
+        "text": "One eyebrow up",
+        "timeMs": 3867
+      },
+      {
+        "text": "Hold the reveal",
+        "timeMs": 5800
+      }
+    ],
+    "durationMs": 6800
+  },
+  "instruction": "Hold the reveal",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

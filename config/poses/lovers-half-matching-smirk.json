@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "lovers-half-matching-smirk",
   "name": "Matching Smirk",
-  "category": "couple",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Do not blink",
-  "animation": {
-    "durationMs": 6410,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Same head tilt"
-      },
-      {
-        "timeMs": 1580,
-        "text": "One eyebrow up"
-      },
-      {
-        "timeMs": 2920,
-        "text": "Match the smirk"
-      },
-      {
-        "timeMs": 4180,
-        "text": "Do not blink"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "couple"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -56,36 +26,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/lovers-half-matching-smirk.webp",
     "alt": "Do not blink",
-    "accent": "#ff8214"
+    "kind": "photo-cutout",
+    "accent": "#ff8214",
+    "assetPath": "pose-guides/lovers-half-matching-smirk.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/lovers-half-matching-smirk-ffb79acc6b441f.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5410,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Same head tilt"
-        },
-        {
-          "timeMs": 1580,
-          "text": "One eyebrow up"
-        },
-        {
-          "timeMs": 2920,
-          "text": "Match the smirk"
-        },
-        {
-          "timeMs": 4180,
-          "text": "Do not blink"
-        }
-      ]
-    }
-  }
+  "category": "couple",
+  "animation": {
+    "captions": [
+      {
+        "text": "Same head tilt",
+        "timeMs": 0
+      },
+      {
+        "text": "One eyebrow up",
+        "timeMs": 1803
+      },
+      {
+        "text": "Match the smirk",
+        "timeMs": 3607
+      },
+      {
+        "text": "Do not blink",
+        "timeMs": 5410
+      }
+    ],
+    "durationMs": 6410
+  },
+  "instruction": "Do not blink",
+  "compatibility": {
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": false,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

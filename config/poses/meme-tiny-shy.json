@@ -1,18 +1,53 @@
 {
-  "schemaVersion": 2,
   "id": "meme-tiny-shy",
   "name": "Tiny Shy Pose",
-  "category": "solo",
   "tags": [
     "meme-pack-2026",
     "gender-inclusive",
     "child-safe",
     "solo"
   ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "alt": "Index fingertips touching at chest height, shoulders gently tucked, bashful smile.",
+    "kind": "photo-cutout",
+    "accent": "#1769ff",
+    "assetPath": "pose-guides/meme-tiny-shy.webp"
+  },
+  "category": "solo",
+  "animation": {
+    "captions": [
+      {
+        "text": "Hands at chest height",
+        "timeMs": 0
+      },
+      {
+        "text": "Touch your index fingertips",
+        "timeMs": 2230
+      },
+      {
+        "text": "Look a little bashful",
+        "timeMs": 4460
+      },
+      {
+        "text": "Hold your shy smile",
+        "timeMs": 6690
+      }
+    ],
+    "durationMs": 7690
+  },
   "instruction": "Hold your shy smile",
   "compatibility": {
-    "minPeople": 1,
-    "maxPeople": 2,
     "styles": [
       "solo",
       "couple",
@@ -24,66 +59,9 @@
       "full",
       "half"
     ],
-    "childSafe": true
+    "childSafe": true,
+    "maxPeople": 2,
+    "minPeople": 1
   },
-  "roles": [
-    {
-      "role": "any",
-      "repeatable": true
-    }
-  ],
-  "animation": {
-    "durationMs": 7690,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Hands at chest height"
-      },
-      {
-        "timeMs": 1600,
-        "text": "Touch your index fingertips"
-      },
-      {
-        "timeMs": 3540,
-        "text": "Look a little bashful"
-      },
-      {
-        "timeMs": 5080,
-        "text": "Hold your shy smile"
-      }
-    ]
-  },
-  "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/meme-tiny-shy.webp",
-    "alt": "Index fingertips touching at chest height, shoulders gently tucked, bashful smile.",
-    "accent": "#1769ff"
-  },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/meme-tiny-shy-549886cebf3b64.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6690,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Hands at chest height"
-        },
-        {
-          "timeMs": 1600,
-          "text": "Touch your index fingertips"
-        },
-        {
-          "timeMs": 3540,
-          "text": "Look a little bashful"
-        },
-        {
-          "timeMs": 5080,
-          "text": "Hold your shy smile"
-        }
-      ]
-    }
-  }
+  "schemaVersion": 2
 }

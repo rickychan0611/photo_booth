@@ -1,26 +1,16 @@
 {
-  "schemaVersion": 2,
   "id": "meme-is-this-pigeon",
   "name": "Is This a Pigeon?",
-  "category": "friends",
   "tags": [
     "meme-pack-2026",
     "gender-inclusive",
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold the question",
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "couple"
-    ],
-    "framing": [
-      "full",
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -32,58 +22,49 @@
       "repeatable": false
     }
   ],
+  "visual": {
+    "alt": "One friend presents an empty open palm as an imaginary object; the other gestures toward it with exaggerated confusion.",
+    "kind": "photo-cutout",
+    "accent": "#1769ff",
+    "assetPath": "pose-guides/meme-is-this-pigeon.webp"
+  },
+  "category": "friends",
   "animation": {
-    "durationMs": 8160,
     "captions": [
       {
-        "timeMs": 0,
-        "text": "One presents an open palm"
+        "text": "One presents an open palm",
+        "timeMs": 0
       },
       {
-        "timeMs": 2260,
-        "text": "The other gestures toward it"
+        "text": "The other gestures toward it",
+        "timeMs": 2387
       },
       {
-        "timeMs": 4180,
-        "text": "Look completely confused"
+        "text": "Look completely confused",
+        "timeMs": 4773
       },
       {
-        "timeMs": 6140,
-        "text": "Hold the question"
+        "text": "Hold the question",
+        "timeMs": 7160
       }
-    ]
+    ],
+    "durationMs": 8160
   },
-  "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/meme-is-this-pigeon.webp",
-    "alt": "One friend presents an empty open palm as an imaginary object; the other gestures toward it with exaggerated confusion.",
-    "accent": "#1769ff"
+  "instruction": "Hold the question",
+  "compatibility": {
+    "styles": [
+      "couple",
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 2,
+    "minPeople": 2
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/meme-is-this-pigeon-64b8808fdd38e2.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 7160,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "One presents an open palm"
-        },
-        {
-          "timeMs": 2260,
-          "text": "The other gestures toward it"
-        },
-        {
-          "timeMs": 4180,
-          "text": "Look completely confused"
-        },
-        {
-          "timeMs": 6140,
-          "text": "Hold the question"
-        }
-      ]
-    }
-  }
+  "schemaVersion": 2
 }

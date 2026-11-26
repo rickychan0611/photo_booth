@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "group-5-full-star-burst",
   "name": "Star Burst",
-  "category": "group",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,40 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold the burst",
-  "animation": {
-    "durationMs": 6410,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Cluster tight"
-      },
-      {
-        "timeMs": 1440,
-        "text": "Burst one step out"
-      },
-      {
-        "timeMs": 3000,
-        "text": "Arms like a star"
-      },
-      {
-        "timeMs": 4320,
-        "text": "Hold the burst"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 5,
-    "maxPeople": null,
-    "styles": [
-      "group",
-      "friends",
-      "family"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -70,36 +38,46 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/group-5-full-star-burst.webp",
     "alt": "Hold the burst",
-    "accent": "#1769ff"
+    "kind": "photo-cutout",
+    "accent": "#1769ff",
+    "assetPath": "pose-guides/group-5-full-star-burst.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/group-5-full-star-burst-10c2726466d62d.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5410,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Cluster tight"
-        },
-        {
-          "timeMs": 1440,
-          "text": "Burst one step out"
-        },
-        {
-          "timeMs": 3000,
-          "text": "Arms like a star"
-        },
-        {
-          "timeMs": 4320,
-          "text": "Hold the burst"
-        }
-      ]
-    }
-  }
+  "category": "group",
+  "animation": {
+    "captions": [
+      {
+        "text": "Cluster tight",
+        "timeMs": 0
+      },
+      {
+        "text": "Burst one step out",
+        "timeMs": 1803
+      },
+      {
+        "text": "Arms like a star",
+        "timeMs": 3607
+      },
+      {
+        "text": "Hold the burst",
+        "timeMs": 5410
+      }
+    ],
+    "durationMs": 6410
+  },
+  "instruction": "Hold the burst",
+  "compatibility": {
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": null,
+    "minPeople": 5
+  },
+  "schemaVersion": 2
 }

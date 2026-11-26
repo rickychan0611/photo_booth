@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "family-superhero-team",
   "name": "Family Superhero Team",
-  "category": "family",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,39 +9,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Family saves the day",
-  "animation": {
-    "durationMs": 8240,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Adults anchor behind"
-      },
-      {
-        "timeMs": 1980,
-        "text": "Hero steps forward"
-      },
-      {
-        "timeMs": 3720,
-        "text": "Everyone powers up"
-      },
-      {
-        "timeMs": 5380,
-        "text": "Family saves the day"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 3,
-    "maxPeople": null,
-    "styles": [
-      "family"
-    ],
-    "framing": [
-      "full",
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -60,36 +29,45 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/family-superhero-team.webp",
     "alt": "Family saves the day",
-    "accent": "#ef2929"
+    "kind": "photo-cutout",
+    "accent": "#ef2929",
+    "assetPath": "pose-guides/family-superhero-team.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/family-superhero-team-6dd555dfd282da.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 7240,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Adults anchor behind"
-        },
-        {
-          "timeMs": 1980,
-          "text": "Hero steps forward"
-        },
-        {
-          "timeMs": 3720,
-          "text": "Everyone powers up"
-        },
-        {
-          "timeMs": 5380,
-          "text": "Family saves the day"
-        }
-      ]
-    }
-  }
+  "category": "family",
+  "animation": {
+    "captions": [
+      {
+        "text": "Adults anchor behind",
+        "timeMs": 0
+      },
+      {
+        "text": "Hero steps forward",
+        "timeMs": 2413
+      },
+      {
+        "text": "Everyone powers up",
+        "timeMs": 4827
+      },
+      {
+        "text": "Family saves the day",
+        "timeMs": 7240
+      }
+    ],
+    "durationMs": 8240
+  },
+  "instruction": "Family saves the day",
+  "compatibility": {
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": null,
+    "minPeople": 3
+  },
+  "schemaVersion": 2
 }

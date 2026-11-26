@@ -1,29 +1,16 @@
 {
-  "schemaVersion": 2,
   "id": "meme-gyaru-peace",
   "name": "Gyaru Peace",
-  "category": "friends",
   "tags": [
     "meme-pack-2026",
     "gender-inclusive",
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold your playful smile",
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 6,
-    "styles": [
-      "couple",
-      "friends",
-      "family",
-      "group"
-    ],
-    "framing": [
-      "full",
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -35,58 +22,49 @@
       "repeatable": true
     }
   ],
+  "visual": {
+    "alt": "Inverted V peace sign reaching toward camera, fingers angled down, playful smile.",
+    "kind": "photo-cutout",
+    "accent": "#ff168f",
+    "assetPath": "pose-guides/meme-gyaru-peace.webp"
+  },
+  "category": "friends",
   "animation": {
-    "durationMs": 7770,
     "captions": [
       {
-        "timeMs": 0,
-        "text": "Make a peace sign"
+        "text": "Make a peace sign",
+        "timeMs": 0
       },
       {
-        "timeMs": 1820,
-        "text": "Angle your fingers downward"
+        "text": "Angle your fingers downward",
+        "timeMs": 2257
       },
       {
-        "timeMs": 3620,
-        "text": "Reach toward the lens"
+        "text": "Reach toward the lens",
+        "timeMs": 4513
       },
       {
-        "timeMs": 5060,
-        "text": "Hold your playful smile"
+        "text": "Hold your playful smile",
+        "timeMs": 6770
       }
-    ]
+    ],
+    "durationMs": 7770
   },
-  "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/meme-gyaru-peace.webp",
-    "alt": "Inverted V peace sign reaching toward camera, fingers angled down, playful smile.",
-    "accent": "#ff168f"
+  "instruction": "Hold your playful smile",
+  "compatibility": {
+    "styles": [
+      "couple",
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 6,
+    "minPeople": 2
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/meme-gyaru-peace-6670348f7d018d.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6770,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Make a peace sign"
-        },
-        {
-          "timeMs": 1820,
-          "text": "Angle your fingers downward"
-        },
-        {
-          "timeMs": 3620,
-          "text": "Reach toward the lens"
-        },
-        {
-          "timeMs": 5060,
-          "text": "Hold your playful smile"
-        }
-      ]
-    }
-  }
+  "schemaVersion": 2
 }

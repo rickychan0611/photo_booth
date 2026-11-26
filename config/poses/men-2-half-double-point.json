@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "men-2-half-double-point",
   "name": "Double Point",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold the accusation",
-  "animation": {
-    "durationMs": 6330,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Point at the lens"
-      },
-      {
-        "timeMs": 1420,
-        "text": "Lean in hard"
-      },
-      {
-        "timeMs": 2720,
-        "text": "Eyebrows up"
-      },
-      {
-        "timeMs": 3880,
-        "text": "Hold the accusation"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "friends"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -56,36 +26,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/men-2-half-double-point.webp",
     "alt": "Hold the accusation",
-    "accent": "#0a9f9f"
+    "kind": "photo-cutout",
+    "accent": "#0a9f9f",
+    "assetPath": "pose-guides/men-2-half-double-point.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/men-2-half-double-point-f48dd0b371f4cd.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5330,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Point at the lens"
-        },
-        {
-          "timeMs": 1420,
-          "text": "Lean in hard"
-        },
-        {
-          "timeMs": 2720,
-          "text": "Eyebrows up"
-        },
-        {
-          "timeMs": 3880,
-          "text": "Hold the accusation"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Point at the lens",
+        "timeMs": 0
+      },
+      {
+        "text": "Lean in hard",
+        "timeMs": 1777
+      },
+      {
+        "text": "Eyebrows up",
+        "timeMs": 3553
+      },
+      {
+        "text": "Hold the accusation",
+        "timeMs": 5330
+      }
+    ],
+    "durationMs": 6330
+  },
+  "instruction": "Hold the accusation",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

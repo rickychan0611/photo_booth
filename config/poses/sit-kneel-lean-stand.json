@@ -1,4 +1,77 @@
 {
   "id": "sit-kneel-lean-stand",
-  "deleted": true
+  "name": "Four-Level Editorial",
+  "tags": [
+    "playful-library",
+    "four-second",
+    "formation-diamond",
+    "expression-deadpan",
+    "adult-only",
+    "cooperative"
+  ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    },
+    {
+      "role": "adult",
+      "repeatable": false
+    }
+  ],
+  "visual": {
+    "alt": "Freeze like fashion",
+    "kind": "photo-cutout",
+    "accent": "#7d22c9",
+    "assetPath": "pose-guides/sit-kneel-lean-stand.webp"
+  },
+  "category": "glamour",
+  "animation": {
+    "captions": [
+      {
+        "text": "Choose four heights",
+        "timeMs": 0
+      },
+      {
+        "text": "Build a diagonal",
+        "timeMs": 2063
+      },
+      {
+        "text": "Overlap carefully",
+        "timeMs": 4127
+      },
+      {
+        "text": "Freeze like fashion",
+        "timeMs": 6190
+      }
+    ],
+    "durationMs": 7190
+  },
+  "instruction": "Freeze like fashion",
+  "compatibility": {
+    "styles": [
+      "friends",
+      "group"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false,
+    "maxPeople": 4,
+    "minPeople": 4
+  },
+  "schemaVersion": 2
 }

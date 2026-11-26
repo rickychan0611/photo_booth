@@ -1,18 +1,53 @@
 {
-  "schemaVersion": 2,
   "id": "meme-absolute-cinema",
   "name": "Absolute Cinema",
-  "category": "solo",
   "tags": [
     "meme-pack-2026",
     "gender-inclusive",
     "child-safe",
     "solo"
   ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "alt": "Both open hands beside head with palms toward camera, dramatically impressed expression.",
+    "kind": "photo-cutout",
+    "accent": "#8c40ff",
+    "assetPath": "pose-guides/meme-absolute-cinema.webp"
+  },
+  "category": "solo",
+  "animation": {
+    "captions": [
+      {
+        "text": "Lift both hands",
+        "timeMs": 0
+      },
+      {
+        "text": "Open palms beside your head",
+        "timeMs": 2683
+      },
+      {
+        "text": "Look dramatically impressed",
+        "timeMs": 5367
+      },
+      {
+        "text": "Hold absolute cinema",
+        "timeMs": 8050
+      }
+    ],
+    "durationMs": 9050
+  },
   "instruction": "Hold absolute cinema",
   "compatibility": {
-    "minPeople": 1,
-    "maxPeople": 8,
     "styles": [
       "solo",
       "couple",
@@ -24,66 +59,9 @@
       "full",
       "half"
     ],
-    "childSafe": true
+    "childSafe": true,
+    "maxPeople": 8,
+    "minPeople": 1
   },
-  "roles": [
-    {
-      "role": "any",
-      "repeatable": true
-    }
-  ],
-  "animation": {
-    "durationMs": 9050,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Lift both hands"
-      },
-      {
-        "timeMs": 1700,
-        "text": "Open palms beside your head"
-      },
-      {
-        "timeMs": 3620,
-        "text": "Look dramatically impressed"
-      },
-      {
-        "timeMs": 5680,
-        "text": "Hold absolute cinema"
-      }
-    ]
-  },
-  "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/meme-absolute-cinema.webp",
-    "alt": "Both open hands beside head with palms toward camera, dramatically impressed expression.",
-    "accent": "#8c40ff"
-  },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/meme-absolute-cinema-724ae63aa6af5a.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 8050,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Lift both hands"
-        },
-        {
-          "timeMs": 1700,
-          "text": "Open palms beside your head"
-        },
-        {
-          "timeMs": 3620,
-          "text": "Look dramatically impressed"
-        },
-        {
-          "timeMs": 5680,
-          "text": "Hold absolute cinema"
-        }
-      ]
-    }
-  }
+  "schemaVersion": 2
 }

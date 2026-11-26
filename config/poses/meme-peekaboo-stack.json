@@ -1,28 +1,16 @@
 {
-  "schemaVersion": 2,
   "id": "meme-peekaboo-stack",
   "name": "Peekaboo Stack",
-  "category": "group",
   "tags": [
     "meme-pack-2026",
     "gender-inclusive",
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold your peekaboo smiles",
-  "compatibility": {
-    "minPeople": 3,
-    "maxPeople": 6,
-    "styles": [
-      "friends",
-      "family",
-      "group"
-    ],
-    "framing": [
-      "full",
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -38,58 +26,48 @@
       "repeatable": true
     }
   ],
+  "visual": {
+    "alt": "Four friends in a compact vertical-depth stack, peeking alternately left and right; all four faces clearly visible.",
+    "kind": "photo-cutout",
+    "accent": "#ffd21a",
+    "assetPath": "pose-guides/meme-peekaboo-stack.webp"
+  },
+  "category": "group",
   "animation": {
-    "durationMs": 8810,
     "captions": [
       {
-        "timeMs": 0,
-        "text": "Line up behind each other"
+        "text": "Line up behind each other",
+        "timeMs": 0
       },
       {
-        "timeMs": 1880,
-        "text": "Peek out on alternating sides"
+        "text": "Peek out on alternating sides",
+        "timeMs": 2603
       },
       {
-        "timeMs": 4080,
-        "text": "Keep every face visible"
+        "text": "Keep every face visible",
+        "timeMs": 5207
       },
       {
-        "timeMs": 6080,
-        "text": "Hold your peekaboo smiles"
+        "text": "Hold your peekaboo smiles",
+        "timeMs": 7810
       }
-    ]
+    ],
+    "durationMs": 8810
   },
-  "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/meme-peekaboo-stack.webp",
-    "alt": "Four friends in a compact vertical-depth stack, peeking alternately left and right; all four faces clearly visible.",
-    "accent": "#ffd21a"
+  "instruction": "Hold your peekaboo smiles",
+  "compatibility": {
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 6,
+    "minPeople": 3
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/meme-peekaboo-stack-7ce35416b514d2.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 7810,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Line up behind each other"
-        },
-        {
-          "timeMs": 1880,
-          "text": "Peek out on alternating sides"
-        },
-        {
-          "timeMs": 4080,
-          "text": "Keep every face visible"
-        },
-        {
-          "timeMs": 6080,
-          "text": "Hold your peekaboo smiles"
-        }
-      ]
-    }
-  }
+  "schemaVersion": 2
 }

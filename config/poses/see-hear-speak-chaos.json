@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "see-hear-speak-chaos",
   "name": "See Hear Speak Chaos",
-  "category": "funny",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,40 +9,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Make it chaotic",
-  "animation": {
-    "durationMs": 7030,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Line up close"
-      },
-      {
-        "timeMs": 1360,
-        "text": "Cover eyes ears mouth"
-      },
-      {
-        "timeMs": 3600,
-        "text": "Lean together"
-      },
-      {
-        "timeMs": 4760,
-        "text": "Make it chaotic"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 3,
-    "maxPeople": 3,
-    "styles": [
-      "friends",
-      "family",
-      "group"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -61,36 +29,46 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/see-hear-speak-chaos.webp",
     "alt": "Make it chaotic",
-    "accent": "#ffd21a"
+    "kind": "photo-cutout",
+    "accent": "#ffd21a",
+    "assetPath": "pose-guides/see-hear-speak-chaos.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/see-hear-speak-chaos-32d2dad4c4a194.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6030,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Line up close"
-        },
-        {
-          "timeMs": 1360,
-          "text": "Cover eyes ears mouth"
-        },
-        {
-          "timeMs": 3600,
-          "text": "Lean together"
-        },
-        {
-          "timeMs": 4760,
-          "text": "Make it chaotic"
-        }
-      ]
-    }
-  }
+  "category": "funny",
+  "animation": {
+    "captions": [
+      {
+        "text": "Line up close",
+        "timeMs": 0
+      },
+      {
+        "text": "Cover eyes ears mouth",
+        "timeMs": 2010
+      },
+      {
+        "text": "Lean together",
+        "timeMs": 4020
+      },
+      {
+        "text": "Make it chaotic",
+        "timeMs": 6030
+      }
+    ],
+    "durationMs": 7030
+  },
+  "instruction": "Make it chaotic",
+  "compatibility": {
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 3,
+    "minPeople": 3
+  },
+  "schemaVersion": 2
 }

@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "men-2-half-arm-around-grin",
   "name": "Arm Around Grin",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Stay there",
-  "animation": {
-    "durationMs": 6800,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Arm across his shoulder"
-      },
-      {
-        "timeMs": 1760,
-        "text": "Knock your heads once"
-      },
-      {
-        "timeMs": 3400,
-        "text": "Big easy grins"
-      },
-      {
-        "timeMs": 5080,
-        "text": "Stay there"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "friends"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -56,36 +26,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/men-2-half-arm-around-grin.webp",
     "alt": "Stay there",
-    "accent": "#08cbe8"
+    "kind": "photo-cutout",
+    "accent": "#08cbe8",
+    "assetPath": "pose-guides/men-2-half-arm-around-grin.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/men-2-half-arm-around-grin-c0223b1bbfbfee.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5800,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Arm across his shoulder"
-        },
-        {
-          "timeMs": 1760,
-          "text": "Knock your heads once"
-        },
-        {
-          "timeMs": 3400,
-          "text": "Big easy grins"
-        },
-        {
-          "timeMs": 5080,
-          "text": "Stay there"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Arm across his shoulder",
+        "timeMs": 0
+      },
+      {
+        "text": "Knock your heads once",
+        "timeMs": 1933
+      },
+      {
+        "text": "Big easy grins",
+        "timeMs": 3867
+      },
+      {
+        "text": "Stay there",
+        "timeMs": 5800
+      }
+    ],
+    "durationMs": 6800
+  },
+  "instruction": "Stay there",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

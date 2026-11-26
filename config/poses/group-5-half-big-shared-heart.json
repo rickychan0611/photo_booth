@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "group-5-half-big-shared-heart",
   "name": "Big Shared Heart",
-  "category": "group",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,40 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold the heart",
-  "animation": {
-    "durationMs": 7190,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Outside hands start a heart"
-      },
-      {
-        "timeMs": 2220,
-        "text": "Everyone else tucks inside"
-      },
-      {
-        "timeMs": 4260,
-        "text": "Look through it"
-      },
-      {
-        "timeMs": 5260,
-        "text": "Hold the heart"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 5,
-    "maxPeople": null,
-    "styles": [
-      "group",
-      "friends",
-      "family"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -70,36 +38,46 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/group-5-half-big-shared-heart.webp",
     "alt": "Hold the heart",
-    "accent": "#ef2929"
+    "kind": "photo-cutout",
+    "accent": "#ef2929",
+    "assetPath": "pose-guides/group-5-half-big-shared-heart.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/group-5-half-big-shared-heart-254f04f194a781.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6190,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Outside hands start a heart"
-        },
-        {
-          "timeMs": 2220,
-          "text": "Everyone else tucks inside"
-        },
-        {
-          "timeMs": 4260,
-          "text": "Look through it"
-        },
-        {
-          "timeMs": 5260,
-          "text": "Hold the heart"
-        }
-      ]
-    }
-  }
+  "category": "group",
+  "animation": {
+    "captions": [
+      {
+        "text": "Outside hands start a heart",
+        "timeMs": 0
+      },
+      {
+        "text": "Everyone else tucks inside",
+        "timeMs": 2063
+      },
+      {
+        "text": "Look through it",
+        "timeMs": 4127
+      },
+      {
+        "text": "Hold the heart",
+        "timeMs": 6190
+      }
+    ],
+    "durationMs": 7190
+  },
+  "instruction": "Hold the heart",
+  "compatibility": {
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": null,
+    "minPeople": 5
+  },
+  "schemaVersion": 2
 }

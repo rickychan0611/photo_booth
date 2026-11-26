@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "invisible-roller-coaster",
   "name": "Invisible Roller Coaster",
-  "category": "funny",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,40 +9,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Roller-coaster faces!",
-  "animation": {
-    "durationMs": 7530,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Make one tight row"
-      },
-      {
-        "timeMs": 1960,
-        "text": "Grab the safety bar"
-      },
-      {
-        "timeMs": 3380,
-        "text": "Lean through the turn"
-      },
-      {
-        "timeMs": 4820,
-        "text": "Roller-coaster faces!"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 4,
-    "maxPeople": 4,
-    "styles": [
-      "friends",
-      "family",
-      "group"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -65,36 +33,46 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/invisible-roller-coaster.webp",
     "alt": "Roller-coaster faces!",
-    "accent": "#08cbe8"
+    "kind": "photo-cutout",
+    "accent": "#08cbe8",
+    "assetPath": "pose-guides/invisible-roller-coaster.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/invisible-roller-coaster-16973b44d3b68e.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6530,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Make one tight row"
-        },
-        {
-          "timeMs": 1960,
-          "text": "Grab the safety bar"
-        },
-        {
-          "timeMs": 3380,
-          "text": "Lean through the turn"
-        },
-        {
-          "timeMs": 4820,
-          "text": "Roller-coaster faces!"
-        }
-      ]
-    }
-  }
+  "category": "funny",
+  "animation": {
+    "captions": [
+      {
+        "text": "Make one tight row",
+        "timeMs": 0
+      },
+      {
+        "text": "Grab the safety bar",
+        "timeMs": 2177
+      },
+      {
+        "text": "Lean through the turn",
+        "timeMs": 4353
+      },
+      {
+        "text": "Roller-coaster faces!",
+        "timeMs": 6530
+      }
+    ],
+    "durationMs": 7530
+  },
+  "instruction": "Roller-coaster faces!",
+  "compatibility": {
+    "styles": [
+      "friends",
+      "family",
+      "group"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 4,
+    "minPeople": 4
+  },
+  "schemaVersion": 2
 }

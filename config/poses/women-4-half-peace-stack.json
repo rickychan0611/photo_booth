@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "women-4-half-peace-stack",
   "name": "Peace Stack",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold the stack",
-  "animation": {
-    "durationMs": 6330,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Four peace signs"
-      },
-      {
-        "timeMs": 1740,
-        "text": "Stack them high"
-      },
-      {
-        "timeMs": 2940,
-        "text": "Smile under them"
-      },
-      {
-        "timeMs": 4160,
-        "text": "Hold the stack"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 4,
-    "maxPeople": 4,
-    "styles": [
-      "friends"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -64,36 +34,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/women-4-half-peace-stack.webp",
     "alt": "Hold the stack",
-    "accent": "#08cbe8"
+    "kind": "photo-cutout",
+    "accent": "#08cbe8",
+    "assetPath": "pose-guides/women-4-half-peace-stack.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/women-4-half-peace-stack-ebef9b5243fc9d.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5330,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Four peace signs"
-        },
-        {
-          "timeMs": 1740,
-          "text": "Stack them high"
-        },
-        {
-          "timeMs": 2940,
-          "text": "Smile under them"
-        },
-        {
-          "timeMs": 4160,
-          "text": "Hold the stack"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Four peace signs",
+        "timeMs": 0
+      },
+      {
+        "text": "Stack them high",
+        "timeMs": 1777
+      },
+      {
+        "text": "Smile under them",
+        "timeMs": 3553
+      },
+      {
+        "text": "Hold the stack",
+        "timeMs": 5330
+      }
+    ],
+    "durationMs": 6330
+  },
+  "instruction": "Hold the stack",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 4,
+    "minPeople": 4
+  },
+  "schemaVersion": 2
 }

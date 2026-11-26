@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "family-4-full-parents-and-pair",
   "name": "Parents and Pair",
-  "category": "family",
   "tags": [
     "creative-pack",
     "four-second",
@@ -13,38 +11,10 @@
     "cooperative",
     "with-kids"
   ],
-  "instruction": "One family smile",
-  "animation": {
-    "durationMs": 6720,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Kids in front"
-      },
-      {
-        "timeMs": 1240,
-        "text": "Grownups behind"
-      },
-      {
-        "timeMs": 2600,
-        "text": "Hands on shoulders"
-      },
-      {
-        "timeMs": 4019,
-        "text": "One family smile"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 4,
-    "maxPeople": 4,
-    "styles": [
-      "family"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -65,36 +35,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/family-4-full-parents-and-pair.webp",
     "alt": "One family smile",
-    "accent": "#ff168f"
+    "kind": "photo-cutout",
+    "accent": "#ff168f",
+    "assetPath": "pose-guides/family-4-full-parents-and-pair.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/family-4-full-parents-and-pair-bc74065b70ee35.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5720,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Kids in front"
-        },
-        {
-          "timeMs": 1240,
-          "text": "Grownups behind"
-        },
-        {
-          "timeMs": 2600,
-          "text": "Hands on shoulders"
-        },
-        {
-          "timeMs": 4019,
-          "text": "One family smile"
-        }
-      ]
-    }
-  }
+  "category": "family",
+  "animation": {
+    "captions": [
+      {
+        "text": "Kids in front",
+        "timeMs": 0
+      },
+      {
+        "text": "Grownups behind",
+        "timeMs": 1907
+      },
+      {
+        "text": "Hands on shoulders",
+        "timeMs": 3813
+      },
+      {
+        "text": "One family smile",
+        "timeMs": 5720
+      }
+    ],
+    "durationMs": 6720
+  },
+  "instruction": "One family smile",
+  "compatibility": {
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 4,
+    "minPeople": 4
+  },
+  "schemaVersion": 2
 }

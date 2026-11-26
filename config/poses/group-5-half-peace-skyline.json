@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "group-5-half-peace-skyline",
   "name": "Peace Skyline",
-  "category": "group",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,40 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold the skyline",
-  "animation": {
-    "durationMs": 7530,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Peace signs at different heights"
-      },
-      {
-        "timeMs": 2120,
-        "text": "Pack the faces under them"
-      },
-      {
-        "timeMs": 3800,
-        "text": "Big smiles"
-      },
-      {
-        "timeMs": 5140,
-        "text": "Hold the skyline"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 5,
-    "maxPeople": null,
-    "styles": [
-      "group",
-      "friends",
-      "family"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -70,36 +38,46 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/group-5-half-peace-skyline.webp",
     "alt": "Hold the skyline",
-    "accent": "#ff8214"
+    "kind": "photo-cutout",
+    "accent": "#ff8214",
+    "assetPath": "pose-guides/group-5-half-peace-skyline.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/group-5-half-peace-skyline-f0e53a380d73f4.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6530,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Peace signs at different heights"
-        },
-        {
-          "timeMs": 2120,
-          "text": "Pack the faces under them"
-        },
-        {
-          "timeMs": 3800,
-          "text": "Big smiles"
-        },
-        {
-          "timeMs": 5140,
-          "text": "Hold the skyline"
-        }
-      ]
-    }
-  }
+  "category": "group",
+  "animation": {
+    "captions": [
+      {
+        "text": "Peace signs at different heights",
+        "timeMs": 0
+      },
+      {
+        "text": "Pack the faces under them",
+        "timeMs": 2177
+      },
+      {
+        "text": "Big smiles",
+        "timeMs": 4353
+      },
+      {
+        "text": "Hold the skyline",
+        "timeMs": 6530
+      }
+    ],
+    "durationMs": 7530
+  },
+  "instruction": "Hold the skyline",
+  "compatibility": {
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": null,
+    "minPeople": 5
+  },
+  "schemaVersion": 2
 }

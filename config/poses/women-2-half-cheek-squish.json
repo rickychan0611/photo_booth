@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "women-2-half-cheek-squish",
   "name": "Cheek Squish",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold the cute face",
-  "animation": {
-    "durationMs": 6960,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Squish your cheeks in"
-      },
-      {
-        "timeMs": 1700,
-        "text": "Touch noses"
-      },
-      {
-        "timeMs": 3020,
-        "text": "Big sparkling eyes"
-      },
-      {
-        "timeMs": 4720,
-        "text": "Hold the cute face"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "friends"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -56,36 +26,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/women-2-half-cheek-squish.webp",
     "alt": "Hold the cute face",
-    "accent": "#08cbe8"
+    "kind": "photo-cutout",
+    "accent": "#08cbe8",
+    "assetPath": "pose-guides/women-2-half-cheek-squish.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/women-2-half-cheek-squish-912294b8b73ca1.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5960,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Squish your cheeks in"
-        },
-        {
-          "timeMs": 1700,
-          "text": "Touch noses"
-        },
-        {
-          "timeMs": 3020,
-          "text": "Big sparkling eyes"
-        },
-        {
-          "timeMs": 4720,
-          "text": "Hold the cute face"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Squish your cheeks in",
+        "timeMs": 0
+      },
+      {
+        "text": "Touch noses",
+        "timeMs": 1987
+      },
+      {
+        "text": "Big sparkling eyes",
+        "timeMs": 3973
+      },
+      {
+        "text": "Hold the cute face",
+        "timeMs": 5960
+      }
+    ],
+    "durationMs": 6960
+  },
+  "instruction": "Hold the cute face",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "group-5-half-matching-tilt",
   "name": "Matching Tilt",
-  "category": "group",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,40 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold the tilt",
-  "animation": {
-    "durationMs": 6490,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Tilt the same direction"
-      },
-      {
-        "timeMs": 1800,
-        "text": "Same smile size"
-      },
-      {
-        "timeMs": 3220,
-        "text": "Same timing"
-      },
-      {
-        "timeMs": 4340,
-        "text": "Hold the tilt"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 5,
-    "maxPeople": null,
-    "styles": [
-      "group",
-      "friends",
-      "family"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -70,36 +38,46 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/group-5-half-matching-tilt.webp",
     "alt": "Hold the tilt",
-    "accent": "#7d22c9"
+    "kind": "photo-cutout",
+    "accent": "#7d22c9",
+    "assetPath": "pose-guides/group-5-half-matching-tilt.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/group-5-half-matching-tilt-f27c186387c80b.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 5490,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Tilt the same direction"
-        },
-        {
-          "timeMs": 1800,
-          "text": "Same smile size"
-        },
-        {
-          "timeMs": 3220,
-          "text": "Same timing"
-        },
-        {
-          "timeMs": 4340,
-          "text": "Hold the tilt"
-        }
-      ]
-    }
-  }
+  "category": "group",
+  "animation": {
+    "captions": [
+      {
+        "text": "Tilt the same direction",
+        "timeMs": 0
+      },
+      {
+        "text": "Same smile size",
+        "timeMs": 1830
+      },
+      {
+        "text": "Same timing",
+        "timeMs": 3660
+      },
+      {
+        "text": "Hold the tilt",
+        "timeMs": 5490
+      }
+    ],
+    "durationMs": 6490
+  },
+  "instruction": "Hold the tilt",
+  "compatibility": {
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": null,
+    "minPeople": 5
+  },
+  "schemaVersion": 2
 }

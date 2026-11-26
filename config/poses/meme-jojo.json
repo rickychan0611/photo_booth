@@ -1,18 +1,53 @@
 {
-  "schemaVersion": 2,
   "id": "meme-jojo",
   "name": "JoJo Dramatic Pose",
-  "category": "solo",
   "tags": [
     "meme-pack-2026",
     "gender-inclusive",
     "child-safe",
     "solo"
   ],
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
+  },
+  "roles": [
+    {
+      "role": "any",
+      "repeatable": true
+    }
+  ],
+  "visual": {
+    "alt": "One knee bent, torso slightly twisted, one hand framing face, theatrical expressive pose; ordinary clothes.",
+    "kind": "photo-cutout",
+    "accent": "#ffd21a",
+    "assetPath": "pose-guides/meme-jojo.webp"
+  },
+  "category": "solo",
+  "animation": {
+    "captions": [
+      {
+        "text": "Bend one knee",
+        "timeMs": 0
+      },
+      {
+        "text": "Twist your shoulders slightly",
+        "timeMs": 2387
+      },
+      {
+        "text": "Frame your face with one hand",
+        "timeMs": 4773
+      },
+      {
+        "text": "Hold the dramatic pose",
+        "timeMs": 7160
+      }
+    ],
+    "durationMs": 8160
+  },
   "instruction": "Hold the dramatic pose",
   "compatibility": {
-    "minPeople": 1,
-    "maxPeople": 4,
     "styles": [
       "solo",
       "couple",
@@ -23,66 +58,9 @@
     "framing": [
       "full"
     ],
-    "childSafe": true
+    "childSafe": true,
+    "maxPeople": 4,
+    "minPeople": 1
   },
-  "roles": [
-    {
-      "role": "any",
-      "repeatable": true
-    }
-  ],
-  "animation": {
-    "durationMs": 8160,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Bend one knee"
-      },
-      {
-        "timeMs": 1480,
-        "text": "Twist your shoulders slightly"
-      },
-      {
-        "timeMs": 3400,
-        "text": "Frame your face with one hand"
-      },
-      {
-        "timeMs": 5460,
-        "text": "Hold the dramatic pose"
-      }
-    ]
-  },
-  "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/meme-jojo.webp",
-    "alt": "One knee bent, torso slightly twisted, one hand framing face, theatrical expressive pose; ordinary clothes.",
-    "accent": "#ffd21a"
-  },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/meme-jojo-2ecd8464604240.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 7160,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Bend one knee"
-        },
-        {
-          "timeMs": 1480,
-          "text": "Twist your shoulders slightly"
-        },
-        {
-          "timeMs": 3400,
-          "text": "Frame your face with one hand"
-        },
-        {
-          "timeMs": 5460,
-          "text": "Hold the dramatic pose"
-        }
-      ]
-    }
-  }
+  "schemaVersion": 2
 }

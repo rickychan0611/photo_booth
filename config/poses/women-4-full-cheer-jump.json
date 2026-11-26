@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "women-4-full-cheer-jump",
   "name": "Cheer Jump",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Land in a cheer",
-  "animation": {
-    "durationMs": 5750,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Arms up"
-      },
-      {
-        "timeMs": 1080,
-        "text": "Count to three"
-      },
-      {
-        "timeMs": 2280,
-        "text": "Jump at once"
-      },
-      {
-        "timeMs": 3480,
-        "text": "Land in a cheer"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 4,
-    "maxPeople": 4,
-    "styles": [
-      "friends"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -64,36 +34,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/women-4-full-cheer-jump.webp",
     "alt": "Land in a cheer",
-    "accent": "#ff168f"
+    "kind": "photo-cutout",
+    "accent": "#ff168f",
+    "assetPath": "pose-guides/women-4-full-cheer-jump.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/women-4-full-cheer-jump-7b613699285641.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 4750,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Arms up"
-        },
-        {
-          "timeMs": 1080,
-          "text": "Count to three"
-        },
-        {
-          "timeMs": 2280,
-          "text": "Jump at once"
-        },
-        {
-          "timeMs": 3480,
-          "text": "Land in a cheer"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Arms up",
+        "timeMs": 0
+      },
+      {
+        "text": "Count to three",
+        "timeMs": 1583
+      },
+      {
+        "text": "Jump at once",
+        "timeMs": 3167
+      },
+      {
+        "text": "Land in a cheer",
+        "timeMs": 4750
+      }
+    ],
+    "durationMs": 5750
+  },
+  "instruction": "Land in a cheer",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 4,
+    "minPeople": 4
+  },
+  "schemaVersion": 2
 }

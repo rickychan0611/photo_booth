@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "group-5-full-superhero-cluster",
   "name": "Superhero Cluster",
-  "category": "group",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,40 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold the poster",
-  "animation": {
-    "durationMs": 8240,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Mix low and tall stances"
-      },
-      {
-        "timeMs": 2400,
-        "text": "Different hero arms"
-      },
-      {
-        "timeMs": 4019,
-        "text": "Eyes fierce or grinning"
-      },
-      {
-        "timeMs": 6000,
-        "text": "Hold the poster"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 5,
-    "maxPeople": null,
-    "styles": [
-      "group",
-      "friends",
-      "family"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -70,36 +38,46 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/group-5-full-superhero-cluster.webp",
     "alt": "Hold the poster",
-    "accent": "#0a9f9f"
+    "kind": "photo-cutout",
+    "accent": "#0a9f9f",
+    "assetPath": "pose-guides/group-5-full-superhero-cluster.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/group-5-full-superhero-cluster-2da913464d3995.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 7240,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Mix low and tall stances"
-        },
-        {
-          "timeMs": 2400,
-          "text": "Different hero arms"
-        },
-        {
-          "timeMs": 4019,
-          "text": "Eyes fierce or grinning"
-        },
-        {
-          "timeMs": 6000,
-          "text": "Hold the poster"
-        }
-      ]
-    }
-  }
+  "category": "group",
+  "animation": {
+    "captions": [
+      {
+        "text": "Mix low and tall stances",
+        "timeMs": 0
+      },
+      {
+        "text": "Different hero arms",
+        "timeMs": 2413
+      },
+      {
+        "text": "Eyes fierce or grinning",
+        "timeMs": 4827
+      },
+      {
+        "text": "Hold the poster",
+        "timeMs": 7240
+      }
+    ],
+    "durationMs": 8240
+  },
+  "instruction": "Hold the poster",
+  "compatibility": {
+    "styles": [
+      "group",
+      "friends",
+      "family"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": null,
+    "minPeople": 5
+  },
+  "schemaVersion": 2
 }

@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "spy-newlyweds",
   "name": "Spy Newlyweds",
-  "category": "wedding",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,40 +9,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Wedding spies",
-  "animation": {
-    "durationMs": 6760,
-    "captions": [
-      {
-        "text": "Stand back-to-back",
-        "timeMs": 0
-      },
-      {
-        "text": "Cross your arms",
-        "timeMs": 1920
-      },
-      {
-        "text": "Turn opposite ways",
-        "timeMs": 3840
-      },
-      {
-        "text": "Wedding spies",
-        "timeMs": 5760
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "friends",
-      "family"
-    ],
-    "framing": [
-      "full",
-      "half"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -57,14 +25,45 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/spy-newlyweds.webp",
     "alt": "Wedding spies",
-    "accent": "#ffd21a"
+    "kind": "photo-cutout",
+    "accent": "#ffd21a",
+    "assetPath": "pose-guides/spy-newlyweds.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/spy-newlyweds-a94bc74ae6ccd1.mp3",
-    "startMs": 0,
-    "markers": []
-  }
+  "category": "wedding",
+  "animation": {
+    "captions": [
+      {
+        "text": "Stand back-to-back",
+        "timeMs": 0
+      },
+      {
+        "text": "Cross your arms",
+        "timeMs": 1933
+      },
+      {
+        "text": "Turn opposite ways",
+        "timeMs": 3867
+      },
+      {
+        "text": "Wedding spies",
+        "timeMs": 5800
+      }
+    ],
+    "durationMs": 6800
+  },
+  "instruction": "Wedding spies",
+  "compatibility": {
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "full",
+      "half"
+    ],
+    "childSafe": false,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }

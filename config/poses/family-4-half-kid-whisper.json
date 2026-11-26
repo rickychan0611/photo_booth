@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "family-4-half-kid-whisper",
   "name": "Kid Whisper",
-  "category": "family",
   "tags": [
     "creative-pack",
     "four-second",
@@ -13,38 +11,10 @@
     "cooperative",
     "with-kids"
   ],
-  "instruction": "Hold the secret",
-  "animation": {
-    "durationMs": 7350,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Child whispers to one grownup"
-      },
-      {
-        "timeMs": 2260,
-        "text": "That face changes"
-      },
-      {
-        "timeMs": 3860,
-        "text": "The others lean in"
-      },
-      {
-        "timeMs": 5280,
-        "text": "Hold the secret"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 4,
-    "maxPeople": 4,
-    "styles": [
-      "family"
-    ],
-    "framing": [
-      "half"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -65,36 +35,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/family-4-half-kid-whisper.webp",
     "alt": "Hold the secret",
-    "accent": "#ffd21a"
+    "kind": "photo-cutout",
+    "accent": "#ffd21a",
+    "assetPath": "pose-guides/family-4-half-kid-whisper.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/family-4-half-kid-whisper-6f535268771f80.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6350,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Child whispers to one grownup"
-        },
-        {
-          "timeMs": 2260,
-          "text": "That face changes"
-        },
-        {
-          "timeMs": 3860,
-          "text": "The others lean in"
-        },
-        {
-          "timeMs": 5280,
-          "text": "Hold the secret"
-        }
-      ]
-    }
-  }
+  "category": "family",
+  "animation": {
+    "captions": [
+      {
+        "text": "Child whispers to one grownup",
+        "timeMs": 0
+      },
+      {
+        "text": "That face changes",
+        "timeMs": 2117
+      },
+      {
+        "text": "The others lean in",
+        "timeMs": 4233
+      },
+      {
+        "text": "Hold the secret",
+        "timeMs": 6350
+      }
+    ],
+    "durationMs": 7350
+  },
+  "instruction": "Hold the secret",
+  "compatibility": {
+    "styles": [
+      "family"
+    ],
+    "framing": [
+      "half"
+    ],
+    "childSafe": true,
+    "maxPeople": 4,
+    "minPeople": 4
+  },
+  "schemaVersion": 2
 }

@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "women-4-full-puppy-pile",
   "name": "Puppy Pile",
-  "category": "friends",
   "tags": [
     "creative-pack",
     "four-second",
@@ -12,38 +10,10 @@
     "child-safe",
     "cooperative"
   ],
-  "instruction": "Hold the pile",
-  "animation": {
-    "durationMs": 7110,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Kneel and lean in"
-      },
-      {
-        "timeMs": 1980,
-        "text": "Stack the hug low"
-      },
-      {
-        "timeMs": 3440,
-        "text": "Everyone makes a face"
-      },
-      {
-        "timeMs": 4960,
-        "text": "Hold the pile"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 4,
-    "maxPeople": 4,
-    "styles": [
-      "family"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -64,36 +34,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/women-4-full-puppy-pile.webp",
     "alt": "Hold the pile",
-    "accent": "#1769ff"
+    "kind": "photo-cutout",
+    "accent": "#1769ff",
+    "assetPath": "pose-guides/women-4-full-puppy-pile.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/women-4-full-puppy-pile-0df2ae5d72210f.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6110,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Kneel and lean in"
-        },
-        {
-          "timeMs": 1980,
-          "text": "Stack the hug low"
-        },
-        {
-          "timeMs": 3440,
-          "text": "Everyone makes a face"
-        },
-        {
-          "timeMs": 4960,
-          "text": "Hold the pile"
-        }
-      ]
-    }
-  }
+  "category": "friends",
+  "animation": {
+    "captions": [
+      {
+        "text": "Kneel and lean in",
+        "timeMs": 0
+      },
+      {
+        "text": "Stack the hug low",
+        "timeMs": 2037
+      },
+      {
+        "text": "Everyone makes a face",
+        "timeMs": 4073
+      },
+      {
+        "text": "Hold the pile",
+        "timeMs": 6110
+      }
+    ],
+    "durationMs": 7110
+  },
+  "instruction": "Hold the pile",
+  "compatibility": {
+    "styles": [
+      "friends"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 4,
+    "minPeople": 4
+  },
+  "schemaVersion": 2
 }

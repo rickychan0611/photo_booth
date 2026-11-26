@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "magical-transformation",
   "name": "Magical Transformation",
-  "category": "party",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,38 +9,10 @@
     "child-safe",
     "solo"
   ],
-  "instruction": "Transformation finish!",
-  "animation": {
-    "durationMs": 7030,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Turn one foot"
-      },
-      {
-        "timeMs": 1400,
-        "text": "Twist your body"
-      },
-      {
-        "timeMs": 2780,
-        "text": "Sweep your arms up"
-      },
-      {
-        "timeMs": 4360,
-        "text": "Transformation finish!"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 1,
-    "maxPeople": 1,
-    "styles": [
-      "solo"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": true
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -51,36 +21,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/magical-transformation.webp",
     "alt": "Transformation finish!",
-    "accent": "#ff8214"
+    "kind": "photo-cutout",
+    "accent": "#ff8214",
+    "assetPath": "pose-guides/magical-transformation.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/magical-transformation-e95e84e082a153.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6030,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Turn one foot"
-        },
-        {
-          "timeMs": 1400,
-          "text": "Twist your body"
-        },
-        {
-          "timeMs": 2780,
-          "text": "Sweep your arms up"
-        },
-        {
-          "timeMs": 4360,
-          "text": "Transformation finish!"
-        }
-      ]
-    }
-  }
+  "category": "party",
+  "animation": {
+    "captions": [
+      {
+        "text": "Turn one foot",
+        "timeMs": 0
+      },
+      {
+        "text": "Twist your body",
+        "timeMs": 2010
+      },
+      {
+        "text": "Sweep your arms up",
+        "timeMs": 4020
+      },
+      {
+        "text": "Transformation finish!",
+        "timeMs": 6030
+      }
+    ],
+    "durationMs": 7030
+  },
+  "instruction": "Transformation finish!",
+  "compatibility": {
+    "styles": [
+      "solo"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": true,
+    "maxPeople": 1,
+    "minPeople": 1
+  },
+  "schemaVersion": 2
 }

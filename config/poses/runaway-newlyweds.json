@@ -1,8 +1,6 @@
 {
-  "schemaVersion": 2,
   "id": "runaway-newlyweds",
   "name": "Runaway Newlyweds",
-  "category": "wedding",
   "tags": [
     "playful-library",
     "four-second",
@@ -11,39 +9,10 @@
     "adult-only",
     "cooperative"
   ],
-  "instruction": "Laugh toward camera",
-  "animation": {
-    "durationMs": 7610,
-    "captions": [
-      {
-        "timeMs": 0,
-        "text": "Connect inside hands"
-      },
-      {
-        "timeMs": 1900,
-        "text": "Step forward together"
-      },
-      {
-        "timeMs": 3640,
-        "text": "Lean into the run"
-      },
-      {
-        "timeMs": 5140,
-        "text": "Laugh toward camera"
-      }
-    ]
-  },
-  "compatibility": {
-    "minPeople": 2,
-    "maxPeople": 2,
-    "styles": [
-      "friends",
-      "family"
-    ],
-    "framing": [
-      "full"
-    ],
-    "childSafe": false
+  "audio": {
+    "markers": [],
+    "startMs": 0,
+    "filePath": ""
   },
   "roles": [
     {
@@ -56,36 +25,44 @@
     }
   ],
   "visual": {
-    "kind": "photo-cutout",
-    "assetPath": "pose-guides/runaway-newlyweds.webp",
     "alt": "Laugh toward camera",
-    "accent": "#ff168f"
+    "kind": "photo-cutout",
+    "accent": "#ff168f",
+    "assetPath": "pose-guides/runaway-newlyweds.webp"
   },
-  "audio": {
-    "filePath": "project-asset:audio/elevenlabs/runaway-newlyweds-7801ffda074fa6.mp3",
-    "startMs": 0,
-    "markers": [],
-    "speechTiming": {
-      "version": 1,
-      "audioDurationMs": 6610,
-      "captions": [
-        {
-          "timeMs": 0,
-          "text": "Connect inside hands"
-        },
-        {
-          "timeMs": 1900,
-          "text": "Step forward together"
-        },
-        {
-          "timeMs": 3640,
-          "text": "Lean into the run"
-        },
-        {
-          "timeMs": 5140,
-          "text": "Laugh toward camera"
-        }
-      ]
-    }
-  }
+  "category": "wedding",
+  "animation": {
+    "captions": [
+      {
+        "text": "Connect inside hands",
+        "timeMs": 0
+      },
+      {
+        "text": "Step forward together",
+        "timeMs": 2203
+      },
+      {
+        "text": "Lean into the run",
+        "timeMs": 4407
+      },
+      {
+        "text": "Laugh toward camera",
+        "timeMs": 6610
+      }
+    ],
+    "durationMs": 7610
+  },
+  "instruction": "Laugh toward camera",
+  "compatibility": {
+    "styles": [
+      "couple"
+    ],
+    "framing": [
+      "full"
+    ],
+    "childSafe": false,
+    "maxPeople": 2,
+    "minPeople": 2
+  },
+  "schemaVersion": 2
 }
