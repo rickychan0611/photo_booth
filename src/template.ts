@@ -90,15 +90,13 @@ export const defaultTemplateWorkflow = (shotCount = 1): TemplateWorkflowSettings
     })
 });
 
-export const templateDimensions = (orientation: TemplateOrientation) =>
-  orientation === 'landscape'
-    ? { width: LANDSCAPE_TEMPLATE_WIDTH, height: LANDSCAPE_TEMPLATE_HEIGHT }
-    : { width: TEMPLATE_WIDTH, height: TEMPLATE_HEIGHT };
+export const templateDimensions = (orientation: TemplateOrientation, paperSize: TemplateLayout['paperSize'] = '4x6') =>
+  paperSize === '2x6' ? { width: 600, height: 1800 }
+    : orientation === 'landscape'
+      ? { width: LANDSCAPE_TEMPLATE_WIDTH, height: LANDSCAPE_TEMPLATE_HEIGHT }
+      : { width: TEMPLATE_WIDTH, height: TEMPLATE_HEIGHT };
 
-export const templatePrintDimensions = (orientation: TemplateOrientation) =>
-  orientation === 'landscape'
-    ? { width: LANDSCAPE_PRINT_WIDTH, height: LANDSCAPE_PRINT_HEIGHT }
-    : { width: PRINT_WIDTH, height: PRINT_HEIGHT };
+export const templatePrintDimensions = templateDimensions;
 
 export const createBlankTemplateLayout = (name = 'New Template', orientation: TemplateOrientation = 'portrait'): TemplateLayout => {
   const now = new Date().toISOString();
@@ -143,8 +141,9 @@ export const normalizePhotosToTake = (photosToTake: number | undefined, slotCoun
 };
 
 export const normalizeTemplateLayoutForClient = (layout: TemplateLayout): TemplateLayout => {
-  const orientation = layout.orientation === 'landscape' ? 'landscape' : 'portrait';
-  const dimensions = templateDimensions(orientation);
+  const paperSize = layout.paperSize === '2x6' ? '2x6' : '4x6';
+  const orientation = paperSize !== '2x6' && layout.orientation === 'landscape' ? 'landscape' : 'portrait';
+  const dimensions = templateDimensions(orientation, paperSize);
   const sourceWidth = finite(layout.paperWidth, 0);
   const sourceHeight = finite(layout.paperHeight, 0);
   const scaleX = sourceWidth > 0 ? dimensions.width / sourceWidth : 1;
@@ -175,6 +174,7 @@ export const normalizeTemplateLayoutForClient = (layout: TemplateLayout): Templa
     id: layout.id || `template-${Date.now()}`,
     name: layout.name?.trim() || 'Template',
     orientation,
+    paperSize,
     paperWidth: dimensions.width,
     paperHeight: dimensions.height,
     photoWindows,
@@ -307,8 +307,8 @@ type TemplatedPrintImageOptions = {
   maxLongEdge?: number;
 };
 
-const outputPrintDimensions = (orientation: TemplateOrientation, maxLongEdge?: number) => {
-  const base = templatePrintDimensions(orientation);
+const outputPrintDimensions = (orientation: TemplateOrientation, maxLongEdge?: number, paperSize?: TemplateLayout['paperSize']) => {
+  const base = templatePrintDimensions(orientation, paperSize);
   if (!maxLongEdge || maxLongEdge <= 0) return base;
   const scale = Math.min(1, maxLongEdge / Math.max(base.width, base.height));
   return {
@@ -320,7 +320,7 @@ const outputPrintDimensions = (orientation: TemplateOrientation, maxLongEdge?: n
 const scaleSlotForPrint = (
   slot: TemplateSlot,
   layout: TemplateLayout,
-  target = templatePrintDimensions(layout.orientation)
+  target = templatePrintDimensions(layout.orientation, layout.paperSize)
 ): TemplateSlot => {
   const source = { width: layout.paperWidth, height: layout.paperHeight };
   return {
@@ -332,8 +332,8 @@ const scaleSlotForPrint = (
   };
 };
 
-const createPrintCanvas = (orientation: TemplateOrientation, maxLongEdge?: number) => {
-  const { width, height } = outputPrintDimensions(orientation, maxLongEdge);
+const createPrintCanvas = (orientation: TemplateOrientation, maxLongEdge?: number, paperSize?: TemplateLayout['paperSize']) => {
+  const { width, height } = outputPrintDimensions(orientation, maxLongEdge, paperSize);
   const canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
@@ -360,7 +360,7 @@ export async function createTemplatedPhotoLayer(
   options: TemplatedPrintImageOptions = {}
 ) {
   const normalizedLayout = normalizeTemplateLayoutForClient(layout);
-  const { canvas, ctx } = createPrintCanvas(normalizedLayout.orientation, options.maxLongEdge);
+  const { canvas, ctx } = createPrintCanvas(normalizedLayout.orientation, options.maxLongEdge, normalizedLayout.paperSize);
   const photos = await Promise.all(photoDataUrls.slice(0, normalizedLayout.photoWindows.length).map((dataUrl) => loadImage(dataUrl)));
 
   normalizedLayout.photoWindows.forEach((slot) => {
@@ -379,7 +379,7 @@ export async function createTemplatedPrintImageFromLayer(
   options: TemplatedPrintImageOptions = {}
 ) {
   const normalizedLayout = normalizeTemplateLayoutForClient(layout);
-  const { canvas, ctx } = createPrintCanvas(normalizedLayout.orientation, options.maxLongEdge);
+  const { canvas, ctx } = createPrintCanvas(normalizedLayout.orientation, options.maxLongEdge, normalizedLayout.paperSize);
   if (design && templateDataUrl) {
     const frame = await loadImage(templateDataUrl);
     ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);

@@ -189,6 +189,8 @@ function GuestApp() {
   const [sessionGalleryUrl, setSessionGalleryUrl] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [phoneSubmitted, setPhoneSubmitted] = useState(false);
+  const phoneEntryEnabled = settings?.phoneEntryEnabled !== false;
+  const showPhoneEntry = phoneEntryEnabled && !phoneSubmitted;
   const [phoneEntryMessage, setPhoneEntryMessage] = useState('');
   const [galleryConsent, setGalleryConsent] = useState(true);
   const [marketingConsent, setMarketingConsent] = useState(true);
@@ -1327,7 +1329,7 @@ function GuestApp() {
     setIsAiGenerating(design.usesAi);
     thanksVoiceStartedRef.current = true;
     const voiceStarted = playAudioCue(settings, 'thanks').catch(error => {
-      console.warn('Phone entry voice could not play.', error);
+      console.warn('Thank-you voice could not play.', error);
     });
     setStep('thanks');
     setIsBusy(false);
@@ -1368,13 +1370,16 @@ function GuestApp() {
           templateId: layout.id,
           designId: design.id,
           presetId: design.aiPresetId,
+          paperSize: layout.paperSize,
           printerName
         });
+        if (result.fallback || !result.saved) throw new Error(result.item.error || 'AI image could not be prepared.');
+        if (result.item.status === 'print_failed') setError(result.item.error || 'Print failed.');
         setPrintedPreview(result.dataUrl ?? dataUrl);
         if (result.saved) {
           setPrintedNumber(displayedPhotoNumber(result.saved.name, uploadSession));
           pendingGalleryUploadRef.current = { settings, session: uploadSession, finalPath: result.saved.path };
-          scheduleSessionVideoOutro(result.saved.path);
+          scheduleSessionVideoOutro(result.saved.uploadPath || result.saved.path);
           consumeQueuedPhoneSubmission();
         }
         setIsAiGenerating(false);
@@ -1387,15 +1392,16 @@ function GuestApp() {
         filenamePrefix: 'final',
         templateId: layout.id,
         designId: design.id,
+        paperSize: layout.paperSize,
         printerName
       });
       setPrintedPreview(dataUrl);
       setPrintedNumber(displayedPhotoNumber(saved.name, uploadSession));
       setIsAiGenerating(false);
       console.log('[gallery-upload] final photo saved', { path: saved.path, hasUploadSession: Boolean(uploadSession) });
-      scheduleSessionVideoOutro(saved.path);
+      scheduleSessionVideoOutro(saved.uploadPath || saved.path);
       if (uploadSession) {
-        console.log('[gallery-upload] final upload waiting for phone entry', { ticketId: uploadSession.ticket.id, galleryUrl: uploadSession.galleryUrl });
+        console.log('[gallery-upload] final ready for upload', { ticketId: uploadSession.ticket.id, galleryUrl: uploadSession.galleryUrl });
         pendingGalleryUploadRef.current = { settings, session: uploadSession, finalPath: saved.path };
       } else if (isWebQueueConfigured(settings) && !settings.boothSecret.trim()) {
         pendingGalleryUploadRef.current = { settings, session: null, finalPath: saved.path };
@@ -1407,8 +1413,8 @@ function GuestApp() {
       }
       if (settings.printerEnabled) {
         void window.photoBooth.printImage(saved.path, printerName).then((result) => {
-          if (!result.ok) console.warn(result.error || 'Print canceled.');
-        });
+          if (!result.ok) setError(result.error || 'Print canceled.');
+        }).catch(error => setError(error instanceof Error ? error.message : 'Print failed.'));
       } else {
         console.log('[print] skipped because printer is off');
       }
@@ -1511,6 +1517,10 @@ function GuestApp() {
   const skipPhoneEntry = () => {
     finishPhoneEntry({ marketingConsentValue: false });
   };
+
+  useEffect(() => {
+    if (step === 'thanks' && !phoneEntryEnabled && !phoneSubmitted) skipPhoneEntry();
+  }, [step, phoneEntryEnabled, phoneSubmitted, skipPhoneEntry]);
 
   const appendPhoneDigit = (digit: string) => {
     setPhoneEntryMessage('');
@@ -1619,7 +1629,7 @@ function GuestApp() {
       return;
     }
     if (step === 'thanks') {
-      if (!phoneSubmitted) {
+      if (showPhoneEntry) {
         confirmPrintLockRef.current = false;
         setIsBusy(false);
         setIsFinalPreparing(false);
@@ -1738,7 +1748,7 @@ function GuestApp() {
             <KioskButton className="mode-card" onPress={() => chooseMode('fun')} disabled={isBusy}>
               <img src={`${import.meta.env.BASE_URL}mode-images/fun-pose.png`} alt="" draggable={false} />
               <span>Pose Ideas</span>
-              <small>Follow a fun pose idea or make it your own</small>
+              <small>See It. Pose It. Have Fun!</small>
             </KioskButton>
             <KioskButton className="mode-card" onPress={() => chooseMode('normal')} disabled={isBusy}>
               <img src={`${import.meta.env.BASE_URL}mode-images/freestyle.png`} alt="" draggable={false} />
@@ -1853,7 +1863,7 @@ function GuestApp() {
 
       {step === 'thanks' && (
         <section className="thanks-screen">
-          {phoneSubmitted && (printedPreview || isAiGenerating || isFinalPreparing) && (
+          {!showPhoneEntry && (printedPreview || isAiGenerating || isFinalPreparing) && (
             <div className={`thanks-preview ${isAiGenerating || isFinalPreparing ? 'generating' : ''}${!printedPreview && isFinalPreparing ? ' loading' : ''}`}>
               {printedNumber && <p className="thanks-photo-number">Photo# {printedNumber}</p>}
               {printedPreview && <img src={printedPreview} alt="Printed layout preview" />}
@@ -1862,7 +1872,7 @@ function GuestApp() {
             </div>
           )}
           <div className="thanks-content">
-            {!phoneSubmitted ? (
+            {showPhoneEntry ? (
               <>
                 <p className="thanks-copy">Enter your phone # to access / share your photo at <span className="thanks-site">vibobooth.com</span>.</p>
                 <div className="phone-entry-display">{formatPhoneNumber(phoneNumber) || 'Phone number'}</div>
@@ -1947,7 +1957,7 @@ function GuestApp() {
                   {isFinalPreparing
                     ? 'Printing and uploading. Your photo will appear here when it is ready.'
                     : galleryQrDataUrl
-                    ? <>Scan the QR code to open your photo, or find it later at <span className="thanks-site">vibobooth.com</span> with your phone number.</>
+                    ? <>Scan the QR code to open your photo{phoneEntryEnabled && <>, or find it later at <span className="thanks-site">vibobooth.com</span> with your phone number</>}.</>
                     : 'Your photo has been saved.'}
                 </p>
                 {galleryQrDataUrl && (
@@ -2099,7 +2109,7 @@ function GuestShell({
 function TemplateMini({ layout }: { layout: TemplateLayout }) {
   const normalized = normalizeTemplateLayoutForClient(layout);
   return (
-    <div className={`template-mini ${normalized.orientation}`}>
+    <div className={`template-mini ${normalized.orientation}`} style={{ aspectRatio: `${normalized.paperWidth} / ${normalized.paperHeight}` }}>
       {normalized.photoWindows.map((slot, index) => (
         <span
           key={`${slot.x}-${slot.y}-${index}`}
@@ -2132,7 +2142,7 @@ function TemplateGuestPreview({ layout }: { layout: TemplateLayout }) {
 
   if (src) {
     return (
-      <div className={`template-guest-preview ${layout.orientation}`}>
+      <div className={`template-guest-preview ${layout.orientation}`} style={{ aspectRatio: `${layout.paperWidth} / ${layout.paperHeight}` }}>
         <img src={src} alt={layout.name} />
       </div>
     );
@@ -2143,7 +2153,11 @@ function TemplateGuestPreview({ layout }: { layout: TemplateLayout }) {
 function TemplateImagePreview({ design }: { design: TemplateDesign }) {
   const src = usePreviewImage(templatePreviewPath(design), design.updatedAt);
 
-  return <div className="design-preview">{src ? <img src={src} alt={design.name} /> : null}</div>;
+  const [aspect, setAspect] = useState('2 / 3');
+  return <div className="design-preview" style={{ aspectRatio: aspect }}>{src ? <img src={src} alt={design.name} onLoad={event => {
+    const image = event.currentTarget;
+    setAspect(`${image.naturalWidth} / ${image.naturalHeight}`);
+  }} /> : null}</div>;
 }
 
 function ImagePathThumb({ path, label }: { path: string; label: string }) {
@@ -2278,6 +2292,7 @@ function TemplateCreator({
 
   const rotatePaper = () => {
     setLayout((current) => {
+      if (current.paperSize === '2x6') return current;
       const nextOrientation = current.orientation === 'portrait' ? 'landscape' : 'portrait';
       const dimensions = templateDimensions(nextOrientation);
       const ratioX = dimensions.width / current.paperWidth;
@@ -2456,7 +2471,7 @@ function TemplateCreator({
             Name
             <input value={layout.name} onChange={(event) => setLayout({ ...layout, name: event.target.value })} />
           </label>
-          <button onClick={rotatePaper}><RotateCw size={16} />Rotate paper</button>
+          <button disabled={layout.paperSize === '2x6'} onClick={rotatePaper}><RotateCw size={16} />Rotate paper</button>
           <button onClick={addWindow}><Image size={16} />Add photo window</button>
           <section className="template-selection-tools" aria-label="Photo window alignment">
             <div>
@@ -2506,7 +2521,8 @@ function TemplateCreator({
         <div className="template-creator-workspace">
           <div
             ref={paperRef}
-            className={`template-paper ${layout.orientation}`}
+            className={`template-paper ${layout.orientation} ${layout.paperSize === '2x6' ? 'strip' : ''}`}
+            style={{ aspectRatio: `${layout.paperWidth} / ${layout.paperHeight}` }}
             onPointerMove={onPointerMove}
             onPointerUp={() => setDrag(null)}
             onPointerLeave={() => setDrag(null)}
@@ -3426,35 +3442,19 @@ function AdminApp() {
               Silent print
             </label>
             <div className="workflow-shot">
-              <h2>Template printers</h2>
+              <h2>Automatic template printers</h2>
+              <p>Templates choose their printer by paper size. Configure the half-cut queue in Windows to cut 4×6 sheets into two strips.</p>
               <div className="workflow-grid">
-                {settings.template.layouts.map((layout) => (
-                  <label key={layout.id}>
-                    {layout.name} printer
-                    <select
-                      value={layout.printerName}
-                      onChange={(event) =>
-                        void saveMessage({
-                          template: {
-                            ...settings.template,
-                            layouts: settings.template.layouts.map((item) =>
-                              item.id === layout.id ? { ...item, printerName: event.target.value } : item
-                            )
-                          }
-                        }, 'Template printer saved.')
-                      }
-                    >
-                      <option value="">Default printer</option>
-                      {layout.printerName &&
-                        !printers.some((printer) => printer.name === layout.printerName) && (
-                          <option value={layout.printerName}>{layout.printerName}</option>
-                        )}
-                      {printers.map((printer) => (
-                        <option key={`${layout.id}-${printer.name}`} value={printer.name}>{printer.displayName || printer.name}</option>
-                      ))}
+                {(['4x6', '2x6'] as const).map(size => {
+                  const value = settings.sizePrinters[size];
+                  return <label key={size}>
+                    {size === '2x6' ? '2×6 strip printer (half cut)' : '4×6 printer'}
+                    <select value={value} onChange={event => void saveMessage({ sizePrinters: { ...settings.sizePrinters, [size]: event.target.value } }, 'Printer routing saved.')}>
+                      {!printers.some(printer => printer.name === value) && <option value={value}>{value}</option>}
+                      {printers.map(printer => <option key={printer.name} value={printer.name}>{printer.displayName || printer.name}</option>)}
                     </select>
-                  </label>
-                ))}
+                  </label>;
+                })}
               </div>
             </div>
             <div className="workflow-shot">
@@ -3544,7 +3544,7 @@ function AdminApp() {
             </div>
             <div className="admin-actions">
               <button onClick={refreshPrinters}><RefreshCw size={16} />Refresh printers</button>
-              <button onClick={() => latestFinal && window.photoBooth.printImage(latestFinal.path, latestFinal.printerName || settings.defaultPrinter)}><Printer size={16} />Reprint last photo</button>
+              <button onClick={() => latestFinal && printSavedPhoto(latestFinal.path, latestFinal.printerName)}><Printer size={16} />Reprint last photo</button>
               <button onClick={() => window.photoBooth.openPrinterSettings()}>Printer settings</button>
             </div>
           </AdminSection>
@@ -3570,6 +3570,16 @@ function AdminApp() {
                   <p>Shared by every template and design.</p>
                 </div>
               </div>
+              <label className="check-row">
+                <input
+                  type="checkbox"
+                  role="switch"
+                  className="phone-entry-switch"
+                  checked={settings.phoneEntryEnabled !== false}
+                  onChange={event => void saveMessage({ phoneEntryEnabled: event.target.checked }, 'Phone entry setting saved.')}
+                />
+                Show phone number entry
+              </label>
               <div className="workflow-grid workflow-session-grid">
               <label>
               Intro message
@@ -3848,7 +3858,7 @@ function AdminApp() {
                   </div>
                   <p className="muted">
                     Upload a PNG map: solid black rectangles on white, with white gaps between them. No outlines, text, or artwork.
-                    Slots are saved on a {templateDimensions('portrait').width} × {templateDimensions('portrait').height} portrait canvas, or {templateDimensions('landscape').width} × {templateDimensions('landscape').height} for a wide map. Each background design must use that same size.
+                    Import a vertical 1:3 map for a 600 × 1800 strip. Other maps are saved on a {templateDimensions('portrait').width} × {templateDimensions('portrait').height} portrait canvas, or {templateDimensions('landscape').width} × {templateDimensions('landscape').height} for a wide map. Each background design must use that same size.
                   </p>
                   <div className="custom-template-layout">
                     <div className="template-list-panel">
@@ -3870,7 +3880,7 @@ function AdminApp() {
                           >
                             <span>{layout.name}</span>
                             <small>
-                              {layout.photoWindows.length} photo{layout.photoWindows.length === 1 ? '' : 's'}
+                              {layout.photoWindows.length} photo{layout.photoWindows.length === 1 ? '' : 's'} / {layout.paperSize ?? '4x6'}
                             </small>
                           </button>
                         );
@@ -3919,7 +3929,7 @@ function AdminApp() {
                           <TemplateMini layout={selectedLayout} />
                           <div>
                             <h2>{selectedLayout.name}</h2>
-                            <p>{selectedLayout.photoWindows.length} photos / {selectedLayout.orientation}</p>
+                            <p>{selectedLayout.photoWindows.length} photos / {selectedLayout.paperSize ?? '4x6'} / {selectedLayout.orientation}</p>
                             <p>Background designs must be {selectedLayout.paperWidth} × {selectedLayout.paperHeight}.</p>
                             <label className="check-row">
                               <input
@@ -4511,6 +4521,15 @@ function GalleryList({
   );
 }
 
+async function printSavedPhoto(imagePath: string, printerName?: string) {
+  try {
+    const result = await window.photoBooth.printImage(imagePath, printerName);
+    if (!result.ok) window.alert(result.error || 'Print failed.');
+  } catch (error) {
+    window.alert(error instanceof Error ? error.message : 'Print failed.');
+  }
+}
+
 function GalleryCard({
   photo,
   settings,
@@ -4579,7 +4598,7 @@ function GalleryCard({
           <button
             title={photo.printerName ? `Print to ${photo.printerName}` : 'Print'}
             aria-label={`Print ${photo.name}`}
-            onClick={() => window.photoBooth.printImage(photo.path, photo.printerName || settings.defaultPrinter)}
+            onClick={() => printSavedPhoto(photo.path, photo.printerName)}
           >
             <Printer size={15} />
           </button>
@@ -4929,7 +4948,7 @@ const templateFramePath = (design: TemplateDesign) => design.framePath || design
 const shortPath = (filePath: string) => filePath.split(/[\\/]/).slice(-2).join('/');
 
 const printerForTemplate = (settings: AppSettings, layout: TemplateLayout) =>
-  layout.printerName || settings.defaultPrinter;
+  settings.sizePrinters?.[layout.paperSize === '2x6' ? '2x6' : '4x6'] || (layout.paperSize === '2x6' ? 'DS-RX1-HalfCut' : 'DS-RX1');
 
 const workflowForTemplate = (settings: AppSettings, layout: TemplateLayout, mode: SessionMode = 'fun'): TemplateWorkflowSettings => {
   const shotCount = normalizePhotosToTake(layout.photosToTake, layout.photoWindows.length);

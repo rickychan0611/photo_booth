@@ -138,6 +138,9 @@ const pushNeighbor = (
   setTop(top + 1);
 };
 
+export const paperSizeForMap = (width: number, height: number): '2x6' | '4x6' =>
+  width > 0 && Math.abs(height - width * 3) <= 1 ? '2x6' : '4x6';
+
 export const orientationForMap = (width: number, height: number): TemplateOrientation =>
   width > height ? 'landscape' : 'portrait';
 
@@ -145,9 +148,10 @@ export const scaleSlotsToDesign = (
   slots: TemplateSlot[],
   mapWidth: number,
   mapHeight: number,
-  orientation: TemplateOrientation = orientationForMap(mapWidth, mapHeight)
+  orientation: TemplateOrientation = orientationForMap(mapWidth, mapHeight),
+  paperSize: TemplateLayout['paperSize'] = paperSizeForMap(mapWidth, mapHeight)
 ): { paperWidth: number; paperHeight: number; photoWindows: TemplateSlot[] } => {
-  const { width: paperWidth, height: paperHeight } = templateDimensions(orientation);
+  const { width: paperWidth, height: paperHeight } = templateDimensions(orientation, paperSize);
   const scaleX = paperWidth / mapWidth;
   const scaleY = paperHeight / mapHeight;
   const photoWindows = slots.map((slot, index) => {
@@ -179,10 +183,12 @@ export const layoutFromDetectedSlots = (
   slots: TemplateSlot[]
 ): TemplateLayout => {
   const orientation = orientationForMap(mapWidth, mapHeight);
+  const paperSize = paperSizeForMap(mapWidth, mapHeight);
   const scaled = scaleSlotsToDesign(slots, mapWidth, mapHeight, orientation);
   const layout = createBlankTemplateLayout(name.trim() || 'Template', orientation);
   return {
     ...layout,
+    paperSize,
     orientation,
     paperWidth: scaled.paperWidth,
     paperHeight: scaled.paperHeight,

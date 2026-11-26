@@ -1,3 +1,4 @@
+import { duplicateStripBitmap, printerForPaperSize, DEFAULT_SIZE_PRINTERS } from './stripPrinting';
 import { modeAudioDefaults, NORMAL_PHOTO_MESSAGE, POSE_CATEGORY_NARRATION } from './sessionMode';
 import { normalizePoseGuide } from './poseTypes';
 import { app, BrowserWindow, desktopCapturer, dialog, ipcMain, nativeImage, session, shell } from 'electron';
@@ -292,8 +293,8 @@ const defaultTemplateWorkflow = (shotCount = 1): TemplateLayout['workflowDefault
   })
 });
 
-const templateDimensions = (orientation: TemplateLayout['orientation']) =>
-  orientation === 'landscape'
+const templateDimensions = (orientation: TemplateLayout['orientation'], paperSize?: TemplateLayout['paperSize']) =>
+  paperSize === '2x6' ? { width: 600, height: 1800 } : orientation === 'landscape'
     ? { width: LANDSCAPE_TEMPLATE_WIDTH, height: LANDSCAPE_TEMPLATE_HEIGHT }
     : { width: TEMPLATE_WIDTH, height: TEMPLATE_HEIGHT };
 
@@ -306,6 +307,7 @@ const defaultSettings = (): AppSettings => ({
   eventId: '',
   boothSecret: '',
   staffControlQueueMode: false,
+  phoneEntryEnabled: true,
   cameraId: '',
   cameraSource: 'capture-card',
   canonEnabled: false,
@@ -316,6 +318,7 @@ const defaultSettings = (): AppSettings => ({
   cameraPreviewOverlay: 'none',
   cameraControls: {},
   defaultPrinter: '',
+  sizePrinters: { '4x6': 'DS-RX1', '2x6': 'DS-RX1-HalfCut' },
   stylePrinters: {
     style1: 'DS-RX1',
     style2: 'DS-RX1',
@@ -408,6 +411,7 @@ const normalizeLoadedSettings = (parsed: Partial<AppSettings>, fallback = defaul
     ...fallback,
     ...parsed,
     defaultPrinter: normalizePrinterName(parsed.defaultPrinter ?? fallback.defaultPrinter),
+    sizePrinters: { ...DEFAULT_SIZE_PRINTERS, ...parsed.sizePrinters },
     beautyFilter: normalizeBeautyFilterSettings(parsed.beautyFilter),
     ai: normalizeAiSettings(parsed.ai),
     audio: normalizeAudioSettings(parsed.audio),
@@ -471,6 +475,7 @@ const localSettingKeys: Array<keyof AppSettings> = [
   'cameraPreviewOverlay',
   'cameraControls',
   'defaultPrinter',
+  'sizePrinters',
   'stylePrinters',
   'printerEnabled',
   'silentPrint',
@@ -604,6 +609,7 @@ async function writeSettings(settings: AppSettings): Promise<AppSettings> {
   const normalized: AppSettings = {
     ...settings,
     defaultPrinter: normalizePrinterName(settings.defaultPrinter),
+    sizePrinters: { '4x6': normalizePrinterName(printerForPaperSize(settings, '4x6')), '2x6': normalizePrinterName(printerForPaperSize(settings, '2x6')) },
     beautyFilter: normalizeBeautyFilterSettings(settings.beautyFilter),
     ai: normalizeAiSettings(settings.ai),
     audio: normalizeAudioSettings(settings.audio),
@@ -802,19 +808,24 @@ function notifyGuestFullscreen() {
   guestWindow.webContents.send('guest:fullscreen-changed', guestWindow.isFullScreen());
 }
 
+async function deletePhotoFile(filePath: string) {
+  const metadata = await readFinalMetadata(filePath);
+  await fs.unlink(filePath);
+  if (metadata.uploadPath) await fs.rm(metadata.uploadPath, { force: true });
+  await fs.rm(path.join(path.dirname(filePath), 'thumbs', path.basename(filePath)), { force: true });
+  await fs.rm(filePath.replace(/\.(png|jpe?g)$/i, '.json'), { force: true });
+  return true;
+}
+
+async function readFinalMetadata(filePath: string): Promise<Partial<SavedPhoto>> {
+  try {
+    return JSON.parse(await fs.readFile(filePath.replace(/\.(png|jpe?g)$/i, '.json'), 'utf8'));
+  } catch { return {}; }
+}
+
 async function listGallery(): Promise<Gallery> {
   const settings = await readSettings();
   await ensureEventFolders(settings.eventFolder);
-
-  const readPhotoMetadata = async (filePath: string) => {
-    const metadataPath = filePath.replace(/\.(png|jpe?g)$/i, '.json');
-    try {
-      const raw = await fs.readFile(metadataPath, 'utf8');
-      return JSON.parse(raw) as Partial<Pick<SavedPhoto, 'templateId' | 'styleId' | 'designId' | 'printerName' | 'galleryUrl' | 'phoneNumber'>>;
-    } catch {
-      return {};
-    }
-  };
 
   const readDir = async (folder: string, type: SavedPhoto['type']): Promise<SavedPhoto[]> => {
     const dir = path.join(settings.eventFolder, folder);
@@ -827,13 +838,15 @@ async function listGallery(): Promise<Gallery> {
           const thumbPath = path.join(dir, 'thumbs', entry.name);
           const stat = await fs.stat(filePath);
           const hasThumb = await fileExists(thumbPath);
-          const metadata = type === 'final' ? await readPhotoMetadata(filePath) : {};
+          const metadata = type === 'final' ? await readFinalMetadata(filePath) : {};
           return {
             name: entry.name,
             path: filePath,
             thumbPath: hasThumb ? thumbPath : undefined,
             type,
             createdAt: stat.birthtime.toISOString(),
+            paperSize: metadata.paperSize,
+            uploadPath: metadata.uploadPath,
             templateId: metadata.templateId,
             styleId: metadata.styleId,
             designId: metadata.designId,
@@ -1052,8 +1065,9 @@ const normalizeTemplateWorkflow = (
 };
 
 const normalizeTemplateLayout = (layout: TemplateLayout): TemplateLayout => {
-  const orientation = layout.orientation === 'landscape' ? 'landscape' : 'portrait';
-  const dimensions = templateDimensions(orientation);
+  const paperSize = layout.paperSize === '2x6' ? '2x6' : '4x6';
+  const orientation = paperSize !== '2x6' && layout.orientation === 'landscape' ? 'landscape' : 'portrait';
+  const dimensions = templateDimensions(orientation, paperSize);
   const sourceWidth = finiteNumber(layout.paperWidth, 0);
   const sourceHeight = finiteNumber(layout.paperHeight, 0);
   const scaleX = sourceWidth > 0 ? dimensions.width / sourceWidth : 1;
@@ -1085,6 +1099,7 @@ const normalizeTemplateLayout = (layout: TemplateLayout): TemplateLayout => {
     id: layout.id || `template-${Date.now()}`,
     name: layout.name?.trim() || 'Template',
     orientation,
+    paperSize,
     paperWidth: dimensions.width,
     paperHeight: dimensions.height,
     photoWindows,
@@ -1284,7 +1299,7 @@ const chooseTemplateAsset = async (role: TemplateAssetRole) => {
 };
 
 const requiredDesignSize = (layout?: TemplateLayout) =>
-  templateDimensions(layout?.orientation === 'landscape' ? 'landscape' : 'portrait');
+  templateDimensions(layout?.orientation === 'landscape' ? 'landscape' : 'portrait', layout?.paperSize);
 
 const assertDesignImageSize = async (filePath: string, layout?: TemplateLayout) => {
   const size = await getImageSize(filePath);
@@ -1686,6 +1701,8 @@ async function writePhotoMetadata(filePath: string, request: SaveImageRequest) {
   if (request.kind !== 'final') return;
   const metadata = {
     name: path.basename(filePath),
+    paperSize: request.paperSize,
+    uploadPath: request.uploadPath,
     templateId: request.templateId ?? '',
     styleId: request.styleId,
     designId: request.designId,
@@ -1826,8 +1843,11 @@ async function uploadFinalPhotoInBackground(
     }
 
     const baseName = path.basename(request.finalPath).replace(/\.[^.]+$/, '');
-    const layout = compressedJpegFromFile(request.finalPath, 2200, 88);
-    const thumbnail = compressedJpegFromFile(request.finalPath, 720, 78);
+    const metadata = await readFinalMetadata(request.finalPath);
+    const uploadPath = metadata.uploadPath || request.finalPath;
+    if (metadata.paperSize === '2x6' && !metadata.uploadPath) throw new Error('Strip upload image is missing.');
+    const layout = compressedJpegFromFile(uploadPath, 2200, 88);
+    const thumbnail = compressedJpegFromFile(uploadPath, 720, 78);
 
     await uploadGalleryBuffer(settings, request.ticketId, {
       kind: 'layout',
@@ -2068,14 +2088,34 @@ async function saveImageData(request: SaveImageRequest): Promise<SaveImageResult
   const settings = await readSettings();
   await ensureEventFolders(settings.eventFolder);
   const folder = request.kind === 'original' ? 'originals' : 'finals';
-  const name = await photoName(settings.eventFolder, imageExtensionFromDataUrl(request.dataUrl));
+  const layout = settings.template.layouts.find(item => item.id === request.templateId);
+  const paperSize = request.paperSize ?? layout?.paperSize ?? '4x6';
+  const name = await photoName(settings.eventFolder, request.kind === 'final' && paperSize === '2x6' ? '.png' : imageExtensionFromDataUrl(request.dataUrl));
   const filePath = path.join(settings.eventFolder, folder, name);
-  const buffer = dataUrlToBuffer(request.dataUrl);
-  await fs.writeFile(filePath, buffer);
-  await writeThumbnail(buffer, settings.eventFolder, folder, name);
-  await writePhotoMetadata(filePath, request);
+  let buffer = dataUrlToBuffer(request.dataUrl);
+  let uploadPath: string | undefined;
+  if (request.kind === 'final' && paperSize === '2x6') {
+    const strip = nativeImage.createFromBuffer(buffer);
+    const size = strip.getSize();
+    if (size.width !== 600 || size.height !== 1800) throw new Error('Strip final must be 600 × 1800 pixels.');
+    const sheet = nativeImage.createFromBitmap(duplicateStripBitmap(strip.toBitmap(), 600, 1800), { width: 1200, height: 1800 });
+    uploadPath = path.join(settings.eventFolder, 'finals', 'uploads', name);
+    await fs.mkdir(path.dirname(uploadPath), { recursive: true });
+    await fs.writeFile(uploadPath, strip.toPNG());
+    buffer = /\.jpe?g$/i.test(name) ? sheet.toJPEG(100) : sheet.toPNG();
+  }
+  const printerName = request.kind === 'final' ? printerForPaperSize(settings, paperSize) : request.printerName;
+  try {
+    await fs.writeFile(filePath, buffer);
+    await writeThumbnail(buffer, settings.eventFolder, folder, name);
+    await writePhotoMetadata(filePath, { ...request, paperSize, uploadPath, printerName });
+  } catch (error) {
+    await fs.rm(filePath, { force: true });
+    if (uploadPath) await fs.rm(uploadPath, { force: true });
+    throw error;
+  }
   if (request.kind === 'final') lastFinalPath = filePath;
-  return { path: filePath, name };
+  return { path: filePath, name, paperSize, uploadPath };
 }
 
 const aiQueuePath = (eventFolder: string) => path.join(eventFolder, 'ai-queue', 'queue.json');
@@ -2483,7 +2523,8 @@ async function createAiQueueItem(request: AiGenerateRequest) {
     inputPath,
     resultPath: '',
     finalPath: '',
-    printerName: request.printerName ? normalizePrinterName(request.printerName) : '',
+    paperSize: request.paperSize ?? settings.template.layouts.find(layout => layout.id === request.templateId)?.paperSize ?? '4x6',
+    printerName: printerForPaperSize(settings, request.paperSize ?? settings.template.layouts.find(layout => layout.id === request.templateId)?.paperSize),
     error: '',
     createdAt: now,
     updatedAt: now,
@@ -2517,7 +2558,12 @@ async function processAiQueueItem(itemId: string, isRetry = false): Promise<AiGe
       updatedAt: new Date().toISOString()
     };
     await updateAiQueueItem(working, settings);
-    const dataUrl = await requestAiImage(settings, preset, working.provider, working.inputPath);
+    let dataUrl = await requestAiImage(settings, preset, working.provider, working.inputPath);
+    if (working.paperSize === '2x6') {
+      const generated = nativeImage.createFromDataURL(dataUrl);
+      if (generated.isEmpty()) throw new Error('AI returned an invalid strip image.');
+      dataUrl = generated.resize({ width: 600, height: 1800, quality: 'best' }).toDataURL();
+    }
     const resultPath = path.join(settings.eventFolder, 'ai-queue', 'results', `${working.id}.png`);
     const buffer = dataUrlToBuffer(dataUrl);
     await fs.writeFile(resultPath, buffer);
@@ -2536,7 +2582,8 @@ async function processAiQueueItem(itemId: string, isRetry = false): Promise<AiGe
       templateId: working.templateId,
       styleId: working.styleId,
       designId: working.designId,
-      printerName: working.printerName
+      printerName: working.printerName,
+      paperSize: working.paperSize
     });
     working = {
       ...working,
@@ -2547,20 +2594,14 @@ async function processAiQueueItem(itemId: string, isRetry = false): Promise<AiGe
     };
     await updateAiQueueItem(working, settings);
     if (!settings.printerEnabled) return { item: working, dataUrl, saved, fallback: false };
-    void printImage(saved.path, working.printerName, settings.silentPrint).then(async (printResult) => {
-      const latestSettings = await readSettings();
-      const currentQueue = await readAiQueue(latestSettings);
-      const currentItem = currentQueue.find((queueItem) => queueItem.id === working.id) ?? working;
-      await updateAiQueueItem(
-        {
-          ...currentItem,
-          status: printResult.ok ? 'printed' : 'print_failed',
-          error: printResult.ok ? '' : printResult.error || 'Print failed.',
-          updatedAt: new Date().toISOString()
-        },
-        latestSettings
-      );
-    });
+    const printResult = await printImage(saved.path, working.printerName, settings.silentPrint);
+    working = {
+      ...working,
+      status: printResult.ok ? 'printed' : 'print_failed',
+      error: printResult.ok ? '' : printResult.error || 'Print failed.',
+      updatedAt: new Date().toISOString()
+    };
+    await updateAiQueueItem(working, await readSettings());
     return { item: working, dataUrl, saved, fallback: false };
   } catch (error) {
     working = {
@@ -2579,7 +2620,12 @@ async function printAiQueueItem(itemId: string) {
   const queue = await readAiQueue(settings);
   const item = queue.find((queueItem) => queueItem.id === itemId);
   if (!item) throw new Error('AI queue item not found.');
-  const imagePath = item.finalPath || item.resultPath;
+  let imagePath = item.finalPath;
+  if (!imagePath && item.resultPath) {
+    const saved = await saveImageData({ dataUrl: await imageFileToDataUrl(item.resultPath), kind: 'final', templateId: item.templateId, designId: item.designId, paperSize: item.paperSize });
+    imagePath = saved.path;
+    item.finalPath = imagePath;
+  }
   if (!imagePath) throw new Error('AI queue item has no result to print.');
   const printResult = await printImage(imagePath, item.printerName, settings.silentPrint);
   const updated: AiQueueItem = {
@@ -2623,7 +2669,7 @@ async function resolvePrinterName(requestedPrinter = '', fallbackPrinter = '') {
   if (!preferred) return '';
 
   const printers = await listPrintersForPrint();
-  if (printers.length === 0) return preferred;
+  if (printers.length === 0) return '';
 
   const findPrinter = (printerName: string) => {
     const target = normalizePrinterName(printerName);
@@ -2643,10 +2689,6 @@ async function resolvePrinterName(requestedPrinter = '', fallbackPrinter = '') {
   const preferredPrinter = findPrinter(preferred);
   if (preferredPrinter) return preferredPrinter.name;
 
-  if (fallback && fallback !== preferred) {
-    const fallbackMatch = findPrinter(fallback);
-    if (fallbackMatch) return fallbackMatch.name;
-  }
 
   return '';
 }
@@ -2656,9 +2698,11 @@ async function printImage(imagePath: string, printerName?: string, silent = fals
   const settings = await readSettings();
   if (!settings.printerEnabled) return { ok: true };
   const calibration = settings.printCalibration;
-  const resolvedPrinterName = await resolvePrinterName(printerName, settings.defaultPrinter);
-  if (silent && (printerName || settings.defaultPrinter) && !resolvedPrinterName) {
-    return { ok: false, error: `Printer not found: ${printerName || settings.defaultPrinter}` };
+  const metadata = await readFinalMetadata(imagePath);
+  const selectedPrinter = metadata.printerName || printerName || printerForPaperSize(settings, metadata.paperSize);
+  const resolvedPrinterName = await resolvePrinterName(selectedPrinter);
+  if (silent && !resolvedPrinterName) {
+    return { ok: false, error: `Printer not found: ${selectedPrinter}` };
   }
   const printImage = nativeImage.createFromPath(imagePath);
   const printSize = printImage.getSize();
@@ -2743,6 +2787,7 @@ async function printImage(imagePath: string, printerName?: string, silent = fals
         silent,
         deviceName: resolvedPrinterName || undefined,
         printBackground: true,
+        landscape: isLandscape,
         pageSize: { width: 104902, height: 156210 },
         margins: { marginType: 'none' },
         scaleFactor: 100
@@ -3106,8 +3151,7 @@ app.whenReady().then(async () => {
   ipcMain.handle('ai:queue-print', async (_event, itemId: string) => printAiQueueItem(itemId));
   ipcMain.handle('ai:generate-final', async (_event, request: AiGenerateRequest) => {
     const item = await createAiQueueItem(request);
-    void processAiQueueItem(item.id);
-    return { item, fallback: false };
+    return processAiQueueItem(item.id);
   });
   ipcMain.handle('template:save-guide', async (_event, templateId: string, dataUrl: string) => saveGuideTemplate(templateId, dataUrl));
   ipcMain.handle('window:open-admin', async () => {
@@ -3237,16 +3281,10 @@ app.whenReady().then(async () => {
     await fs.copyFile(filePath, result.filePath);
     return result.filePath;
   });
-  ipcMain.handle('file:delete', async (_event, filePath: string) => {
-    await fs.unlink(filePath);
-    const thumbPath = path.join(path.dirname(filePath), 'thumbs', path.basename(filePath));
-    await fs.rm(thumbPath, { force: true });
-    await fs.rm(filePath.replace(/\.(png|jpe?g)$/i, '.json'), { force: true });
-    return true;
-  });
+  ipcMain.handle('file:delete', async (_event, filePath: string) => deletePhotoFile(filePath));
   ipcMain.handle('print:image', async (_event, imagePath?: string, printerName?: string) => {
     const settings = await readSettings();
-    return printImage(imagePath || lastFinalPath, printerName || settings.defaultPrinter, settings.silentPrint);
+    return printImage(imagePath || lastFinalPath, printerName, settings.silentPrint);
   });
   ipcMain.handle('printer:settings', async () => {
     if (process.platform === 'win32') {

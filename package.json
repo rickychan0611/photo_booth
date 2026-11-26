@@ -19,6 +19,8 @@
     "test:poses": "node --test tests/pose-runtime.test.cjs tests/pose-scenes.test.cjs tests/pose-ai.test.cjs tests/meme-pose-pack.test.cjs tests/pose-alignment.test.cjs tests/pose-narration-api.test.cjs",
     "test:modes": "node --test tests/session-mode.test.cjs",
     "test:previews": "node --test tests/preview-images.test.cjs",
+    "test:strips:ui": "vite build --outDir .cache/strip-preview && electron tests/strip-electron-smoke.cjs",
+    "test:strips": "node --test tests/strip-printing.test.cjs",
     "test:video": "node --test tests/video-processing.test.cjs",
     "dist": "npm run build && electron-builder --win",
     "dist:portable": "npm run build && electron-builder --win portable",

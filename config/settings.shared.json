@@ -2,6 +2,7 @@
   "eventName": "Ceanna's Birthday",
   "webApiBaseUrl": "https://www.vibobooth.com",
   "staffControlQueueMode": false,
+  "phoneEntryEnabled": false,
   "mirrorPreview": true,
   "poseGuide": {
     "enabled": true,
@@ -72,14 +73,14 @@
       "mode": {
         "id": "mode",
         "label": "Choose mode screen",
-        "text": "Choose your photo experience. Tap Pose Ideas to follow a fun pose idea or make it your own, or tap Freestyle to pose without a guide.",
+        "text": "How would you like to pose? Choose Pose Idea for a fun pose to follow, or go Freestyle and show us your own moves!",
         "mode": "host",
         "channel": "voice",
-        "filePath": "",
+        "filePath": "project-asset:audio/generated/elevenlabs/mode-7780b9535228c6.mp3",
         "loop": false,
         "volume": 1,
         "enabled": true,
-        "updatedAt": ""
+        "updatedAt": "2026-11-26T03:23:21.283Z"
       },
       "normalShot0": {
         "id": "normalShot0",
@@ -267,11 +268,11 @@
         "mode": "host",
         "channel": "voice",
         "text": "Who’s joining the photo? Choose Friends, Family, or Lovers.",
-        "filePath": "",
+        "filePath": "project-asset:audio/generated/elevenlabs/people-474653066b8aef.mp3",
         "loop": false,
         "volume": 1,
         "enabled": true,
-        "updatedAt": ""
+        "updatedAt": "2026-11-26T03:24:05.708Z"
       },
       "intro": {
         "id": "intro",
@@ -532,9 +533,9 @@
     "logoPath": "project-asset:branding/idle-logo-1791018077624.png",
     "framePath": "",
     "styleVersion": 3,
-    "selectedTemplateId": "template-1792040220910",
+    "selectedTemplateId": "template-1795664216748",
     "selectedStyleId": "style1",
-    "selectedDesignId": "",
+    "selectedDesignId": "design-1795664238244",
     "layouts": [
       {
         "id": "template-1782967801040",
@@ -659,7 +660,8 @@
         "createdAt": "2026-07-02T04:50:01.039Z",
         "updatedAt": "2026-07-18T18:14:20.730Z",
         "active": false,
-        "guestPreviewPath": ""
+        "guestPreviewPath": "",
+        "paperSize": "4x6"
       },
       {
         "id": "template-1782967906564",
@@ -784,7 +786,8 @@
         "createdAt": "2026-07-02T04:51:46.564Z",
         "updatedAt": "2026-07-18T18:14:21.945Z",
         "active": false,
-        "guestPreviewPath": ""
+        "guestPreviewPath": "",
+        "paperSize": "4x6"
       },
       {
         "id": "template-1783325483798",
@@ -954,7 +957,8 @@
         "createdAt": "2026-07-06T08:11:23.798Z",
         "updatedAt": "2026-07-18T18:14:23.074Z",
         "active": false,
-        "guestPreviewPath": ""
+        "guestPreviewPath": "",
+        "paperSize": "4x6"
       },
       {
         "id": "template-1783325728012",
@@ -1124,7 +1128,8 @@
         "createdAt": "2026-07-06T08:15:28.012Z",
         "updatedAt": "2026-07-18T18:14:25.157Z",
         "active": false,
-        "guestPreviewPath": ""
+        "guestPreviewPath": "",
+        "paperSize": "4x6"
       },
       {
         "id": "template-1784394814811",
@@ -1294,7 +1299,8 @@
         },
         "printerName": "",
         "createdAt": "2026-07-18T17:13:34.811Z",
-        "updatedAt": "2026-08-27T09:51:35.089Z"
+        "updatedAt": "2026-08-27T09:51:35.089Z",
+        "paperSize": "4x6"
       },
       {
         "id": "template-1784394985069",
@@ -1464,7 +1470,8 @@
         },
         "printerName": "",
         "createdAt": "2026-07-18T17:16:25.069Z",
-        "updatedAt": "2026-08-27T07:12:47.836Z"
+        "updatedAt": "2026-08-27T07:12:47.836Z",
+        "paperSize": "4x6"
       },
       {
         "id": "template-1787792969849",
@@ -1571,7 +1578,8 @@
         },
         "printerName": "",
         "createdAt": "2026-08-27T01:09:29.849Z",
-        "updatedAt": "2026-09-26T05:15:26.577Z"
+        "updatedAt": "2026-09-26T05:15:26.577Z",
+        "paperSize": "4x6"
       },
       {
         "id": "template-1787795793963",
@@ -1705,7 +1713,8 @@
         },
         "printerName": "",
         "createdAt": "2026-08-27T01:56:33.963Z",
-        "updatedAt": "2026-09-26T05:15:27.892Z"
+        "updatedAt": "2026-09-26T05:15:27.892Z",
+        "paperSize": "4x6"
       },
       {
         "id": "template-1787795859775",
@@ -1848,7 +1857,8 @@
         },
         "printerName": "",
         "createdAt": "2026-08-27T01:57:39.775Z",
-        "updatedAt": "2026-09-26T05:15:29.018Z"
+        "updatedAt": "2026-09-26T05:15:29.018Z",
+        "paperSize": "4x6"
       },
       {
         "id": "template-1787795887287",
@@ -2018,7 +2028,8 @@
         },
         "printerName": "",
         "createdAt": "2026-08-27T01:58:07.287Z",
-        "updatedAt": "2026-09-26T05:15:30.520Z"
+        "updatedAt": "2026-09-26T05:15:30.520Z",
+        "paperSize": "4x6"
       },
       {
         "id": "template-1790395204465",
@@ -2161,7 +2172,8 @@
         },
         "printerName": "",
         "createdAt": "2026-09-26T04:00:04.465Z",
-        "updatedAt": "2026-10-15T04:52:19.970Z"
+        "updatedAt": "2026-10-15T04:52:19.970Z",
+        "paperSize": "4x6"
       },
       {
         "id": "template-1790395365786",
@@ -2277,7 +2289,8 @@
         },
         "printerName": "",
         "createdAt": "2026-09-26T04:02:45.786Z",
-        "updatedAt": "2026-10-15T04:52:22.145Z"
+        "updatedAt": "2026-10-15T04:52:22.145Z",
+        "paperSize": "4x6"
       },
       {
         "id": "template-1790395411663",
@@ -2384,7 +2397,8 @@
         },
         "printerName": "",
         "createdAt": "2026-09-26T04:03:31.663Z",
-        "updatedAt": "2026-10-15T04:52:25.844Z"
+        "updatedAt": "2026-10-15T04:52:25.844Z",
+        "paperSize": "4x6"
       },
       {
         "id": "template-1790395470444",
@@ -2554,7 +2568,8 @@
         },
         "printerName": "",
         "createdAt": "2026-09-26T04:04:30.444Z",
-        "updatedAt": "2026-10-15T04:52:27.684Z"
+        "updatedAt": "2026-10-15T04:52:27.684Z",
+        "paperSize": "4x6"
       },
       {
         "id": "template-1792040220910",
@@ -2574,7 +2589,7 @@
           }
         ],
         "photosToTake": 2,
-        "active": true,
+        "active": false,
         "guestPreviewPath": "project-asset:templates/custom/template-1792040220910/guest-preview.png",
         "workflowDefaults": {
           "introMessage": "Let's take 1 picture!",
@@ -2661,7 +2676,8 @@
         },
         "printerName": "",
         "createdAt": "2026-10-15T04:57:00.910Z",
-        "updatedAt": "2026-10-15T05:06:14.437Z"
+        "updatedAt": "2026-11-26T03:36:41.311Z",
+        "paperSize": "4x6"
       },
       {
         "id": "template-1792040374035",
@@ -2690,7 +2706,7 @@
           }
         ],
         "photosToTake": 2,
-        "active": true,
+        "active": false,
         "guestPreviewPath": "project-asset:templates/custom/template-1792040374035/guest-preview.png",
         "workflowDefaults": {
           "introMessage": "Let's take 1 picture!",
@@ -2777,7 +2793,8 @@
         },
         "printerName": "",
         "createdAt": "2026-10-15T04:59:34.035Z",
-        "updatedAt": "2026-10-15T04:59:54.810Z"
+        "updatedAt": "2026-11-26T03:36:43.875Z",
+        "paperSize": "4x6"
       },
       {
         "id": "template-1792040533770",
@@ -2815,7 +2832,7 @@
           }
         ],
         "photosToTake": 3,
-        "active": true,
+        "active": false,
         "guestPreviewPath": "project-asset:templates/custom/template-1792040533770/guest-preview.png",
         "workflowDefaults": {
           "introMessage": "Let's take 1 picture!",
@@ -2920,7 +2937,8 @@
         },
         "printerName": "",
         "createdAt": "2026-10-15T05:02:13.770Z",
-        "updatedAt": "2026-10-15T05:03:01.674Z"
+        "updatedAt": "2026-11-26T03:36:48.601Z",
+        "paperSize": "4x6"
       },
       {
         "id": "template-1792040591570",
@@ -2967,7 +2985,7 @@
           }
         ],
         "photosToTake": 4,
-        "active": true,
+        "active": false,
         "guestPreviewPath": "project-asset:templates/custom/template-1792040591570/guest-preview.png",
         "workflowDefaults": {
           "introMessage": "Let's take 1 picture!",
@@ -3090,7 +3108,152 @@
         },
         "printerName": "",
         "createdAt": "2026-10-15T05:03:11.570Z",
-        "updatedAt": "2026-10-15T05:04:46.224Z"
+        "updatedAt": "2026-11-26T03:36:49.007Z",
+        "paperSize": "4x6"
+      },
+      {
+        "id": "template-1795664216748",
+        "name": "3 strip",
+        "orientation": "portrait",
+        "paperWidth": 600,
+        "paperHeight": 1800,
+        "photoWindows": [
+          {
+            "x": 66,
+            "y": 149,
+            "width": 467,
+            "height": 396,
+            "sourceIndex": 0,
+            "cropY": "center",
+            "rotation": 0
+          },
+          {
+            "x": 66,
+            "y": 591,
+            "width": 467,
+            "height": 395,
+            "sourceIndex": 1,
+            "cropY": "center",
+            "rotation": 0
+          },
+          {
+            "x": 66,
+            "y": 1031,
+            "width": 467,
+            "height": 394,
+            "sourceIndex": 2,
+            "cropY": "center",
+            "rotation": 0
+          }
+        ],
+        "photosToTake": 3,
+        "active": true,
+        "guestPreviewPath": "project-asset:templates/custom/template-1795664216748/guest-preview.png",
+        "workflowDefaults": {
+          "introMessage": "Let's take 1 picture!",
+          "introMs": 2000,
+          "printAutoSelectMs": 20000,
+          "thankYouMessage": "THANK YOU!",
+          "thankYouMs": 3000,
+          "screenCues": {
+            "intro": {
+              "id": "template-intro",
+              "label": "Intro screen voice",
+              "mode": "host",
+              "channel": "voice",
+              "text": "Let's take pictures.",
+              "filePath": "",
+              "loop": false,
+              "volume": 1,
+              "enabled": true,
+              "updatedAt": ""
+            },
+            "select": {
+              "id": "template-select",
+              "label": "Photo selection voice",
+              "mode": "host",
+              "channel": "voice",
+              "text": "Please choose your favorite pictures to print.",
+              "filePath": "",
+              "loop": false,
+              "volume": 1,
+              "enabled": true,
+              "updatedAt": ""
+            },
+            "thanks": {
+              "id": "template-thanks",
+              "label": "Finish screen voice",
+              "mode": "host",
+              "channel": "voice",
+              "text": "Thank you. Please pick up your print.",
+              "filePath": "",
+              "loop": false,
+              "volume": 1,
+              "enabled": true,
+              "updatedAt": ""
+            }
+          },
+          "shots": [
+            {
+              "message": "Pose challenge!",
+              "cameraBeforeMessageMs": 0,
+              "messageMs": 1000,
+              "cameraBeforeCountdownMs": 2000,
+              "audioCue": {
+                "id": "template-shot-0",
+                "label": "Picture 1 voice",
+                "mode": "host",
+                "channel": "voice",
+                "text": "Pose challenge!",
+                "filePath": "",
+                "loop": false,
+                "volume": 1,
+                "enabled": true,
+                "updatedAt": ""
+              }
+            },
+            {
+              "message": "Next one!",
+              "cameraBeforeMessageMs": 0,
+              "messageMs": 1000,
+              "cameraBeforeCountdownMs": 2000,
+              "audioCue": {
+                "id": "template-shot-1",
+                "label": "Picture 2 voice",
+                "mode": "host",
+                "channel": "voice",
+                "text": "Next one!",
+                "filePath": "",
+                "loop": false,
+                "volume": 1,
+                "enabled": true,
+                "updatedAt": ""
+              }
+            },
+            {
+              "message": "Looking good, now do this!",
+              "cameraBeforeMessageMs": 0,
+              "messageMs": 1400,
+              "cameraBeforeCountdownMs": 2000,
+              "audioCue": {
+                "id": "template-shot-2",
+                "label": "Picture 3 voice",
+                "mode": "host",
+                "channel": "voice",
+                "text": "Looking good, now do this!",
+                "filePath": "",
+                "loop": false,
+                "volume": 1,
+                "enabled": true,
+                "updatedAt": ""
+              }
+            }
+          ]
+        },
+        "printerName": "",
+        "createdAt": "2026-11-26T03:36:56.748Z",
+        "updatedAt": "2026-11-26T03:37:04.424Z",
+        "paperSize": "2x6"
       }
     ],
     "aiPresets": [
@@ -4011,6 +4174,21 @@
         "updatedAt": "2026-10-15T05:03:52.549Z",
         "styleId": "style1",
         "workflowOverrideEnabled": false
+      },
+      {
+        "id": "design-1795664238244",
+        "templateId": "template-1795664216748",
+        "name": "3 strip-c",
+        "previewPath": "project-asset:templates/custom/template-1795664216748/design-1795664238244-3-strip-c/frame.png",
+        "framePath": "project-asset:templates/custom/template-1795664216748/design-1795664238244-3-strip-c/frame.png",
+        "active": true,
+        "usesAi": false,
+        "aiPresetId": "",
+        "videoRecordingEnabled": true,
+        "createdAt": "2026-11-26T03:37:18.244Z",
+        "updatedAt": "2026-11-26T03:37:23.891Z",
+        "styleId": "style1",
+        "workflowOverrideEnabled": false
       }
     ]
   },
@@ -4131,6 +4309,7 @@
     "template-1792040220910": "",
     "template-1792040374035": "",
     "template-1792040533770": "",
-    "template-1792040591570": ""
+    "template-1792040591570": "",
+    "template-1795664216748": ""
   }
 }

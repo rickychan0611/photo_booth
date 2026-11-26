@@ -56,7 +56,7 @@ function sharedSettings(settings: AppSettings): Partial<AppSettings> {
   for (const key of [
     'eventFolder', 'webApiBaseUrl', 'supabaseUrl', 'supabasePublishableKey', 'eventId', 'boothSecret',
     'cameraId', 'cameraSource', 'canonEnabled', 'canonFraming', 'mirrorPreview',
-    'cameraRotation', 'cameraPreviewOverlay', 'cameraControls', 'defaultPrinter', 'stylePrinters',
+    'cameraRotation', 'cameraPreviewOverlay', 'cameraControls', 'defaultPrinter', 'sizePrinters', 'stylePrinters',
     'printerEnabled', 'silentPrint', 'printCalibration', 'adminPassword'
   ] as Array<keyof AppSettings>) delete shared[key];
 
@@ -206,6 +206,7 @@ export async function applyCloudSnapshot(local: AppSettings, snapshot: CloudSnap
     cameraPreviewOverlay: local.cameraPreviewOverlay,
     cameraControls: local.cameraControls,
     defaultPrinter: local.defaultPrinter,
+    sizePrinters: local.sizePrinters,
     stylePrinters: local.stylePrinters,
     printerEnabled: local.printerEnabled,
     silentPrint: local.silentPrint,

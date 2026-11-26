@@ -38,6 +38,7 @@ export type TemplateLayout = {
   id: string;
   name: string;
   orientation: TemplateOrientation;
+  paperSize?: '4x6' | '2x6';
   paperWidth: number;
   paperHeight: number;
   photoWindows: TemplatePhotoWindow[];
@@ -109,6 +110,7 @@ export type AiQueueItem = {
   inputPath: string;
   resultPath: string;
   finalPath: string;
+  paperSize?: '4x6' | '2x6';
   printerName: string;
   error: string;
   createdAt: string;
@@ -158,6 +160,7 @@ export type AppSettings = {
   eventId: string;
   boothSecret: string;
   staffControlQueueMode: boolean;
+  phoneEntryEnabled: boolean;
   cameraId: string;
   /** Source used for the live mirror and session video. */
   cameraSource: 'capture-card' | 'canon-usb';
@@ -171,6 +174,7 @@ export type AppSettings = {
   cameraPreviewOverlay: CameraPreviewOverlay;
   cameraControls: CameraControlSettings;
   defaultPrinter: string;
+  sizePrinters: { '4x6': string; '2x6': string };
   stylePrinters: StylePrinterSettings;
   printerEnabled: boolean;
   silentPrint: boolean;
@@ -290,6 +294,8 @@ export type PrintCalibrationSettings = {
 };
 
 export type SavedPhoto = {
+  paperSize?: '4x6' | '2x6';
+  uploadPath?: string;
   name: string;
   path: string;
   thumbPath?: string;
@@ -309,6 +315,8 @@ export type Gallery = {
 };
 
 export type SaveImageRequest = {
+  paperSize?: '4x6' | '2x6';
+  uploadPath?: string;
   dataUrl: string;
   kind: 'original' | 'final';
   filenamePrefix?: string;
@@ -321,11 +329,14 @@ export type SaveImageRequest = {
 };
 
 export type SaveImageResult = {
+  paperSize?: '4x6' | '2x6';
+  uploadPath?: string;
   path: string;
   name: string;
 };
 
 export type AiGenerateRequest = {
+  paperSize?: '4x6' | '2x6';
   dataUrl: string;
   templateId: string;
   styleId?: TemplateStyleId;

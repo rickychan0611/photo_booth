@@ -1944,6 +1944,47 @@ button:disabled {
   grid-template-columns: minmax(240px, 2fr) repeat(2, minmax(130px, 1fr));
 }
 
+.admin-shell .admin-section input.phone-entry-switch {
+  appearance: none;
+  position: relative;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 20px;
+  min-height: 20px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--admin-border-strong);
+  border-radius: 999px;
+  background: var(--admin-surface-raised);
+  cursor: pointer;
+}
+
+.admin-shell .admin-section input.phone-entry-switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--admin-text);
+}
+
+.admin-shell .admin-section input.phone-entry-switch:checked {
+  border-color: #8bc9c0;
+  background: #8bc9c0;
+}
+
+.admin-shell .admin-section input.phone-entry-switch:checked::after {
+  transform: translateX(16px);
+  background: #171717;
+}
+
+.admin-shell .admin-section input.phone-entry-switch:focus-visible {
+  outline: 2px solid #8bc9c0;
+  outline-offset: 3px;
+}
+
 .admin-shell .workflow-photo-header {
   align-items: center;
   padding-bottom: 16px;
@@ -5173,3 +5214,7 @@ button:disabled {
 .mode-card:focus-visible { outline: 3px solid #fff; outline-offset: 10px; border-radius: 24px; }
 .workflow-photo-voice { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: start; }
 .workflow-mode-voice { display: grid; gap: 12px; }
+
+.template-paper.strip { width: min(27vh, 280px); }
+
+.template-guest-preview-admin-row img { height: auto; max-height: 216px; object-fit: contain; }

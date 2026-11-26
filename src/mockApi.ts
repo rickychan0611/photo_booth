@@ -15,6 +15,7 @@ const fallbackSettings: AppSettings = {
   eventId: '',
   boothSecret: '',
   staffControlQueueMode: false,
+  phoneEntryEnabled: true,
   cameraId: '',
   cameraSource: 'capture-card',
   canonEnabled: false,
@@ -25,6 +26,7 @@ const fallbackSettings: AppSettings = {
   cameraPreviewOverlay: 'none',
   cameraControls: {},
   defaultPrinter: '',
+  sizePrinters: { '4x6': 'DS-RX1', '2x6': 'DS-RX1-HalfCut' },
   stylePrinters: {
     style1: 'DS-RX1',
     style2: 'DS-RX1',
@@ -163,6 +165,7 @@ const fallbackSettings: AppSettings = {
 
 const settingsKey = 'preview-settings';
 const gallery: Gallery = { originals: [], finals: [] };
+const previewPhotos = new Map<string, string>();
 
 const normalizeWorkflowSettings = (
   workflow?: Partial<AppSettings['workflow']>
@@ -279,6 +282,7 @@ export function installMockApi() {
           workflowOverrideEnabled: Boolean(design.workflowOverrideEnabled)
         }))
       },
+      sizePrinters: { ...fallbackSettings.sizePrinters, ...parsed.sizePrinters },
       workflow: normalizeWorkflowSettings(parsed.workflow),
       poseGuide: normalizePoseGuide(parsed.poseGuide),
       printPicker: { ...fallbackSettings.printPicker, ...(parsed.printPicker ?? {}) },
@@ -292,6 +296,7 @@ export function installMockApi() {
   const writeSettings = (settings: AppSettings) => {
     const normalized = {
       ...settings,
+      sizePrinters: { ...fallbackSettings.sizePrinters, ...settings.sizePrinters },
       defaultPrinter: normalizePrinterName(settings.defaultPrinter),
       stylePrinters: normalizeStylePrinters(settings.stylePrinters),
       workflow: normalizeWorkflowSettings(settings.workflow),
@@ -607,6 +612,26 @@ export function installMockApi() {
     saveImage: async (request: SaveImageRequest): Promise<SaveImageResult> => {
       photoSequence += 1;
       const name = `${photoSequence}.png`;
+      const settings = readSettings();
+      const paperSize = request.paperSize ?? settings.template.layouts.find(layout => layout.id === request.templateId)?.paperSize ?? '4x6';
+      const uploadPath = request.kind === 'final' && paperSize === '2x6' ? `uploads/${name}` : undefined;
+      if (uploadPath) {
+        const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+          const image = new Image();
+          image.onload = () => resolve(image);
+          image.onerror = () => reject(new Error('Could not read strip image.'));
+          image.src = request.dataUrl;
+        });
+        const canvas = document.createElement('canvas');
+        canvas.width = 1200;
+        canvas.height = 1800;
+        const context = canvas.getContext('2d');
+        if (!context) throw new Error('Canvas is not available.');
+        context.drawImage(image, 0, 0, 600, 1800);
+        context.drawImage(image, 600, 0, 600, 1800);
+        previewPhotos.set(name, canvas.toDataURL('image/png'));
+        previewPhotos.set(uploadPath, request.dataUrl);
+      } else previewPhotos.set(name, request.dataUrl);
       const saved = {
         name,
         path: name,
@@ -616,12 +641,14 @@ export function installMockApi() {
         templateId: request.templateId,
         styleId: request.styleId,
         designId: request.designId,
-        printerName: request.printerName,
+        paperSize,
+        uploadPath,
+        printerName: settings.sizePrinters[paperSize],
         phoneNumber: request.phoneNumber
       };
       if (request.kind === 'original') gallery.originals.unshift(saved);
       if (request.kind === 'final') gallery.finals.unshift(saved);
-      return { name, path: name };
+      return { name, path: name, paperSize, uploadPath };
     },
     updatePhotoGalleryUrl: async (filePath: string, galleryUrl: string) => {
       const photo = gallery.finals.find((item) => item.path === filePath);
@@ -633,9 +660,9 @@ export function installMockApi() {
       if (photo) photo.phoneNumber = phoneNumber;
       return true;
     },
-    getImageDataUrl: async filePath => filePath.startsWith('project-asset:')
+    getImageDataUrl: async filePath => previewPhotos.get(filePath) || (filePath.startsWith('project-asset:')
       ? `/project-assets/${filePath.slice('project-asset:'.length).replace(/^[/\\]+/, '')}`
-      : '',
+      : ''),
     getAudioDataUrl: async filePath => filePath.startsWith('project-asset:')
       ? `/project-assets/${filePath.slice('project-asset:'.length).replace(/^[/\\]+/, '')}`
       : localStorage.getItem(filePath) ?? '',
@@ -657,7 +684,14 @@ export function installMockApi() {
     openFile: async () => true,
     openUrl: async () => true,
     exportFile: async (filePath: string) => filePath,
-    deleteFile: async () => true,
+    deleteFile: async filePath => {
+      const photo = gallery.finals.find(photo => photo.path === filePath);
+      previewPhotos.delete(filePath);
+      if (photo?.uploadPath) previewPhotos.delete(photo.uploadPath);
+      gallery.finals = gallery.finals.filter(photo => photo.path !== filePath);
+      gallery.originals = gallery.originals.filter(photo => photo.path !== filePath);
+      return true;
+    },
     printImage: async () => ({ ok: true }),
     openPrinterSettings: async () => false
   };
