@@ -90,6 +90,51 @@ const objectUrl = (settings: AppSettings, objectPath: string) => {
   return `${trimSlash(settings.supabaseUrl)}/storage/v1/object/${SYNC_BUCKET}/${encoded}`;
 };
 
+const assetFilename = (objectPath: string) => {
+  const extension = path.extname(objectPath).toLowerCase().replace(/[^.a-z0-9]/g, '') || '.bin';
+  return `${sha256(objectPath)}${extension}`;
+};
+
+function cloudAssetIndex(value: unknown, index = new Map<string, string>()): Map<string, string> {
+  if (typeof value === 'string' && value.startsWith(ASSET_TOKEN)) {
+    index.set(assetFilename(value.slice(ASSET_TOKEN.length)), value);
+  } else if (value && typeof value === 'object') {
+    for (const item of Object.values(value)) cloudAssetIndex(item, index);
+  }
+  return index;
+}
+
+async function storedCloudAssetIndex(settings: AppSettings) {
+  const index = new Map<string, string>();
+  const list = async (prefix: string) => {
+    const entries: Array<{ name: string; id: string | null }> = [];
+    for (let offset = 0; ; offset += 1000) {
+      const response = await fetch(`${trimSlash(settings.supabaseUrl)}/storage/v1/object/list/${SYNC_BUCKET}`, {
+        method: 'POST',
+        headers: headers(settings, { 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ prefix, limit: 1000, offset, sortBy: { column: 'name', order: 'asc' } })
+      });
+      if (!response.ok) throw await responseError(response);
+      const page = await response.json() as typeof entries;
+      entries.push(...page);
+      if (page.length < 1000) return entries;
+    }
+  };
+  const owner = secretHash(settings);
+  // Previous events under the same secret may still own cached files referenced
+  // by the current setup. Find exact object identities, never similar filenames.
+  for (const folder of await list(owner)) {
+    if (folder.id) continue;
+    const prefix = `${owner}/${folder.name}`;
+    for (const asset of await list(prefix)) {
+      if (!asset.id) continue;
+      const objectPath = `${prefix}/${asset.name}`;
+      index.set(assetFilename(objectPath), `${ASSET_TOKEN}${objectPath}`);
+    }
+  }
+  return index;
+}
+
 async function uploadAsset(settings: AppSettings, filePath: string) {
   const data = await fs.readFile(filePath);
   const extension = path.extname(filePath).toLowerCase().replace(/[^.a-z0-9]/g, '') || '.bin';
@@ -139,9 +184,8 @@ async function downloadAsset(settings: AppSettings, token: string) {
   const response = await fetch(objectUrl(settings, objectPath), { headers: headers(settings) });
   if (!response.ok) throw await responseError(response);
   const data = Buffer.from(await response.arrayBuffer());
-  const extension = path.extname(objectPath).toLowerCase().replace(/[^.a-z0-9]/g, '') || '.bin';
   const targetFolder = path.join(settings.eventFolder, 'cloud-sync-assets');
-  const targetPath = path.join(targetFolder, `${sha256(objectPath)}${extension}`);
+  const targetPath = path.join(targetFolder, assetFilename(objectPath));
   await fs.mkdir(targetFolder, { recursive: true });
   await fs.writeFile(targetPath, data);
   return targetPath;
@@ -171,7 +215,29 @@ export async function pushCloudSnapshot(settings: AppSettings, library: StoredPo
   narrationSettings?: PoseNarrationSettingsUpdate;
 } = {}): Promise<CloudSnapshotRow> {
   // Reuse uploads across template previews, workflow cues, and pose audio.
-  const transfer = cachedAssetTransfer((filePath) => uploadAsset(settings, filePath));
+  let recoveryIndex: Promise<Map<string, string>> | undefined;
+  let storageIndex: Promise<Map<string, string>> | undefined;
+  const transfer = cachedAssetTransfer(async (filePath) => {
+    try {
+      return await uploadAsset(settings, filePath);
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
+      // Cached filenames identify the original cloud object independently of the
+      // Windows username or event folder. Never substitute audio by cue position.
+      const filename = filePath.replace(/\\/g, '/').match(/(?:^|\/)cloud-sync-assets\/([a-f0-9]{64}\.[a-z0-9]+)$/i)?.[1];
+      if (!filename) throw error;
+      recoveryIndex ??= fetchCloudSnapshot(settings).then(row => cloudAssetIndex(row?.payload));
+      let token = (await recoveryIndex).get(filename);
+      if (!token) {
+        storageIndex ??= storedCloudAssetIndex(settings);
+        token = (await storageIndex).get(filename);
+      }
+      if (!token) throw new Error('The local file is missing and its original cloud copy is not in this profile. Restore the file or select a replacement before uploading.');
+      // Download just the missing file; keep the user's current settings and edits.
+      await downloadAsset(settings, token);
+      return token;
+    }
+  });
   const upload: AssetUploader = (value) => {
     const filePath = options.resolveAssetPath?.(value) ?? value;
     return transfer(filePath).catch((error) => {
