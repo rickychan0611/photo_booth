@@ -95,46 +95,6 @@ const assetFilename = (objectPath: string) => {
   return `${sha256(objectPath)}${extension}`;
 };
 
-function cloudAssetIndex(value: unknown, index = new Map<string, string>()): Map<string, string> {
-  if (typeof value === 'string' && value.startsWith(ASSET_TOKEN)) {
-    index.set(assetFilename(value.slice(ASSET_TOKEN.length)), value);
-  } else if (value && typeof value === 'object') {
-    for (const item of Object.values(value)) cloudAssetIndex(item, index);
-  }
-  return index;
-}
-
-async function storedCloudAssetIndex(settings: AppSettings) {
-  const index = new Map<string, string>();
-  const list = async (prefix: string) => {
-    const entries: Array<{ name: string; id: string | null }> = [];
-    for (let offset = 0; ; offset += 1000) {
-      const response = await fetch(`${trimSlash(settings.supabaseUrl)}/storage/v1/object/list/${SYNC_BUCKET}`, {
-        method: 'POST',
-        headers: headers(settings, { 'Content-Type': 'application/json' }),
-        body: JSON.stringify({ prefix, limit: 1000, offset, sortBy: { column: 'name', order: 'asc' } })
-      });
-      if (!response.ok) throw await responseError(response);
-      const page = await response.json() as typeof entries;
-      entries.push(...page);
-      if (page.length < 1000) return entries;
-    }
-  };
-  const owner = secretHash(settings);
-  // Previous events under the same secret may still own cached files referenced
-  // by the current setup. Find exact object identities, never similar filenames.
-  for (const folder of await list(owner)) {
-    if (folder.id) continue;
-    const prefix = `${owner}/${folder.name}`;
-    for (const asset of await list(prefix)) {
-      if (!asset.id) continue;
-      const objectPath = `${prefix}/${asset.name}`;
-      index.set(assetFilename(objectPath), `${ASSET_TOKEN}${objectPath}`);
-    }
-  }
-  return index;
-}
-
 async function uploadAsset(settings: AppSettings, filePath: string) {
   const data = await fs.readFile(filePath);
   const extension = path.extname(filePath).toLowerCase().replace(/[^.a-z0-9]/g, '') || '.bin';
@@ -181,7 +141,7 @@ async function replaceLocalAssetsWithCloud(value: unknown, upload: AssetUploader
 
 async function downloadAsset(settings: AppSettings, token: string) {
   const objectPath = token.slice(ASSET_TOKEN.length);
-  const response = await fetch(objectUrl(settings, objectPath), { headers: headers(settings) });
+  const response = await fetch(objectUrl(settings, objectPath), { headers: headers(settings), cache: 'no-store' });
   if (!response.ok) throw await responseError(response);
   const data = Buffer.from(await response.arrayBuffer());
   const targetFolder = path.join(settings.eventFolder, 'cloud-sync-assets');
@@ -204,7 +164,7 @@ async function replaceCloudAssetsWithLocal(value: unknown, download: AssetUpload
 export async function fetchCloudSnapshot(settings: AppSettings): Promise<CloudSnapshotRow | null> {
   const id = cloudProfileId(settings);
   const url = `${trimSlash(settings.supabaseUrl)}/rest/v1/${SYNC_TABLE}?id=eq.${encodeURIComponent(id)}&select=revision,updated_at,payload`;
-  const response = await fetch(url, { headers: headers(settings) });
+  const response = await fetch(url, { headers: headers(settings), cache: 'no-store' });
   if (!response.ok) throw await responseError(response);
   const rows = await response.json() as CloudSnapshotRow[];
   return rows[0] ?? null;
@@ -215,33 +175,11 @@ export async function pushCloudSnapshot(settings: AppSettings, library: StoredPo
   narrationSettings?: PoseNarrationSettingsUpdate;
 } = {}): Promise<CloudSnapshotRow> {
   // Reuse uploads across template previews, workflow cues, and pose audio.
-  let recoveryIndex: Promise<Map<string, string>> | undefined;
-  let storageIndex: Promise<Map<string, string>> | undefined;
-  const transfer = cachedAssetTransfer(async (filePath) => {
-    try {
-      return await uploadAsset(settings, filePath);
-    } catch (error) {
-      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
-      // Cached filenames identify the original cloud object independently of the
-      // Windows username or event folder. Never substitute audio by cue position.
-      const filename = filePath.replace(/\\/g, '/').match(/(?:^|\/)cloud-sync-assets\/([a-f0-9]{64}\.[a-z0-9]+)$/i)?.[1];
-      if (!filename) throw error;
-      recoveryIndex ??= fetchCloudSnapshot(settings).then(row => cloudAssetIndex(row?.payload));
-      let token = (await recoveryIndex).get(filename);
-      if (!token) {
-        storageIndex ??= storedCloudAssetIndex(settings);
-        token = (await storageIndex).get(filename);
-      }
-      if (!token) throw new Error('The local file is missing and its original cloud copy is not in this profile. Restore the file or select a replacement before uploading.');
-      // Download just the missing file; keep the user's current settings and edits.
-      await downloadAsset(settings, token);
-      return token;
-    }
-  });
+  const transfer = cachedAssetTransfer((filePath) => uploadAsset(settings, filePath));
   const upload: AssetUploader = (value) => {
     const filePath = options.resolveAssetPath?.(value) ?? value;
     return transfer(filePath).catch((error) => {
-        throw new Error(`Could not upload asset "${value}": ${error instanceof Error ? error.message : String(error)}`);
+      throw new Error(`Could not upload asset "${value}": ${error instanceof Error ? error.message : String(error)}`);
     });
   };
   const prepared = await replaceLocalAssetsWithCloud(sharedSettings(settings), upload) as Partial<AppSettings>;

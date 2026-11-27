@@ -4,12 +4,11 @@ const fs = require('node:fs');
 const fsp = require('node:fs/promises');
 const os = require('node:os');
 const path = require('node:path');
-const crypto = require('node:crypto');
 const ts = require('typescript');
 require.extensions['.ts'] = (module, filename) => module._compile(ts.transpileModule(fs.readFileSync(filename, 'utf8'), {
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true }
 }).outputText, filename);
-const { pushCloudSnapshot, applyCloudSnapshot, applyCloudPoseLibrary } = require('../electron/cloudSync.ts');
+const { pushCloudSnapshot, fetchCloudSnapshot, applyCloudSnapshot, applyCloudPoseLibrary } = require('../electron/cloudSync.ts');
 
 test('a cloud profile restores settings, templates, portable MP3s and pose images on another computer', async t => {
   const folder = await fsp.mkdtemp(path.join(os.tmpdir(), 'booth-cloud-'));
@@ -102,60 +101,56 @@ test('old shared profiles keep local hardware and credentials when restored', as
   assert.equal(restored.template.layouts[0].printerName, 'Local printer');
 });
 
-test('upload recovers a missing cloud cache file from another Windows user folder without replacing local settings', async t => {
-  const folder = await fsp.mkdtemp(path.join(os.tmpdir(), 'booth-cloud-recovery-'));
+test('a fresh upload replaces the old profile and sync gets the newest settings and MP3 bytes', async t => {
+  const folder = await fsp.mkdtemp(path.join(os.tmpdir(), 'booth-fresh-upload-'));
   t.after(() => fsp.rm(folder, { recursive: true, force: true }));
   const originalFetch = global.fetch;
   t.after(() => { global.fetch = originalFetch; });
-  const object = 'owner/event/original.mp3';
-  const filename = crypto.createHash('sha256').update(object).digest('hex') + '.mp3';
-  const missing = `C:\\Users\\Different User\\Pictures\\Photo Booth\\cloud-sync-assets\\${filename}`;
-  let published;
-  let lookups = 0;
+  const objects = new Map();
+  let profile;
   global.fetch = async (url, request) => {
     if (url.includes('/storage/')) {
-      assert.equal(request.method, undefined, 'existing cloud audio is downloaded, not overwritten');
-      return new Response('recovered audio');
+      if (request.method === 'POST') {
+        objects.set(url, Buffer.from(request.body));
+        return new Response('');
+      }
+      assert.equal(request.cache, 'no-store');
+      return new Response(objects.get(url));
     }
-    if (!request.method) {
-      lookups++;
-      return Response.json([{ payload: { version: 3, settings: { eventName: 'Old event', audio: { filePath: 'cloud-asset:' + object } } } }]);
+    if (request.method === 'POST') {
+      const body = JSON.parse(request.body);
+      profile = { revision: body.revision, payload: body.payload };
+    } else {
+      assert.equal(request.cache, 'no-store');
     }
-    published = JSON.parse(request.body).payload;
-    return Response.json([{ payload: published }]);
+    return Response.json(profile ? [profile] : []);
   };
-  await pushCloudSnapshot({ eventId: 'event', boothSecret: 'secret', supabaseUrl: 'https://example.test', eventFolder: folder,
-    eventName: 'Locally edited event', audio: { filePath: missing }, workflow: { filePath: missing } }, { poses: [] });
-  assert.equal(lookups, 1);
-  assert.equal(published.settings.eventName, 'Locally edited event');
-  assert.equal(published.settings.audio.filePath, 'cloud-asset:' + object);
-  assert.equal(await fsp.readFile(path.join(folder, 'cloud-sync-assets', filename), 'utf8'), 'recovered audio');
+  const filePath = path.join(folder, 'voice.mp3');
+  const source = { eventId: 'event', boothSecret: 'secret', supabaseUrl: 'https://example.test', eventFolder: folder,
+    eventName: 'Old event', audio: { filePath }, template: { designs: [{ id: 'old-design' }] } };
+  assert.equal(await fetchCloudSnapshot(source), null, 'empty cloud has no profile');
+  await fsp.writeFile(filePath, 'old voice');
+  await pushCloudSnapshot(source, { poses: [], deletedPoseIds: ['old-deletion'] });
+  await fsp.writeFile(filePath, 'brand new voice');
+  source.eventName = 'New event';
+  source.template.designs = [{ id: 'new-design' }];
+  await pushCloudSnapshot(source, { poses: [], deletedPoseIds: [] });
+  const remote = await fetchCloudSnapshot(source);
+  const target = { ...source, eventFolder: path.join(folder, 'different-windows-user'), eventName: 'Stale local event' };
+  const restored = await applyCloudSnapshot(target, remote.payload);
+  assert.equal(restored.eventName, 'New event');
+  assert.deepEqual(restored.template.designs, [{ id: 'new-design' }]);
+  assert.deepEqual(remote.payload.deletedPoseIds, []);
+  assert.equal(await fsp.readFile(restored.audio.filePath, 'utf8'), 'brand new voice');
+  assert.ok(restored.audio.filePath.startsWith(target.eventFolder));
 });
 
-test('missing cached audio can be recovered from an older event under the same secret', async t => {
-  const folder = await fsp.mkdtemp(path.join(os.tmpdir(), 'booth-old-event-'));
-  t.after(() => fsp.rm(folder, { recursive: true, force: true }));
+test('upload never reads old cloud data to replace a missing local cached file', async t => {
   const originalFetch = global.fetch;
   t.after(() => { global.fetch = originalFetch; });
-  const hash = value => crypto.createHash('sha256').update(value).digest('hex');
-  const owner = hash('secret');
-  const object = `${owner}/old-event/voice.mp3`;
-  const filename = hash(object) + '.mp3';
-  let published;
-  global.fetch = async (url, request) => {
-    if (url.includes('/object/list/')) {
-      const { prefix } = JSON.parse(request.body);
-      if (prefix === owner) return Response.json([{ name: 'old-event', id: null }]);
-      assert.equal(prefix, `${owner}/old-event`);
-      return Response.json([{ name: 'voice.mp3', id: 'object-id' }]);
-    }
-    if (url.includes('/storage/')) return new Response('older event audio');
-    if (!request.method) return Response.json([]);
-    published = JSON.parse(request.body).payload;
-    return Response.json([{ payload: published }]);
-  };
-  await pushCloudSnapshot({ eventId: 'new-event', boothSecret: 'secret', supabaseUrl: 'https://example.test', eventFolder: folder,
-    audio: { filePath: path.join(folder, 'cloud-sync-assets', filename) } }, { poses: [] });
-  assert.equal(published.settings.audio.filePath, 'cloud-asset:' + object);
-  assert.equal(await fsp.readFile(path.join(folder, 'cloud-sync-assets', filename), 'utf8'), 'older event audio');
+  const folder = await fsp.mkdtemp(path.join(os.tmpdir(), 'booth-local-only-upload-'));
+  t.after(() => fsp.rm(folder, { recursive: true, force: true }));
+  global.fetch = async () => { assert.fail('a missing local file must not trigger a cloud read or write'); };
+  await assert.rejects(pushCloudSnapshot({ eventId: 'event', boothSecret: 'secret', supabaseUrl: 'https://example.test',
+    audio: { filePath: path.join(folder, 'cloud-sync-assets', 'a'.repeat(64) + '.mp3') } }, { poses: [] }), /ENOENT/);
 });
