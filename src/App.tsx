@@ -3225,7 +3225,7 @@ function AdminApp() {
               <div className="panel-title-row">
                 <div>
                   <h2>Cloud sync</h2>
-                  <p>Edits are saved on this computer only. Upload to cloud replaces the shared profile with this computer’s settings, templates, poses, and pose deletions. On another computer, Sync from cloud replaces its shared setup with that profile. Camera, printer, folders, passwords, and API keys stay on each computer.</p>
+                  <p>Edits are saved on this computer until you upload. Upload to cloud saves all settings and linked files: event setup, templates, designs, voice MP3s, music, pose images, poses, camera and printer settings, passwords, and API keys. Sync from cloud restores that setup on another computer. This computer’s event folder and cloud connection stay in place; downloaded files use local paths. Use the same Event ID and booth secret on both computers.</p>
                 </div>
                 <strong>{cloudSyncStatus.state === 'syncing' ? 'SYNCING' : cloudSyncStatus.state.toUpperCase()}</strong>
               </div>

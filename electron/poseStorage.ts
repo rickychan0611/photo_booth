@@ -59,7 +59,7 @@ export async function listStoredPoses(): Promise<PoseCatalog> {
   for (const folder of folders) {
     let names: string[] = [];
     try { names = await fs.readdir(folder); } catch { continue; }
-    for (const name of names.filter(name => name.endsWith('.json')).sort()) {
+    for (const name of names.filter(name => name.endsWith('.json') && name !== path.basename(narrationConfigPath())).sort()) {
       try {
         const file = path.join(folder, name); const stat = await fs.lstat(file);
         if (!stat.isFile() || stat.size > MAX_JSON) throw new Error('Not a bounded JSON file.');
@@ -178,6 +178,14 @@ function narrationApiKey(settings: StoredNarrationSettings) {
   catch { throw new Error('The saved ElevenLabs API key could not be decrypted. Save it again.'); }
 }
 export async function getElevenLabsSettings() { return publicNarrationSettings(await readNarrationSettings()); }
+export async function exportNarrationSettings(): Promise<PoseNarrationSettingsUpdate> {
+  const stored = await readNarrationSettings();
+  const { encryptedApiKey, ...settings } = stored;
+  return { ...settings, apiKey: encryptedApiKey || process.env.ELEVENLABS_API_KEY?.trim() ? narrationApiKey(stored) : '' };
+}
+export async function importNarrationSettings(settings: PoseNarrationSettingsUpdate) {
+  return saveNarrationSettings(settings);
+}
 export async function updateElevenLabsSettings(update: PoseNarrationSettingsUpdate) { return saveNarrationSettings(update); }
 export async function generateElevenLabsSpeech(id: string, rawText: string, outputDirectory = app.isPackaged
   ? path.join(directory(), 'audio', 'elevenlabs')

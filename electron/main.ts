@@ -11,7 +11,7 @@ import crypto from 'node:crypto';
 import ffmpegStatic from 'ffmpeg-static';
 import { enqueueVideoJob, runVideoProcess, sessionVideoOutroArgs } from './videoProcessing';
 import { captureCanonStill, connectCanon, getCanonLiveViewFrame, prepareCanonCapture, releaseCanonFocus, stopCanonService } from './canon';
-import { generateElevenLabsSpeech, listStoredPoses, registerPoseStorage, replaceStoredPoses } from './poseStorage';
+import { exportNarrationSettings, importNarrationSettings, generateElevenLabsSpeech, listStoredPoses, registerPoseStorage, replaceStoredPoses } from './poseStorage';
 import { registerPoseAi } from './poseAi';
 import { applyCloudPoseLibrary, applyCloudSnapshot, cloudFingerprint, cloudProfileId, cloudSyncConfigured, fetchCloudSnapshot, pushCloudSnapshot } from './cloudSync';
 import type {
@@ -2835,7 +2835,7 @@ async function performCloudDownload(): Promise<CloudSyncStatus> {
   if (!cloudSyncConfigured(local)) {
     return publishCloudSyncStatus({ state: 'error', message: 'Add the Supabase URL, publishable key, Event ID, and booth secret before syncing.' });
   }
-  publishCloudSyncStatus({ state: 'syncing', message: 'Downloading event settings, templates, and poses from the cloud...' });
+  publishCloudSyncStatus({ state: 'syncing', message: 'Downloading all settings, templates, voice MP3s, and poses from the cloud...' });
   try {
     const remote = await fetchCloudSnapshot(local);
     if (!remote) {
@@ -2843,11 +2843,12 @@ async function performCloudDownload(): Promise<CloudSyncStatus> {
     }
     const materialized = await applyCloudSnapshot(local, remote.payload);
     const cloudLibrary = await applyCloudPoseLibrary(local, remote.payload);
+    if (remote.payload.narrationSettings) await importNarrationSettings(remote.payload.narrationSettings);
     if (cloudLibrary) await replaceStoredPoses(cloudLibrary.poses, cloudLibrary.deletedPoseIds);
     const saved = await writeSettings(normalizeLoadedSettings(materialized, local));
     const lastSyncedAt = remote.updated_at || new Date().toISOString();
     await writeCloudSyncState({ profileId: cloudProfileId(local), cloudRevision: remote.revision, localFingerprint: cloudFingerprint(saved, await listStoredPoses()), lastSyncedAt });
-    return publishCloudSyncStatus({ state: 'synced', message: 'Downloaded the cloud profile, including pose deletions.', lastSyncedAt });
+    return publishCloudSyncStatus({ state: 'synced', message: 'Downloaded all settings and linked files in the cloud profile, including pose deletions.', lastSyncedAt });
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     return publishCloudSyncStatus({ state: 'error', message: `Cloud download failed: ${message}` });
@@ -2859,13 +2860,22 @@ async function performCloudUpload(): Promise<CloudSyncStatus> {
   if (!cloudSyncConfigured(local)) {
     return publishCloudSyncStatus({ state: 'error', message: 'Add the Supabase URL, publishable key, Event ID, and booth secret before uploading.' });
   }
-  publishCloudSyncStatus({ state: 'syncing', message: 'Uploading this computer’s event settings, templates, and poses...' });
+  publishCloudSyncStatus({ state: 'syncing', message: 'Uploading all settings, templates, voice MP3s, and poses...' });
   try {
     const library = await listStoredPoses();
-    const pushed = await pushCloudSnapshot(local, library);
+    if (library.errors.length) throw new Error(`Fix unreadable poses before uploading: ${library.errors.join('; ')}`);
+    const pushed = await pushCloudSnapshot(local, library, {
+      narrationSettings: await exportNarrationSettings(),
+      resolveAssetPath: (value) => {
+        if (/^pose-guides\/[a-z0-9-]+\.webp$/.test(value)) {
+          return path.join(app.getAppPath(), app.isPackaged ? 'dist' : 'public', value);
+        }
+        return resolveProjectAssetPath(value);
+      }
+    });
     const lastSyncedAt = pushed.updated_at || new Date().toISOString();
     await writeCloudSyncState({ profileId: cloudProfileId(local), cloudRevision: pushed.revision, localFingerprint: cloudFingerprint(local, library), lastSyncedAt });
-    return publishCloudSyncStatus({ state: 'synced', message: 'Uploaded this computer’s profile, including pose deletions, to the cloud.', lastSyncedAt });
+    return publishCloudSyncStatus({ state: 'synced', message: 'Uploaded all settings and linked files, including templates, voice MP3s, poses, and pose deletions.', lastSyncedAt });
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     return publishCloudSyncStatus({ state: 'error', message: `Cloud upload failed: ${message}` });

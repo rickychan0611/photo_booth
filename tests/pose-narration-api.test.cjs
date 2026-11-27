@@ -52,3 +52,48 @@ test('new narration requests timestamps, saves aligned captions, and reuses the 
     fs.rmSync(folder, { recursive: true, force: true });
   }
 });
+
+test('cloud narration settings decrypt on the source and encrypt for the destination computer', async t => {
+  const folder = fs.mkdtempSync(path.join(os.tmpdir(), 'booth-narration-cloud-'));
+  t.after(() => fs.rmSync(folder, { recursive: true, force: true }));
+  let machine = 'source';
+  const originalLoad = Module._load;
+  const originalKey = process.env.ELEVENLABS_API_KEY;
+  delete process.env.ELEVENLABS_API_KEY;
+  t.after(() => {
+    Module._load = originalLoad;
+    if (originalKey === undefined) delete process.env.ELEVENLABS_API_KEY;
+    else process.env.ELEVENLABS_API_KEY = originalKey;
+  });
+  Module._load = function(name, ...args) {
+    if (name === 'electron') return {
+      app: { isPackaged: false, getPath: () => path.join(folder, machine), getAppPath: () => folder },
+      dialog: {}, ipcMain: {},
+      safeStorage: {
+        isEncryptionAvailable: () => true,
+        encryptString: value => Buffer.from(`${machine}:${value}`),
+        decryptString: value => {
+          const text = value.toString();
+          assert.ok(text.startsWith(`${machine}:`));
+          return text.slice(machine.length + 1);
+        }
+      }
+    };
+    return originalLoad.call(this, name, ...args);
+  };
+  delete require.cache[require.resolve('../electron/poseStorage.ts')];
+  const { importNarrationSettings, exportNarrationSettings, listStoredPoses } = require('../electron/poseStorage.ts');
+  Module._load = originalLoad;
+  const settings = { voiceId: 'test-voice-123', modelId: 'eleven_v3', stability: .4, similarityBoost: .6, style: .3, speed: 1, direction: 'Happy', apiKey: 'test-secret' };
+  await importNarrationSettings(settings);
+  const exported = await exportNarrationSettings();
+  assert.deepEqual(exported, settings);
+  assert.equal(exported.encryptedApiKey, undefined);
+  machine = 'destination';
+  await importNarrationSettings(exported);
+  assert.deepEqual(await exportNarrationSettings(), settings);
+  const stored = JSON.parse(fs.readFileSync(path.join(folder, machine, 'pose-library', 'elevenlabs.json'), 'utf8'));
+  assert.equal(Buffer.from(stored.encryptedApiKey, 'base64').toString(), 'destination:test-secret');
+  assert.equal(stored.apiKey, undefined);
+  assert.deepEqual((await listStoredPoses()).errors, []);
+});

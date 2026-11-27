@@ -4,6 +4,7 @@ const record = (value: unknown): value is Record<string, unknown> => Boolean(val
 const finite = (value: unknown, min: number, max: number): value is number => typeof value === 'number' && Number.isFinite(value) && value >= min && value <= max;
 const fail = (message: string): never => { throw new Error(`Invalid pose: ${message}`); };
 const validPoseAsset = (value: string) => /^pose-guides\/[a-z0-9-]+\.webp$/.test(value)
+  || (/^project-asset:[a-z0-9_./-]+\.webp$/i.test(value) && !value.includes('..'))
   || /^browser-pose-image-[0-9a-f-]{8,}$/i.test(value)
   || (/^(?:[A-Za-z]:[\\/]|\/)/.test(value) && !value.includes('..') && /\.webp$/i.test(value) && !/^https?:/i.test(value));
 

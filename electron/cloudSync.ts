@@ -4,16 +4,18 @@ import crypto from 'node:crypto';
 import type { AppSettings } from './types';
 import { validateScene } from './poseValidation';
 import type { PoseScene, StoredPoseLibrary } from './poseTypes';
+import type { PoseNarrationSettingsUpdate } from './poseTypes';
 
 const SYNC_TABLE = 'booth_sync_profiles';
 const SYNC_BUCKET = 'booth-sync';
 const ASSET_TOKEN = 'cloud-asset:';
 
 export type CloudSnapshot = {
-  version: 1 | 2;
+  version: 1 | 2 | 3;
   settings: Partial<AppSettings>;
   poses?: PoseScene[];
   deletedPoseIds?: string[];
+  narrationSettings?: PoseNarrationSettingsUpdate;
 };
 
 export type CloudSnapshotRow = {
@@ -54,18 +56,9 @@ function sharedSettings(settings: AppSettings): Partial<AppSettings> {
   const shared = clone(settings) as Partial<AppSettings>;
   delete (shared as unknown as Record<string, unknown>).cloudSyncEnabled;
   for (const key of [
-    'eventFolder', 'webApiBaseUrl', 'supabaseUrl', 'supabasePublishableKey', 'eventId', 'boothSecret',
-    'cameraId', 'cameraSource', 'canonEnabled', 'canonFraming', 'mirrorPreview',
-    'cameraRotation', 'cameraPreviewOverlay', 'cameraControls', 'defaultPrinter', 'sizePrinters', 'stylePrinters',
-    'printerEnabled', 'silentPrint', 'printCalibration', 'adminPassword'
+    'eventFolder', 'supabaseUrl', 'supabasePublishableKey', 'eventId', 'boothSecret'
   ] as Array<keyof AppSettings>) delete shared[key];
 
-  if (shared.ai) {
-    for (const provider of Object.values(shared.ai.providers)) provider.apiKey = '';
-  }
-  if (shared.template) {
-    shared.template.layouts = shared.template.layouts.map((layout) => ({ ...layout, printerName: '' }));
-  }
   return shared;
 }
 
@@ -76,7 +69,7 @@ export function cloudFingerprint(settings: AppSettings, library: StoredPoseLibra
 
 function isAssetPath(key: string | undefined, value: string) {
   if (!key || !value || value.startsWith(ASSET_TOKEN) || /^https?:\/\//i.test(value)) return false;
-  return key === 'path' || key === 'filePath' || key === 'framePath' || key === 'previewPath' || key === 'guestPreviewPath' || key === 'logoPath';
+  return key === 'assetPath' || key === 'path' || key === 'filePath' || key === 'framePath' || key === 'previewPath' || key === 'guestPreviewPath' || key === 'logoPath';
 }
 
 function contentType(filePath: string) {
@@ -110,19 +103,32 @@ async function uploadAsset(settings: AppSettings, filePath: string) {
   return `${ASSET_TOKEN}${objectPath}`;
 }
 
-async function replaceLocalAssetsWithCloud(value: unknown, settings: AppSettings, key?: string): Promise<unknown> {
+type AssetUploader = (filePath: string) => Promise<string>;
+
+function cachedAssetTransfer(transfer: AssetUploader): AssetUploader {
+  const pending = new Map<string, Promise<string>>();
+  const lanes: Promise<unknown>[] = Array.from({ length: 4 }, () => Promise.resolve());
+  let nextLane = 0;
+  return (value) => {
+    let result = pending.get(value);
+    if (!result) {
+      const lane = nextLane++ % lanes.length;
+      result = lanes[lane].then(() => transfer(value));
+      lanes[lane] = result.catch(() => undefined);
+      pending.set(value, result);
+    }
+    return result;
+  };
+}
+
+async function replaceLocalAssetsWithCloud(value: unknown, upload: AssetUploader, key?: string): Promise<unknown> {
   if (typeof value === 'string') {
     if (!isAssetPath(key, value)) return value;
-    try {
-      const stat = await fs.stat(value);
-      return stat.isFile() ? await uploadAsset(settings, value) : '';
-    } catch {
-      return '';
-    }
+    return upload(value);
   }
-  if (Array.isArray(value)) return Promise.all(value.map((item) => replaceLocalAssetsWithCloud(item, settings)));
+  if (Array.isArray(value)) return Promise.all(value.map((item) => replaceLocalAssetsWithCloud(item, upload)));
   if (value && typeof value === 'object') {
-    const entries = await Promise.all(Object.entries(value).map(async ([entryKey, item]) => [entryKey, await replaceLocalAssetsWithCloud(item, settings, entryKey)] as const));
+    const entries = await Promise.all(Object.entries(value).map(async ([entryKey, item]) => [entryKey, await replaceLocalAssetsWithCloud(item, upload, entryKey)] as const));
     return Object.fromEntries(entries);
   }
   return value;
@@ -141,11 +147,11 @@ async function downloadAsset(settings: AppSettings, token: string) {
   return targetPath;
 }
 
-async function replaceCloudAssetsWithLocal(value: unknown, settings: AppSettings): Promise<unknown> {
-  if (typeof value === 'string' && value.startsWith(ASSET_TOKEN)) return downloadAsset(settings, value);
-  if (Array.isArray(value)) return Promise.all(value.map((item) => replaceCloudAssetsWithLocal(item, settings)));
+async function replaceCloudAssetsWithLocal(value: unknown, download: AssetUploader): Promise<unknown> {
+  if (typeof value === 'string' && value.startsWith(ASSET_TOKEN)) return download(value);
+  if (Array.isArray(value)) return Promise.all(value.map((item) => replaceCloudAssetsWithLocal(item, download)));
   if (value && typeof value === 'object') {
-    const entries = await Promise.all(Object.entries(value).map(async ([key, item]) => [key, await replaceCloudAssetsWithLocal(item, settings)] as const));
+    const entries = await Promise.all(Object.entries(value).map(async ([key, item]) => [key, await replaceCloudAssetsWithLocal(item, download)] as const));
     return Object.fromEntries(entries);
   }
   return value;
@@ -160,11 +166,22 @@ export async function fetchCloudSnapshot(settings: AppSettings): Promise<CloudSn
   return rows[0] ?? null;
 }
 
-export async function pushCloudSnapshot(settings: AppSettings, library: StoredPoseLibrary): Promise<CloudSnapshotRow> {
-  const prepared = await replaceLocalAssetsWithCloud(sharedSettings(settings), settings) as Partial<AppSettings>;
-  const preparedPoses = await replaceLocalAssetsWithCloud(library.poses, settings) as PoseScene[];
+export async function pushCloudSnapshot(settings: AppSettings, library: StoredPoseLibrary, options: {
+  resolveAssetPath?: (value: string) => string;
+  narrationSettings?: PoseNarrationSettingsUpdate;
+} = {}): Promise<CloudSnapshotRow> {
+  // Reuse uploads across template previews, workflow cues, and pose audio.
+  const transfer = cachedAssetTransfer((filePath) => uploadAsset(settings, filePath));
+  const upload: AssetUploader = (value) => {
+    const filePath = options.resolveAssetPath?.(value) ?? value;
+    return transfer(filePath).catch((error) => {
+        throw new Error(`Could not upload asset "${value}": ${error instanceof Error ? error.message : String(error)}`);
+    });
+  };
+  const prepared = await replaceLocalAssetsWithCloud(sharedSettings(settings), upload) as Partial<AppSettings>;
+  const preparedPoses = await replaceLocalAssetsWithCloud(library.poses, upload) as PoseScene[];
   const revision = Date.now();
-  const payload: CloudSnapshot = { version: 2, settings: prepared, poses: preparedPoses, deletedPoseIds: library.deletedPoseIds };
+  const payload: CloudSnapshot = { version: 3, settings: prepared, poses: preparedPoses, deletedPoseIds: library.deletedPoseIds, narrationSettings: options.narrationSettings };
   const response = await fetch(`${trimSlash(settings.supabaseUrl)}/rest/v1/${SYNC_TABLE}?on_conflict=id`, {
     method: 'POST',
     headers: headers(settings, {
@@ -185,8 +202,19 @@ export async function pushCloudSnapshot(settings: AppSettings, library: StoredPo
 }
 
 export async function applyCloudSnapshot(local: AppSettings, snapshot: CloudSnapshot) {
-  if (![1, 2].includes(snapshot.version) || !snapshot.settings) throw new Error('This cloud settings version is not supported.');
-  const remote = await replaceCloudAssetsWithLocal(snapshot.settings, local) as Partial<AppSettings>;
+  if (![1, 2, 3].includes(snapshot.version) || !snapshot.settings) throw new Error('This cloud settings version is not supported.');
+  const remote = await replaceCloudAssetsWithLocal(snapshot.settings, cachedAssetTransfer(token => downloadAsset(local, token))) as Partial<AppSettings>;
+  if (snapshot.version >= 3) {
+    return {
+      ...local, ...remote,
+      // Use this computer's storage location and the connection used to fetch the profile.
+      eventFolder: local.eventFolder,
+      supabaseUrl: local.supabaseUrl,
+      supabasePublishableKey: local.supabasePublishableKey,
+      eventId: local.eventId,
+      boothSecret: local.boothSecret
+    };
+  }
   const localPrinters = new Map(local.template.layouts.map((layout) => [layout.id, layout.printerName]));
   const merged: AppSettings = {
     ...local,
@@ -233,6 +261,6 @@ export async function applyCloudSnapshot(local: AppSettings, snapshot: CloudSnap
 
 export async function applyCloudPoseLibrary(local: AppSettings, snapshot: CloudSnapshot): Promise<StoredPoseLibrary | null> {
   if (snapshot.version < 2 || !snapshot.poses) return null;
-  const poses = await replaceCloudAssetsWithLocal(snapshot.poses, local) as PoseScene[];
+  const poses = await replaceCloudAssetsWithLocal(snapshot.poses, cachedAssetTransfer(token => downloadAsset(local, token))) as PoseScene[];
   return { poses: poses.map(validateScene), deletedPoseIds: snapshot.deletedPoseIds };
 }

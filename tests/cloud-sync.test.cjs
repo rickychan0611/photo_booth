@@ -14,7 +14,7 @@ const code = ts.transpileModule(source.slice(start, end), {
 function harness(overrides = {}) {
   const calls = [];
   const local = { eventId: 'event', localCamera: 'camera' };
-  const library = { poses: [{ id: 'kept' }], deletedPoseIds: ['removed'] };
+  const library = { poses: [{ id: 'kept' }], deletedPoseIds: ['removed'], errors: [] };
   const remote = { revision: 5, updated_at: '2026-11-25', payload: { version: 2, ...library } };
   const context = {
     cloudSyncRunning: null,
@@ -24,6 +24,8 @@ function harness(overrides = {}) {
     fetchCloudSnapshot: async () => { calls.push(['fetch']); return remote; },
     pushCloudSnapshot: async (...args) => { calls.push(['push', ...args]); return remote; },
     listStoredPoses: async () => library,
+    exportNarrationSettings: async () => ({ voiceId: 'voice' }),
+    importNarrationSettings: async () => {},
     applyCloudSnapshot: async () => ({ ...local, downloaded: true }),
     applyCloudPoseLibrary: async () => library,
     replaceStoredPoses: async (...args) => { calls.push(['replacePoses', ...args]); },
@@ -57,7 +59,8 @@ test('missing cloud profile never uploads or replaces local data', async () => {
 test('explicit upload sends the local library including deletions without downloading', async () => {
   const { context, calls, local, library } = harness();
   assert.equal((await context.runCloudTransfer('upload')).state, 'synced');
-  assert.deepEqual(calls.find(c => c[0] === 'push').slice(1), [local, library]);
+  assert.deepEqual(calls.find(c => c[0] === 'push').slice(1, 3), [local, library]);
+  assert.equal(calls.find(c => c[0] === 'push')[3].narrationSettings.voiceId, 'voice');
   assert.equal(calls.some(c => ['fetch', 'replacePoses', 'writeSettings'].includes(c[0])), false);
 });
 
@@ -82,6 +85,14 @@ test('overlapping button presses do not start a second transfer', async () => {
   await downloading;
   assert.equal(calls.some(c => c[0] === 'push'), false);
   assert.equal(context.cloudSyncRunning, null);
+});
+
+test('an unreadable pose blocks upload instead of dropping it from the cloud profile', async () => {
+  const { context, calls } = harness({ listStoredPoses: async () => ({ poses: [], errors: ['broken.json: invalid pose'] }) });
+  const result = await context.runCloudTransfer('upload');
+  assert.equal(result.state, 'error');
+  assert.match(result.message, /broken.json/);
+  assert.equal(calls.some(c => c[0] === 'push'), false);
 });
 
 test('settings and pose edits have no automatic cloud transfer hook', () => {
